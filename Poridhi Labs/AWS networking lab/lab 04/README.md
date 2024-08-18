@@ -17,65 +17,95 @@ This documentation provides a step-by-step guide on how to set up and establish 
 
 ### Step 1: Configure and setup AWS(vpc, subnet, route-table, Internet gateway, NAT gateway)
 
-1. Create a vpc named `my-vpc` with IPv4 CIDR block `10.0.0.0/16`
+1. **Create a VPC**
+   - **CIDR:** `10.0.0.0/16`
 
 ![alt text](https://github.com/Konami33/poridhi.io.intern/raw/main/AWS%20networking%20lab/lab%2004/images/image.png)
 
-2. Create a public subnet named `public-subnet` with IPv4 CIDR block `10.0.1.0/24`
-3. Create a private subnet named `private-subnet` with IPv4 CIDR block `10.0.2.0/24`
+2. **Create a Public Subnet**
+   - **CIDR:** `10.0.1.0/24`
+   - **Availability Zone:** `ap-southeast-1a`
+   - **Enable Auto-assign Public IPv4 Address**
+
+3. **Create a Private Subnet**
+   - **CIDR:** `10.0.2.0/24`
+   - **Availability Zone:** `ap-southeast-1a`
+   - **Do not enable Auto-assign Public IPv4 Address**
 
 ![alt text](https://github.com/Konami33/poridhi.io.intern/raw/main/AWS%20networking%20lab/lab%2004/images/image-1.png)
 
-4. Create a route table named `rt-public` and associate it with the `public-subnet`.
-5. Create a route table named `rt-private` and associate it with the `private-subnet`.
-6. Create an internet gateway named `igw` and attach it to the vpc.
-7. Create a NAT gateway named `ngw`, allocate a elastic ip, and attach it to the public subnet.
+4. Create a **Public Route Table** named `rt-public`
+    - **Associate** it with the `public-subnet`.
+
+5. Create a **Private Route Table** named `rt-private`
+    - **Associate** it with the `private-subnet`.
+
+6. **Create an Internet Gateway (IGW)**
+   - Attach the IGW to the VPC.
+
+7. **Create a NAT Gateway**
+   - Go to the VPC Dashboard in the AWS Management Console.
+   - In the left-hand menu, click on `NAT Gateways`.
+   - Click "Create NAT Gateway".
+   - Select the public subnet (`10.0.1.0/24`).
+   - Allocate an Elastic IP for the NAT Gateway.
+   - Click "Create a NAT Gateway".
 
 ![alt text](https://github.com/Konami33/poridhi.io.intern/raw/main/AWS%20networking%20lab/lab%2004/images/image-3.png)
 
 
 8. Edit routes of the router:
     - Public Route Table(rt-public):
-        - Add a route with destination `0.0.0.0/0` and target `igw`
+        - Add a route with destination `0.0.0.0/0` and target `igw` (Internet Gateway)
     - Private Route Table(rt-private):
-        - Add a route with destination `0.0.0.0/0` and target `ngw`
+        - Add a route with destination `0.0.0.0/0` and target `ngw` (NAT Gateway)
 
 ![alt text](https://github.com/Konami33/poridhi.io.intern/raw/main/AWS%20networking%20lab/lab%2004/images/image-2.png)
 
-Here, is the resource map:
+**Here, is the resource map:**
 
 ![alt text](https://github.com/Konami33/poridhi.io.intern/raw/main/AWS%20networking%20lab/lab%2004/images/image-4.png)
 
 ### Step 2: Launce EC2 instances
 
-#### Bastion Server
+1. **Launch a Bastion Host in the Public Subnet**
+   - **AMI:** Ubuntu Server 24.04 LTS
+   - **Instance Type:** t2.micro (or as needed)
+   - **Network:** Select the VPC and public subnet created earlier
+   - **Security Group:** Create a security group (e.g., *Bastion-scg*).
+   - **Key-pair:** Create a key pair and save it securely.
 
-1. Launch an EC2 instance named `Bastion server` in the `public-subnet`.
-2. Select `Ubuntu Server 24.04 LTS (HVM), SSD Volume Type` as the AMI.
-3. Create a key pair named `bastion.pem` download it locally.
-4. Add a security group named `bastion-scg` with inbound rules:
-    - SSH from anywhere or from your IP.
 
-#### Private Instance
+2. **Launch a private EC2 Instance in the Private Subnet**
+   - **AMI:** Ubuntu Server 24.04 LTS
+   - **Instance Type:** t2.micro (or as needed)
+   - **Network:** Select the VPC and private subnet created earlier
+   - **Security Group:** Add a security group named `Private-Instance`.
+   - **Key-pair:** Select the key pair created earlier.
 
-1. Launch an EC2 instance named `Private Instance` in the `private-subnet`.
-2. Select `Ubuntu Server 24.04 LTS (HVM), SSD Volume Type` as the AMI.
-3. Select key pair named `bastion.pem`.
-4. Add a security group named `Private-Instance` with inbound rules:
-    - Allow inbound SSH (port 22) from the bastion server's security group.
+
+### Step 3: Configure the security group
+
+1. Configure the public instance security group `Bastion-scg` that allows SSH access (port 22) from your IP.
+
+2. Configure the private instance security group `Private-Instance` to allow SSH access from the `Bastion-scg` security group. Means you can access it from only the bastion server.
 
 ![alt text](https://github.com/Konami33/poridhi.io.intern/raw/main/AWS%20networking%20lab/lab%2004/images/image-6.png)
 
 ### Step 3: Configure the Bastion Server
 
 1. **Connect to the Bastion Server**:
-   - Use SSH to connect to the bastion server using the public IP:
+   - Use SSH to connect to the **bastion server** using the public IP:
+
      ```bash
      ssh -i /path/to/key.pem ubuntu@<bastion-public-ip>
      ```
      ![alt text](https://github.com/Konami33/poridhi.io.intern/raw/main/AWS%20networking%20lab/lab%2004/images/image-7.png)
-2. **Copy the pem file into the Bastion Server**:
+
+2. **Copy the pem file from your local machine into the Bastion Server**:
+
     - Use SCP to copy the private key file to the bastion server:
+
     ```bash
     scp -i /path/to/key.pem /path/to/key.pem ubuntu@<bastion-public-ip>
     ```
@@ -86,11 +116,13 @@ Here, is the resource map:
 
 1. **SSH from the Bastion Server to a Private Instance**:
    - From the bastion server, use SSH to connect to a private instance:
+
      ```bash
      ssh -i ~/.ssh/key.pem ubuntu@<private-instance-private-ip>
      ```
 
     ![alt text](https://github.com/Konami33/poridhi.io.intern/raw/main/AWS%20networking%20lab/lab%2004/images/ssh.png)
+    
     So, we have successfully created a SSH connection, and ssh into the private instance.
 
 ## Conclusion

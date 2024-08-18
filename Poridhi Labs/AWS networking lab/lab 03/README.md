@@ -1,4 +1,4 @@
-# Configuring a Basic VPC in AWS
+# Creating and Configuring a Secure AWS VPC with Public and Private Subnets
 
 This document guides you through the process of creating a Virtual Private Cloud (VPC) and associated resources within AWS. A VPC allows you to launch AWS resources into a virtual network that you have complete control over. By the end of this guide, you will have created a VPC with public and private subnets, route tables, an internet gateway, security groups, and EC2 instances. Additionally, you'll learn how to SSH into the public EC2 instance from your local machine and from the public EC2 instance to the private EC2 instance.
 
