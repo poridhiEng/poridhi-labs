@@ -2,7 +2,7 @@
 
 VPC allows users to create a private network within AWS, isolating and protecting resources. Within this VPC, a crucial security component is the bastion server. This server acts as a gateway, enabling secure access to resources in the private VPC environment from the internet. In this lab, we will deploy a bastion server in a public subnet.
 
-![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2002/images/2.png)
+![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2002/images/2.png?raw=true)
 
 ## What is a Bastion Server?
 
@@ -28,7 +28,7 @@ A Virtual Private Cloud (VPC) provides an isolated network environment in AWS, e
    - Log into the AWS Management Console.
    - In the Services menu, select "VPC" or Search `VPC`.
 
-   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2002/images/1.png)
+   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2002/images/1.png?raw=true)
 
 2. **Create the VPC:**
    - In the left-hand menu, select "Your VPCs".
@@ -40,7 +40,7 @@ A Virtual Private Cloud (VPC) provides an isolated network environment in AWS, e
      - **Tenancy:** Default Tenancy
    - Click "Create VPC".
 
-   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/vpc.png)
+   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/vpc.png?raw=true)
 
 ### 2. Create Subnets
 
@@ -57,7 +57,7 @@ Subnets allow you to partition your VPC's IP address range into smaller segments
    - **IPv4 CIDR block:** `10.0.1.0/24`
    - Click "Create Subnet".
 
-   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/2.png)
+   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/2.png?raw=true)
 
 ### 3. Create an Internet Gateway
 
@@ -71,7 +71,7 @@ An Internet Gateway allows instances in the VPC to communicate with the internet
    - **Name tag:** `my-IGW`
    - Click "Create internet gateway".
 
-   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/4.png)
+   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/4.png?raw=true)
 
 3. **Attach the Internet Gateway to the VPC:**
    - Select the newly created internet gateway.
@@ -79,7 +79,7 @@ An Internet Gateway allows instances in the VPC to communicate with the internet
    - Select `my-vpc`.
    - Click "Attach internet gateway".
 
-   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/5.png)
+   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/5.png?raw=true)
 
 ### 4. Create Route Tables
 
@@ -94,31 +94,31 @@ Route tables control the routing of network traffic within your VPC. Public rout
    - **VPC:** Select `my-vpc`.
    - Click "Create route table".
 
-   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/6.png)
+   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/6.png?raw=true)
 
 3. **Add Route to the Internet Gateway:**
    - Select the `public-route-table`.
    - In the "Routes" tab, click "Edit routes".
 
-   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/7.png)
+   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/7.png?raw=true)
 
    - Click "Add route".
    - **Destination:** `0.0.0.0/0`
    - **Target:** Select the internet gateway `my-IGW`.
    - Click "Save changes".
 
-   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/8.png)
+   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/8.png?raw=true)
 
 
 4. **Associate Public Route Table with Public Subnet:**
    - In the "Subnet associations" tab, click "Edit subnet associations".
 
-   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/9.png)
+   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/9.png?raw=true)
 
    - Select `public-subnet`.
    - Click "Save associations".
 
-   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2002/images/3.png)
+   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2002/images/3.png?raw=true)
 
 ### 5. Create Security Group
 
@@ -133,27 +133,27 @@ Security groups act as a virtual firewall for your EC2 instances to control inbo
    - **Description:** `Allow SSH and all outbound traffic`
    - **VPC:** Select `my-vpc`
 
-   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/13.png)
+   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/13.png?raw=true)
 
 3. **Configure Inbound Rules:**
    - In "Inbound rules" section click on `Add rule`>
    - **Type:** `SSH`
    - **Source:** `Anywhere` (0.0.0.0/0)
 
-   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/14.png)
+   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/14.png?raw=true)
 
 4. **Configure Outbound Rules:**
    - In "Outbound rules" section click on `Add rule`>
    - **Type:** `All traffic`
    - **Destination:** `Anywhere` (0.0.0.0/0)
 
-   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/15.png)
+   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/15.png?raw=true)
 
 5. **Verify Resources:**
    - In the left-hand menu, select "VPC".
    - View the resources map of our vpc (`my-vpc`)
 
-   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2002/images/4.png)
+   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2002/images/4.png?raw=true)
 
 ### 6. Launch EC2 Instances
 
@@ -166,7 +166,7 @@ EC2 instances are virtual servers in the cloud, providing scalable computing cap
    - **Application and OS Images (Amazon Machine Image):** Select "Ubuntu Server 24.04 LTS".
    - **Instance Type:** Select `t2.micro`.
 
-   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/17.png)
+   ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/17.png?raw=true)
 
    - **Key pair (login):** Click "Create new key pair". 
      - **Key pair name:** `public-key-pair`
@@ -176,7 +176,7 @@ EC2 instances are virtual servers in the cloud, providing scalable computing cap
 
      *Note : Download and save the key in your desired directroy,we will need it later*
 
-     ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/18.png)
+     ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/18.png?raw=true)
 
    - **Network settings:** Click "Edit".
      - **VPC:** Select `my-vpc`.
@@ -185,7 +185,7 @@ EC2 instances are virtual servers in the cloud, providing scalable computing cap
      - **Security group:** Select `security-group-1`.
    - Click "Launch instance".
 
-    ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/19.png)
+    ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/19.png?raw=true)
 
 ### 7. SSH into the Public EC2 Instance
 
@@ -208,7 +208,7 @@ SSH (Secure Shell) allows you to securely access your EC2 instances. We'll first
      ssh -i "public-key-pair.pem" ubuntu@<ec2-instance-1-public-IP>
      ```
 
-     ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/32.png)
+     ![](https://github.com/Galadon123/poridhi.io.intern/blob/main/AWS%20networking%20lab/lab%2003/images/32.png?raw=true)
 
 
 By following these steps, we created a secure and efficient way to access private instances within an AWS VPC, improving the network's security. This project demonstrates how to use AWS VPC features to implement a bastion server, providing a strong solution for managing access to private resources in the cloud.
