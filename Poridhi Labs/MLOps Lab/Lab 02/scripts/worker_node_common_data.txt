@@ -1,0 +1,40 @@
+#!/bin/bash
+
+cd /home/ubuntu/
+
+# Update the package list and install necessary software properties
+sudo apt-get update
+sudo apt-get install -y software-properties-common
+
+# Add the deadsnakes PPA and install Python 3.9 and related packages
+sudo add-apt-repository -y ppa:deadsnakes/ppa
+sudo apt-get update
+sudo apt-get install -y python3.9 python3.9-venv python3.9-dev
+
+# Create a Python virtual environment and activate it
+python3.9 -m venv ray_env
+source ray_env/bin/activate
+
+# Install Python libraries within the virtual environment
+pip install boto3 pyarrow numpy pandas matplotlib seaborn plotly scikit-learn xgboost -U ipywidgets
+
+# Install jupyter lab
+pip install jupyterlab
+
+# Install Ray and start Ray as the head node
+pip install "ray[default] @ https://s3-us-west-2.amazonaws.com/ray-wheels/latest/ray-3.0.0.dev0-cp39-cp39-manylinux2014_x86_64.whl"
+
+# Install ray server
+pip install "ray[serve]"
+
+# Install py-ubjson
+pip install py-ubjson
+
+# Install modin-ray
+pip install modin[ray]
+
+# Install mlflow
+pip install mlflow
+
+# Install missingno
+pip install missingno
