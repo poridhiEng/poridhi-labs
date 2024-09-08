@@ -3,11 +3,13 @@
 In this lab we will set up an Amazon EKS cluster with AWS Load Balancers (Classic & Network Load Balancers), deploy a Flask application, and test the deployment.
 
 ## **Table of Contents**
-1. **Create an EKS Cluster**
-2. **Create a Node Group Using the AWS Console**
-3. **Deploy a Flask Application on EKS**
-4. **Expose the Flask Application Using AWS Load Balancers**
-5. **Test the Deployment**
+1. **Prerequisites**
+2. **Create an EKS Cluster**
+3. **Create NodeGroup Using `eksctl`**
+4. **Update kubeconfig to connect to your cluster**
+5. **Deploy a Flask Application on EKS**
+6. **Expose the Flask Application Using AWS Load Balancers (Classic Load Balancer)**
+7. **Test the Deployment**
 
 ## Overall Architecture
 
@@ -109,248 +111,255 @@ A Classic Load Balancer (CLB) is a type of load balancer provided by Amazon Web 
 
 # Step by step guide
 
-## Step 01: Create an EKS Cluster Without a Node Group
+## Step 01: Create an EKS Cluster
 
-1. **Create an EKS Cluster Without a Node Group:**
+**1. Create an EKS Cluster Without a Node Group:**
 
-   Execute the following command to create an EKS cluster:
-   ```bash
-   eksctl create cluster \
-   --name demo-cluster-1 \
-   --version 1.27 \
-   --region ap-southeast-1 \
-   --zones ap-southeast-1a,ap-southeast-1b \
-   --without-nodegroup
-   ```
+Execute the following command to create an EKS cluster:
 
-   - **Name**: Specifies the name of your EKS cluster (`demo-cluster-1`).
-   - **Version**: Kubernetes version to use (`1.27`).
-   - **Region**: AWS region (`ap-southeast-1`).
-   - **Zones**: Availability zones to be used (`ap-southeast-1a`, `ap-southeast-1b`).
-   - **Without Node Group**: Creates the cluster without any associated node groups.
+```bash
+eksctl create cluster \
+--name demo-cluster-1 \
+--version 1.27 \
+--region ap-southeast-1 \
+--zones ap-southeast-1a,ap-southeast-1b \
+--without-nodegroup
+```
 
-   ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-3.png)
+**Explanation:**
 
-2. **Monitor the Creation:**
+- **Name**: Specifies the name of your EKS cluster (`demo-cluster-1`).
+- **Version**: Kubernetes version to use (`1.27`).
+- **Region**: AWS region (`ap-southeast-1`).
+- **Zones**: Availability zones to be used (`ap-southeast-1a`, `ap-southeast-1b`).
+- **Without Node Group**: Creates the cluster without any associated node groups.
 
-   - The command will initiate the creation of the necessary VPC components, such as subnets, route tables, and NAT gateways, along with the EKS control plane. It may take a few minutes `(8-10 minutes)` to complete.
-   - If the creation is successful, you will see messages indicating that the cluster has been successfully created.
+  ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-3.png)
 
-   ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-4.png)
+**2. Monitor the Creation:**
 
-   - Go to the AWS management console, check out the created resources
+- The command will initiate the creation of the necessary VPC components, such as subnets, route tables, and NAT gateways, along with the EKS control plane. It may take a few minutes `(8-10 minutes)` to complete.
 
-   ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-5.png)
+- If the creation is successful, you will see messages indicating that the cluster has been successfully created.
 
-   - Go to `EKS > Clusters` and check the created cluster
+  ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-4.png)
 
-   ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-6.png)
+- Go to the AWS management console, check out the created resources
 
+  ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-5.png)
 
+- Go to `EKS > Clusters` and check the created cluster
 
-## Step 02: Create a Node Group Using the AWS Console
-
-1. **Navigate to the Amazon EKS Console:**
-
-   - Open the Amazon EKS Console and select your cluster (`demo-cluster-1`).
-
-2. **Add a Node Group:**
-
-   - In the menu, click on the **compute** and then **Add Node Group**.
-
-   ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-7.png)
-
-3. **Configure the Node Group:**
-
-   - **Name**: Give your node group a name (e.g., `my-nodegroup`).
-   - **Node IAM role**: Create an IAM role with these policies:
-
-      - `AmazonEKSWorkerNodePolicy`
-      - `AmazonEC2ContainerRegistryReadOnly`
-      - `AmazonEKS_CNI_Policy`
-      - `AmazonSSMManagedInstanceCore`
-
-    ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-18.png)
-
-   - **Subnets**: Choose the subnets created by `eksctl`. Here, we will create the nodegroup in the private subnet. Thats why we have to select only the private subnets.
-
-   ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-19.png)
-
-   - **AMI type:** `Amazon Linux 2(al2_x86_64)`
-
-   - **Instance type**: Choose an instance type (e.g., `t3.medium`). according to your need.
-
-   ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-20.png)
-
-   - **Scaling configuration:** Set the desired, minimum, and maximum number of nodes.
-
-   ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-21.png)
-
-4. **Launch the Node Group:**
-   - Click **Create** to launch the node group. This will start the creation of the EC2 instances that will act as worker nodes for your EKS cluster.
-
-5. **Wait for Node Group Creation:**
-   - Once created, the node group will automatically join the cluster. You can verify this by checking the Nodes section in the EKS Console
-
-   ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-10.png)
+  ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-6.png)
 
 
-## Step 04: Update kubeconfig to connect to your cluster
+
+## Step 02: Create NodeGroup
+
+After creating the EKS cluster, you can add a node group that will consist of EC2 instances acting as worker nodes. We will follow the following step in our lab.
+
+**1. Use the command below to create NodeGroup**
+
+```sh
+eksctl create nodegroup \
+    --cluster=demo-cluster-1 \
+    --name=eks-node-group \
+    --region=ap-southeast-1 \
+    --node-type=t3.medium \
+    --managed \
+    --nodes=2 \
+    --nodes-min=1 \
+    --nodes-max=2 \
+    --node-private-networking
+```
+
+### Command Breakdown:
+1. **`eksctl create nodegroup`**: This creates a new node group (a collection of EC2 instances) within an existing EKS cluster(`demo-cluster-1`).
+
+2. **`--name=eks-node-group`**: This sets the name of the node group (`eks-node-group`).
+
+3. **`--region=ap-southeast-1`**: This specifies the AWS region (`ap-southeast-1`, Southeast Asia Pacific, Singapore) where both the EKS cluster and the node group will be created.
+
+4. **`--node-type=t3.medium`**: This sets the instance type (`t3.medium`) for the EC2 instances that will be part of this node group.
+
+5. **`--managed`**: This flag specifies that the node group is a "Managed Node Group." Managed node groups are automatically maintained by AWS;
+
+6. **`--nodes=2`**: This specifies that the node group will be created with 2 EC2 instances (nodes) initially.
+
+7. **`--nodes-min=1`**: This sets the minimum number of nodes to 1, meaning the node group will always maintain at least one running node, even if the cluster scales down.
+
+8. **`--nodes-max=2`**: This sets the maximum number of nodes to 2, ensuring that the cluster cannot scale beyond 2 nodes automatically.
+
+9. **`--node-private-networking`**: This ensures that the EC2 instances (nodes) in the node group will only have private IP addresses, meaning they will not be accessible directly from the internet. Instead, they will only communicate within the VPC using private IP addresses, which enhances security. If external communication is needed, it will occur through a `NAT` gateway or other networking solutions.
+
+**Check the command status:**
+
+![alt text](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-23.png)
+
+**2. Wait for Completion**
+
+It might take a few minutes for the Node Group to be fully created. You can monitor the progress in the EKS Console. The status of the Node Group will be updated to 'active' once it is fully created.
+
+![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-10.png)
+
+
+## Step 03: Update kubeconfig to connect to your cluster
 
 Open terminal on your local machine and do the following:
 
-- Run the following command to update your kubeconfig file to connect to your cluster:
+- **Run the following command to update your kubeconfig file to connect to your cluster:**
 
   ```sh
   aws eks --region ap-southeast-1 update-kubeconfig --name demo-cluster-1
   ```
   ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-16.png)
 
-- Confirm the connection:
+- **Confirm the connection:**
 
   ```sh
   kubectl get nodes
   ```
   ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-17.png)
 
-  You should see the worker nodes in a "Ready" state.
+  You should see the worker nodes are in a "Ready" state.
   
 
-## Step 03: Deploy a Flask Application on EKS
+## Step 04: Deploy a Flask Application on EKS
 
-1. Create a simple Flask application and save it as `app.py`:
+**1. Create a simple Flask application and save it as `app.py`:**
 
-    ```python
-    from flask import Flask
+```python
+from flask import Flask
 
-    app = Flask(__name__)
+app = Flask(__name__)
 
-    @app.route('/')
-    def hello():
-        return "Hello, World! This is a Flask application running on EKS."
+@app.route('/')
+def hello():
+    return "Hello, World! This is a Flask application running on EKS."
 
-    if __name__ == '__main__':
-        app.run(host='0.0.0.0', port=5001)
-    ```
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5001)
+```
 
-2. Create a `Dockerfile` to containerize the Flask app:
+**2. Create a `Dockerfile` to containerize the Flask app:**
 
-    ```Dockerfile
-    # Use the official Python image.
-    FROM python:3.9-slim
+```Dockerfile
+# Use the official Python image.
+FROM python:3.9-slim
 
-    # Set the working directory in the container
-    WORKDIR /app
+# Set the working directory in the container
+WORKDIR /app
 
-    # Copy the current directory contents into the container at /app
-    COPY . /app
+# Copy the current directory contents into the container at /app
+COPY . /app
 
-    # Install any needed packages specified in requirements.txt
-    RUN pip install flask
+# Install any needed packages specified in requirements.txt
+RUN pip install flask
 
-    # Make port 5001 available to the world outside this container
-    EXPOSE 5001
+# Make port 5001 available to the world outside this container
+EXPOSE 5001
 
-    # Run app.py when the container launches
-    CMD ["python", "app.py", "--port=5001"]
-    ```
+# Run app.py when the container launches
+CMD ["python", "app.py", "--port=5001"]
+```
 
-3. Create a `Makefile` to build, tag and push the docker image
+**3. Create a `Makefile` to build, tag and push the docker image**
 
-    ```Makefile
-    # Variables
-    DOCKER_USERNAME = <USERNAME>
-    IMAGE_NAME = flask-app
-    TAG = latest
+```Makefile
+# Variables
+DOCKER_USERNAME = <USERNAME>
+IMAGE_NAME = flask-app
+TAG = latest
 
-    # Build the Docker image
-    build:
-      docker build -t $(IMAGE_NAME) .
+# Build the Docker image
+build:
+  docker build -t $(IMAGE_NAME) .
 
-    # Tag the Docker image
-    tag:
-      docker tag $(IMAGE_NAME):$(TAG) $(DOCKER_USERNAME)/$(IMAGE_NAME):$(TAG)
+# Tag the Docker image
+tag:
+  docker tag $(IMAGE_NAME):$(TAG) $(DOCKER_USERNAME)/$(IMAGE_NAME):$(TAG)
 
-    # Push the Docker image to Docker Hub (or your preferred registry)
-    push:
-      docker push $(DOCKER_USERNAME)/$(IMAGE_NAME):$(TAG)
+# Push the Docker image to Docker Hub (or your preferred registry)
+push:
+  docker push $(DOCKER_USERNAME)/$(IMAGE_NAME):$(TAG)
 
-    # Combined command to build, tag, and push the Docker image
-    all: build tag push
+# Combined command to build, tag, and push the Docker image
+all: build tag push
 
-    # Clean up local images (optional)
-    clean:
-      docker rmi $(IMAGE_NAME):$(TAG) $(DOCKER_USERNAME)/$(IMAGE_NAME):$(TAG)
+# Clean up local images (optional)
+clean:
+  docker rmi $(IMAGE_NAME):$(TAG) $(DOCKER_USERNAME)/$(IMAGE_NAME):$(TAG)
 
-    .PHONY: build tag push all clean
-    ```
+.PHONY: build tag push all clean
+```
+>**NOTE:** Make sure to login into `Dockerhub`
 
-    **NOTE:** Make sure to login into `Dockerhub`
+**4. Run the Makefile command**
 
-4. Run the Makefile command
+```sh
+make all
+```
 
-    ```sh
-    make all
-    ```
+![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-12.png) 
 
-    ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-12.png) 
+**5. Create a kubernetes deployment YAML file (`flask-deployment.yaml`):**
 
-5. Create a kubernetes deployment YAML file (`flask-deployment.yaml`):
-    ```yaml
-    apiVersion: apps/v1
-    kind: Deployment
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask-app
+  template:
     metadata:
-      name: flask-deployment
+      labels:
+        app: flask-app
     spec:
-      replicas: 2
-      selector:
-        matchLabels:
-          app: flask-app
-      template:
-        metadata:
-          labels:
-            app: flask-app
-        spec:
-          containers:
-          - name: flask-container
-            image: konami98/flask-app:latest
-            ports:
-            - containerPort: 5001
-    ```
+      containers:
+      - name: flask-container
+        image: konami98/flask-app:latest
+        ports:
+        - containerPort: 5001
+```
 
-    **NOTE:** Update the *image* according to your docker image that you created earlier. You can also use this image as well.
+> **NOTE:** Update the *image* according to your docker image that you created earlier. You can also use this image as well.
 
-6. Deploy the application:
+**6. Deploy the application:**
 
-    ```bash
-    kubectl apply -f flask-deployment.yaml
-    ```
-    ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-14.png)
+```bash
+kubectl apply -f flask-deployment.yaml
+```
+![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-14.png)
 
-## Step 04: Expose the Flask Application Using AWS Load Balancers (Classic Load Balancer)
+## Step 05: Expose the Flask Application Using AWS Load Balancers (Classic Load Balancer)
 
 **1. Create a Service with Classic Load Balancer:**
-   - Create a service YAML file (`flask-service-classic.yaml`):
-     ```yaml
-     apiVersion: v1
-     kind: Service
-     metadata:
-       name: flask-service-classic
-       annotations:
-         service.beta.kubernetes.io/aws-load-balancer-type: "classic"
-     spec:
-       type: LoadBalancer
-       ports:
-       - port: 80
-         targetPort: 5001
-       selector:
-         app: flask-app
-     ```
 
-   - Deploy the service:
-     ```bash
-     kubectl apply -f flask-service-classic.yaml
-     ```
+- Create a service YAML file (`flask-service-classic.yaml`):
+  ```yaml
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: flask-service-classic
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-type: "classic"
+  spec:
+    type: LoadBalancer
+    ports:
+    - port: 80
+      targetPort: 5001
+    selector:
+      app: flask-app
+  ```
+
+- Deploy the service:
+  ```bash
+  kubectl apply -f flask-service-classic.yaml
+  ```
 
 **2. Check the created AWS classic load-balancer service**
 
@@ -358,29 +367,30 @@ Open terminal on your local machine and do the following:
 
   ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-15.png)
 
-## Step 05: Test the Deployment
+## Step 06: Test the Deployment
 
-1. **Access the Flask Application:**
-    - Run the following command to get the external IP of the load balancer:
+**1. Access the Flask Application:**
+- Run the following command to get the external IP of the load balancer:
 
-      ```sh
-      kubectl get svc
-      ```
-      ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-13.png)
+  ```sh
+  kubectl get svc
+  ```
+  ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-13.png)
 
-    - The EXTERNAL-IP field will show the DNS name of the Classic Load Balancer.
+- The `EXTERNAL-IP` field will show the `DNS name` of the Classic Load Balancer.
 
-   - Copy and Paste the URL into your web browser to access the Flask application.
+- Copy and Paste the URL into your web browser to access the Flask application.
 
-      ```sh
-      http://a535c28b241a042849b91065c6a53545-64277239.ap-southeast-1.elb.amazonaws.com/
-      ```
-   - You should see the flask application.
+  ```sh
+  http://<EXTERNAL-IP>
+  ```
+- You should see the flask application.
 
-      ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-9.png)
+  ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-9.png)
 
-2. **Verify Load Balancer Functionality:**
-   - Test the load balancing by refreshing the page multiple times. The request should be distributed across the Flask application replicas.
+**2. Verify Load Balancer Functionality:**
+
+Test the load balancing by refreshing the page multiple times. The request should be distributed across the Flask application replicas.
 
 ---
 
