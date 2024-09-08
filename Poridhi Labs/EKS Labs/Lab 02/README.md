@@ -139,7 +139,8 @@ eksctl create nodegroup \
   --managed \
   --nodes=<desired-node-count> \
   --nodes-min=<minimum-node-count> \
-  --nodes-max=<maximum-node-count>
+  --nodes-max=<maximum-node-count> \
+  --node-private-networking
 ```
 
 Replace the following placeholders with your specific values:
@@ -151,6 +152,7 @@ Replace the following placeholders with your specific values:
 5. **`<desired-node-count>`**: Number of nodes to start with in the node group.
 6. **`<minimum-node-count>`**: Minimum number of nodes to maintain in the node group (used for auto-scaling).
 7. **`<maximum-node-count>`**: Maximum number of nodes that can be scaled up in the node group (used for auto-scaling).
+8. **`<node-private-networking>`**: Creates a managed node group with private networking, where the nodes are placed in private subnets and do not receive public IP addresses.
 
 ### Example:
 
@@ -163,7 +165,8 @@ eksctl create nodegroup \
   --managed \
   --nodes=2 \
   --nodes-min=1 \
-  --nodes-max=2
+  --nodes-max=2 \
+  --node-private-networking
 ```
 
 This command creates a managed node group named `poridhi-nodes` in the `poridhi-cluster` Amazon EKS cluster, located in the `ap-southeast-1` AWS region. The node group uses `t2.small` EC2 instances, with a desired number of 2 nodes. The node group will automatically scale between a minimum of 1 node and a maximum of 2 nodes based on demand.
