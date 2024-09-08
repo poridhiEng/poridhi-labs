@@ -11,7 +11,7 @@ In this lab, we will set up an Amazon EKS (Elastic Kubernetes Service) cluster a
 
 ## Overall Architecture
 
-![](https://raw.githubusercontent.com/Minhaz00/AWS-EKS-Labs/c40c2685db78b814e27c766b695ae358a5a97313/EKS%20Labs/Lab%2005/images/nlb.svg)
+![](https://raw.githubusercontent.com/Minhaz00/AWS-EKS-Labs/e1257af4b4721cf4e98831a1f8ee693e44a86cc2/EKS%20Labs/Lab%2005/images/nlb.svg)
 
 The Network Load Balancer (NLB) distributes TCP/UDP traffic across multiple targets, such as Apache servers in an EKS cluster, ensuring high availability and low latency. It operates at Layer 4, providing static IP addresses, automatic scaling, and health checks to route traffic only to healthy instances. Ideal for high-performance applications needing fixed IPs and secure private connectivity, the NLB helps maintain consistent traffic distribution and scalability.
 
@@ -151,8 +151,11 @@ After creating the EKS cluster, you can add a node group that will consist of EC
     --managed \
     --nodes=2 \
     --nodes-min=1 \
-    --nodes-max=2
+    --nodes-max=2 \
+    --node-private-networking
     ```
+
+    ![](./images/5.png)
 
     This command creates a managed node group named `eks-node-group` in the `demo-cluster-1` Amazon EKS cluster, located in the `ap-southeast-1` AWS region. The node group uses `t3.medium` EC2 instances, with a desired number of 2 nodes. The node group will automatically scale between a minimum of 1 node and a maximum of 2 nodes based on demand.
 
