@@ -155,7 +155,7 @@ After creating the EKS cluster, you can add a node group that will consist of EC
     --node-private-networking
     ```
 
-    ![](./images/5.png)
+    ![](https://github.com/Minhaz00/AWS-EKS-Labs/blob/main/EKS%20Labs/Lab%2005/images/5.png?raw=true)
 
     This command creates a managed node group named `eks-node-group` in the `demo-cluster-1` Amazon EKS cluster, located in the `ap-southeast-1` AWS region. The node group uses `t3.medium` EC2 instances, with a desired number of 2 nodes. The node group will automatically scale between a minimum of 1 node and a maximum of 2 nodes based on demand.
 
