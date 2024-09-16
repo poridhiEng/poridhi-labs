@@ -345,3 +345,10 @@ Open a terminal on your local machine and do the following:
    ```sh
    eksctl delete cluster --name demo-cluster-1 --region ap-southeast-1
    ```
+
+
+
+
+
+
+   

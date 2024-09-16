@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-with-toleration
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app-1
+  template:
+    metadata:
+      labels:
+        app: my-app-1
+    spec:
+      containers:
+      - name: pod-container-1
+        image: nginx
+      tolerations:
+      - key: "app"
+        operator: "Equal"
+        value: "res-intensive"
+        effect: "NoSchedule"

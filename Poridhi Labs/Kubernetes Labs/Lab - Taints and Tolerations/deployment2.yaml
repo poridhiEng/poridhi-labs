@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-without-toleration
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app-2
+  template:
+    metadata:
+      labels:
+        app: my-app-2
+    spec:
+      containers:
+      - name: pod-container-2
+        image: nginx
