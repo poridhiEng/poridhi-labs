@@ -11,7 +11,7 @@ In this lab, we will set up an Amazon EKS (Elastic Kubernetes Service) cluster a
 
 ## Overall Architecture
 
-![](https://raw.githubusercontent.com/Minhaz00/AWS-EKS-Labs/c40c2685db78b814e27c766b695ae358a5a97313/EKS%20Labs/Lab%2005/images/nlb.svg)
+![](https://raw.githubusercontent.com/Minhaz00/AWS-EKS-Labs/e1257af4b4721cf4e98831a1f8ee693e44a86cc2/EKS%20Labs/Lab%2005/images/nlb.svg)
 
 The Network Load Balancer (NLB) distributes TCP/UDP traffic across multiple targets, such as Apache servers in an EKS cluster, ensuring high availability and low latency. It operates at Layer 4, providing static IP addresses, automatic scaling, and health checks to route traffic only to healthy instances. Ideal for high-performance applications needing fixed IPs and secure private connectivity, the NLB helps maintain consistent traffic distribution and scalability.
 
@@ -136,48 +136,28 @@ The Network Load Balancer (NLB) distributes TCP/UDP traffic across multiple targ
 
    ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-6.png)
 
-## Step 02: Create a Node Group Using the AWS Console
+## Step 2: Create NodeGroup Using `eksctl`
 
-1. **Navigate to the Amazon EKS Console:**
+After creating the EKS cluster, you can add a node group that will consist of EC2 instances acting as worker nodes. We will follow the following step in our lab.
 
-   - Open the Amazon EKS Console and select your cluster (`demo-cluster-1`).
+1. Use the command below to create NodeGroup
 
-2. **Add a Node Group:**
+    ```bash
+    eksctl create nodegroup \
+    --cluster=demo-cluster-1 \
+    --name=eks-node-group \
+    --region=ap-southeast-1 \
+    --node-type=t3.medium \
+    --managed \
+    --nodes=2 \
+    --nodes-min=1 \
+    --nodes-max=2 \
+    --node-private-networking
+    ```
 
-   - In the menu, click on **compute** and then **Add Node Group**.
+    ![](https://github.com/Minhaz00/AWS-EKS-Labs/blob/main/EKS%20Labs/Lab%2005/images/5.png?raw=true)
 
-   ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-7.png)
-
-3. **Configure the Node Group:**
-
-   - **Name**: Give your node group a name (e.g., `my-nodegroup`).
-   - **Node IAM role**: Create an IAM role with:
-
-      - `AmazonEKSWorkerNodePolicy`
-      - `AmazonEC2ContainerRegistryReadOnly`
-      - `AmazonEKS_CNI_Policy`
-      - `AmazonSSMManagedInstanceCore`
-    
-      attached.
-
-    ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-18.png)
-
-   - **Subnets**: Choose the subnets created by `eksctl`. Here, we will create the node group in the private subnet. Hence, select only the private subnets.
-
-   ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-19.png)
-
-   - **AMI type:** `Amazon Linux 2(al2_x86_64)`
-
-   - **Instance type**: Choose an instance type (e.g., `t3.medium`) according to your need.
-
-   ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-20.png)
-
-   - **Scaling configuration:** Set the desired, minimum, and maximum number of nodes.
-
-   ![](https://github.com/Konami33/AWS-EKS-Labs/raw/main/EKS%20Labs/Lab%2004/images/image-21.png)
-
-4. **Launch the Node Group:**
-   - Click **Create** to launch the node group. This will start the creation of the EC2 instances that will act as worker nodes for your EKS cluster.
+    This command creates a managed node group named `eks-node-group` in the `demo-cluster-1` Amazon EKS cluster, located in the `ap-southeast-1` AWS region. The node group uses `t3.medium` EC2 instances, with a desired number of 2 nodes. The node group will automatically scale between a minimum of 1 node and a maximum of 2 nodes based on demand.
 
 5. **Wait for Node Group Creation:**
    - Once created, the node group will automatically join the cluster. You can verify this by checking the Nodes section in the EKS Console
