@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: my-db
+spec:
+    containers:
+    - name: mysql-container
+      image: mysql:latest
+      env:
+      - name: MYSQL_ROOT_PASSWORD
+        value: abc123
+      - name: MYSQL_USER
+        value: user1
+      - name: MYSQL_PASSWORD
+        value: user1@mydb
