@@ -148,7 +148,7 @@ Create two ECR repositories for the React and Express apps.
 
 - Copy the repository URIs for both.
 
-    ![alt text](./images/image.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Deploy%20React-NodeJS%20app%20in%20ECR/images/image.png?raw=true)
 
 ### 2. **Authenticate Docker to Amazon ECR**
 
@@ -207,9 +207,9 @@ docker push 381492022050.dkr.ecr.ap-southeast-1.amazonaws.com/express-app-ecr:la
 
 So, our images have been pushed to the ECR repositories. Let's look at them in AWS console.
 
-![alt text](./images/image-6.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Deploy%20React-NodeJS%20app%20in%20ECR/images/image-6.png?raw=true)
 
-![alt text](./images/image-7.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Deploy%20React-NodeJS%20app%20in%20ECR/images/image-7.png?raw=true)
 
 
 ## Step 4: Pull and Run Docker Images Locally from ECR
@@ -237,7 +237,7 @@ aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS
 ```
 Expected result:
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Deploy%20React-NodeJS%20app%20in%20ECR/images/image-1.png?raw=true)
 
 ### 2. **Pull Docker Images from ECR**
 
@@ -251,7 +251,7 @@ docker pull 381492022050.dkr.ecr.ap-southeast-1.amazonaws.com/react-app-ecr:late
 
 Expected output:
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Deploy%20React-NodeJS%20app%20in%20ECR/images/image-2.png?raw=true)
 
 For Express:
 
@@ -261,7 +261,7 @@ docker pull 381492022050.dkr.ecr.ap-southeast-1.amazonaws.com/express-app-ecr:la
 
 Expected output:
 
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Deploy%20React-NodeJS%20app%20in%20ECR/images/image-3.png?raw=true)
 
 
 ### 3. **Run Docker Containers Locally**
@@ -284,17 +284,17 @@ Now, you can access the React app at `http://localhost:8080`, which will fetch t
 
 #### NodeJS App
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Deploy%20React-NodeJS%20app%20in%20ECR/images/image-4.png?raw=true)
 
 #### React App
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Deploy%20React-NodeJS%20app%20in%20ECR/images/image-5.png?raw=true)
 
 
 
 ## Step 5: Automate with Makefile
 
-![alt text](./images/image-8.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Deploy%20React-NodeJS%20app%20in%20ECR/images/image-8.png?raw=true)
 
 Let's automate the steps of build, tag and push images of both of our app using `Makefile`. Go to project directory `my-app`. Then create a file named `Makefile`.
 

@@ -2,11 +2,13 @@
 
 This guide provides step-by-step instructions on how to run a full-stack React and Node.js application using Docker Compose. The app consists of a React frontend, a Node.js backend, and a MySQL database.
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Deploy%20App%20Using%20Docker%20Compose//images/image-5.png?raw=true)
 
 Docker Compose simplifies the process of setting up multi-container applications by defining services, networks, and volumes in a single YAML file.
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Deploy%20App%20Using%20Docker%20Compose//images/image-4.png?raw=true)
+
+https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Deploy%20App%20Using%20Docker%20Compose/images/image.png?raw=true
 
 ### **Introduction**
 
@@ -373,7 +375,7 @@ We are done with the React app. Now, let's create the server using Node.js
 
 In this step, we'll configure the Node.js backend for our full-stack application. We'll set up a RESTful API using Express, connect to a MySQL database using Sequelize, and manage user data. The backend will provide endpoints for creating, reading, updating, and deleting users.
 
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Deploy%20App%20Using%20Docker%20Compose//images/image-3.png?raw=true)
 
 ### **Project Structure**
 
@@ -776,15 +778,15 @@ Docker Compose will pull the necessary images, build the custom images for the f
 
 Open `localhost:3000` to see the frontend of the application. Try to  add/delete/update some users. 
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Deploy%20App%20Using%20Docker%20Compose//images/image.png?raw=true)
 
 Open `localhost:5000` to see response from the express server at `/` route:
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Deploy%20App%20Using%20Docker%20Compose//images/image-1.png?raw=true)
 
 Open `localhost:5000/users` to see all the users we've created:
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Deploy%20App%20Using%20Docker%20Compose//images/image-2.png?raw=true)
 
 
 ## **Conclusion**
