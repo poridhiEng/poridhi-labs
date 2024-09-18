@@ -6,7 +6,6 @@ After we create our app, we will create a EKS Cluster in AWS.
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Deploy%20App%20in%20EKS/images/image.png?raw=true)
 
-https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Deploy%20App%20in%20EKS/images/image.png?raw=true
 
 Then we will deploy our app in the cluster by applying the manifests. 
 
