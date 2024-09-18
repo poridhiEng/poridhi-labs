@@ -2,6 +2,8 @@
 
 This is a step-by-step guide to create a Node.js application that connects to a MySQL container. This guide includes installing necessary packages, setting up the Node.js app, and connecting it to the MySQL database.
 
+![](https://github.com/Minhaz00/NodeJS-Tasks/blob/main/2.%20Connect%20NodeJS%20App%20with%20MySQL/images/image-6.png?raw=true)
+
 ## Prerequisites
 - Docker installed
 - Node.js and npm installed
