@@ -1,0 +1,9 @@
+{
+    "name": "pulumijs-for-infra",
+    "main": "index.js",
+    "dependencies": {
+        "@pulumi/aws": "^6.42.1",
+        "@pulumi/awsx": "^2.0.2",
+        "@pulumi/pulumi": "^3.0.0"
+    }
+}

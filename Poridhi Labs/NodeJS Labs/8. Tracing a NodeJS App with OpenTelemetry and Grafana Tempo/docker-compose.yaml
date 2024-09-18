@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: my_db
+      MYSQL_USER: my_user
+      MYSQL_PASSWORD: my_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  redis:
+    image: redis/redis-stack:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+    volumes:
+      - redis_data:/data
+
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib
+    container_name: otel-collector
+    ports:
+      - "4317:4317"
+      - "55682:55681"
+    volumes:
+      - ./otel-collector-config.yml:/etc/otel-collector-config.yml
+    command:
+      --config etc/otel-collector-config.yml
+
+
+  tempo:
+    image: grafana/tempo:latest
+    container_name: tempo
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./tempo.yaml:/etc/tempo.yaml
+    command:
+      -config.file=/etc/tempo.yaml
+
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - tempo
+
+
+volumes:
+  mysql_data:
+  redis_data:

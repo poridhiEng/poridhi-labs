@@ -1,0 +1,16 @@
+{
+  "name": "2",
+  "version": "1.0.0",
+  "description": "Creating a Flask application that connects to a MySQL container using the new user involves several steps. Below are the steps to create and run the Flask app, including installing necessary packages, setting up the Flask app, and connecting it to the MySQL database.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "mysql2": "^3.10.1"
+  }
+}

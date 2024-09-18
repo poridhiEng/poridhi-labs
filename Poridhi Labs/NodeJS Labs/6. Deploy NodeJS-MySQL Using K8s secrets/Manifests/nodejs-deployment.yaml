@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodejs-app
+  template:
+    metadata:
+      labels:
+        app: nodejs-app
+    spec:
+      containers:
+      - name: nodejs-app
+        image: minhaz71/nodejs-mysql-app:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: nodejs-app-secrets
+              key: DB_USERNAME
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: nodejs-app-secrets
+              key: DB_PASSWORD
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: nodejs-app-secrets
+              key: DB_NAME
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: nodejs-app-secrets
+              key: DB_HOST
+        - name: PORT
+          value: "5000"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs-service
+spec:
+  type: NodePort
+  selector:
+    app: nodejs-app
+  ports:
+  - port: 5000
+    targetPort: 5000
+    nodePort: 30007

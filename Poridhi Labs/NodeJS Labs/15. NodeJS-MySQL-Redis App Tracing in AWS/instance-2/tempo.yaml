@@ -1,0 +1,27 @@
+server:
+  http_listen_port: 3100
+
+distributor:
+  receivers:
+    otlp:
+      protocols:
+        grpc:
+          endpoint: 0.0.0.0:4317
+
+ingester:
+  trace_idle_period: 30s
+  max_block_bytes: 1048576  # 1MiB in bytes
+
+querier:
+  frontend_worker:
+    frontend_address: 127.0.0.1:9095
+
+storage:
+  trace:
+    backend: local
+    local:
+      path: /tmp/tempo/traces
+
+compactor:
+  compaction:
+    block_retention: 48h

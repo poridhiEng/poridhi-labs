@@ -1,0 +1,170 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+spec:
+  resources:
+    requests:
+      storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-secrets
+type: Opaque
+data:
+  MYSQL_ROOT_PASSWORD: cm9vdA==  # base64 encoded value of 'root'
+  MYSQL_DATABASE: bXlfZGI=  # base64 encoded value of 'my_db'
+  MYSQL_USER: bXl1c2Vy  # base64 encoded value of 'myuser'
+  MYSQL_PASSWORD: bXlwYXNzd29yZA==  # base64 encoded value of 'mypassword'
+
+--- 
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: mysql:5.7
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: MYSQL_DATABASE
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: MYSQL_USER
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: MYSQL_PASSWORD
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: mysql
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: nodejs-app-secrets
+type: Opaque
+data:
+  DB_USERNAME: bXl1c2Vy  # Base64 encoded value of 'myuser'
+  DB_PASSWORD: bXlwYXNzd29yZA==  # Base64 encoded value of 'mypassword'
+  DB_NAME: bXlfZGI=  # Base64 encoded value of 'my_db'
+  DB_HOST: bXlzcWw=  # Base64 encoded value of 'mysql'
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodejs-app
+  template:
+    metadata:
+      labels:
+        app: nodejs-app
+    spec:
+      containers:
+      - name: nodejs-app
+        image: minhaz71/nodejs-mysql-app:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: nodejs-app-secrets
+              key: DB_USERNAME
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: nodejs-app-secrets
+              key: DB_PASSWORD
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: nodejs-app-secrets
+              key: DB_NAME
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: nodejs-app-secrets
+              key: DB_HOST
+        - name: PORT
+          value: "5000"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs-service
+spec:
+  type: NodePort
+  selector:
+    app: nodejs-app
+  ports:
+  - port: 5000
+    targetPort: 5000
+    nodePort: 30007
