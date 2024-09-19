@@ -7,9 +7,7 @@ In this lab, we will guide you through the creation of a basic full-stack applic
 - Both the frontend and backend are `dockerized` using Docker.
 - The `Images` are built and pushed to DockerHub using a `Makefile`.
 
-<!-- ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile//images/image-11.png?raw=true) -->
-
-![](./images/arch2.drawio.svg)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile/images/arch2.drawio.svg)
 
 Overall Project directory:
 
@@ -444,7 +442,7 @@ docker run -p 80:80 your-dockerhub-username/<frontend-image-name>
 
 This will run the frontend on port 80.
 
-![](./images/image-14.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile//images/image-14.png)
 
 ---
 

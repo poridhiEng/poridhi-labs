@@ -8,11 +8,11 @@ In this lab, we will guide you through the creation of a basic full-stack applic
 - The `Images` are built and pushed to DockerHub using a `Makefile`.
 - Github action to automate image build and push procedure.
 
-![](./images/workflow3.drawio.svg)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Github%20Action/images/workflow3.drawio.svg)
 
 ## Full Stack Architecture
 
-![alt text](./images/arch2.drawio.svg)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Github%20Action/images/arch2.drawio.svg)
 
 Overall Project directory:
 
@@ -57,7 +57,7 @@ cd backend
 npm init -y
 ```
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Github%20Action/images/image.png)
 
 This will create a `package.json` file.
 
@@ -68,7 +68,7 @@ Install `express` to handle server routing.
 npm install express cors
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Github%20Action/images/image-1.png)
 
 ### 1.4. Create `index.js` for the Backend
 
@@ -271,7 +271,7 @@ all: frontend backend
 ```
 Modify the `DOCKER_USERNAME`, `Image_Name` variable with your DockerHub username and image name for actual deployment.
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Github%20Action/images/image-2.png)
 
 ## Step 4: Write Github action
 
@@ -367,7 +367,7 @@ jobs:
 - Go to **Settings** > **Secrets** > **Actions** in your GitHub repository.
 - Add `DOCKER_USERNAME` and `DOCKER_PASSWORD` secrets.
 
-![alt text](./images/image-15.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Github%20Action/images/image-15.png)
 
 **2. Push the `.github/workflows/docker-build-push.yml` file to your repository.**
 
@@ -381,11 +381,11 @@ Go to your github repository, and check the status of the two workflow.
 
 **Workflow1:**
 
-![alt text](./images/image-12.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Github%20Action/images/image-12.png)
 
 **Workflow2:**
 
-![alt text](./images/image-13.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Github%20Action/images/image-13.png)
 
 Here, we can see the successfull completion of our workflows. 
 
@@ -401,7 +401,7 @@ Run the backend image:
 docker run -p 4000:4000 your-dockerhub-username/<backend-image-name>
 ```
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Github%20Action/images/image-5.png)
 
 This will run the backend server on port 4000.
 
@@ -414,7 +414,7 @@ docker run -p 80:80 your-dockerhub-username/<frontend-image-name>
 
 This will run the frontend on port 80.
 
-![alt text](./images/image-6.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Github%20Action/images/image-6.png)
 
 ---
 
@@ -426,7 +426,7 @@ Go to this url and check if everything works fine or not!
 http:localhost:80
 ```
 
-![alt text](./images/image-14.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Github%20Action/images/image-14.png)
 
 ## Conclusion
 
