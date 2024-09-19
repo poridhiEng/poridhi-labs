@@ -369,7 +369,7 @@ jobs:
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Github%20Action/images/image-15.png)
 
-**2. Push the `.github/workflows/docker-build-push.yml` file to your repository.**
+**2. Push the `.github/workflows/*` file to your repository.**
 
 - This will enable the automation of building and pushing Docker images based on changes in the `frontend` and `backend` directories.
 
@@ -393,7 +393,7 @@ Here, we can see the successfull completion of our workflows.
 
 Now that we have Docker images for both the frontend and backend in docker hub, let's run the entire application using Docker.
 
-### 4.1. Run the Backend Server
+### Run the Backend Server
 
 Run the backend image:
 
@@ -405,22 +405,14 @@ docker run -p 4000:4000 your-dockerhub-username/<backend-image-name>
 
 This will run the backend server on port 4000.
 
-### 4.2. Run the Frontend
+### Run the Frontend
 Run the frontend image:
 
 ```bash
 docker run -p 80:80 your-dockerhub-username/<frontend-image-name>
 ```
 
-This will run the frontend on port 80.
-
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Github%20Action/images/image-6.png)
-
----
-
-### Frontend UI:
-
-Go to this url and check if everything works fine or not!
+This will run the frontend on port 80. Go to this url and check if everything works fine or not!
 
 ```sh
 http:localhost:80
