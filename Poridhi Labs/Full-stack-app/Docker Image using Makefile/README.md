@@ -7,8 +7,9 @@ In this lab, we will guide you through the creation of a basic full-stack applic
 - Both the frontend and backend are `dockerized` using Docker.
 - The `Images` are built and pushed to DockerHub using a `Makefile`.
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile//images/image-11.png?raw=true)
+<!-- ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile//images/image-11.png?raw=true) -->
 
+![](./images/arch2.drawio.svg)
 
 Overall Project directory:
 
@@ -220,7 +221,7 @@ Let's create a `Makefile` to build and push the Docker images.
 
 ### Create the `Makefile`
 
-In the `my-fullstack-app` directory, create a `Makefile`:
+In the root directory, create a `Makefile`:
 
 ```bash
 touch Makefile
@@ -344,9 +345,9 @@ all: all-frontend all-backend
 ```Makefile
 # Variables
 DOCKER_USERNAME = your-dockerhub-username
-FRONTEND_IMAGE_NAME = React-frontend
+FRONTEND_IMAGE_NAME = react-frontend
 FRONTEND_TAG = latest
-BACKEND_IMAGE_NAME = Nodejs-backend
+BACKEND_IMAGE_NAME = nodejs-backend
 BACKEND_TAG = latest
 
 build-frontend:
@@ -443,7 +444,7 @@ docker run -p 80:80 your-dockerhub-username/<frontend-image-name>
 
 This will run the frontend on port 80.
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile//images/image-6.png?raw=true)
+![](./images/image-14.png)
 
 ---
 
