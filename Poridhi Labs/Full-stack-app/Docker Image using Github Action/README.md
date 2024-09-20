@@ -1,4 +1,4 @@
-# Dockerize a Basic Full Stack Application with React and Node.js using Makefile and Github Action. 
+# Dockerize React & Node.js App with Makefile & Github Action 
 
 In this lab, we will guide you through the creation of a basic full-stack application where,
 
