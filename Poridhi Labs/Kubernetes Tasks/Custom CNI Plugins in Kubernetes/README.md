@@ -2,8 +2,7 @@
 
 As Kubernetes clusters grow and more applications are deployed into production, managing networking becomes increasingly complex. Kubernetes uses a standardized model to ensure all pods within a cluster can communicate, and this is facilitated by the **Container Network Interface (CNI)**.
 
-![](./images/architecture.svg)
-
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/ee8a21be83aadc273e84210ac67267aa9e464ca5/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/images/architecture.svg)
 
 ### **What is CNI?**
 CNI is a project under the **Cloud Native Computing Foundation (CNCF)** and consists of a specification and libraries used to configure networking for containers. It helps allocate and deallocate networking resources when containers are created or removed. CNI provides a standardized interface to ensure Kubernetes clusters can communicate consistently.
@@ -13,7 +12,7 @@ CNI works by integrating with container runtimes such as Docker. The runtime inv
 - **Container Creation**: The runtime calls the CNI, which configures networking for the container by setting up routes, namespaces, and interfaces. Once the network is configured, the runtime launches the container.
 - **Container Deletion**: When a container is terminated, the runtime invokes the CNI again to clean up the networking resources.
 
-![](./images/CNI.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/ee8a21be83aadc273e84210ac67267aa9e464ca5/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/images/CNI.svg)
 
 ### **CNI Plugins**
 Kubernetes allows the use of various **CNI plugins**, which are responsible for networking tasks like IP address assignment, network configuration, and routing.
@@ -38,7 +37,7 @@ But we will use our own Custom CNI plugins.Which will gives us more clear idea a
 
 To run Kubernetes on AWS, we will first provision the necessary infrastructure using **Terraform**. This setup will create a Virtual Private Cloud (VPC), subnets, security groups, and three EC2 instances that will serve as the **master** and **worker nodes** of our Kubernetes cluster.
 
-![](./images/infra.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/ee8a21be83aadc273e84210ac67267aa9e464ca5/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/images/infra.svg)
 
 ### AWS CLI Configuration
 
@@ -47,7 +46,8 @@ Run the following command to configure AWS CLI:
 ```bash
 aws configure
 ```
-![alt text](https://raw.githubusercontent.com/Galadon123/CNI-Plug-in-with-Bash/f0cb507bd65dc68805d769c7294162194d8922de/images/1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/images/1.png?raw=true)
+
 
 This command prompts you for your AWS Access Key ID, Secret Access Key, region, and output format.
 
@@ -271,7 +271,7 @@ output "ec2_public_ips" {
    ```bash
    terraform apply
    ```
-   ![](https://raw.githubusercontent.com/Galadon123/CNI-Plug-in-with-Bash/f0cb507bd65dc68805d769c7294162194d8922de/images/2.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/images/2.png?raw=true)
  
    This will create a VPC, subnet, Internet gateway, route tables, and three EC2 instances. After Terraform completes, it will output the public IPs and the path to the SSH private key for accessing the instances.
 
@@ -287,7 +287,7 @@ Use the private key `cni.pem` (saved in the project directory) and the public ip
 ssh -i cni.pem ubuntu@<instance-public-ip>
 ```
 
-![](https://raw.githubusercontent.com/Galadon123/CNI-Plug-in-with-Bash/f0cb507bd65dc68805d769c7294162194d8922de/images/3.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/images/3.png?raw=true)
 
 ### **Configure Each Node**
 
@@ -337,7 +337,7 @@ This command initializes the Kubernetes cluster on the master node. The --pod-ne
 
 Next, use the `kubeadm join` command in both worker nodes to add the **worker nodes** to the cluster.
 
-![](https://raw.githubusercontent.com/Galadon123/CNI-Plug-in-with-Bash/f0cb507bd65dc68805d769c7294162194d8922de/images/4.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/images/4.png?raw=true)
 
 
 ### **Testing the cluster**
@@ -355,7 +355,7 @@ Now, you should be able to use kubectl from the master VM. Let’s use the kubec
 ```bash
 kubectl get nodes
 ```
-![](https://raw.githubusercontent.com/Galadon123/CNI-Plug-in-with-Bash/f0cb507bd65dc68805d769c7294162194d8922de/images/5.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/images/5.png?raw=true)
 
 As you can see from the output, both master and worker nodes are currently in the “NotReady” state. This is expected, because we haven’t configured any networking plug-in yet. If you try to deploy a pod at this time, your pod will forever hang in the “Pending” state, because the Kubernetes schedule will not be able to find any “Ready” node for it.
 
@@ -399,7 +399,7 @@ To implement networking for Kubernetes pods, we will create a custom CNI plug-in
    ```bash
    kubectl get nodes
    ```
-   ![](https://raw.githubusercontent.com/Galadon123/CNI-Plug-in-with-Bash/f0cb507bd65dc68805d769c7294162194d8922de/images/6.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/images/6.png?raw=true)
 
 ### Create the network
 
@@ -667,7 +667,7 @@ Now, let’s run kubectl get pod to make sure that all pods are healthy and then
 kubectl get pods -o wide
 ```
 
-![](https://raw.githubusercontent.com/Galadon123/CNI-Plug-in-with-Bash/f0cb507bd65dc68805d769c7294162194d8922de/images/7.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/images/7.png?raw=true)
 
 In your case, the result might be different.
 
@@ -679,7 +679,7 @@ kubectl exec -it bash-worker-1 -- bash
 
 From inside of the pod, you can ping various addresses to verify network connectivity. 
 
-![](https://raw.githubusercontent.com/Galadon123/CNI-Plug-in-with-Bash/f0cb507bd65dc68805d769c7294162194d8922de/images/8.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/images/8.png?raw=true)
 
 As you can see, the only thing that actually works is a pod to host communication.
 
@@ -700,7 +700,7 @@ Now try to ping other pods in the same host (e.g `worker-1` pods)
 kubectl exec -it bash-worker-1 -- bash
 ```
 
-![](https://raw.githubusercontent.com/Galadon123/CNI-Plug-in-with-Bash/f0cb507bd65dc68805d769c7294162194d8922de/images/9.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/images/9.png?raw=true)
 
 !! ping was successful !!
 
@@ -735,17 +735,17 @@ Pods in a private subnet (e.g., 10.244.0.0/24) cannot access the Internet becaus
 
   After setting up these NAT rules, pods will be able to access the Internet.In our case we ping google successfully.
 
-  ![](https://raw.githubusercontent.com/Galadon123/CNI-Plug-in-with-Bash/f0cb507bd65dc68805d769c7294162194d8922de/images/10.png)
+  ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/images/10.png?raw=true)
 
 ### **Inter Pod Communication between different nodes**
 
 As we have setup routes between each pod cidr blocks in route tables
 
-![](./images/14.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/images/14.png?raw=true)
 
 we will be able to ping pods on different nodes through this routes
 
-![alt text](./images/15.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/images/15.png?raw=true)
 
 
  
