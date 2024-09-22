@@ -2,7 +2,7 @@
 
 This tutorial will guide you through creating a custom Kubernetes controller using **Kubebuilder**. The goal is to build a controller that periodically sends HTTP `curl` requests to a specified API endpoint. The controller will then log the response status and body, and schedule the next request based on a defined interval. This tutorial is a step-by-step guide, covering project setup, API creation, controller implementation, and deployment.
 
-![](./images/./images//controller.svg)
+![](./images/controller.svg)
 
 ### Prerequisites
 
@@ -59,7 +59,7 @@ kubectl get nodes -o wide
 
 ## Task Description
 
-![](./images/./images//Controller%20Workflow%20Diagram.svg)
+![](./images/Controller%20Workflow%20Diagram.svg)
 
 The main task is to build a Kubernetes controller that manages a custom resource called `CurlJob`. This controller will:
 1. **Send HTTP GET requests** to a target URL (API).
