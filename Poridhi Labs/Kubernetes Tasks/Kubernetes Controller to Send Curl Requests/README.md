@@ -2,7 +2,7 @@
 
 This tutorial will guide you through creating a custom Kubernetes controller using **Kubebuilder**. The goal is to build a controller that periodically sends HTTP `curl` requests to a specified API endpoint. The controller will then log the response status and body, and schedule the next request based on a defined interval. This tutorial is a step-by-step guide, covering project setup, API creation, controller implementation, and deployment.
 
-![](./images//controller.svg)
+![](./images/./images//controller.svg)
 
 ### Prerequisites
 
@@ -59,7 +59,7 @@ kubectl get nodes -o wide
 
 ## Task Description
 
-![](./images//Controller%20Workflow%20Diagram.svg)
+![](./images/./images//Controller%20Workflow%20Diagram.svg)
 
 The main task is to build a Kubernetes controller that manages a custom resource called `CurlJob`. This controller will:
 1. **Send HTTP GET requests** to a target URL (API).
@@ -103,7 +103,7 @@ Now, we will create the API and controller for the custom resource `CurlJob`. Th
 kubebuilder create api --group batch --version v1 --kind CurlJob
 ```
 
-![alt text](image.png)
+![alt text](./images/image.png)
 
 The command above will:
 - Create a new **Custom Resource Definition** (CRD) called `CurlJob` in the `batch.example.com` API group.
@@ -137,7 +137,7 @@ After defining the `CurlJob` custom resource, run the following command to updat
 make manifests
 ```
 
-![alt text](image-1.png)
+![alt text](./images/image-1.png)
 
 This will generate the necessary Kubernetes YAML files to register the `CurlJob` CRD within the cluster.
 
@@ -261,7 +261,7 @@ docker login
 
 Give your credentials to login. 
 
-![alt text](image-2.png)
+![alt text](./images/image-2.png)
 
 Modify your `install` command in the Makefile to include the `--validate=false` flag:
 
@@ -269,7 +269,7 @@ Modify your `install` command in the Makefile to include the `--validate=false` 
 $(KUSTOMIZE) build config/crd | $(KUBECTL) apply --validate=false -f -
 ```
 
-![alt text](image-3.png)
+![alt text](./images/image-3.png)
 
 Modify your `deploy` command in the Makefile to include the `--validate=false` flag:
 
@@ -277,7 +277,7 @@ Modify your `deploy` command in the Makefile to include the `--validate=false` f
 $(KUSTOMIZE) build config/default | $(KUBECTL) apply --validate=false -f -
 ```
 
-![alt text](image-4.png)
+![alt text](./images/image-4.png)
 
 ### 5.1 Build and Push the Docker Image
 
