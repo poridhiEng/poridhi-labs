@@ -336,7 +336,7 @@ kubectl logs -n curl-api-controller-system deployment/curl-api-controller-contro
 ```
 
 Or save it in a separate file:
-```bash
+
 ```bash
 kubectl logs -n curl-api-controller-system deployment/curl-api-controller-controller-manager -c manager > output_logs.txt
 ```
