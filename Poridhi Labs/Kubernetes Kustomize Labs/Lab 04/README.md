@@ -1,166 +1,127 @@
-# Managing ConfigMaps and Secrets using Kustomize
+# Generating ConfigMaps Using Kustomize
 
-This documentation provides a step-by-step guide to deploying an NGINX application using Kustomize to generate ConfigMaps and Secrets. We’ll also explore how to automatically roll out changes to the application when the ConfigMap or Secret is updated, and how to handle configuration management without needing to restart the pods manually.
+In this tutorial, we'll explore how to generate ConfigMaps using Kustomize in a Kubernetes environment. We'll walk through an Nginx example where we use a ConfigMap to provide content for `index.html`. This guide assumes you have a basic understanding of Kubernetes, Kustomize, and have `kubectl` installed and configured.
 
----
+![alt text](https://raw.githubusercontent.com/AhnafNabil/poridhi.io.intern/309c930d26d0e32057a5aa09f9e2fdddfd79f3c0/Kustomize/Lab%2004/images/configmap.svg)
 
-## **Introduction to the Problem**
+## Prerequisites
 
-When you update a ConfigMap that is attached to a pod as a volume, the ConfigMap data is propagated automatically to the pod. However, the pod does not pick up the latest ConfigMap data in certain cases:
+- **Kustomize**: Ensure you have Kustomize installed. If you have `kubectl` version 1.14 or later, Kustomize is included.
+- **Kubernetes Cluster**: Access to a Kubernetes cluster where you can deploy resources.
 
-- If the pod gets environment variables from the ConfigMap.
-- If the ConfigMap is mounted as a volume using a `subPath`.
+## Repository Structure
 
-In these situations, the application inside the pod will continue using the old ConfigMap data until the pod is restarted, because the pod is unaware of changes to the ConfigMap. 
+Here's the file structure we'll be working with, specifically focusing on the `generators` overlay folder:
 
-This is where Kustomize ConfigMap and Secret generators come in. They automatically manage updates to ConfigMaps and Secrets, triggering pod rollouts when configuration changes.
-
----
-
-## **How Kustomize ConfigMap/Secret Generator Works**
-
-The Kustomize generator creates a ConfigMap or Secret with a unique name that includes a hash, ensuring updates trigger pod rollouts. Here’s the basic flow:
-
-1. **ConfigMap/Secret Creation**: When a ConfigMap or Secret is generated using Kustomize, a hash is appended to the name (e.g., `app-configmap-7b58b6ct6d`).
-2. **Update Handling**: When a ConfigMap or Secret is updated, Kustomize regenerates it with a new hash.
-3. **Automatic Rollout**: Kustomize automatically updates the deployment to use the new ConfigMap/Secret, triggering a rollout, ensuring the application uses the latest configuration without manual intervention.
-
----
-
-## **Base File Structure**
-
-Here’s the structure of the `base` folder, which contains the basic deployment configuration files for the NGINX application:
-
-```bash
-nginx-kustomize
-└── base
-    ├── deployment.yaml
-    ├── service.yaml
-    └── kustomization.yaml
+```
+├── base
+│   ├── deployment.yaml
+│   ├── kustomization.yaml
+│   └── service.yaml
+└── overlays
+    ├── generators
+        ├── deployment.yaml
+        ├── files
+        │   └── index.html
+        ├── kustomization.yaml
+        └── service.yaml
 ```
 
----
+## Base Configuration Files
 
-### **Step 1: Base Deployment Configuration**
+Before diving into the overlays, let's look at the base configuration files. These files provide the foundational Kubernetes resources that the overlays will modify or extend.
 
-In the base configuration, we define a simple NGINX deployment that uses a ConfigMap to load an HTML file (`index.html`) and an environment variable for the API endpoint.
-
-#### **1.1 Deployment YAML** (`base/deployment.yaml`)
-
-This file defines the NGINX deployment with ConfigMaps mounted as a volume and used as environment variables.
+### 1. `base/deployment.yaml`
 
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment
-  labels:
-    app: nginx
+  name: web-deployment
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
-      app: nginx
+      app: web-service
   template:
     metadata:
       labels:
-        app: nginx
+        app: web-service
     spec:
       containers:
       - name: nginx
         image: nginx:latest
         ports:
         - containerPort: 80
-        volumeMounts:
-        - name: nginx-config-volume
-          mountPath: /usr/share/nginx/html
-        env:
-        - name: API_ENDPOINT
-          valueFrom:
-            configMapKeyRef:
-              name: nginx-configmap
-              key: api-endpoint
-      volumes:
-      - name: nginx-config-volume
-        configMap:
-          name: nginx-configmap
 ```
 
-This deployment mounts a ConfigMap to the `/usr/share/nginx/html` directory (where the NGINX index file is served) and uses the environment variable `API_ENDPOINT` from the `nginx-configmap`.
+**Explanation:**
 
----
+- Defines a Deployment named `web-deployment`.
+- Specifies 2 replicas.
+- Labels pods with `app: web-service`.
+- Runs the `nginx` container exposing port 80.
 
-#### **1.2 Service YAML** (`base/service.yaml`)
-
-This file defines a service to expose the NGINX application.
+### 2. `base/service.yaml`
 
 ```yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx-service
-  labels:
-    app: nginx
+  name: web-service
 spec:
-  type: ClusterIP
   selector:
-    app: nginx
+    app: web-service
   ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
+  - protocol: TCP
+    port: 80
 ```
 
----
+**Explanation:**
 
-#### **1.3 Kustomization YAML** (`base/kustomization.yaml`)
+- Defines a Service named `web-service`.
+- Selects pods with `app: web-service`.
+- Exposes port 80.
 
-The Kustomization YAML file references the deployment and service files. It also generates the necessary ConfigMap.
+### 3. `base/kustomization.yaml`
 
 ```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - deployment.yaml
-  - service.yaml
-
-configMapGenerator:
-  - name: nginx-configmap
-    literals:
-      - api-endpoint=api.example.com
+- deployment.yaml
+- service.yaml
 ```
 
-This base configuration generates the `nginx-configmap`, which is used to set the API endpoint as an environment variable.
+**Explanation:**
 
----
+- Lists the resources (`deployment.yaml` and `service.yaml`) to include.
 
-### **Step 2: Overlay Configuration for Customizing Environments**
+## Generating ConfigMaps with Kustomize
 
-In addition to the base configuration, you can define overlay environments (e.g., `dev`, `prod`, etc.) for further customization using Kustomize generators. For this tutorial, we’ll use a `generators` overlay that generates two ConfigMaps:
+Now, let's focus on the `generators` overlay, which customizes the base resources and adds ConfigMap generators.
 
-1. **`index-html-configmap`**: A ConfigMap that contains the `index.html` file to be mounted to NGINX.
-2. **`endpoint-configmap`**: A ConfigMap that stores the API endpoint as a literal.
+### Overlay Directory Structure
 
-The overlay folder structure looks like this:
-
-```bash
-nginx-kustomize
-└── overlays
-    └── generators
-        ├── deployment.yaml
-        ├── kustomization.yaml
-        └── files
-            └── index.html
+```
+overlays/generators
+├── deployment.yaml
+├── files
+│   └── index.html
+├── kustomization.yaml
+└── service.yaml
 ```
 
----
+### 1. Overlay `deployment.yaml` File
 
-### **Step 3: Overlay Deployment Configuration**
+In the `overlays/generators` directory, the `deployment.yaml` file modifies the base deployment to:
 
-#### **3.1 Deployment YAML** (`overlays/generators/deployment.yaml`)
+- Use ConfigMaps for environment variables and mounted volumes.
+- Set resource requests and limits.
+- Increase replicas to 3.
 
-The overlay deployment specifies how the generated ConfigMaps are used:
+Here's the `deployment.yaml` file:
 
 ```yaml
 apiVersion: apps/v1
@@ -169,7 +130,13 @@ metadata:
   name: web-deployment
 spec:
   replicas: 3
+  selector:                     
+    matchLabels:
+      app: web-service         
   template:
+    metadata:
+      labels:                    
+        app: web-service         
     spec:
       containers:
       - name: nginx
@@ -195,11 +162,51 @@ spec:
           name: index-html-configmap
 ```
 
----
+**Explanation:**
 
-#### **3.2 Kustomization YAML** (`overlays/generators/kustomization.yaml`)
+- **`replicas: 3`**: Increases the number of replicas to 3.
+- **Environment Variable**: Sets `ENDPOINT` from `endpoint-configmap`.
+- **Volume Mount**: Mounts `index-html-configmap` to `/usr/share/nginx/html/`.
 
-This Kustomization file generates the ConfigMaps and references the deployment.
+### 2. `files/index.html` File
+
+The content for the ConfigMap is stored in the `files/index.html` file:
+
+```html
+<html>
+    <h1>Welcome</h1>
+    <br/>
+    <h1>Hi! This is the ConfigMap Index file</h1>
+</html>
+```
+
+### 3. Overlay `service.yaml` File
+
+The `service.yaml` in the overlay modifies the base service to be of type `NodePort`:
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+spec:
+  type: NodePort
+  selector:
+    app: web-service
+  ports:
+  - protocol: TCP
+    port: 80
+    nodePort: 30007
+```
+
+**Explanation:**
+
+- **`type: NodePort`**: Exposes the service on a NodePort.
+- **`nodePort: 30007`**: Specifies the NodePort number.
+
+### 4. Overlay `kustomization.yaml` File
+
+The `kustomization.yaml` file in the `overlays/generators` directory specifies how to generate the ConfigMaps and apply the patches:
 
 ```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
@@ -210,6 +217,7 @@ resources:
 
 patches:
 - path: deployment.yaml
+- path: service.yaml
 
 generatorOptions:
   labels:
@@ -217,6 +225,7 @@ generatorOptions:
 
 configMapGenerator:
 - name: index-html-configmap
+  behavior: create
   files:
   - files/index.html
 - name: endpoint-configmap
@@ -224,112 +233,175 @@ configMapGenerator:
   - endpoint=api.example.com/users
 ```
 
----
+**Explanation:**
 
-### **Step 4: HTML Content for NGINX** (`overlays/generators/files/index.html`)
+- **`resources`**: Includes resources from the base directory.
+- **`patches`**: Applies the overlay `deployment.yaml` and `service.yaml` as patches to the base resources.
+- **`generatorOptions`**: Adds the label `app: web-service` to generated resources.
+- **`configMapGenerator`**: Specifies ConfigMaps to generate.
 
-This is the HTML file that will be mounted by NGINX through the ConfigMap:
+## Deploying the Application
+
+### 1. Build and Apply with Kustomize
+
+Run the following command to build and apply the resources:
+
+```bash
+kubectl kustomize overlays/generators | kubectl apply -f -
+```
+
+Use this command if you are in the root directory. If you are in the directory where the `kustomization.yaml` file is located, then you can simply use:
+
+```bash
+kubectl kustomize . | kubectl apply -f -
+```
+
+![alt text](https://raw.githubusercontent.com/AhnafNabil/poridhi.io.intern/refs/heads/main/Kustomize/Lab%2004/images/image.png)
+
+### 2. Verify the ConfigMaps
+
+List the ConfigMaps to verify they have been created:
+
+```bash
+kubectl get configmaps
+```
+
+**Expected Output:**
+
+![alt text](https://raw.githubusercontent.com/AhnafNabil/poridhi.io.intern/refs/heads/main/Kustomize/Lab%2004/images/image-1.png)
+
+*Note: The ConfigMap names have hashes appended to ensure uniqueness when the data changes.*
+
+### 3. Access the Nginx Webpage
+
+Since the deployment uses a NodePort service, you can access the Nginx webpage by finding the node IP.
+
+To get the IP address of the node in a Kubernetes cluster, we can use the kubectl command-line tool to fetch this information. Here's how:
+
+```bash
+kubectl get nodes -o wide
+```
+
+![alt text](https://raw.githubusercontent.com/AhnafNabil/poridhi.io.intern/refs/heads/main/Kustomize/Lab%2004/images/image-2.png)
+
+#### Curl using NodePort
+
+```bash
+kubectl get svc
+```
+
+**Example Output:**
+
+![alt text](https://raw.githubusercontent.com/AhnafNabil/poridhi.io.intern/refs/heads/main/Kustomize/Lab%2004/images/image-3.png)
+
+We can access the service through any of our Kubernetes cluster nodes' IP addresses, on port 30007.
+
+```bash
+curl http://<Node-IP>:30007
+```
+
+You should see the output displaying:
+
+![alt text](https://raw.githubusercontent.com/AhnafNabil/poridhi.io.intern/refs/heads/main/Kustomize/Lab%2004/images/image-4.png)
+
+### 4. Check the Environment Variable
+
+To verify that the environment variable `ENDPOINT` is set from the ConfigMap, execute the following command:
+
+```bash
+kubectl get pods
+```
+
+Get the name of one of the pods, then run:
+
+```bash
+kubectl exec -it <pod-name> -- env | grep ENDPOINT
+```
+
+Replace `<pod-name>` with the name of one of the Nginx pods.
+
+**Expected Output:**
+
+![alt text](https://raw.githubusercontent.com/AhnafNabil/poridhi.io.intern/refs/heads/main/Kustomize/Lab%2004/images/image-5.png)
+
+## Updating the ConfigMap
+
+To test updating the ConfigMap through the generator, modify the `index.html` file.
+
+### 1. Update `index.html`
+
+Edit the `files/index.html` file to update its content:
 
 ```html
 <html>
-  <h1>Welcome</h1>
-  </br>
-  <h1>Hi! This is the Configmap Index file </h1>
+    <h1>Welcome</h1>
+    <br/>
+    <h1>Hi! This is the Updated ConfigMap Index file</h1>
 </html>
 ```
 
----
+### 2. Apply Changes with Kustomize
 
-### **Step 5: Deploying with Kustomize**
-
-To apply the deployment using Kustomize:
+Apply the updated configuration:
 
 ```bash
-kustomize build overlays/generators | kubectl apply -f -
+kubectl kustomize overlays/generators | kubectl apply -f -
 ```
 
-Once applied, you can check the ConfigMaps:
+Use this command if you are in the root directory. If you are in the directory where the `kustomization.yaml` file is located, then you can simply use:
 
 ```bash
-kubectl get cm
+kubectl kustomize . | kubectl apply -f -
 ```
 
-You’ll see ConfigMaps like `index-html-configmap-<hash>` and `endpoint-configmap-<hash>`, automatically generated by Kustomize.
-
----
-
-### **Step 6: Update and Rollout**
-
-To test the ConfigMap update, modify the `index.html` file:
-
-```html
-<html>
-  <h1>Welcome</h1>
-  </br>
-  <h1>Hi! This is the Updated Configmap Index file </h1>
-</html>
-```
-
-Run the following command to apply the updated ConfigMap and trigger the rollout:
+List the ConfigMaps to verify they have been created:
 
 ```bash
-kustomize build overlays/generators | kubectl apply -f -
+kubectl get configmaps
 ```
 
----
+![alt text](https://raw.githubusercontent.com/AhnafNabil/poridhi.io.intern/refs/heads/main/Kustomize/Lab%2004/images/image-6.png)
 
-### **Step 7: Garbage Collection**
+### 3. Prune Orphaned ConfigMaps
 
-To remove orphaned ConfigMaps (old ConfigMaps that are no longer referenced), use the `--prune` flag:
+By default, Kustomize doesn't remove old ConfigMaps. We can see that the previous ConfigMap is not deleted. To prune orphaned ConfigMaps, use the `--prune` flag with the appropriate label selector:
 
 ```bash
-kustomize build overlays/generators | kubectl apply --prune -l app=web-service -f -
+kubectl kustomize overlays/generators | kubectl apply --prune -l app=web-service -f -
 ```
 
----
+**Explanation:**
 
-### **Disabling the Hashed ConfigMap**
+- **`--prune`**: Removes resources from the cluster that are not defined in the current configuration.
+- **`-l app=web-service`**: Specifies the label selector to identify resources for pruning.
 
-If you don’t want Kustomize to append the hash to the ConfigMap names, you can disable it by adding the following option to the `kustomization.yaml`:
+Now, List the ConfigMaps to verify previous ConfigMap has been deleted:
 
-```yaml
-generatorOptions:
-  labels:
-    app: web-service
-  disableNameSuffixHash: true
+```bash
+kubectl get configmaps
 ```
 
-Note that you will need to manually restart the pods for the changes to take effect when disabling the hash.
+![alt text](https://raw.githubusercontent.com/AhnafNabil/poridhi.io.intern/refs/heads/main/Kustomize/Lab%2004/images/image-7.png)
 
----
+### 4. Verify the Update
 
-## **Generating Secrets with Kustomize**
+After applying the changes, We can access the service through any of our Kubernetes cluster nodes' IP addresses, on port 30007.
 
-You can generate secrets using the `secretGenerator` field in the Kustomization file. Here’s an example:
-
-```yaml
-secretGenerator:
-- name: nginx-secret
-  files:
-  - files/secret.txt
+```bash
+curl http://<Node-IP>:30007
 ```
 
-For generating secrets from literals:
+![alt text](https://raw.githubusercontent.com/AhnafNabil/poridhi.io.intern/refs/heads/main/Kustomize/Lab%2004/images/image-8.png)
 
-```yaml
-secretGenerator:
-- name: nginx-api-password
-  literals:
-  - password=myS3cret
-```
+## Conclusion
 
-Mount the secret as a volume or pass it as an environment variable
+In this tutorial, we've demonstrated how to generate ConfigMaps using Kustomize, deploy them in a Kubernetes cluster, and update them effectively.
 
- in the deployment YAML file.
+**Key Takeaways:**
 
----
+- **Base and Overlay Structure**: Understand how base configurations and overlays work together in Kustomize.
+- **ConfigMap Generators**: Simplify the creation and management of ConfigMaps.
+- **Hashed Names**: Ensure that updates to ConfigMaps trigger rollouts automatically.
+- **Pruning**: Use the `--prune` flag to remove obsolete resources.
 
-## **Conclusion**
-
-Kustomize’s ConfigMap and Secret generators make configuration management simple and efficient by automatically handling updates and ensuring smooth rollouts. By leveraging this tool, you can make sure your NGINX application uses the latest configuration seamlessly, reducing the need for manual restarts and manual updates.
-
+By leveraging Kustomize's powerful features, you can manage complex configurations more efficiently and keep your Kubernetes deployments organized.
