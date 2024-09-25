@@ -49,7 +49,7 @@ This command prompts you to enter:
 - **Default region** (e.g., `ap-southeast-1`)
 - **Output format** (e.g., `json`)
 
-![](./images/1.png)
+   ![](./images/1.png)
 
 ## **Creating the `main.tf` File**
 
@@ -57,8 +57,6 @@ Create the main Terraform configuration file called `main.tf`, which contains al
 
 1. **Create a file named `main.tf` in your project directory**.
 2. Add the following code to `main.tf` to create the infrastructure.
-
----
 
 ### **Part 1: Provider Configuration and Key Pair Creation**
 
@@ -186,7 +184,7 @@ resource "aws_security_group" "allow_all_traffic" {
 ```hcl
 # Define AMI and instance type
 variable "ami_id" {
-  default = "ami-0e86e20dae9224db8"  # Replace with your desired AMI
+  default = "ami-01811d4912b4ccb26"  # Replace with your desired AMI
 }
 
 variable "instance_type" {

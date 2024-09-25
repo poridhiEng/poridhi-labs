@@ -1,17 +1,15 @@
-# **Dynamic IP Assignment for Kubernetes Pods with Bash CNI**
+# **Fixing Pod Connectivity and External Access in Kubernetes**
 
-In Kubernetes, each pod must be assigned a unique IP address to communicate with other pods, the host system, and external networks. In this lab, we will implement dynamic IP assignment for Kubernetes pods using a custom **Bash CNI** plugin. By assigning IP addresses dynamically, we ensure efficient pod-to-pod and pod-to-host communication within the Kubernetes cluster.
-
-![Pod Networking](./images/41.svg)
+In this lab, we will address the issues of pod-to-pod communication across nodes and enable external access to the internet for the pods. We will set up routes for pod subnets, adjust iptables rules, and use NAT (Network Address Translation) to allow outgoing traffic from the pods to external networks.
 
 ## **Objectives**
 
 By the end of this lab, you will:
 
 - Provision the necessary infrastructure for a Kubernetes cluster on AWS using Terraform.
-- Modify the custom Bash CNI plugin to dynamically assign IP addresses to Kubernetes pods.
-- Verify that pods are assigned unique IPs and can communicate with the host.
-- Understand the Bash CNI plugin code that facilitates IP assignment.
+- Enable pod-to-pod communication across nodes by setting up routes.
+- Allow pods to communicate with external networks using NAT.
+- Verify the proper setup of pod communication and external access.
 
 ## **Prerequisites**
 
@@ -21,15 +19,15 @@ Before starting this lab, ensure you have:
 - AWS CLI installed and configured.
 - Terraform installed on your local machine.
 
+---
+
 ## **Provision Infrastructure for Kubernetes Cluster**
 
-We will use **Terraform** to automate the creation of AWS resources for our Kubernetes cluster. This includes setting up EC2 instances for the master and worker nodes, with the necessary tools for Kubernetes installed via user data scripts.
-
-![Infrastructure Diagram](./images/21.svg)
+We will provision the necessary infrastructure for our Kubernetes cluster using **Terraform**.
 
 ### **AWS CLI Configuration**
 
-To configure AWS CLI, use the following command:
+Configure your AWS CLI by running the following command:
 
 ```bash
 aws configure
@@ -42,8 +40,6 @@ This will prompt you to enter:
 - **Default region** (e.g., `ap-southeast-1`)
 - **Output format** (e.g., `json`)
 
-  ![](./images/1.png)
-
 ### **Terraform Configuration (`main.tf`)**
 
 Create a `main.tf` file with the following configuration to set up your Kubernetes cluster infrastructure.
@@ -51,7 +47,7 @@ Create a `main.tf` file with the following configuration to set up your Kubernet
 ```hcl
 # Provider configuration
 provider "aws" {
-  region = "ap-southeast-1" # Replace with your desired region
+  region = "ap-southeast-1"
 }
 
 # Create a key pair and store it locally
@@ -235,7 +231,7 @@ output "ec2_public_ips" {
 
 # Variables for AMI and instance type
 variable "ami_id" {
-  default = "ami-01811d4912b4ccb26"  # Replace with your desired AMI
+  default = "ami-0e86e20dae9224db8"
 }
 
 variable "instance_type" {
@@ -243,9 +239,7 @@ variable "instance_type" {
 }
 ```
 
-### **Applying the Terraform Configuration**
-
-Once the `main.tf` file is created, follow these steps to apply the configuration and create the infrastructure:
+### **Apply the Terraform Configuration**
 
 1. **Initialize Terraform**:
 
@@ -253,17 +247,19 @@ Once the `main.tf` file is created, follow these steps to apply the configuratio
    terraform init
    ```
 
-2. **Apply the Terraform configuration**:
+2. **Apply the Terraform Configuration**:
 
    ```bash
    terraform apply
    ```
 
-   ![](./images/2.png)
+Terraform will create the necessary infrastructure, and it will output the public IPs of the EC2 instances and the path to the private key (`cni.pem`). You can use this information to SSH into the instances.
 
-Terraform will create the necessary infrastructure and output the public IPs of the EC2 instances and the path to the private key (`cni.pem`). You can use this information to SSH into the instances.
+---
 
-## **SSH into EC2 Instances and Set Up the Cluster**
+## **Setting Up Kubernetes Cluster**
+
+### **SSH into EC2 Instances**
 
 Once the instances are provisioned, SSH into the **master** and **worker** nodes to complete the Kubernetes setup:
 
@@ -279,9 +275,7 @@ Once the instances are provisioned, SSH into the **master** and **worker** nodes
    sudo kubeadm init --pod-network-cidr=10.244.0.0/16
    ```
 
-   ![](./images/10.png)
-
-   *After running this command, Kubernetes will provide a `join command` needed to connect the worker nodes to the cluster. **Note down this join command** as you will use it later to join the worker nodes.*
+   Kubernetes will provide a `join command` after initialization. Note this down to connect the worker nodes to the cluster.
 
 3. **Set Up `kubectl` for the Master Node**:
 
@@ -291,35 +285,25 @@ Once the instances are provisioned, SSH into the **master** and **worker** nodes
    sudo chown $(id -u):$(id -g) $HOME/.kube/config
    ```
 
-4. **SSH into Each Worker Node and Join the Cluster**:
+4. **Join Worker Nodes to the Cluster**:
+
+   SSH into each worker node and run the `join command` from step 2 to connect the worker nodes to the Kubernetes cluster:
 
    For **worker-1**:
 
    ```bash
    ssh -i cni.pem ubuntu@<worker-1-public-ip>
-   ```
-
-   ```bash
    sudo kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
    ```
-
-   ![](./images/11.png)
 
    For **worker-2**:
 
    ```bash
    ssh -i cni.pem ubuntu@<worker-2-public-ip>
-   ```
-
-   ```bash
    sudo kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
    ```
 
-   ![](./images/12.png)
-
-### **Verify the Cluster Setup**
-
-1. **Check the Status of the Nodes**:
+5. **Verify Cluster Status**:
 
    On the master node, run:
 
@@ -327,9 +311,7 @@ Once the instances are provisioned, SSH into the **master** and **worker** nodes
    kubectl get nodes
    ```
 
-   ![](./images/13.png)
-
-   Both master and worker nodes will show as **NotReady** until the CNI plugin is configured.
+---
 
 ## **Setting Up Network Interfaces**
 
@@ -373,32 +355,19 @@ To implement networking for Kubernetes pods, we will create a custom CNI configu
    ```
 
    Replace `<bridge-ip>` with:
-   - `10.244.0.1` for **master**.
+
    - `10.244.1.1` for **worker-1**.
    - `10.244.2.1` for **worker-2**.
-
-   This prepares the network bridge on each node to facilitate pod-to-pod communication.
 
 ### **Verify the Network Configuration**
 
 After setting up the `cni0` bridge and CIDR blocks, verify the successful creation of these interfaces:
 
-1. **Check the Status of the `Network Bridge` on Each nodes**:
+1. **Check the Status of the Network Bridge on Each Node**:
 
    ```bash
    sudo brctl show cni0
    ```
-   For `master` node
- 
-   ![](./images/14.png)
- 
-   For `worker-1` node
- 
-   ![](./images/15.png)
- 
-   For `worker-2` node
-   
-   ![](./images/16.png)
 
 2. **Verify IP Assignments for Each Bridge Interface**:
 
@@ -406,40 +375,28 @@ After setting up the `cni0` bridge and CIDR blocks, verify the successful creati
    ip addr show cni0
    ```
 
-   For `master` node
-   
-   ![](./images/i1.png)
- 
-   For `worker-1` node
- 
-   ![](./images/i2.png)
- 
-   For `worker-2` node
- 
-   ![](./images/i3.png)
-   
-   
-   The output should show the respective IP addresses (`10.244.0.1`, `10.244.1.1`, `10.244.2.1`) assigned to the `cni0` bridge on each node
- 
-### **Check Node Status Again**
+The output should show the respective IP addresses (`10.244.1.1`, `10.244.2.1`) assigned to the `cni0` bridge on each node.
 
-Now the nodes should be in a **Ready** state:
+### **Check Node Status**
+
+Run the following command to check if the nodes are in a **Ready** state:
 
 ```bash
 kubectl get nodes
 ```
 
-![](./images/17.png)
+---
 
 ## **Implementing the Bash CNI Plugin for IP Assignment**
 
-Now we will create the Bash CNI plugin script to dynamically assign IP addresses to Kubernetes pods.
+We will now create the Bash CNI plugin script to dynamically assign IP addresses to Kubernetes pods.
 
 ### **Create the Bash CNI Plugin Script**
 
 1. **Create the CNI Plugin Directory and Script on Each Node**:
 
    ```bash
+   sudo mkdir -p /opt/cni/bin/
    sudo nano /opt/cni/bin/bash-cni
    ```
 
@@ -558,49 +515,13 @@ Now we will create the Bash CNI plugin script to dynamically assign IP addresses
    sudo chmod +x /opt/cni/bin/bash-cni
    ```
 
-### Key Points of the Bash CNI Plugin Script:
+---
 
-1. **Logging Setup:**
-   - The script logs all output to `/var/log/bash-cni-plugin.log` for debugging purposes. The command `exec &>> /var/log/bash-cni-plugin.log` ensures that all logs are directed to this file.
+## **Deploy Pods and Verify Communication**
 
-2. **IP Reservation:**
-   - The `IP_STORE=/tmp/reserved_ips` variable defines where reserved IPs are stored. The file ensures that the same IP is not assigned to multiple containers by keeping a record of allocated IP addresses.
+### **Deploy Test Pods**
 
-3. **CNI Command Handling:**
-   - The script handles different CNI commands (`ADD`, `DEL`, `VERSION`) using a `case` statement:
-     - **ADD**: Assigns an IP address to a container.
-     - **DEL**: Removes the IP reservation when a container is deleted.
-     - **VERSION**: Outputs the supported CNI versions.
-
-4. **IP Allocation Logic:**
-   - The `allocate_ip` function loops through available IPs and checks against reserved IPs. It assigns the first unreserved IP to the container.
-   
-5. **Creating the Veth Pair:**
-   - The script creates a **veth pair** (virtual Ethernet interfaces) using `ip link add`, with one end attached to the container and the other to the host. The container-side interface is placed inside the container's network namespace using `ip netns exec $CNI_CONTAINERID`.
-
-6. **IP and Route Configuration:**
-   - After assigning the IP, the script sets up the IP address and default gateway for the container using:
-     - `ip addr add $container_ip` for the IP assignment.
-     - `ip route add default via $gw_ip` for the default route setup.
-
-7. **JSON Response:**
-   - After the network setup, the script outputs a JSON object that provides details of the interface, IP address, and gateway, which is required by the CNI specification.
-
-8. **Deleting a Container's IP:**
-   - On `DEL`, the script removes the container’s assigned IP from the reserved IPs list, allowing it to be reused later.
-
-9. **Version Handling:**
-   - The `VERSION` command outputs the CNI plugin's supported versions (CNI v0.3.1). This is a standard requirement for CNI plugins to advertise compatibility. 
-
-This script dynamically manages IP address allocation and network setup for Kubernetes pods using the CNI (Container Network Interface) specification.
-
-## **Testing IP Assignment and Pod Communication**
-
-Now that we have implemented dynamic IP assignment, we will verify that pods are assigned IPs and can communicate with the host.
-
-### **Deploy Pods for Testing**
-
-1. **Create the YAML Configuration File (`deploy.yaml`)**:
+1. **Create the Pod Deployment Configuration (`deploy.yaml`)**:
 
    ```yaml
    apiVersion: v1
@@ -666,15 +587,13 @@ Now that we have implemented dynamic IP assignment, we will verify that pods are
    kubectl apply -f deploy.yaml
    ```
 
-3. **Verify IP Assignment for Each Pod**:
+3. **Verify Pod IP Assignments**:
 
    ```bash
    kubectl get pods -o wide
    ```
 
-   ![](./images/18.png)
-
-   The pods should now have **dynamically assigned IP addresses** from the `10.244.x.x` subnet, confirming that IP assignment has been successfully implemented.
+   The pods should now have dynamically assigned IP addresses from the `10.244.x.x` subnet, confirming the successful implementation of IP assignment.
 
 ### **Test Pod Communication**
 
@@ -687,53 +606,145 @@ Now that we have implemented dynamic IP assignment, we will verify that pods are
 2. **Ping the Host from Within the Pod**:
 
    ```bash
-   ping  10.244.1.1 -c 2
+   root@bash-worker-1:/# ping -c 4 10.244.1.1
    ```
 
-   This confirms that the pod can communicate with the host.
+   The ping should be successful, confirming that the pod can communicate with the host.
 
 3. **Ping Another Pod on the Same Node**:
 
    ```bash
-   ping  10.244.1.2 -c 2
+   root@bash-worker-1:/# ping -c 4 10.244.1.2
    ```
-
-   You might notice that the ping is unsuccessful. This is because inter-pod communication is not fully configured yet.
 
 4. **Ping a Pod on a Different Node**:
 
    ```bash
-   ping  10.244.2.3 -c 2
+   root@bash-worker-1:/# ping -c 4 10.244.2.2
    ```
 
-   This ping will also fail for the same reason.
-
-5. **Ping an External Resource (Google DNS)**:
+5. **Ping External Resources (Google DNS)**:
 
    ```bash
-   ping  8.8.8.8 -c 2
+   root@bash-worker-1:/# ping -c 4 8.8.8.8
    ```
 
-   The ping will likely fail because we haven't set up NAT or proper routing to external networks.
+   The ping will fail at this stage because NAT is not yet set up for external access.
 
-   ![](./images/ping.png)
+## **Fixing Pod-to-Pod Communication within the Same Host**
 
-**Note**: At this stage, the pods can only communicate with the host (the `cni0` bridge) because the necessary routing and forwarding rules are not in place. We will address these issues in the next labs.
+In Kubernetes, you might expect pod-to-pod communication on the same host to work without any issues, even before configuring cross-host or external access. However, an inspection of the iptables **FORWARD** chain reveals the root cause of this issue.
 
-### **Exit the Pod Shell**:
+When traffic is forwarded between pods, the Linux kernel applies the **FORWARD** chain of iptables, even if the traffic does not cross the bridge. Here's a snapshot of the iptables **FORWARD** chain:
 
 ```bash
-exit
+sudo iptables -S FORWARD
 ```
+
+This chain handles all packets that need to be forwarded, such as traffic between network namespaces (as with pods). The key issue here is that the default **FORWARD** chain policy is set to `DROP` by Docker for security reasons. As a result, any traffic between pods on the same host is dropped by default unless specific rules are in place to allow it.
+
+### Why Host Communication Works
+Traffic from a pod to the host works because iptables uses the **INPUT** chain, not the **FORWARD** chain, when the destination is local to the host.
+
+### Fixing the Pod-to-Pod Communication Issue
+To allow traffic between pods on the same host, we need to add specific **FORWARD** rules that permit communication within the pod CIDR range. Run the following commands on both the worker (`worker-1` & `worker-2`) nodes to resolve this issue:
+
+```bash
+sudo iptables -t filter -A FORWARD -s 10.244.0.0/16 -j ACCEPT
+sudo iptables -t filter -A FORWARD -d 10.244.0.0/16 -j ACCEPT
+```
+
+These rules will enable forwarding of traffic within the pod CIDR range, fixing the pod-to-pod communication problem on the same host.
+
+
+## **Fixing External Access Using NAT**
+
+Pods in Kubernetes are located in a private subnet (e.g., `10.244.0.0/24`). When a pod tries to send network packets to the Internet, those packets will have a source IP from this private subnet. Since the private subnet is not routable on the public Internet, the packets will be dropped by routers. Even if the packet reaches its destination, the response cannot be routed back to the private pod IP (`10.244.0.x`), leading to communication failure.
+
+To resolve this, we can set up **Network Address Translation (NAT)** on the host VM. NAT replaces the source IP address of outgoing packets with the public IP address of the host VM. The original pod IP is stored, and when the response packet comes back, the original pod IP is restored, allowing the packet to be forwarded correctly to the pod.
+
+### Setting Up NAT
+NAT can be set up easily using iptables with the **MASQUERADE** target. The following commands should be run on the respective nodes:
+
+**On Worker Nodes**:
+   
+   For **worker-1**:
+
+   ```bash
+   sudo iptables -t nat -A POSTROUTING -s 10.244.1.0/24 ! -o cni0 -j MASQUERADE
+   ```
+
+   For **worker-2**:
+
+   ```bash
+   sudo iptables -t nat -A POSTROUTING -s 10.244.2.0/24 ! -o cni0 -j MASQUERADE
+   ```
+
+### Explanation:
+- **MASQUERADE**: This iptables target is used to perform source NAT (SNAT) when the external IP of the outgoing interface is not known at the time of writing the rule.
+- **Conditions**:
+  - Only packets with a source IP in the pod subnet (`10.244.x.0/24`) are affected.
+  - The rule excludes traffic destined for the `cni0` bridge (`! -o cni0`), which handles internal pod traffic.
+
+Once NAT is configured, the pods will be able to access external networks, such as the Internet, and other VMs within the cluster.
+
+### **Test External Access**
+
+After configuring NAT, test external access by pinging Google DNS:
+
+```bash
+kubectl exec -it bash-worker-1 -- /bin/bash
+ping  8.8.8.8 -c 2
+```
+
+The ping should now be successful, confirming that the pods can access external networks.
+
+## **Setting Up Routing for Inter-Node Pod Communication**
+
+To enable pod-to-pod communication across different worker nodes in the Kubernetes cluster, you need to configure routes for each worker node’s pod CIDR block. This will allow traffic between pods residing on different nodes to traverse the network properly. The process involves adding routes for each node's pod CIDR block and associating them with the network interfaces of the respective worker nodes.
+
+#### Steps to Set Up Routes Using the AWS Console:
+
+1. **Navigate to VPC Route Tables**:
+   - Log in to your AWS Management Console.
+   - Go to **VPC** in the services menu.
+   - On the left-hand menu, click **Route Tables**.
+
+2. **Select the Route Table**:
+   - Find and select the route table associated with the worker nodes' subnet. This route table manages routing for instances within your worker nodes’ subnet.
+
+3. **Add Routes for Pod CIDR Blocks**:
+   - Click **Edit Routes** to modify the route table.
+   - Add a route for each of your worker node pod CIDR blocks (example ranges might vary based on your setup):
+     - **Pod CIDR for master node**: `10.244.0.0/24`
+     - **Pod CIDR for worker-1**: `10.244.1.0/24`
+     - **Pod CIDR for worker-2**: `10.244.2.0/24`
+
+4. **Set the Target for Each Route**:
+   - For each of the pod CIDR routes, specify the **network interface (ENI)** of the corresponding worker node. You can find the **ENI** associated with each worker node in the **EC2 Instances** section of the AWS Console by selecting the instance and checking its network settings.
+   - Example:
+     - **Target for `10.244.0.0/24`**: Network Interface of master node.
+     - **Target for `10.244.1.0/24`**: Network Interface of worker-1.
+     - **Target for `10.244.2.0/24`**: Network Interface of worker-2.
+
+5. **Save Changes**:
+   - After adding the routes, click **Save** to apply the changes. This will update the route table with the new routes, ensuring that traffic between pods on different nodes can be routed correctly.
+
+#### Why This is Necessary:
+
+Each node in your Kubernetes cluster operates on its own subnet, and without proper routing, pods on different nodes cannot communicate. By adding these routes, we ensure that traffic originating from a pod on one node can reach pods on another node by passing through the appropriate network interfaces.
+
+This is a key step for enabling inter-pod communication across the cluster, allowing services running on different nodes to communicate with each other seamlessly.
+
+Now you will be able to ping the pods on different nodes.
+
+
 
 ## **Conclusion**
 
-In this lab, we successfully implemented **dynamic IP assignment** for Kubernetes pods using a custom **Bash CNI** plugin. We created the `cni0` bridge, configured the CNI plugin script to assign IPs dynamically, and verified that pods receive unique IP addresses. While pods can communicate with the host, inter-pod communication and external network access require additional configuration, which we will address in subsequent labs.
+In this lab, we successfully configured:
 
-In the upcoming labs, we will:
+- Pod-to-pod communication within and across nodes.
+- NAT to enable external access for the pods.
 
-- Configure IP forwarding and routing to enable pod-to-pod communication across nodes.
-- Set up NAT to allow pods to access external networks.
-- Implement network policies for enhanced security.
-
-Stay tuned to further enhance the networking capabilities of your Kubernetes cluster!
+By adjusting iptables rules, setting up routes, and configuring NAT, we ensured that pods can communicate with each other and access external networks.

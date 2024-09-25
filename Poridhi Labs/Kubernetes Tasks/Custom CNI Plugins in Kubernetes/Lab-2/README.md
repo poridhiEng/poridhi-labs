@@ -193,14 +193,23 @@ This command prompts you to enter:
    
    # Variables for AMI and instance type
    variable "ami_id" {
-     default = "ami-0e86e20dae9224db8"  # Replace with your desired AMI
+     default = "ami-01811d4912b4ccb26"  # Replace with your desired AMI
    }
    
    variable "instance_type" {
      default = "t3.small"
    }
    ```
+   ### User Data Section in `main.tf`
    
+   In this Terraform configuration, we define different **user data** scripts for each EC2 instance (master, worker-1, and worker-2). **User data** is a script that gets executed when an instance is first launched. It is a way to automatically configure the instance upon boot.
+   
+   Here's what we have done in the user data section:
+   
+   - **Master Node Setup**: We define a bash script that sets the hostname of the master node to "master". 
+   - **Worker Nodes Setup**: Similarly, for worker-1 and worker-2, we set their hostnames to "worker-1" and "worker-2" respectively.
+   
+   By using the `lookup` function in Terraform, we assign different `user_data` to each instance based on its index (`count.index`). This ensures that the hostname for each instance is set correctly, helping to differentiate between the master and worker nodes in the Kubernetes cluster.
 ### **Apply Terraform Script**
    
    1. Initialize the Terraform configuration:
@@ -269,6 +278,7 @@ This command prompts you to enter:
    ```bash
    sudo kubeadm init --pod-network-cidr=10.244.0.0/16
    ```
+   ![](./images/10.png)
 
    *After running this command, Kubernetes will provide a `join command` that is needed to connect the worker nodes to the cluster. `Note down this join command` as you will use it later to join the worker nodes.*
 
@@ -308,7 +318,7 @@ This command prompts you to enter:
 
 2. **Install Docker and Kubernetes components**
 
-   Repeat the steps used for the master node to install Docker and Kubernetes components on each worker node:
+   Repeat the steps used for the master node to install Docker and Kubernetes components on each worker nodes (`worker-1` & `worker-2`):
 
    ```bash
    # Install Docker
@@ -328,12 +338,29 @@ This command prompts you to enter:
 
 3. **Join the worker nodes to the cluster**
 
-   After the `kubeadm init` command on the master node, a **kubeadm join** command was generated. Use this command to join each worker node to the cluster. It will look something like:
+   1. SSH into worker node 1 (`worker-1`) and run the **join command**
+   
+      ```bash
+      ssh -i cni.pem ubuntu@<worker-1-public-ip>
+      ```
+   
+      ```bash
+      sudo kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
+      ```
 
-   ```bash
-   sudo kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
-   ```
-   ![](./images/4.png)
+      ![](./images/11.png)
+   
+   2. SSH into worker node 2 (`worker-2`) and run the **join command**
+   
+      ```bash
+      ssh -i cni.pem ubuntu@<worker-1-public-ip>
+      ```
+   
+      ```bash
+      sudo kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
+      ```
+   
+      ![](./images/12.png)
 
 ## **Verify the Cluster Setup**
 1. **Check the status of the nodes**
@@ -344,7 +371,7 @@ This command prompts you to enter:
    kubectl get nodes
    ```
 
-   ![](./images/5.png)
+   ![](./images/13.png)
 
    As you can see from the output, both master and worker nodes are currently in the “NotReady” state. This is expected, because we haven’t configured any networking plug-in yet. If you try to deploy a pod at this time, your pod will forever hang in the “Pending” state, because the Kubernetes schedule will not be able to find any “Ready” node for it.
 ## **Summary**
