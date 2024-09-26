@@ -179,18 +179,25 @@ This command prompts you to enter:
    
      tags = {
        Name = "ec2-instance-${count.index + 1}"
+       Role = lookup({
+         0 = "master"
+         1 = "worker-1"
+         2 = "worker-2"
+       }, count.index)
      }
    }
-   
    # Output for private key and public IPs of instances
    output "private_key_path" {
-     value = local_file.private_key.filename
+      value = local_file.private_key.filename
    }
-   
-   output "ec2_public_ips" {
-     value = [for instance in aws_instance.ec2_instances : instance.public_ip]
+    
+    output "ec2_public_ips_with_roles" {
+     value = {
+       "master"   = aws_instance.ec2_instances[0].public_ip
+       "worker-1" = aws_instance.ec2_instances[1].public_ip
+       "worker-2" = aws_instance.ec2_instances[2].public_ip
+     }
    }
-   
    # Variables for AMI and instance type
    variable "ami_id" {
      default = "ami-01811d4912b4ccb26"  # Replace with your desired AMI
@@ -222,7 +229,7 @@ This command prompts you to enter:
       terraform apply
       ```
    
-      ![](./images/2.png)
+      ![](./images/outputs.png)
    
       This will create the EC2 instances and configure the hostnames (`master`, `worker-1`, `worker-2`) as per the user data provided in `main.tf`.
    
@@ -236,6 +243,7 @@ This command prompts you to enter:
    ```bash
    ssh -i cni.pem ubuntu@<master-instance-public-ip>
    ```
+   ![](./images/m.png)
 
 2. **Install Docker**
 
@@ -280,7 +288,7 @@ This command prompts you to enter:
    ```
    ![](./images/10.png)
 
-   *After running this command, Kubernetes will provide a `join command` that is needed to connect the worker nodes to the cluster. `Note down this join command` as you will use it later to join the worker nodes.*
+   **Note:** After running this command, Kubernetes will provide a `join command` that is needed to connect the worker nodes to the cluster. `Note down this join command` as you will use it later to join the worker nodes.
 
 2. **Set up `kubectl` on the master node**
 
@@ -299,26 +307,24 @@ This command prompts you to enter:
    ```bash
    kubectl get nodes
    ```
+   ![](./images/21.png)
 
    The master node will show a **NotReady** status because the networking setup is not yet complete, but the master is initialized.
 
 ## **Join Worker Nodes to the Cluster**
 
-1. **SSH into worker nodes**
+### **SSH into worker node 1**
 
-   SSH into each worker node using the public IPs provided by Terraform:
+   SSH into `worker-1` using the public IPs provided by Terraform:
 
    ```bash
    ssh -i cni.pem ubuntu@<worker-1-instance-public-ip>
    ```
+   ![](./images/w-1.png)
 
-   ```bash
-   ssh -i cni.pem ubuntu@<worker-2-instance-public-ip>
-   ```
+1. **Install Docker and Kubernetes components**
 
-2. **Install Docker and Kubernetes components**
-
-   Repeat the steps used for the master node to install Docker and Kubernetes components on each worker nodes (`worker-1` & `worker-2`):
+   Repeat the steps used for the master node to install Docker and Kubernetes components on `worker-1`
 
    ```bash
    # Install Docker
@@ -336,13 +342,9 @@ This command prompts you to enter:
    sudo sysctl net.ipv4.ip_forward=1
    ```
 
-3. **Join the worker nodes to the cluster**
+2. **Join the `worker-1` node to the cluster**
 
-   1. SSH into worker node 1 (`worker-1`) and run the **join command**
-   
-      ```bash
-      ssh -i cni.pem ubuntu@<worker-1-public-ip>
-      ```
+    Use the `join command` we coppied, while we initiated kubernetes on `master node` to connect the `worker-1` to the cluster.
    
       ```bash
       sudo kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
@@ -350,16 +352,42 @@ This command prompts you to enter:
 
       ![](./images/11.png)
    
-   2. SSH into worker node 2 (`worker-2`) and run the **join command**
-   
-      ```bash
-      ssh -i cni.pem ubuntu@<worker-1-public-ip>
-      ```
+### **SSH into worker node 2**
+
+   SSH into `worker-2` using the public IPs provided by Terraform:
+
+   ```bash
+   ssh -i cni.pem ubuntu@<worker-2-instance-public-ip>
+   ```
+   ![](./images/w-2.png)
+
+1. **Install Docker and Kubernetes components**
+
+   Repeat the steps used for the master node to install Docker and Kubernetes components on `worker-2`
+
+   ```bash
+   # Install Docker
+   sudo apt-get update
+   sudo apt-get install -y apt-transport-https ca-certificates curl
+   sudo apt-get install -y docker.io
+
+   # Install Kubernetes components
+   curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+   echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.31/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+   sudo apt-get update
+   sudo apt-get install -y kubelet kubeadm kubectl
+
+   # Enable IP forwarding
+   sudo sysctl net.ipv4.ip_forward=1
+   ```
+
+2. **Join the `worker-2` node to the cluster**
+    Use the `join command` we coppied, while we initiated kubernetes on `master node` to connect the `worker-2` to the cluster.
    
       ```bash
       sudo kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
       ```
-   
+
       ![](./images/12.png)
 
 ## **Verify the Cluster Setup**
@@ -381,3 +409,5 @@ In this lab, we set up a Kubernetes cluster on AWS EC2 instances provisioned usi
 - Installed Docker and Kubernetes components on the master and worker nodes.
 - Initialized the Kubernetes cluster on the master node with a Pod CIDR block.
 - Joined the worker nodes to the cluster.
+
+

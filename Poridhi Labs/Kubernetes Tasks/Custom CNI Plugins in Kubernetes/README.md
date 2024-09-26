@@ -31,8 +31,6 @@ But we will use our own Custom CNI plugins.Which will gives us more clear idea a
 - **Dynamic Setup**: CNI dynamically configures networking upon the creation or deletion of containers.
 - **Standardization**: The CNI specification provides a standardized method for defining network interfaces across different container runtimes.
 
----
-
 ## **Setting Up the Infrastructure with Terraform**
 
 To run Kubernetes on AWS, we will first provision the necessary infrastructure using **Terraform**. This setup will create a Virtual Private Cloud (VPC), subnets, security groups, and three EC2 instances that will serve as the **master** and **worker nodes** of our Kubernetes cluster.

@@ -4,6 +4,27 @@ In Kubernetes, each pod must be assigned a unique IP address to communicate with
 
 ![Pod Networking](./images/41.svg)
 
+### **What is CNI?**
+CNI is a project under the **Cloud Native Computing Foundation (CNCF)** and consists of a specification and libraries used to configure networking for containers. It helps allocate and deallocate networking resources when containers are created or removed. CNI provides a standardized interface to ensure Kubernetes clusters can communicate consistently.
+
+### **How CNI Works**
+CNI works by integrating with container runtimes such as Docker. The runtime invokes the CNI when it creates or deletes containers. Here's a simplified process:
+- **Container Creation**: The runtime calls the CNI, which configures networking for the container by setting up routes, namespaces, and interfaces. Once the network is configured, the runtime launches the container.
+- **Container Deletion**: When a container is terminated, the runtime invokes the CNI again to clean up the networking resources.
+
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/ee8a21be83aadc273e84210ac67267aa9e464ca5/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/images/CNI.svg)
+
+### **CNI Plugins**
+Kubernetes allows the use of various **CNI plugins**, which are responsible for networking tasks like IP address assignment, network configuration, and routing.
+
+Popular plugins include:
+- **Flannel**: Provides basic networking by creating an overlay network.
+- **Calico**: Offers more advanced features such as network security policies and encryption.
+- **Weave**: Facilitates networking across Kubernetes clusters, making it possible to connect pods across different nodes.
+- **Cilium**: Provides enhanced security and network visibility by integrating with layers of the Linux kernel.
+
+But we will use our own Custom CNI plugins.Which will gives us more clear idea about how CNI works in kubernetes
+
 ## **Objectives**
 
 By the end of this lab, you will:
@@ -211,8 +232,8 @@ resource "aws_instance" "ec2_instances" {
   vpc_security_group_ids      = [aws_security_group.allow_all_traffic.id]
   associate_public_ip_address = true
   key_name                    = aws_key_pair.my_key_pair.key_name
-
-  # Assign different user_data to set the hostname and install components for each instance
+  
+  # Assign different user_data to set the hostname for each instance
   user_data = lookup({
     0 = var.user_data_master
     1 = var.user_data_worker_1
@@ -221,16 +242,24 @@ resource "aws_instance" "ec2_instances" {
 
   tags = {
     Name = "ec2-instance-${count.index + 1}"
+    Role = lookup({
+      0 = "master"
+      1 = "worker-1"
+      2 = "worker-2"
+    }, count.index)
   }
 }
-
-# Output for private key and public IPs of instances
-output "private_key_path" {
-  value = local_file.private_key.filename
-}
-
-output "ec2_public_ips" {
-  value = [for instance in aws_instance.ec2_instances : instance.public_ip]
+ # Output for private key and public IPs of instances
+ output "private_key_path" {
+   value = local_file.private_key.filename
+ }
+ 
+ output "ec2_public_ips_with_roles" {
+  value = {
+    "master"   = aws_instance.ec2_instances[0].public_ip
+    "worker-1" = aws_instance.ec2_instances[1].public_ip
+    "worker-2" = aws_instance.ec2_instances[2].public_ip
+  }
 }
 
 # Variables for AMI and instance type
@@ -259,7 +288,7 @@ Once the `main.tf` file is created, follow these steps to apply the configuratio
    terraform apply
    ```
 
-   ![](./images/2.png)
+   ![](./images/outputs.png)
 
 Terraform will create the necessary infrastructure and output the public IPs of the EC2 instances and the path to the private key (`cni.pem`). You can use this information to SSH into the instances.
 
@@ -272,6 +301,8 @@ Once the instances are provisioned, SSH into the **master** and **worker** nodes
    ```bash
    ssh -i cni.pem ubuntu@<master-public-ip>
    ```
+
+   ![](./images/m.png)
 
 2. **Initialize the Kubernetes Cluster on the Master Node**:
 
@@ -298,6 +329,7 @@ Once the instances are provisioned, SSH into the **master** and **worker** nodes
    ```bash
    ssh -i cni.pem ubuntu@<worker-1-public-ip>
    ```
+   ![](./images/w-1.png)
 
    ```bash
    sudo kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
@@ -310,6 +342,8 @@ Once the instances are provisioned, SSH into the **master** and **worker** nodes
    ```bash
    ssh -i cni.pem ubuntu@<worker-2-public-ip>
    ```
+
+   ![](./images/w-2.png)
 
    ```bash
    sudo kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
@@ -340,7 +374,6 @@ To implement networking for Kubernetes pods, we will create a custom CNI configu
 1. **Create the CNI Configuration on Each Node (master, worker-1, worker-2)**:
 
    ```bash
-   sudo mkdir -p /etc/cni/net.d/
    sudo nano /etc/cni/net.d/10-bash-cni-plugin.conf
    ```
 
@@ -665,6 +698,10 @@ Now that we have implemented dynamic IP assignment, we will verify that pods are
    ```bash
    kubectl apply -f deploy.yaml
    ```
+
+   Here, we are deploying four simple pods.`bash-worker-1` & `nginx-worker-1` goes on the worker-1 and `bash-worker-2` & `nginx-worker-2` goes on the worker-2.Here explicitly tell the pods to scheduled on worker nodes ,but we can also scheduled pods on master node as we setup bash cni script and network infrasture for `master` node too.
+
+
 
 3. **Verify IP Assignment for Each Pod**:
 

@@ -201,8 +201,13 @@ resource "aws_instance" "ec2_instances" {
   associate_public_ip_address = true
   key_name                    = aws_key_pair.my_key_pair.key_name
   tags = {
-    Name = "ec2-instance-${count.index + 1}"
-  }
+       Name = "ec2-instance-${count.index + 1}"
+       Role = lookup({
+         0 = "master"
+         1 = "worker-1"
+         2 = "worker-2"
+       }, count.index)
+     }
 }
 
 # Output the key pair location and instance public IPs
@@ -210,8 +215,12 @@ output "private_key_path" {
   value = local_file.private_key.filename
 }
 
-output "ec2_public_ips" {
-  value = [for instance in aws_instance.ec2_instances : instance.public_ip]
+output "ec2_public_ips_with_roles" {
+     value = {
+       "master"   = aws_instance.ec2_instances[0].public_ip
+       "worker-1" = aws_instance.ec2_instances[1].public_ip
+       "worker-2" = aws_instance.ec2_instances[2].public_ip
+     }
 }
 ```
 
@@ -220,7 +229,6 @@ output "ec2_public_ips" {
 - **EC2 Instances**: Creates three EC2 instances (one master and two workers) with public IPs and attaches them to the public subnet. These instances will serve as the nodes for your Kubernetes cluster.
 - **Outputs**: Outputs the path to the private key and the public IPs of the EC2 instances.
 
----
 
 ### **Apply Terraform Script**
 
@@ -234,7 +242,7 @@ output "ec2_public_ips" {
    terraform apply
    ```
 
-   ![](./images/2.png)
+   ![](./images/outputs.png)
 
 3. After the script completes, Terraform will output the public IPs of the EC2 instances and the path to the private key (`cni.pem`). You can use this information to SSH into the instances.
 
@@ -249,12 +257,16 @@ Now, we will SSH into the EC2 instances and configure the hostnames as `master`,
    ```bash
    ssh -i cni.pem ubuntu@<master-instance-public-ip>
    ```
+   ![](./images/m.png)
 
 2. Once logged in, set the hostname for the master node:
 
    ```bash
    sudo hostnamectl set-hostname master
    ```
+   You need to `exit/loggout` from the current session to apply the `hostname`.If we ssh into `master` again we will find the hostname will be set as `master`.
+
+   ![](./images/sm.png)
 
 3. **SSH into the first worker node**:
 
@@ -262,11 +274,16 @@ Now, we will SSH into the EC2 instances and configure the hostnames as `master`,
    ssh -i cni.pem ubuntu@<worker-1-instance-public-ip>
    ```
 
+   ![](./images/w-1.png)
+
 4. Set the hostname for worker-1:
 
    ```bash
    sudo hostnamectl set-hostname worker-1
    ```
+   You need to `exit/loggout` from the current session to apply the `hostname`.If we ssh into `worker-1` again we will find the hostname will be set as `worker-1`.
+
+   ![](./images/ws-1.png)
 
 5. **SSH into the second worker node**:
 
@@ -279,7 +296,8 @@ Now, we will SSH into the EC2 instances and configure the hostnames as `master`,
    ```bash
    sudo hostnamectl set-hostname worker-2
    ```
-*You need to `exit`/`logout` from current session ,then ssh into the instances again to apply the hostname.*
+   ![](./images/ws-2.png)
+
 
 ### **Summary**
 
