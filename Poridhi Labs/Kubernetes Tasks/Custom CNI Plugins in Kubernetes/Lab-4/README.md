@@ -12,7 +12,7 @@ CNI works by integrating with container runtimes such as Docker. The runtime inv
 - **Container Creation**: The runtime calls the CNI, which configures networking for the container by setting up routes, namespaces, and interfaces. Once the network is configured, the runtime launches the container.
 - **Container Deletion**: When a container is terminated, the runtime invokes the CNI again to clean up the networking resources.
 
-![](./images/CNI.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/79dd311a57f3ccc9a3778f8759b9eb25a9f85ccb/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-4/images/CNI.svg)
 
 ### **CNI Plugins**
 Kubernetes allows the use of various **CNI plugins**, which are responsible for networking tasks like IP address assignment, network configuration, and routing.
