@@ -2,7 +2,7 @@
 
 In this session, we will learn how to define services, networks, and volumes in a Docker Compose file and verify the setup by running a simple application.
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2009/2.%20Docker%20Compose%20File%20with%20Services,%20Networks,%20and%20Volumes/images/image-5.png?raw=true)
 
 
 
@@ -101,7 +101,7 @@ volumes:
 
 ```
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2009/2.%20Docker%20Compose%20File%20with%20Services,%20Networks,%20and%20Volumes/images/image-4.png?raw=true)
 
 The `compose.yaml` file defines a multi-container application using Docker Compose. It consists of two services:
 
@@ -128,7 +128,7 @@ With all the files in place, you can now deploy the application using Docker Com
 docker compose -f compose.yaml up -d
 ```
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2009/2.%20Docker%20Compose%20File%20with%20Services,%20Networks,%20and%20Volumes/images/image.png?raw=true)
 
 ## Step 6: Verify the Deployment
 Verify that the services are running:
@@ -141,7 +141,7 @@ You should see two services: `web-fe` and `redis`.
 
 Expected output:
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2009/2.%20Docker%20Compose%20File%20with%20Services,%20Networks,%20and%20Volumes/images/image-1.png?raw=true)
 
 Check the logs for any errors:
 
@@ -151,7 +151,7 @@ docker compose logs
 
 Expected output:
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2009/2.%20Docker%20Compose%20File%20with%20Services,%20Networks,%20and%20Volumes/images/image-2.png?raw=true)
 
 Use the following command: 
 
@@ -162,7 +162,7 @@ You should see the message indicating the number of visits to the page.
 
 Expected output:
 
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2009/2.%20Docker%20Compose%20File%20with%20Services,%20Networks,%20and%20Volumes/images/image-3.png?raw=true)
 
 
 List the processes running inside of each service (container):

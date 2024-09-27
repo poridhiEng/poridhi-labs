@@ -9,7 +9,7 @@ In this session we will learn the basics of `Docker Compose` and how to manage m
 
 Modern cloud-native applications are often composed of multiple smaller services that work together to form a complete application. 
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2009/1.%20Introduction%20to%20Docker%20Compose/images/image-1.png?raw=true)
 
 This is known as the microservices pattern. These could include:
 
@@ -82,7 +82,7 @@ services:
 
 This file defines two services: a web server (nginx) and a Redis server.
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2009/1.%20Introduction%20to%20Docker%20Compose/images/image-5.png?raw=true)
 
 ### Step 3: Start the Application
 Run the following command to start the services:
@@ -93,7 +93,7 @@ You should see output indicating the services are starting.
 
 Expected output:
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2009/1.%20Introduction%20to%20Docker%20Compose/images/image-2.png?raw=true)
 
 ### Step 4: Verify the Setup
 
@@ -107,7 +107,7 @@ You should see the default Nginx welcome page.
 
 Expected output:
 
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2009/1.%20Introduction%20to%20Docker%20Compose/images/image-3.png?raw=true)
 
 ### Step 5: View Status
 Check the status of the running containers:
@@ -117,7 +117,7 @@ docker compose ps
 
 Expected output:
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2009/1.%20Introduction%20to%20Docker%20Compose/images/image-4.png?raw=true)
 
 ### Step 6: Stop the Application
 Stop the services with:
