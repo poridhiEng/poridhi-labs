@@ -1,13 +1,13 @@
 # Multi-stage Builds with a Simple Node.js App
 
-## Introduction
-
 In the world of making programs run smoothly inside containers, we've found that using just one step to build them isn't always the best idea. When we stick to single steps, our containers can end up being really big and slow. But fear not! There's a better way: multi-stage builds. These help us make our containers smaller and faster without losing any important stuff.
+
+![image-1](./images/image-1.png)
 
 Today, we're going on an adventure to discover how multi-stage builds work. We'll break down the complicated bits into easy-to-understand pieces.
 
 
-## Step 1: Create a Simple Node.js App
+## Create a Simple Node.js App
 
 Create a directory for our project and navigate into it:
 
@@ -30,12 +30,11 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}/`);
 });
-
 ```
 
 This simple Node.js application creates an HTTP server that listens on port 3000 and responds with "Hello, world!" to all requests.
 
-## Step 2: Create a Dockerfile
+## Create a Dockerfile
 
 Next, let's create a Dockerfile to containerize our Node.js application using two-stage builds:
 
@@ -59,10 +58,6 @@ EXPOSE 3000
 CMD ["node", "app.js"]
 ```
 
-
-![image-1](./images/image-1.png)
-
-
 ### Stage 1 (`build`):
 
 - **Purpose:** Build the Node.js application.
@@ -81,7 +76,7 @@ CMD ["node", "app.js"]
   - Exposes port 3000, allowing external communication with the application.
   - Defines the command to run the application (`node index.js`), starting the HTTP server.
 
-## Step 3: Build and Run the Docker Image
+## Build and Run the Docker Image
 
 Now, let's build and run the Docker image:
 

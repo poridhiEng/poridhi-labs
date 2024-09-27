@@ -2,6 +2,8 @@
 
 In this documentation, we'll explore bridge networks in Docker by creating and examining custom bridge networks, attaching containers to multiple networks, and using tools like `ip` and `nmap` to examine network configurations and discover other containers.
 
+![](./images/1.png)
+
 ## Creating and Examining a Custom Bridge Network
 
 Let's start by creating a custom bridge network named `user-network` and exploring its configuration:
@@ -18,10 +20,18 @@ docker network create \
   user-network
 ```
 
+This Docker command creates a **custom bridge network** with the following configurations:
 
-This command creates a bridge network with custom settings and labels.
+- **Bridge driver** for local container communication.
+- **Labels** (`project=dockerinaction`, `chapter=5`) to categorize and organize the network.
+- **Attachable** network allows standalone containers to join.
+- **Scope: Local**, restricting the network to a single Docker host.
+- **Custom subnet** (`10.0.42.0/24`) and **IP range** (`10.0.42.128/25`), controlling the IPs assigned to containers.
+- **Network name**: `user-network`.
 
-To inspect the newly created bridge:
+This setup allows precise control over container networking and IP management within the defined range.
+
+### Inspect the newly created bridge:
 
 ![image](./images/out-2.png)
 
