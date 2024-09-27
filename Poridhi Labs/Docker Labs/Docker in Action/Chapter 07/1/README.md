@@ -11,7 +11,8 @@ When we create a Docker container, it uses a `Union File-System (UFS)` mount to 
 
 To build a new image, we start with an existing image, make changes to it by modifying the container's filesystem, and then commit these changes to form a new image. This new image can then be used to create further containers, encapsulating the changes made.
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/1/images/image-1.png?raw=true)
+
 
 ### How UFS Works 
 
@@ -19,7 +20,7 @@ To build a new image, we start with an existing image, make changes to it by mod
 - **Layers:** Each time you make changes (like installing software or creating files), these changes are saved as new layers on top of the base layer.
 - **Union Mount:** The union filesystem merges these layers into a single, cohesive filesystem that the container uses.
 
-    ![alt text](./images/image-2.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/1/images/image-2.png?raw=true)
 
     The above figure demonstrates how UFS works.
 
@@ -29,7 +30,7 @@ To build a new image, we start with an existing image, make changes to it by mod
 3. Remove the modified container to clean up.
 4. Verify the changes by running a new container from the `hw_image` and checking the existence of the `HelloWorld` file.
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/1/images/image.png?raw=true)
 
 
 ## Solution

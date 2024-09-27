@@ -13,11 +13,13 @@ We will perform the following steps:
 ## Simple Explanation of the Process
 In this lab, we will start by creating a container from the `Ubuntu` image and open a `bash` session within it. Inside this container, we will install `git` and verify that the installation was successful by checking the git `version`. After exiting the container, we will commit these changes to create a new Docker image that includes `git`. We will run a container from that image.
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/2/images/image.png?raw=true)
 
 Finally, we will set an `entrypoint` for this new image to make it easier to use git directly without needing to specify the git command each time we start a container from this image.
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/2/images/image-1.png?raw=true)
+
+
 
 ## Steps
 

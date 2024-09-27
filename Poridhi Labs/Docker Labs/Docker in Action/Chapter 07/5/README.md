@@ -1,10 +1,10 @@
-# Lab: Exploring Docker Image Layers and Size Management
+# Exploring Docker Image Layers and Size Management
 
 Docker images are built from layers, where each layer represents a set of filesystem changes. The size of an image on disk is the sum of the sizes of its component layers. Docker allows you to commit changes to a running container, creating new image layers. 
 
 This lab will guide you through these concepts with hands-on practices, focusing on creating and modifying a Docker image with ubuntu as the base image. You will install and remove software within containers, observe the changes in image sizes, and understand the impact of Docker's Union File System (UFS) on image size. 
 
-![alt text](./images/image.png)
+![alt text]( https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/5/images/image.png?raw=true)
 
 ## Task: Building and Modifying Docker Images
 Here, you will create a Docker image from the official Ubuntu image, install Git within a container, and commit the changes to create a new image. You will then modify this image by removing Git and observe how Docker manages image layers and size. 

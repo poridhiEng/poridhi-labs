@@ -8,7 +8,8 @@ In this lab, we will learn how to review filesystem changes made inside a Docker
  layer where it exists. If a file was not created or changed on the top layer, the read will
  fall through the layers until it reaches a layer where that file does exist. Here is a simple example:
 
- ![alt text](./images/image-3.png)
+ ![alt text]( https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/3/images/image-3.png?raw=true)
+
 
 The layer functionality is hidden by the UFS. No special actions are required by the software running in a container to utilize these features. The UFS manages the complexity of handling files across multiple layers.
 
@@ -17,7 +18,7 @@ stand if you think of it as copy-on-change. When a file in a read-only layer (no
 top layer) is modified, the whole file is first copied from the read-only layer into the
 writable layer before the change is made.
 
-![alt text](./images/image-4.png)
+![alt text]( https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/3/images/image-4.png?raw=true)
 
 In this illustration,
  files are added, changed, deleted, and added again over a range of three layers.
@@ -35,7 +36,7 @@ Follow these steps to complete the task:
 
 1. **Create a container and add a new file:**
 
-    ![alt text](./images/image.png)
+    ![alt text]( https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/3/images/image.png?raw=true)
 
     **Command**:
     ```sh
@@ -61,7 +62,7 @@ Follow these steps to complete the task:
 
 3. **Create another container and delete an existing file:**
 
-    ![alt text](./images/image-1.png)
+    ![alt text]( https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/3/images/image-1.png?raw=true)
 
     **Command:**
     ```sh
@@ -89,7 +90,7 @@ Follow these steps to complete the task:
 
 5. **Create yet another container and change an existing file:**
 
-    ![alt text](./images/image-2.png)
+    ![alt text]( https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/3/images/image-2.png?raw=true)
 
     **Command:**
     ```sh

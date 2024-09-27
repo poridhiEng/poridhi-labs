@@ -22,7 +22,8 @@ This lab will provide you with hands-on experience in modifying these attributes
 
 ## Task
 
-![alt text](./images/image.png)
+![alt text]( https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/4/images/image.png?raw=true)
+
 
 **Create a Container with Environment Variables**
 - Run a Docker container from the `busybox:latest` image, setting two environment variables.
