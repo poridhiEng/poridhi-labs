@@ -7,7 +7,12 @@ This lab scenario provides a comprehensive overview of the differences between D
 In Docker, both `stop` and `kill` commands are used to terminate a running container, but they work differently:
 
 - **`docker stop`**: Sends a `SIGTERM` signal first, allowing the process to clean up before termination. If the process doesn't terminate within a specified timeout (default 10 seconds), Docker sends a `SIGKILL` signal to forcefully stop the process.
+
+   ![alt text](./images/image.png)
+
 - **`docker kill`**: Sends a `SIGKILL` signal immediately, terminating the process without allowing any clean-up.
+
+   ![alt text](./images/image-1.png)
 
 
 ## Using `docker stop`

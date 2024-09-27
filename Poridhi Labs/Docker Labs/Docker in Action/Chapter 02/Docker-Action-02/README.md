@@ -2,11 +2,13 @@
 
 This documentation provides a step-by-step guide to create a Docker container that mimics a traditional host environment. The container will be capable of running multiple processes and services using `supervisord` as the process manager.
 
-### Features
+## Features
 
 - **Nginx**: Web server.
 - **MySQL**: Database server.
 - **Supervisord**: Process manager to manage multiple services.
+
+![alt text](./images/host-main.PNG)
 
 
 ## Host-Like Environment Setup
@@ -39,6 +41,15 @@ EXPOSE 80 3306
 CMD ["/usr/bin/supervisord"]
 ```
 
+
+**Explanation:**
+- **Base Image:** `ubuntu:latest` provides a minimal Ubuntu environment.
+- **Environment Variables:** `DEBIAN_FRONTEND=noninteractive` ensures package installations don't prompt for user input.
+- **Package Installation:** Installs `nginx`, `mysql-server`, and `supervisor`, followed by cleanup to reduce image size.
+- **Configuration:** Copies a custom supervisord configuration file into the container.
+- **Ports:** Exposes necessary ports for Nginx and MySQL.
+- **Entrypoint:** Uses supervisord to manage services within the container.
+
 ### 2. Create supervisord Configuration
 
 Create a `supervisord.conf` file with the following content:
@@ -55,6 +66,11 @@ autorestart=true
 command=/usr/sbin/mysqld
 autorestart=true
 ```
+
+**Explanation:**
+- **supervisord:** Runs in the foreground (`nodaemon=true`).
+- **Nginx:** Configured to run in the foreground (`daemon off;`) and restart automatically if it fails.
+- **MySQL:** Configured to restart automatically if it fails.
 
 ### 3. Build the Docker Image
 
