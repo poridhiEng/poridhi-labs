@@ -2,7 +2,7 @@
 
 In this documentation, we'll explore bridge networks in Docker by creating and examining custom bridge networks, attaching containers to multiple networks, and using tools like `ip` and `nmap` to examine network configurations and discover other containers.
 
-![](./images/1.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2005/Exploring%20Bridge%20Networks%20in%20Docker/images/1.png?raw=true)
 
 ## Creating and Examining a Custom Bridge Network
 
@@ -33,7 +33,7 @@ This setup allows precise control over container networking and IP management wi
 
 ### Inspect the newly created bridge:
 
-![image](./images/out-2.png)
+![image](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2005/Exploring%20Bridge%20Networks%20in%20Docker/images/out-2.png?raw=true)
 
 Now, let's launch a container attached to this network and examine its network interfaces:
 
@@ -45,7 +45,7 @@ docker run -it \
     sh
 ```
 
-![image](./images/1.png)
+![image](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2005/Exploring%20Bridge%20Networks%20in%20Docker/images/1.png?raw=true)
 
 Inside the container, run the following command to list the available IPv4 addresses:
 
@@ -55,7 +55,7 @@ ip -f inet -4 -o addr
 
 We'll see output similar to:
 
-![image](./images/out-3.png)
+![image](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2005/Exploring%20Bridge%20Networks%20in%20Docker/images/out-3.png?raw=true)
 
 This output shows that the container has an IP address within the range and subnet specified by the `user-network` configuration.
 
@@ -81,7 +81,7 @@ docker network ls
 ```
 Expected Output:
 
-![image](./images/out-4.png)
+![image](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2005/Exploring%20Bridge%20Networks%20in%20Docker/images/out-4.png?raw=true)
 
 Next, attach the `network-explorer` container to `user-network2`:
 
@@ -90,7 +90,7 @@ docker network connect \
   user-network2 \
   network-explorer
 ```
-![image](./images/2.png)
+![image](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2005/Exploring%20Bridge%20Networks%20in%20Docker/images/2.png?raw=true)
 
 ## Installing `nmap` Inside the Container
 
@@ -112,7 +112,7 @@ Now, scan the subnets of both bridge networks:
 nmap -sn 10.0.42.* -sn 10.0.43.* -oG /dev/stdout | grep Status
 ```
 
-![image](./images/out-6.png)
+![image](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2005/Exploring%20Bridge%20Networks%20in%20Docker/images/out-6.png?raw=true)
 
 **Ping Scan**: `nmap` is used to perform a ping scan (`-sn`) on IP ranges `10.0.42.*` and `10.0.43.*`.
 

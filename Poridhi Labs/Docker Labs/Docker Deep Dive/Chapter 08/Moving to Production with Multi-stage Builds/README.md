@@ -2,10 +2,9 @@
 
 In the world of making programs run smoothly inside containers, we've found that using just one step to build them isn't always the best idea. When we stick to single steps, our containers can end up being really big and slow. But fear not! There's a better way: multi-stage builds. These help us make our containers smaller and faster without losing any important stuff.
 
-![image-1](./images/image-1.png)
+![image-1](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2008/Moving%20to%20Production%20with%20Multi-stage%20Builds/images/image-1.png?raw=true)
 
 Today, we're going on an adventure to discover how multi-stage builds work. We'll break down the complicated bits into easy-to-understand pieces.
-
 
 ## Create a Simple Node.js App
 
@@ -91,7 +90,7 @@ Check that the container is running:
 docker ps
 ```
 
-![](./images/21.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2008/Moving%20to%20Production%20with%20Multi-stage%20Builds/images/21.png?raw=true)
 
 This will build the Docker image based on the Dockerfile and run a container based on that image. The application will be accessible at `http://localhost:3000`.
 
@@ -106,7 +105,7 @@ curl http://localhost:3000
 
 This should return:
 
-![](./images/22.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2008/Moving%20to%20Production%20with%20Multi-stage%20Builds/images/22.png?raw=true)
 
 ## Conclusion
 

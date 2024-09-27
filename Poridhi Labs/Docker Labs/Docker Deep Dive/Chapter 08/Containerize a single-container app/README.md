@@ -4,7 +4,7 @@ In this guide, we will walk through the process of containerizing a simple Node.
 
 Docker is the tool we'll use for containerization. It allows developers to automate the deployment of applications inside lightweight, portable containers. We’ll also explore how Docker layers work and their significance in the containerization process.
 
-![](./images/image-1.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2008/Containerize%20a%20single-container%20app/images/image-1.png?raw=true)
 
 ### Creating the Application Code
 
@@ -85,7 +85,7 @@ To verify that the image was created, use the following command:
 docker images
 ```
 
-![](./images/11.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2008/Containerize%20a%20single-container%20app/images/11.png?raw=true)
 
 This will display a list of available images.
 
@@ -132,7 +132,7 @@ Check that the container is running by typing:
 docker ps
 ```
 
-![](./images/12.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2008/Containerize%20a%20single-container%20app/images/12.png?raw=true)
 
 This will list all active containers.
 
@@ -145,7 +145,7 @@ To test the app, you can use the `curl` command or open a browser and go to `htt
 curl http://localhost:80
 ```
 
-![](./images/13.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2008/Containerize%20a%20single-container%20app/images/13.png?raw=true)
 
 ### Docker Layers and Efficiency
 
@@ -161,7 +161,7 @@ You can inspect the layers of your image by running:
 docker history my-node-app:1.0
 ```
 
-![](./images/14.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2008/Containerize%20a%20single-container%20app/images/14.png?raw=true)
 
 This command displays each command from the Dockerfile and the corresponding layer it created.
 
