@@ -22,6 +22,8 @@ This lab will provide you with hands-on experience in modifying these attributes
 
 ## Task
 
+![alt text](./images/image.png)
+
 **Create a Container with Environment Variables**
 - Run a Docker container from the `busybox:latest` image, setting two environment variables.
 - Commit the running container to a new image.
@@ -33,7 +35,7 @@ This lab will provide you with hands-on experience in modifying these attributes
 **Verify Inheritance of Attributes**
 - Run a container from the final image without specifying any command or entrypoint to verify that the environment variables and the entrypoint/command are inherited correctly.
 
-![alt text](./images/image.png)
+
 
 ## Solution Steps
 

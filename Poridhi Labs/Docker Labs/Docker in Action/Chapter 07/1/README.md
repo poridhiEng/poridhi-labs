@@ -19,7 +19,7 @@ To build a new image, we start with an existing image, make changes to it by mod
 - **Layers:** Each time you make changes (like installing software or creating files), these changes are saved as new layers on top of the base layer.
 - **Union Mount:** The union filesystem merges these layers into a single, cohesive filesystem that the container uses.
 
-    ![alt text](image.png)
+    ![alt text](./images/image-2.png)
 
     The above figure demonstrates how UFS works.
 
