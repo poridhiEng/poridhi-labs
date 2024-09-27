@@ -8,7 +8,7 @@ Using a supervisor process inside your container ensures that the container rema
 
 Suppose a company provides software that produces a full LAMP (Linux, Apache, MySQL, PHP) stack inside a single container. These containers use `supervisord` to ensure that all the related processes are kept running. Below is an example of how to use such a container.
 
-![alt text](./images/supervisord.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2002/Docker-Action-05/images/supervisord.png)
 
 ### Create a LAMP Docker Image
 
@@ -78,7 +78,7 @@ And finally, run a container using your newly created image:
 docker run -d -p 80:80 -p 3306:3306 --name lamp-container my-lamp-image
 ```
 
-![alt text](./images/lamp-01.PNG)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2002/Docker-Action-05/images/lamp-01.PNG)
 
 ### Checking Running Processes
 
@@ -90,7 +90,7 @@ docker top lamp-container
 
 The `top` subcommand will show the host PID for each of the processes in the container. You’ll see `supervisord`, `mysql`, and `apache` included in the list of running programs.
 
-![alt text](./images/lamp-02.PNG)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2002/Docker-Action-05/images/lamp-02.PNG)
 
 ### Stopping a Process Inside the Container
 
@@ -118,7 +118,7 @@ The values in the PID column will be different when you run the command. Find th
 docker exec lamp-container kill <PID>
 ```
 
-![alt text](./images/lamp-03.PNG)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2002/Docker-Action-05/images/lamp-03.PNG)
 
 Running this command will execute the Linux `kill` program inside the `lamp-container` container and tell the `apache2` process to shut down. When `apache2` stops, the `supervisord` process will log the event and restart the process. The container logs will clearly show these events:
 
@@ -128,7 +128,7 @@ Running this command will execute the Linux `kill` program inside the `lamp-cont
 ... success: apache2 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
 ```
 
-![alt text](./images/lamp-04.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2002/Docker-Action-05/images/lamp-04.png)
 
 This ensures that the `apache2` process is restarted by `supervisord`, thereby maintaining the container's functionality.
 

@@ -8,11 +8,11 @@ In Docker, both `stop` and `kill` commands are used to terminate a running conta
 
 - **`docker stop`**: Sends a `SIGTERM` signal first, allowing the process to clean up before termination. If the process doesn't terminate within a specified timeout (default 10 seconds), Docker sends a `SIGKILL` signal to forcefully stop the process.
 
-   ![alt text](./images/image.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2007/Deep-dive-03/images/image.png)
 
 - **`docker kill`**: Sends a `SIGKILL` signal immediately, terminating the process without allowing any clean-up.
 
-   ![alt text](./images/image-1.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2007/Deep-dive-03/images/image-1.png)
 
 
 ## Using `docker stop`
@@ -74,7 +74,7 @@ SIGTERM received
 
 The logs should show that the process received the `SIGTERM` signal, executed the trap command, printed "SIGTERM received," and exited gracefully.
 
-![alt text](./images/stop-kill-01.PNG)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2007/Deep-dive-03/images/stop-kill-01.PNG)
 
 ## Using `docker kill`
 
@@ -112,7 +112,7 @@ Running
 
 The logs should show continuous "Running" messages without any indication of "SIGTERM received," demonstrating that the process was abruptly terminated by the `SIGKILL` signal.
 
-![alt text](./images/stop-kill-02.PNG)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2007/Deep-dive-03/images/stop-kill-02.PNG)
 
 ## Summary of Differences
 

@@ -20,7 +20,7 @@ Docker employs an exponential backoff strategy to manage the timing of restart a
 - 4th restart attempt: wait 8 seconds
 - And so on...
 
-![alt text](./images/backup-img.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2002/Docker-Action-04/images/backup-img.png)
 
 This method is widely used in service restoration to avoid overwhelming the system.
 
@@ -40,7 +40,7 @@ docker logs -f backoff-detector
 
 The logs will show the times the container has restarted and the waiting periods between restarts. The container will print the current time upon restarting and then exit.
 
-![alt text](./images/auto-restart-01.PNG)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2002/Docker-Action-04/images/auto-restart-01.PNG)
 
 ## Interaction During Backoff Periods
 
@@ -52,7 +52,7 @@ docker exec backoff-detector echo Just a Test
 
 This command will result in an error message because the container is not in an active state.
 
-![alt text](./images/auto-restart-02.PNG)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2002/Docker-Action-04/images/auto-restart-02.PNG)
 
 This means you cannot perform any operations that require the container to be running, such as executing other commands in the container.
 

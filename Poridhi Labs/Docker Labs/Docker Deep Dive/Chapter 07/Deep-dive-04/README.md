@@ -10,7 +10,7 @@ In this document, we will get to know about the following restart policies:
 - **unless-stopped**
 - **on-failure**
 
-![alt text](./images/Restart-policy.PNG)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2007/Deep-dive-04/images/Restart-policy.PNG)
 
 ## Restart Policies Explained
 
@@ -18,7 +18,7 @@ In this document, we will get to know about the following restart policies:
 
 The `always` policy is the simplest. When a container has this restart policy, Docker will automatically restart the container if it stops or encounters an error.
 
-![alt text](./images/image.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2007/Deep-dive-04/images/image.png)
 
 ### Demonstration
 
@@ -52,7 +52,7 @@ The `always` policy is the simplest. When a container has this restart policy, D
 
    You will see a output similar to this:
 
-   ![alt text](./images/image-out-01.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2007/Deep-dive-04/images/image-out-01.png)
 
 Be aware that Docker has restarted the same container and not created a new one. If we inspect it with `docker inspect`, we can see the `restartCount` has been incremented.
 
@@ -60,7 +60,7 @@ Be aware that Docker has restarted the same container and not created a new one.
 docker inspect neversaydie --format '{{.RestartCount}}'
 ```
 
-![alt text](./images/image-out-02.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2007/Deep-dive-04/images/image-out-02.png)
 
 An interesting feature of the `--restart always` policy is that if we stop a container with `docker stop` and then restart the Docker daemon, the container will be restarted. 
 
@@ -74,7 +74,7 @@ To illustrate:
 
 The main difference between the `always` and `unless-stopped` policies is that containers with the `--restart unless-stopped` policy will not be restarted when the daemon restarts if they were in the Stopped (Exited) state.
 
-![alt text](./images/image-1.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2007/Deep-dive-04/images/image-1.png)
 
 ### Example
 
@@ -108,7 +108,7 @@ The main difference between the `always` and `unless-stopped` policies is that c
    ```
    we will see output similar like this:
 
-   ![alt text](./images/image-out-03.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2007/Deep-dive-04/images/image-out-03.png)
 
 4. Restart Docker:
    ```sh
@@ -121,7 +121,7 @@ The main difference between the `always` and `unless-stopped` policies is that c
    ```
    we will see output similar like this:
 
-   ![alt text](./images/image-out-04.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2007/Deep-dive-04/images/image-out-04.png)
 
 The `always` container has been restarted, but the `unless-stopped` container has not.
 
@@ -129,7 +129,7 @@ The `always` container has been restarted, but the `unless-stopped` container ha
 
 The `on-failure` policy will restart a container if it exits with a non-zero exit code. It will also restart containers when the Docker daemon restarts, even those that were in the stopped state.
 
-![alt text](./images/image-2.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2007/Deep-dive-04/images/image-2.png)
 
 ### Demonstration
 
@@ -145,4 +145,4 @@ The `on-failure` policy will restart a container if it exits with a non-zero exi
       docker inspect on-failure --format '{{.HostConfig.RestartPolicy}}'
       ```
 
-      ![alt text](./images/image-out-05.png)
+      ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2007/Deep-dive-04/images/image-out-05.png)

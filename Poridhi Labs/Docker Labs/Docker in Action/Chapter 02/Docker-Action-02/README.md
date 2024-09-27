@@ -8,7 +8,7 @@ This documentation provides a step-by-step guide to create a Docker container th
 - **MySQL**: Database server.
 - **Supervisord**: Process manager to manage multiple services.
 
-![alt text](./images/host-main.PNG)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2002/Docker-Action-02/images/host-main.PNG)
 
 
 ## Host-Like Environment Setup
@@ -114,7 +114,7 @@ ps -ef
 ```
 The ``ps -ef`` command is commonly used for system monitoring and troubleshooting to check which processes are running, their resource usage, and the commands used to start them.
 
-![alt text](./images/host-01.PNG)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2002/Docker-Action-02/images/host-01.PNG)
 
 Exit the container using ``exit`` command.
 
@@ -130,7 +130,7 @@ Exit the container using ``exit`` command.
 
     If Nginx is running correctly, this command will fetch the default Nginx welcome page.
 
-    ![alt text](./images/host-02.PNG)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2002/Docker-Action-02/images/host-02.PNG)
 
 2. Access Nginx logs:
 
@@ -139,7 +139,7 @@ Exit the container using ``exit`` command.
     ```
     This command will show the Nginx access log. You can replace ``access.log`` with ``error.log`` for error logs.
 
-    ![alt text](./images/host-03.PNG)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2002/Docker-Action-02/images/host-03.PNG)
 
 ### Accessing MySQL Database Server
 
@@ -153,7 +153,7 @@ Exit the container using ``exit`` command.
     If prompted for a password, the default password is empty (just press Enter).
     Once connected, you can interact with MySQL as you would on a standard MySQL server.
 
-    ![alt text](./images/host-04.PNG)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2002/Docker-Action-02/images/host-04.PNG)
 
 2. Access MySQL logs:
 
@@ -162,7 +162,7 @@ Exit the container using ``exit`` command.
     ```
     This command will show the MySQL error log. Replace ``error.log`` with ``query.log`` for the query log, if configured.
 
-    ![alt text](./images/host-05.PNG)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2002/Docker-Action-02/images/host-05.PNG)
 
 ## Usage
 
@@ -184,7 +184,7 @@ supervisorctl start nginx
 supervisorctl restart nginx
 ```
 
-![alt text](./images/host-06.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2002/Docker-Action-02/images/host-06.png)
 
 ## Conclusion
 

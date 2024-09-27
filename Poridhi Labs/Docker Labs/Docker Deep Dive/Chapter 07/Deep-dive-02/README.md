@@ -1,6 +1,6 @@
 # The Lifecycle of a Container
 
-![alt text](./images/container-lifecycle.PNG)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2007/Deep-dive-02/images/container-lifecycle.PNG)
 
 This document outlines the lifecycle of a Docker container, from creation to deletion, using the example of a container named "percy."
 
@@ -40,7 +40,7 @@ View the data of the file using:
 cat newfile
 ```
 
-![alt text](./images/container-01.PNG)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2007/Deep-dive-02/images/container-01.PNG)
 
 ## 3. Stopping the Container
 

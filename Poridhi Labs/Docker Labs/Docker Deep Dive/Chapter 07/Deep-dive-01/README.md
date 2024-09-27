@@ -2,7 +2,7 @@
 
 This guide provides step-by-step instructions to set up and run an NGINX web server inside a Docker container. NGINX is a powerful web server and reverse proxy widely used for serving static content, load balancing, and more. Docker is a platform that allows you to easily create, deploy, and run applications in containers.
 
-![alt text](./images/image.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2007/Deep-dive-01/images/image.png)
 
 In this guide, we will demonstrate how to set up and run an NGINX web server inside a Docker container. By following these steps, you will learn how to pull the NGINX Docker image, configure a simple HTML file to be served by NGINX, and run the web server inside a container. Additionally, we will cover managing the NGINX container, including starting, stopping, viewing logs, and removing the container. This setup allows for a flexible and efficient way to deploy a web server using Docker’s containerization capabilities.
 
@@ -76,7 +76,7 @@ You should see the following output:
 <h1>Hello, Docker!</h1>
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2007/Deep-dive-01/images/image-1.png)
 
 ## Managing the NGINX Container
 

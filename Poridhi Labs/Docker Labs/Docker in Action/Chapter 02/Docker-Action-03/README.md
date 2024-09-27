@@ -2,7 +2,7 @@
 
 Ensuring the security and data integrity of Docker containers is critical in any robust DevOps environment. One effective measure is to run Docker containers with a read-only file system. This prevents any modifications to the container's file system during runtime, mitigating risks associated with unauthorized changes or accidental data corruption.
 
-![alt text](./images/Read-only-img.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2002/Docker-Action-03/images/Read-only-img.png)
 
 ## Scenario Overview
 
@@ -73,7 +73,7 @@ Imagine you are a DevOps engineer at a company that values security and data int
     touch: /data/newfile.txt: Read-only file system
     ```
 
-    ![alt text](./images/readonly-01.PNG)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2002/Docker-Action-03/images/readonly-01.PNG)
 
 2. **Confirm File System Status**:
     You can further confirm the read-only status by inspecting the file system options:
@@ -85,7 +85,7 @@ Imagine you are a DevOps engineer at a company that values security and data int
 
     This command should output `true`, indicating that the root file system is indeed read-only.
 
-    ![alt text](./images/readonly-02.PNG)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2002/Docker-Action-03/images/readonly-02.PNG)
 
 ## Conclusion
 
