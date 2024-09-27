@@ -2,7 +2,7 @@
 
 In Kubernetes, each pod must be assigned a unique IP address to communicate with other pods, the host system, and external networks. In this lab, we will implement dynamic IP assignment for Kubernetes pods using a custom **Bash CNI** plugin. By assigning IP addresses dynamically, we ensure efficient pod-to-pod and pod-to-host communication within the Kubernetes cluster.
 
-![Pod Networking](./images/41.svg)
+![Pod Networking](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-4/images/41.svg)
 
 ### **What is CNI?**
 CNI is a project under the **Cloud Native Computing Foundation (CNCF)** and consists of a specification and libraries used to configure networking for containers. It helps allocate and deallocate networking resources when containers are created or removed. CNI provides a standardized interface to ensure Kubernetes clusters can communicate consistently.
@@ -12,7 +12,7 @@ CNI works by integrating with container runtimes such as Docker. The runtime inv
 - **Container Creation**: The runtime calls the CNI, which configures networking for the container by setting up routes, namespaces, and interfaces. Once the network is configured, the runtime launches the container.
 - **Container Deletion**: When a container is terminated, the runtime invokes the CNI again to clean up the networking resources.
 
-![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/ee8a21be83aadc273e84210ac67267aa9e464ca5/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/images/CNI.svg)
+![](./images/CNI.svg)
 
 ### **CNI Plugins**
 Kubernetes allows the use of various **CNI plugins**, which are responsible for networking tasks like IP address assignment, network configuration, and routing.
@@ -42,11 +42,13 @@ Before starting this lab, ensure you have:
 - AWS CLI installed and configured.
 - Terraform installed on your local machine.
 
+If you don’t have the `AWS CLI` and `Terraform` installed, follow the official documentation to get them set up.We will use `Poridhi's Vscode` where `AWS CLI` and `Terraform` is preinstalled.
+
 ## **Provision Infrastructure for Kubernetes Cluster**
 
 We will use **Terraform** to automate the creation of AWS resources for our Kubernetes cluster. This includes setting up EC2 instances for the master and worker nodes, with the necessary tools for Kubernetes installed via user data scripts.
 
-![Infrastructure Diagram](./images/21.svg)
+![Infrastructure Diagram](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-4/images/21.svg)
 
 ### **AWS CLI Configuration**
 
@@ -63,7 +65,7 @@ This will prompt you to enter:
 - **Default region** (e.g., `ap-southeast-1`)
 - **Output format** (e.g., `json`)
 
-  ![](./images/1.png)
+  ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-4/images/1.png)
 
 ### **Terraform Configuration (`main.tf`)**
 
@@ -288,7 +290,7 @@ Once the `main.tf` file is created, follow these steps to apply the configuratio
    terraform apply
    ```
 
-   ![](./images/outputs.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-4/images/outputs.png)
 
 Terraform will create the necessary infrastructure and output the public IPs of the EC2 instances and the path to the private key (`cni.pem`). You can use this information to SSH into the instances.
 
@@ -302,7 +304,7 @@ Once the instances are provisioned, SSH into the **master** and **worker** nodes
    ssh -i cni.pem ubuntu@<master-public-ip>
    ```
 
-   ![](./images/m.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-4/images/m.png)
 
 2. **Initialize the Kubernetes Cluster on the Master Node**:
 
@@ -310,7 +312,7 @@ Once the instances are provisioned, SSH into the **master** and **worker** nodes
    sudo kubeadm init --pod-network-cidr=10.244.0.0/16
    ```
 
-   ![](./images/10.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-4/images/10.png)
 
    *After running this command, Kubernetes will provide a `join command` needed to connect the worker nodes to the cluster. **Note down this join command** as you will use it later to join the worker nodes.*
 
@@ -329,13 +331,13 @@ Once the instances are provisioned, SSH into the **master** and **worker** nodes
    ```bash
    ssh -i cni.pem ubuntu@<worker-1-public-ip>
    ```
-   ![](./images/w-1.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-4/images/w-1.png)
 
    ```bash
    sudo kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
    ```
 
-   ![](./images/11.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-4/images/11.png)
 
    For **worker-2**:
 
@@ -343,13 +345,13 @@ Once the instances are provisioned, SSH into the **master** and **worker** nodes
    ssh -i cni.pem ubuntu@<worker-2-public-ip>
    ```
 
-   ![](./images/w-2.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-4/images/w-2.png)
 
    ```bash
    sudo kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
    ```
 
-   ![](./images/12.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-4/images/12.png)
 
 ### **Verify the Cluster Setup**
 
@@ -361,7 +363,7 @@ Once the instances are provisioned, SSH into the **master** and **worker** nodes
    kubectl get nodes
    ```
 
-   ![](./images/13.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-4/images/13.png)
 
    Both master and worker nodes will show as **NotReady** until the CNI plugin is configured.
 
@@ -423,15 +425,15 @@ After setting up the `cni0` bridge and CIDR blocks, verify the successful creati
    ```
    For `master` node
  
-   ![](./images/14.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-4/images/14.png)
  
    For `worker-1` node
  
-   ![](./images/15.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-4/images/15.png)
  
    For `worker-2` node
    
-   ![](./images/16.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-4/images/16.png)
 
 2. **Verify IP Assignments for Each Bridge Interface**:
 
@@ -441,15 +443,15 @@ After setting up the `cni0` bridge and CIDR blocks, verify the successful creati
 
    For `master` node
    
-   ![](./images/i1.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-4/images/i1.png)
  
    For `worker-1` node
  
-   ![](./images/i2.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-4/images/i2.png)
  
    For `worker-2` node
  
-   ![](./images/i3.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-4/images/i3.png)
    
    
    The output should show the respective IP addresses (`10.244.0.1`, `10.244.1.1`, `10.244.2.1`) assigned to the `cni0` bridge on each node
@@ -462,21 +464,19 @@ Now the nodes should be in a **Ready** state:
 kubectl get nodes
 ```
 
-![](./images/17.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-4/images/17.png)
 
 ## **Implementing the Bash CNI Plugin for IP Assignment**
 
 Now we will create the Bash CNI plugin script to dynamically assign IP addresses to Kubernetes pods.
 
-### **Create the Bash CNI Plugin Script**
-
-1. **Create the CNI Plugin Directory and Script on Each Node**:
+### **Create the CNI Plugin Directory and Script on Each Node**:
 
    ```bash
    sudo nano /opt/cni/bin/bash-cni
    ```
 
-2. **Insert the Following Script**:
+### **Insert the Following Script**:
 
    ```bash
    #!/bin/bash -e
@@ -585,7 +585,7 @@ Now we will create the Bash CNI plugin script to dynamically assign IP addresses
    esac
    ```
 
-3. **Make the Script Executable**:
+### **Make the Script Executable**:
 
    ```bash
    sudo chmod +x /opt/cni/bin/bash-cni
@@ -699,7 +699,7 @@ Now that we have implemented dynamic IP assignment, we will verify that pods are
    kubectl apply -f deploy.yaml
    ```
 
-   Here, we are deploying four simple pods.`bash-worker-1` & `nginx-worker-1` goes on the worker-1 and `bash-worker-2` & `nginx-worker-2` goes on the worker-2.Here explicitly tell the pods to scheduled on worker nodes ,but we can also scheduled pods on master node as we setup bash cni script and network infrasture for `master` node too.
+   Here, we are deploying four simple pods.`bash-worker-1` & `nginx-worker-1` goes on the worker-1 and `bash-worker-2` & `nginx-worker-2` goes on the worker-2.Here explicitly tell the pods to scheduled on worker nodes ,but we can also scheduled pods on master node as we setup bash cni script and network infrasture for `master` node too.( If you want to deploy pods on master node first you need to remove the taints from master node,which blocks any pod to scheduled on `master` node )
 
 
 
@@ -709,7 +709,7 @@ Now that we have implemented dynamic IP assignment, we will verify that pods are
    kubectl get pods -o wide
    ```
 
-   ![](./images/18.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-4/images/18.png)
 
    The pods should now have **dynamically assigned IP addresses** from the `10.244.x.x` subnet, confirming that IP assignment has been successfully implemented.
 
@@ -753,10 +753,10 @@ Now that we have implemented dynamic IP assignment, we will verify that pods are
 
    The ping will likely fail because we haven't set up NAT or proper routing to external networks.
 
-   ![](./images/ping.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-4/images/ping.png)
 
-**Note**: At this stage, the pods can only communicate with the host (the `cni0` bridge) because the necessary routing and forwarding rules are not in place. We will address these issues in the next labs.
-
+   **Note**: At this stage, the pods can only communicate with the host (the `cni0` bridge) because the necessary routing and forwarding rules are not in place. We will address these issues in the next labs.
+   
 ### **Exit the Pod Shell**:
 
 ```bash

@@ -4,7 +4,8 @@ In this lab, we will use **Terraform** to provision the infrastructure required 
 
 Terraform allows us to automate the provisioning and management of infrastructure, enabling a more streamlined and reproducible setup.
 
-![](./images/11.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-1/images/11.svg)
+
 
 ## **Objective**
 
@@ -24,13 +25,13 @@ Before starting this lab, ensure you have:
 - AWS CLI installed and configured.
 - Terraform installed on your local machine.
   
-If you don’t have the `AWS CLI` and Terraform installed, follow the official documentation to get them set up.We will use `Poridhi's Vscode` where `AWS CLI` and `Terraform` is preinstalled.
+If you don’t have the `AWS CLI` and `Terraform` installed, follow the official documentation to get them set up.We will use `Poridhi's Vscode` where `AWS CLI` and `Terraform` is preinstalled.
 
 ## **What is Terraform?**
 
 **Terraform** is an open-source Infrastructure as Code (IaC) tool by HashiCorp. It automates the provisioning and management of infrastructure across multiple cloud platforms, such as AWS, Azure, and Google Cloud. Terraform uses configuration files to define infrastructure and maintains state files to track changes, ensuring efficient and consistent deployments.
 
-![](./images/12.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-1/images/12.svg)
 
 ## **AWS CLI Configuration**
 
@@ -49,7 +50,7 @@ This command prompts you to enter:
 - **Default region** (e.g., `ap-southeast-1`)
 - **Output format** (e.g., `json`)
 
-   ![](./images/1.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-1/images/1.png)
 
 ## **Creating the `main.tf` File**
 
@@ -242,7 +243,7 @@ output "ec2_public_ips_with_roles" {
    terraform apply
    ```
 
-   ![](./images/outputs.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-1/images/outputs.png)
 
 3. After the script completes, Terraform will output the public IPs of the EC2 instances and the path to the private key (`cni.pem`). You can use this information to SSH into the instances.
 
@@ -257,7 +258,7 @@ Now, we will SSH into the EC2 instances and configure the hostnames as `master`,
    ```bash
    ssh -i cni.pem ubuntu@<master-instance-public-ip>
    ```
-   ![](./images/m.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-1/images/m.png)
 
 2. Once logged in, set the hostname for the master node:
 
@@ -266,7 +267,7 @@ Now, we will SSH into the EC2 instances and configure the hostnames as `master`,
    ```
    You need to `exit/loggout` from the current session to apply the `hostname`.If we ssh into `master` again we will find the hostname will be set as `master`.
 
-   ![](./images/sm.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-1/images/sm.png)
 
 3. **SSH into the first worker node**:
 
@@ -274,7 +275,7 @@ Now, we will SSH into the EC2 instances and configure the hostnames as `master`,
    ssh -i cni.pem ubuntu@<worker-1-instance-public-ip>
    ```
 
-   ![](./images/w-1.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-1/images/w-1.png)
 
 4. Set the hostname for worker-1:
 
@@ -283,7 +284,7 @@ Now, we will SSH into the EC2 instances and configure the hostnames as `master`,
    ```
    You need to `exit/loggout` from the current session to apply the `hostname`.If we ssh into `worker-1` again we will find the hostname will be set as `worker-1`.
 
-   ![](./images/ws-1.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-1/images/ws-1.png)
 
 5. **SSH into the second worker node**:
 
@@ -296,7 +297,7 @@ Now, we will SSH into the EC2 instances and configure the hostnames as `master`,
    ```bash
    sudo hostnamectl set-hostname worker-2
    ```
-   ![](./images/ws-2.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/c3f77ff15cea059b33ab1fee2c4441d9b0a90987/Poridhi%20Labs/Kubernetes%20Tasks/Custom%20CNI%20Plugins%20in%20Kubernetes/Lab-1/images/ws-2.png)
 
 
 ### **Summary**
