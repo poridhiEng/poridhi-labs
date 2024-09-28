@@ -6,12 +6,12 @@ This scenario demonstrates the process of sharing files between multiple Docker 
 
 1. **Bind Mount Example**: We start by setting up a directory on the host and bind-mounting it into two containers—one for writing log files and one for reading them.
 
-![alt text](./images/image-16.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.5/images/image-16.png)
 
 2. **Docker Volume Example**: We then perform the same operation using Docker volumes, eliminating host-specific dependencies.
 3. **Anonymous Volumes and `--volumes-from` Flag**: Finally, we demonstrate using anonymous volumes and the `--volumes-from` flag to dynamically share volumes between multiple containers.
 
-![alt text](./images/image-15.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.5/images/image-15.png)
 
 ## Initial setup:
 
@@ -31,14 +31,14 @@ CMD ["sh", "-c", "while true; do date >> /data/logA; sleep 1; done"]
 docker build -t my_writer .
 ```
 
-![alt text](./images/image-7.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.5/images/image-7.png)
 
 **3. Verify the docker image**
 
 ```sh
 docker images
 ```
-![alt text](./images/image-8.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.5/images/image-8.png)
 
 ## Log sharing using Bind Mount:
 
@@ -59,7 +59,7 @@ docker run --name plath -d \
     my_writer
 ```
 
-![alt text](./images/image-9.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.5/images/image-9.png)
 
 **3. Create and Run a Log-Reading Container and use `bind mounts` to share**:
 
@@ -70,7 +70,7 @@ docker run --rm \
     head /data/logA
 ```
 
-![alt text](./images/image-10.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.5/images/image-10.png)
 
 *Explanation:*
 
@@ -95,7 +95,7 @@ cat ${LOG_SRC}/logA
 - **cat**: This command displays the contents of the file.
 - **${LOG_SRC}/logA**: Path to the log file on the host.
 
-![alt text](./images/image-11.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.5/images/image-11.png)
 
 **Stop the Log-Writing Container**:
 
@@ -103,7 +103,7 @@ cat ${LOG_SRC}/logA
 docker rm -f plath
 ```
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.5/images/image-2.png)
 
 ## Log sharing using Docker Volume: 
 
@@ -116,7 +116,7 @@ docker volume create --driver local logging-example
 docker volume ls
 ```
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.5/images/image.png)
 
 **Explanation:**
 
@@ -141,7 +141,7 @@ docker run --rm \
     head /data/logA
 ```
 
-![alt text](./images/image-12.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.5/images/image-12.png)
 
 **Explanation:**
 
@@ -158,7 +158,7 @@ docker run --rm \
 cat /var/lib/docker/volumes/logging-example/_data/logA
 ```
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.5/images/image-4.png)
 
 
 **5. Stop the Log-Writing Container**:
@@ -187,7 +187,7 @@ docker run --name knuth \
     echo "Knuth collection created"
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.5/images/image-1.png)
 
 **Explanation:**
 
@@ -205,7 +205,7 @@ docker run --name reader \
     alpine:latest ls -l /library/
 ```
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.5/images/image-5.png)
 
 **Explanation:**
 
@@ -228,7 +228,7 @@ sudo apt-get update
 sudo apt install jq -y
 ```
 
-![alt text](./images/image-13.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.5/images/image-13.png)
 - **docker inspect**: Provides detailed information about Docker objects.
 - **--format "{{json .Mounts}}"**: Formats the output to show the mounts of the container.
 
@@ -255,7 +255,7 @@ docker rm $(docker ps -aq)
 docker volume rm $(docker volume ls -q)
 ```
 
-![alt text](./images/image-14.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.5/images/image-14.png)
 
 By following these procedures, you can efficiently manage and remove Docker volumes, ensuring your Docker environment remains clean and optimized.
 

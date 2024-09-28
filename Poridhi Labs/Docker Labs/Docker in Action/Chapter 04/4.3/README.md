@@ -2,7 +2,7 @@
 
 Many service software and web applications require handling sensitive configuration files such as **private key files, database passwords, and API key files**. These files should never be included in the image or written to disk for **security** reasons. Instead, utilizing `in-memory storage` is crucial to ensure sensitive data remains secure. This readme provides guidance on implementing in-memory storage using Docker containers with tmpfs mounts.
 
-![](./images/7.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.3/images/7.png)
 
 ## Using tmpfs Mounts
 To implement in-memory storage, we can use `tmpfs` mounts with Docker containers. The `tmpfs` mount type allow us to create *a memory-based filesystem* within the container's `file tree`.
@@ -16,7 +16,7 @@ docker run --rm \
     --entrypoint mount \
     alpine:latest -v
 ```
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.3/images/image.png)
 
 ## Command Explanation
 - `--mount type=tmpfs,dst=/tmp`: This part of the command specifies that a `tmpfs` device will be mounted at the `/tmp` directory within the container's file system.
@@ -135,14 +135,14 @@ the mounted tmpfs directory.
     # Build Docker image
     docker build -t my_microservice .
     ```
-    ![alt text](./images/image-2.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.3/images/image-2.png)
 
     ```sh
     docker run --rm -d \
         --mount type=tmpfs,dst=/app/tmp,tmpfs-size=16k,tmpfs-mode=1770 \
         my_microservice
     ```
-    ![alt text](./images/image-4.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.3/images/image-4.png)
 
 ### **Step 04: Ensure that the tmpfs mount is properly configured**
 
@@ -154,7 +154,7 @@ To ensure that the `tmpfs` mount is properly configured when running the Docker 
     docker inspect <container_id_or_name>
     ```
 
-    ![](./images/4.png)
+    ![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.3/images/4.png)
 
     This command will display information about the container, including its mounts. Ensure that the tmpfs mount is listed and mounted at the expected directory (e.g., `/app/tmp`).
 
@@ -167,6 +167,6 @@ To ensure that the `tmpfs` mount is properly configured when running the Docker 
     cd tmp && ls
     cat sensitive_data.txt 
     ```
-    ![alt text](./images/image-3.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.3/images/image-3.png)
 
 So we have successfully completed the task!

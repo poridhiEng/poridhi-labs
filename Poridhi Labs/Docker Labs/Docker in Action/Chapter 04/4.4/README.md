@@ -2,7 +2,7 @@
 
 Docker Volume is a mechanism in Docker that allows you to persist data even after a container is deleted or recreated. It provides a way to store data outside of the container's filesystem, so that data is not lost when the container is restarted or deleted.
 
-![](./images/vol.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.4/images/vol.png)
 
 ## Why do we need Docker Volumes?
 
@@ -16,7 +16,7 @@ A Docker Volume is a directory that is **shared** between the host machine and a
 
 In this scenario, we will use `Docker` to create and manage a single-node `Cassandra cluster`. We'll create a `keyspace`, delete the container, and then recover the `keyspace` on a new node in another container using Docker volumes. Follow the detailed steps below:
 
-![](./images/overview.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.4/images/overview.png)
 
 ## Step 1: Create Docker Volume
 
@@ -29,7 +29,7 @@ docker volume create \
     cass-shared
 ```
 
-![](./images/1.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.4/images/1.png)
 
 **Explanation:** 
 
@@ -48,7 +48,7 @@ docker run -d \
     --name cass1 \
     cassandra:2.2
 ```
-![](./images/2.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.4/images/2.png)
 
 **Explanation:**
 
@@ -87,7 +87,7 @@ where keyspace_name = 'docker_hello_world';
 
 - select * from system.schema_keyspaces where keyspace_name = 'docker_hello_world';: Queries the system schema for the docker_hello_world keyspace.
 
-![](./images/3.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.4/images/3.png)
 
 Cassandra should return an *empty* list. This means the database hasn’t been *modified* by the example.
 
@@ -119,7 +119,7 @@ where keyspace_name = 'docker_hello_world';
 
 If the keyspace was created successfully, you will see the entry in the query result.
 
-![](./images/4.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.4/images/4.png)
 
 ## Step 5: Stop and Remove the Cassandra Container
 
@@ -134,7 +134,7 @@ docker stop cass1
 docker rm -vf cass1
 ```
 
-![](./images/5.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.4/images/5.png)
 
 **Explanation:**
 
@@ -153,7 +153,7 @@ docker run -d \
     cassandra:2.2
 ```
 
-![](./images/6.1.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.4/images/6.1.png)
 
 ### Connect to the new Cassandra container using CQLSH.
 
@@ -174,7 +174,7 @@ where keyspace_name = 'docker_hello_world';
 
 If the keyspace docker_hello_world is listed in the result, it confirms that the data `persisted` in the `cass-shared` volume.
 
-![](./images/7.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.4/images/7.png)
 
 ## Step 7: Clean Up
 
@@ -195,7 +195,7 @@ docker volume rm cass-shared
 - **docker rm -vf cass2**: Removes the cass2 container forcefully.
 - **docker volume rm cass-shared**: Deletes the cass-shared volume.
 
-![](./images/8.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.4/images/8.png)
 
 ## Summary
 
