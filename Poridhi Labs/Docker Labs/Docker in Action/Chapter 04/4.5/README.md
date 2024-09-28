@@ -6,12 +6,12 @@ This scenario demonstrates the process of sharing files between multiple Docker 
 
 1. **Bind Mount Example**: We start by setting up a directory on the host and bind-mounting it into two containers—one for writing log files and one for reading them.
 
-![alt text](image.png)
+![alt text](./images/image-16.png)
 
 2. **Docker Volume Example**: We then perform the same operation using Docker volumes, eliminating host-specific dependencies.
 3. **Anonymous Volumes and `--volumes-from` Flag**: Finally, we demonstrate using anonymous volumes and the `--volumes-from` flag to dynamically share volumes between multiple containers.
 
-![alt text](image-1.png)
+![alt text](./images/image-15.png)
 
 ## Initial setup:
 
