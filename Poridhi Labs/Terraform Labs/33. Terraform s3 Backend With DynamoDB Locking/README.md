@@ -9,7 +9,7 @@ This tutorial demonstrates how to:
 - Enable **State Locking** using DynamoDB.
 - Create an infrastructure with a VPC using Terraform modules.
 
-![alt text](image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Terraform%20Labs/33.%20Terraform%20s3%20Backend%20With%20DynamoDB%20Locking/images/image.png?raw=true)
 
 
 ## **Why Terraform Remote State & State Locking?**

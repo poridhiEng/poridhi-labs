@@ -86,3 +86,6 @@
 31. [AWS Autoscaling using terraform](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Terraform%20Labs/31.%20Autoscaling%20using%20terraform)
 
 32. [Deploying a Simple AWS Lambda Function Using Terraform](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Terraform%20Labs/32.%20Deploying%20a%20Simple%20AWS%20Lambda%20Function%20Using%20Terraform)
+
+
+33. [Remote State & State Locking with S3 and DynamoDB](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Terraform%20Labs/33.%20Terraform%20s3%20Backend%20With%20DynamoDB%20Locking)
