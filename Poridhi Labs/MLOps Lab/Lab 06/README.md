@@ -1,4 +1,4 @@
-
+<!-- 
 ## mlflow_server/Dockerfile
 ```Dockerfile
 FROM python:3.8-slim-buster
@@ -20,6 +20,4 @@ docker build -t minhaz71/model-training:latest ./model_training
 docker push minhaz71/mlflow-server:latest
 docker push minhaz71/model-training:latest
 
-kubectl create secret generic aws-credentials \
-  --from-literal=aws-access-key-id=AKIAVRUVSJMRPQFMXHWT \
-  --from-literal=aws-secret-access-key=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
+ -->
