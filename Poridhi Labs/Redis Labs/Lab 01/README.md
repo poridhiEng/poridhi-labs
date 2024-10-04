@@ -4,7 +4,7 @@ This guide provides step-by-step instructions for deploying a Redis cluster with
 
 ## What is Redis Cluster?
 
-![alt text](./images/redis-cluster.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/faa7039d191f00c3f317f3308325e1b92bbdaa9b/Poridhi%20Labs/Redis%20Labs/Lab%2001/images/redis-cluster.svg)
 
 A Redis Cluster is a distributed implementation of Redis that provides data partitioning, replication, and high availability. It allows you to scale a Redis installation across multiple nodes, balancing data and load to improve performance and fault tolerance. Here are the key features and concepts:
 
@@ -23,7 +23,7 @@ A Redis Cluster is a distributed implementation of Redis that provides data part
 
 This lab focuses on deploying a highly available **Redis Cluster** on AWS using **EC2 instances**. The setup includes 6 Redis nodes (3 primary and 3 replicas) distributed across two Availability Zones to ensure fault tolerance and high performance. Using **Pulumi**, we provision the necessary infrastructure, including a **VPC**, subnets, security group, and EC2 instances. Each instance is configured with Redis in cluster mode. The cluster is created using the Redis CLI, and tests are conducted to verify key-value operations, data distribution, and failover scenarios. Monitoring and maintenance strategies are implemented to ensure long-term cluster health and security.
 
-![alt text](./images/redis-3-primary.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2001/images/redis-3-primary.png)
 
 ## Step 1: Setting up EC2 Instances with Pulumi
 
@@ -37,11 +37,11 @@ This lab focuses on deploying a highly available **Redis Cluster** on AWS using 
     
     This command sets up your AWS CLI with the necessary credentials, region, and output format.
 
-    ![alt text](./images/image.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2001/images/image.png)
 
     You will find the `AWS Access key` and `AWS Seceret Access key` on Lab description page,where you generated the credentials.
 
-    ![alt text](./images/image-1.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2001/images/image-1.png)
 
 ### Set Up a Pulumi Project
 
@@ -211,11 +211,11 @@ Now, let's create a new Pulumi project and write the code to provision our EC2 i
    pulumi up
    ```
 
-   ![alt text](./images/image-2.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2001/images/image-2.png)
 
 This will create 6 EC2 instances across 2 availability zones, along with the necessary networking components. For creating a Redis cluster with replicas, we will need at least 3 master nodes and 3 replica nodes (for a total of 6 nodes) as Redis Cluster requires at least 3 master nodes to function properly.
 
-![alt text](./images/image-6.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2001/images/image-6.png)
 
 ## Step 2: Installing Redis
 
@@ -247,7 +247,7 @@ For each EC2 instance:
    sudo systemctl status redis-server 
    ```
 
-   ![alt text](./images/image-3.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2001/images/image-3.png)
 
 ## Step 3: Configuring Redis Nodes
 
@@ -265,7 +265,7 @@ On each instance, modify the Redis configuration:
    bind 0.0.0.0
    ```
 
-   ![alt text](./images/image-4.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2001/images/image-4.png)
 
    ```bash
    protected-mode no
@@ -276,7 +276,7 @@ On each instance, modify the Redis configuration:
    appendonly yes
    ```
 
-   ![alt text](./images/image-5.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2001/images/image-5.png)
 
 3. Save the file and exit.
 
@@ -307,7 +307,7 @@ On each instance, modify the Redis configuration:
 
 3. Confirm the cluster creation when prompted.
 
-    ![alt text](./images/image-7.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2001/images/image-7.png)
 
 ## Step 5: Testing the Cluster
 
@@ -331,7 +331,7 @@ Let's start by checking the cluster information:
 CLUSTER INFO
 ```
 
-![alt text](./images/image-8.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2001/images/image-8.png)
 
 The `cluster_state:ok` means the cluster is functioning properly.
 
@@ -343,7 +343,7 @@ Now, let's check the details of each node in the cluster:
 CLUSTER NODES
 ```
 
-![alt text](./images/image-9.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2001/images/image-9.png)
 
 This output shows the node IDs, IP addresses, roles (master/slave), and the slot ranges they're responsible for.
 
@@ -364,13 +364,13 @@ Now, test replication by writing to the primary and reading from the replica.
    GET mykey
    ```
 
-   ![alt text](./images/image-10.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2001/images/image-10.png)
 
 If replication is working, you'll be able to retrieve the value from any node in the cluster.
 
 For Example:
 
-![alt text](./images/image-11.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2001/images/image-11.png)
 
 ### Checking Failover Mechanism
 
@@ -390,11 +390,11 @@ We can test the cluster's failover mechanism by shutting down one of the primary
 
     You'll notice that the replica has been promoted to primary.
 
-    ![alt text](./images/image-12.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2001/images/image-12.png)
 
 3. When you restart the Redis server on the node that was originally a primary, the restarted node joins as a replica.
 
-    ![alt text](./images/image-13.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2001/images/image-13.png)
 
 ## Step 6: Monitoring and Maintenance
 
@@ -406,7 +406,7 @@ For ongoing monitoring and maintenance:
    redis-cli --cluster check <private-ip-of-any-node>:6379
    ```
 
-   ![alt text](./images/image-14.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2001/images/image-14.png)
 
 2. Monitor memory usage:
 
@@ -414,7 +414,7 @@ For ongoing monitoring and maintenance:
    INFO memory
    ```
 
-   ![alt text](./images/image-15.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2001/images/image-15.png)
 
 3. Check persistence status (if AOF is enabled):
 
@@ -422,7 +422,7 @@ For ongoing monitoring and maintenance:
    INFO persistence
    ```
 
-   ![alt text](./images/image-16.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2001/images/image-16.png)
 
 4. Monitor connected clients:
 
@@ -430,7 +430,7 @@ For ongoing monitoring and maintenance:
    INFO clients
    ```
 
-   ![alt text](./images/image-17.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2001/images/image-17.png)
 
    The `INFO clients` output shows that the Redis node has 1 connected client, 10 internal cluster connections, no blocked clients, and is operating within its set limits for input/output buffers and maximum clients.
 
