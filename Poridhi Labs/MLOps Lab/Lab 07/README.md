@@ -305,6 +305,8 @@ The MLFlow UI is available at `localhost:5000`. But to access the MLflow UI you 
 
 3. Open the load balancer url in your web browser to access the MLflow UI.
 
+    ![alt text](./images/image-3.png)
+
 4. In the UI, you will see the experiment run that logged the metrics and model.
 
 5. Click on the experiment to explore the logged parameters, metrics, and the trained model.
