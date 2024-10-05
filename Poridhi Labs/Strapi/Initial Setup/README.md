@@ -21,13 +21,13 @@ This command will create a new Strapi project and run it with SQLite as the defa
 
 Once the Strapi admin panel opens, you’ll be prompted to create an admin account. Fill in the required details (username, email, password) and click **Create Admin**. After this, you’ll be redirected to the dashboard.
 
-![Admin Setup](./images/1.png)
+![Admin Setup](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Strapi/Initial%20Setup/images/1.png?raw=true)
 
 ## Create a Collection Type
 
 1. **Navigate to Content-Type Builder:** From the Strapi dashboard, click on **Content-Type Builder** in the left-hand menu.
 
-   ![Content-Type Builder](./images/3.png)
+   ![Content-Type Builder](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Strapi/Initial%20Setup/images/3.png?raw=true)
 
 2. **Create a New Collection Type:**
    - Click the **+ Create new collection type** button.
@@ -35,19 +35,19 @@ Once the Strapi admin panel opens, you’ll be prompted to create an admin accou
    - The `API ID` fields will be auto-filled as `poridhi-lab` (singular) and `poridhi-labs` (plural).
    - Click **Continue** to proceed.
 
-   ![Create Collection Type](./images/2.png)
+   ![Create Collection Type](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Strapi/Initial%20Setup/images/2.png?raw=true)
 
 3. **Configure Collection Fields:**
    - Add fields based on your data requirements:
      - Click **Add another field** to select a field type. Options include Text, Number, Date, Media, etc.
      - For example, add a **Text** field named `name` and a **Rich Text** field named `readme`.
    
-   ![Field Selection](./images/4.png)
-   ![Field Configuration](./images/6.png)
+   ![Field Selection](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Strapi/Initial%20Setup/images/4.png?raw=true)
+   ![Field Configuration](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Strapi/Initial%20Setup/images/6.png?raw=true)
 
    - Configure field settings as required in `Advanced settings` (e.g., make the field required, set a unique constraint, etc.).
 
-   ![Advanced Settings](./images/5.png)
+   ![Advanced Settings](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Strapi/Initial%20Setup/images/5.png?raw=true)
 
    - Click **Finish** after adding all necessary fields.
 
@@ -59,14 +59,14 @@ To upload images or other media assets to your collection type:
 
 1. Click on the **Media Library** tab from the left-hand menu.
 
-   ![Media Library](./images/7.png)
+   ![Media Library](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Strapi/Initial%20Setup/images/7.png?raw=true)
 
 2. Click the **Add new assets** button.
 3. Choose the files you want to upload (e.g., screenshots) and add them.
 4. After adding the image, click on the image to open its details.
 5. Copy the image URL by clicking on the **link icon** as shown below:
 
-   ![Copy Image URL](./images/16.png)
+   ![Copy Image URL](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Strapi/Initial%20Setup/images/16.png?raw=true)
 
 6. Use this image URL in your **readme** field or any other rich text field to display the image in your content.
 
@@ -76,24 +76,24 @@ To upload images or other media assets to your collection type:
 2. Select your newly created collection type (e.g., `PoridhiLab`).
 3. Click **Add New Entry**.
 
-   ![Create Entry](./images/8.png)
+   ![Create Entry](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Strapi/Initial%20Setup/images/8.png?raw=true)
 
 4. Fill in the fields with your data (e.g., `name: Lab - 01` and `readme` using Rich Text Markdown).
 
 5. Save and Publish the entry.
 
-   ![Save and Publish](./images/10.png)
+   ![Save and Publish](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Strapi/Initial%20Setup/images/10.png?raw=true)
 
 ## Configure Roles and Permissions
 
 1. Navigate to **Settings** -> **Roles** -> **Public**.
 
-   ![Public Roles](./images/11.png)
-   ![Roles Configuration](./images/12.png)
+   ![Public Roles](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Strapi/Initial%20Setup/images/11.png?raw=true)
+   ![Roles Configuration](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Strapi/Initial%20Setup/images/12.png?raw=true)
 
 2. Under the **PoridhiLab** collection, enable `find` and `findOne` permissions.
 
-   ![Enable Permissions](./images/13.png)
+   ![Enable Permissions](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Strapi/Initial%20Setup/images/13.png?raw=true)
 
 3. In the right panel, find the `API` for your content.
 
@@ -107,7 +107,7 @@ Once the permissions are set, you can access your collection data via the API. O
 http://localhost:1337/api/poridhi-labs
 ```
 
-![API Access](./images/15.png)
+![API Access](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Strapi/Initial%20Setup/images/15.png?raw=true)
 
 This will return all entries in your `PoridhiLab` collection type.
 
@@ -366,6 +366,6 @@ This will return all entries in your `PoridhiLab` collection type.
      http://localhost:3000
      ```
 
-     ![](./images/17.png)
+     ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Strapi/Initial%20Setup/images/17.png?raw=true)
     
 This will open the frontend in your default web browser at `http://localhost:3000`. Your React app should now be able to communicate with the Strapi backend to display the list of README entries and their content.
