@@ -2,13 +2,13 @@
 
 This guide provides a detailed process for setting up a Redis Cluster on Amazon Web Services (AWS) and integrating it with a Node.js application. It includes everything from provisioning infrastructure using Pulumi to testing the final application for functionality.
 
-![alt text](./images/nodejs-redis.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a700674c1a31303a5ee910193207403f3a2edef8/Poridhi%20Labs/Redis%20Labs/Lab%2002/images/nodejs-redis.svg)
 
 ## Scenario Overview
 
 In this scenario, we will use Pulumi to provision AWS infrastructure, creating a VPC with three public subnets, six EC2 instances for a Redis Cluster (three per subnet), and an additional EC2 instance for a Node.js application. After configuring Redis on the instances and creating the cluster, the Node.js app is developed with ioredis for Redis integration, featuring routes for setting and retrieving key-value pairs. The app is deployed on the EC2 instance, connecting to Redis via private IPs.
 
-![alt text](./images/redis-nodejs.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2002/images/redis-nodejs.png)
 
 ## Step 1: Infrastructure Setup with Pulumi
 
@@ -22,11 +22,11 @@ In this scenario, we will use Pulumi to provision AWS infrastructure, creating a
     
     This command sets up your AWS CLI with the necessary credentials, region, and output format.
 
-    ![alt text](./images/image.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2002/images/image.png)
 
     You will find the `AWS Access key` and `AWS Seceret Access key` on Lab description page,where you generated the credentials.
 
-    ![alt text](./images/image-1.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2002/images/image-1.png)
 
 ### Pulumi Project Setup
 
@@ -230,11 +230,11 @@ Now, let's create a new Pulumi project and write the code to provision our EC2 i
    pulumi up
    ```
 
-   ![alt text](./images/image-2.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2002/images/image-2.png)
 
 This Pulumi code provisions a VPC with three public subnets across three availability zones and creates a total of seven EC2 instances: 1 Node.js instance in the first subnet (ap-southeast-1a) and 6 Redis instances spread across the remaining two subnets (ap-southeast-1b and ap-southeast-1c) to form a Redis Cluster. For creating a Redis cluster with replicas, we will need at least 3 master nodes and 3 replica nodes (for a total of 6 nodes) as Redis Cluster requires at least 3 master nodes to function properly.
 
-![alt text](./images/image-3.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2002/images/image-3.png)
 
 ## Step 2: Installing Redis
 
@@ -266,7 +266,7 @@ For each Redis EC2 instance:
    sudo systemctl status redis-server 
    ```
 
-   ![alt text](./images/image-4.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2002/images/image-4.png)
 
 ## Step 3: Configuring Redis Nodes
 
@@ -284,7 +284,7 @@ On each Redis instance, modify the Redis configuration:
    bind 0.0.0.0
    ```
 
-   ![alt text](./images/image-5.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2002/images/image-5.png)
 
    ```bash
    protected-mode no
@@ -295,7 +295,7 @@ On each Redis instance, modify the Redis configuration:
    appendonly yes
    ```
 
-   ![alt text](./images/image-6.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2002/images/image-6.png)
 
 3. Save the file and exit.
 
@@ -326,7 +326,7 @@ On each Redis instance, modify the Redis configuration:
 
 3. Confirm the cluster creation when prompted.
 
-    ![alt text](./images/image-7.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2002/images/image-7.png)
 
 ## Step 5: Node.js Application Integration
 
@@ -422,7 +422,7 @@ On each Redis instance, modify the Redis configuration:
 
    You can check that Nodejs server is running properly using `http://<Nodejs-ec2-public-ip>:3000` on the browser:
 
-   ![alt text](./images/image-8.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2002/images/image-8.png)
 
 2. Set a key-value pair using `curl` while the application is running:
 
@@ -444,7 +444,7 @@ On each Redis instance, modify the Redis configuration:
     http://<ec2-public-ip>:3000/get/mykey
     ```
 
-    ![alt text](./images/image-9.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2002/images/image-9.png)
 
 ## Step 6: Checking Keys via the Redis CLI
 
@@ -478,7 +478,7 @@ GET mykey
 
 This will return the value of `mykey` if it exists.
 
-![alt text](./images/image-10.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2002/images/image-10.png)
 
 ## Conclusion
 
