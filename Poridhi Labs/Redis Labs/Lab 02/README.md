@@ -1,4 +1,4 @@
-# Integrate NodeJS application with Redis Cluster
+# Integrate NodeJS Application with Redis Cluster
 
 This guide provides a detailed process for setting up a Redis Cluster on Amazon Web Services (AWS) and integrating it with a Node.js application. It includes everything from provisioning infrastructure using Pulumi to testing the final application for functionality.
 
