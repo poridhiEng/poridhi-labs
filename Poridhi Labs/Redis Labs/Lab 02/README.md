@@ -22,11 +22,11 @@ In this scenario, we will use Pulumi to provision AWS infrastructure, creating a
     
     This command sets up your AWS CLI with the necessary credentials, region, and output format.
 
-    ![alt text](image.png)
+    ![alt text](./images/image.png)
 
     You will find the `AWS Access key` and `AWS Seceret Access key` on Lab description page,where you generated the credentials.
 
-    ![alt text](image-1.png)
+    ![alt text](./images/image-1.png)
 
 ### Pulumi Project Setup
 
@@ -230,11 +230,11 @@ Now, let's create a new Pulumi project and write the code to provision our EC2 i
    pulumi up
    ```
 
-   ![alt text](image-2.png)
+   ![alt text](./images/image-2.png)
 
 This Pulumi code provisions a VPC with three public subnets across three availability zones and creates a total of seven EC2 instances: 1 Node.js instance in the first subnet (ap-southeast-1a) and 6 Redis instances spread across the remaining two subnets (ap-southeast-1b and ap-southeast-1c) to form a Redis Cluster. For creating a Redis cluster with replicas, we will need at least 3 master nodes and 3 replica nodes (for a total of 6 nodes) as Redis Cluster requires at least 3 master nodes to function properly.
 
-![alt text](image-3.png)
+![alt text](./images/image-3.png)
 
 ## Step 2: Installing Redis
 
@@ -266,11 +266,11 @@ For each Redis EC2 instance:
    sudo systemctl status redis-server 
    ```
 
-   ![alt text](image-4.png)
+   ![alt text](./images/image-4.png)
 
 ## Step 3: Configuring Redis Nodes
 
-On each instance, modify the Redis configuration:
+On each Redis instance, modify the Redis configuration:
 
 1. Open the Redis configuration file:
 
@@ -284,7 +284,7 @@ On each instance, modify the Redis configuration:
    bind 0.0.0.0
    ```
 
-   ![alt text](image-5.png)
+   ![alt text](./images/image-5.png)
 
    ```bash
    protected-mode no
@@ -295,7 +295,7 @@ On each instance, modify the Redis configuration:
    appendonly yes
    ```
 
-   ![alt text](image-6.png)
+   ![alt text](./images/image-6.png)
 
 3. Save the file and exit.
 
@@ -326,7 +326,7 @@ On each instance, modify the Redis configuration:
 
 3. Confirm the cluster creation when prompted.
 
-    ![alt text](image-7.png)
+    ![alt text](./images/image-7.png)
 
 ## Step 5: Node.js Application Integration
 
@@ -357,53 +357,58 @@ On each instance, modify the Redis configuration:
 
 1. Create a file named `app.js` and add the following code:
 
-   ```javascript
-   const express = require('express');
-   const Redis = require('ioredis');
+    ```javascript
+    const express = require('express');
+    const Redis = require('ioredis');
 
-   const app = express();
-   const port = 3000;
+    const app = express();
+    const port = 3000;
 
-   // Redis Cluster configuration
-   const cluster = new Redis.Cluster([
-     { host: 'redis1-private-ip', port: 6379 },
-     { host: 'redis2-private-ip', port: 6379 },
-     { host: 'redis3-private-ip', port: 6379 },
-     { host: 'redis4-private-ip', port: 6379 },
-     { host: 'redis5-private-ip', port: 6379 },
-     { host: 'redis6-private-ip', port: 6379 }
-   ]);
+    // Redis Cluster configuration
+    const cluster = new Redis.Cluster([
+    { host: 'redis1-private-ip', port: 6379 },
+    { host: 'redis2-private-ip', port: 6379 },
+    { host: 'redis3-private-ip', port: 6379 },
+    { host: 'redis4-private-ip', port: 6379 },
+    { host: 'redis5-private-ip', port: 6379 },
+    { host: 'redis6-private-ip', port: 6379 }
+    ]);
 
-   app.use(express.json());
+    app.use(express.json());
 
-   app.post('/set', async (req, res) => {
-     const { key, value } = req.body;
-     try {
-       await cluster.set(key, value);
-       res.json({ message: 'Value set successfully' });
-     } catch (error) {
-       res.status(500).json({ error: error.message });
-     }
-   });
+    // Root route to confirm server is running
+    app.get('/', (req, res) => {
+    res.send('Node.js server is running!');
+    });
 
-   app.get('/get/:key', async (req, res) => {
-     const { key } = req.params;
-     try {
-       const value = await cluster.get(key);
-       if (value === null) {
-         res.status(404).json({ message: 'Key not found' });
-       } else {
-         res.json({ [key]: value });
-       }
-     } catch (error) {
-       res.status(500).json({ error: error.message });
-     }
-   });
+    app.post('/set', async (req, res) => {
+    const { key, value } = req.body;
+    try {
+        await cluster.set(key, value);
+        res.json({ message: 'Value set successfully' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+    });
 
-   app.listen(port, () => {
-     console.log(`Server running on http://localhost:${port}`);
-   });
-   ```
+    app.get('/get/:key', async (req, res) => {
+    const { key } = req.params;
+    try {
+        const value = await cluster.get(key);
+        if (value === null) {
+        res.status(404).json({ message: 'Key not found' });
+        } else {
+        res.json({ [key]: value });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+    });
+
+    app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
+    });
+    ```
 
     Replace the `host` values with the private IPs of your Redis Cluster nodes.
 
@@ -415,43 +420,65 @@ On each instance, modify the Redis configuration:
    node app.js
    ```
 
+   You can check that Nodejs server is running properly using `http://<Nodejs-ec2-public-ip>:3000` on the browser:
+
+   ![alt text](./images/image-8.png)
+
 2. Set a key-value pair using `curl` while the application is running:
 
    ```bash
    curl -X POST -H "Content-Type: application/json" -d '{"key":"mykey","value":"Hello from Node.js!"}' http://localhost:3000/set
    ```
 
-3. Retrieve the value using the key:
+   **Expected Output:**
 
-   ```bash
-   curl http://localhost:3000/get/mykey
-   ```
+    ```bash
+    {
+    "message": "Value set successfully"
+    }
+    ```
 
-## Step 6: Monitoring and Maintenance
+3. Retrieve the value using the key from the browser (Use the GET endpoint `/get/<key>` to retrieve the value for a key):
 
-1. Use the Redis CLI for regular health checks:
+    ```bash
+    http://<ec2-public-ip>:3000/get/mykey
+    ```
 
-   ```bash
-   redis-cli --cluster check <private-ip-of-any-node>:6379
-   ```
+    ![alt text](./images/image-9.png)
 
-2. Monitor memory usage:
+## Step 6: Checking Keys via the Redis CLI
 
-   ```bash
-   redis-cli INFO memory
-   ```
+If you have access to one of your Redis cluster nodes, you can use the Redis CLI (`redis-cli`) to directly check the keys stored in your Redis cluster.
 
-3. Check persistence status:
+### Connect to a Redis Node
 
-   ```bash
-   redis-cli INFO persistence
-   ```
+SSH into one of your EC2 instances where Redis is running:
 
-4. Monitor connected clients:
+```bash
+ssh -i /path/to/your-key.pem ubuntu@<redis-node-public-ip>
+```
 
-   ```bash
-   redis-cli INFO clients
-   ```
+### Run Redis CLI
+
+Once you're logged in, you can access Redis using the `redis-cli` command.
+
+```bash
+redis-cli -c -h <redis-node-private-ip> -p 6379
+```
+
+Make sure you connect to the node using the private IP, as Redis Cluster nodes usually communicate over private IPs.
+
+### Retrieve a Specific Key
+
+To get the value of a specific key, use the `GET` command:
+
+```bash
+GET mykey
+```
+
+This will return the value of `mykey` if it exists.
+
+![alt text](./images/image-10.png)
 
 ## Conclusion
 
