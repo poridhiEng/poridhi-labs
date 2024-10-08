@@ -55,13 +55,9 @@
 
 ### Chapter 6: Images
 
-- [Image layers](https://github.com/Minhaz00/Docker-Docs/blob/Docker-Deep-Dive/Chapter%2006/Docker%20Images%20Deep%20Dive/Images%20and%20layers/README.md)
+- [Filtering Docker Images](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2006/2)
 
-- [Images and containers](https://github.com/Minhaz00/Docker-Docs/blob/Docker-Deep-Dive/Chapter%2006/Docker%20Images%20Deep%20Dive/Intro/README.md)
-
-- [Filter tag](https://github.com/Minhaz00/Docker-Docs/blob/Docker-Deep-Dive/Chapter%2006/Docker%20Images%20Deep%20Dive/filtering/README.md)
-
-- [Image create and delete](https://github.com/Minhaz00/Docker-Docs/blob/Docker-Deep-Dive/Chapter%2006/Docker%20Images%20Deep%20Dive/image-create-del/README.md)
+- [Create own Docker image](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2006/3)
 
 - [Docker image layer sharing and digest](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2006/6)
 
