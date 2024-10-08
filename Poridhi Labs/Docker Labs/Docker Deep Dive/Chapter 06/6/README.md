@@ -69,7 +69,7 @@ $ docker pull alpine@sha256:02bb6f428431fbc2809c5d1b41eab5a68350194fb508869a33cb
 Here, the image is pulled using its digest `sha256:02bb6f428431fbc2809c5d1b41eab5a68350194fb508869a33cb1af4444c9b11`, ensuring that the exact image with its immutable content is retrieved.
 
 
-# Understanding Multi-Architecture Images in Docker
+## Understanding Multi-Architecture Images in Docker
 
 Docker's simplicity has been a key factor in its widespread adoption. However, with technological advancements, Docker's scope has expanded to support different platforms and architectures, such as `Windows and Linux`, on various CPU architectures like `ARM, x64, PowerPC, and s390x`. This evolution has introduced complexities, especially when dealing with images that have multiple versions for different platforms and architectures. This complexity challenged the seamless Docker experience users were accustomed to.
 
@@ -81,7 +81,7 @@ In the context of Docker, "`architecture`" refers to CPU architecture, such as x
 
 To address the challenges posed by diverse platforms and architectures, Docker introduced multi-architecture images. These images enable a single image tag, like `golang:latest`, to encompass versions for multiple platforms and architectures. With multi-architecture images, users can simply execute a `docker pull golang:latest` command from any platform or architecture, and Docker automatically retrieves the appropriate image variant.
 
-![](./images/image.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2006/6/images/image.png?raw=true)
 
 To facilitate this, Docker Registry API incorporates two essential constructs:
 
@@ -137,6 +137,6 @@ $ docker manifest inspect golang | grep 'architecture\|os'
 ```
 All official images have manifest lists.
 
-### Conclusion
+## Conclusion
 
 Multi-architecture images represent Docker's commitment to flexibility and compatibility across diverse environments. By seamlessly accommodating multiple platforms and architectures under a single image tag, Docker enhances the user experience and simplifies image management across heterogeneous infrastructures.

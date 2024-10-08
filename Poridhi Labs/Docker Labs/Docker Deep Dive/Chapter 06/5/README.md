@@ -1,9 +1,9 @@
-# Docker Images - The Deep Dive
+# Docker Images pull and Registry 
 
 ## Images and Containers
 A `Docker image` is a lightweight, standalone, and executable software package that includes everything needed to run a piece of software, including the code, runtime, libraries, environment variables, and configuration files. Docker images are built in layers, where each layer represents a filesystem change (e.g., adding a file or installing a package),
 
-![](./images/image1.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2006/5/images/image1.png?raw=true)
 
 On the other hand, A `Docker container` is a runnable instance of a Docker image. Containers are isolated environments that run on a single operating system kernel, sharing the OS but maintaining separate user spaces.
 
@@ -103,7 +103,7 @@ Registries serve as centralized storage for container images, often implementing
 
 While Docker Hub is the most common registry, others include third-party registries and secure on-premises options. Despite the availability of alternatives, the Docker client defaults to Docker Hub. Consequently, we'll use Docker Hub throughout this book. When configuring Docker, it defaults to using https://index.docker.io/v1/ as its primary registry, which automatically redirects to https://index.docker.io/v2/.
 
-![](./images/image2.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2006/5/images/image2.png?raw=true)
 
 Registries organize images into repositories, each containing one or more images. To illustrate, imagine an image registry with three repositories, and within each repository, there are multiple images. This hierarchical structure can sometimes be confusing, so the figure provides a visual representation.
 

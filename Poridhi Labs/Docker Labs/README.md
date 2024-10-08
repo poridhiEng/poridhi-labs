@@ -63,9 +63,9 @@
 
 - [Image create and delete](https://github.com/Minhaz00/Docker-Docs/blob/Docker-Deep-Dive/Chapter%2006/Docker%20Images%20Deep%20Dive/image-create-del/README.md)
 
-- [Docker image layer sharing and digest](https://github.com/Minhaz00/Docker-Docs/blob/Docker-Deep-Dive/Chapter%2006/Docker%20Images%20Deep%20Dive/layersharing-digest/README.md)
+- [Docker image layer sharing and digest](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2006/6)
 
-- [Docker Search Command](https://github.com/Minhaz00/Docker-Docs/blob/Docker-Deep-Dive/Chapter%2006/Docker%20Images%20Deep%20Dive/searching/README.md)
+- [Docker Search Command](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2006/7)
 
 ### Chapter 7: Containers
 
