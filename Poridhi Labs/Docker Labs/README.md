@@ -6,26 +6,33 @@
 ### Chapter 2: Running software in containers
 
 - [Deploying a Monitored NGINX Web Server Using Docker](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2002/Docker-Action-01)
+
 - [Setting Up a Host-Like Environment Using Docker Containers](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2002/Docker-Action-02)
+
 - [Setting Up a Docker Container with a Read-Only File System](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2002/Docker-Action-03)
+
 - [Automatic Restart of Docker Containers](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2002/Docker-Action-04)
+
 - [Keeping Containers Running with Supervisor](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2002/Docker-Action-05)
+
 
 
 ### Chapter 4: Working with storage and volumes
 
-- [Working with storage and volumes](https://github.com/Minhaz00/Docker-Docs/tree/Docker-in-Action/Chapter%2004/4.1)
-- [Bind mounts](https://github.com/Minhaz00/Docker-Docs/tree/Docker-in-Action/Chapter%2004/4.2)
-- [In-memory storage](https://github.com/Minhaz00/Docker-Docs/tree/Docker-in-Action/Chapter%2004/4.3)
-- [Using Volumes with a NoSQL Database (Apache Cassandra)](https://github.com/Konami33/Docker-Docs/tree/storage1/Chapter%2004/4.4.2)
-- [Log Sharing Between Containers](https://github.com/Konami33/Docker-Docs/tree/storage1/Chapter%2004/4.5)
-- [Cleaning up volumes](https://github.com/Konami33/Docker-Docs/tree/storage1/Chapter%2004/4.6)
+- [Docker Bind Mounts](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.2)
 
+- [In-memory storage](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.3)
+
+- [Working with Docker Volumes](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.4)
+
+- [Log Sharing Between Containers](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2004/4.5)
 
 ### Chapter 5: Single-host networking
 
-- [Communication between Containers](https://github.com/Minhaz00/Docker-Docs/tree/Docker-in-Action/Chapter%2005/Communication%20Between%20Containers)
-- [Exploring Bridge Networks in Docker](https://github.com/Minhaz00/Docker-Docs/tree/Docker-in-Action/Chapter%2005/Exploring%20Bridge%20Networks%20in%20Docker)
+- [Communication Between Containers in a Custom Bridge Network](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2005/Communication%20Between%20Containers)
+
+- [Exploring Bridge Networks in Docker](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2005/Exploring%20Bridge%20Networks%20in%20Docker)
+
 
 
 ### Chapter 7: Packaging software in image
