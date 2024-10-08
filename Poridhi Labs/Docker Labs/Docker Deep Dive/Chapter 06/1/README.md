@@ -2,7 +2,6 @@
 
 We’ve mentioned a couple of times already that images are like stopped containers. In fact, you can stop a container and create a new image from it. With this in mind, images are considered build-time constructs, whereas containers are run-time constructs.
 
-![alt text](image.png)
 
 ## Images and containers
 Figure 6.1 shows high-level view of the relationship between images and containers. We use the docker run and docker service create commands to start one or more containers from a single image. Once you’ve started a container from an image, the two constructs become dependent on each other, and you cannot delete the image until the last container using it has been stopped and destroyed.
