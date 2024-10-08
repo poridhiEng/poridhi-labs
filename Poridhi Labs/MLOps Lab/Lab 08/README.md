@@ -1,15 +1,9 @@
 # Remote MLflow Tracking Server: Deploying on EC2 with PostgreSQL Backend and S3 Registries Using Pulumi
 
 
-```
-
-Architecture Diagram will be added later!!
-
-```
-
-
-
 In this lab, we'll set up an MLflow tracking server on an EC2 instance, leveraging Pulumi to manage the infrastructure. The tracking server will use PostgreSQL as the backend store (running on the same EC2 instance) and configure two S3 buckets for artifact and model registries. This setup is highly scalable, providing a robust MLOps infrastructure for managing the lifecycle of machine learning experiments.
+
+![](./images/x3.svg)
 
 ### Objectives
 - Set up infrastructure (VPC, EC2, S3) using Pulumi
