@@ -1,0 +1,87 @@
+root@23eb1d5d8ae500e3:~/code# kubectl get pods -n kube-system -l k8s-app=kube-dns
+NAME                       READY   STATUS    RESTARTS   AGE
+coredns-7d797d87cc-hhqxp   1/1     Running   0          15m
+coredns-7d797d87cc-qbrhm   1/1     Running   0          15m
+root@23eb1d5d8ae500e3:~/code# kubectl logs -n kube-system -l k8s-app=kube-dns
+.:53
+[INFO] plugin/reload: Running configuration MD5 = fbb756dad13bce75afc40db627b38529
+CoreDNS-1.7.0
+linux/amd64, go1.14.4, f59c03d
+[ERROR] plugin/errors: 2 8684360449017955715.8575986960254465018. HINFO: plugin/loop: no next plugin found
+.:53
+[INFO] plugin/reload: Running configuration MD5 = fbb756dad13bce75afc40db627b38529
+CoreDNS-1.7.0
+linux/amd64, go1.14.4, f59c03d
+[ERROR] plugin/errors: 2 5692431305424135324.5080903106993068362. HINFO: plugin/loop: no next plugin found
+root@23eb1d5d8ae500e3:~/code# kubectl get service kube-dns -n kube-system
+NAME       TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)                  AGE
+kube-dns   ClusterIP   10.32.0.10           53/UDP,53/TCP,9153/TCP   39m
+root@23eb1d5d8ae500e3:~/code# kubectl exec -it busybox -- nslookup kubernetes.default.svc.cluster.local
+Server:    10.32.0.10
+Address 1: 10.32.0.10
+nslookup: can't resolve 'kubernetes.default.svc.cluster.local'
+command terminated with exit code 1
+root@23eb1d5d8ae500e3:~/code# kubectl get configmap coredns -n kube-system -o yaml
+apiVersion: v1
+data:
+  Corefile: |
+    .:53 {
+        errors
+        health
+        ready
+        kubernetes cluster.local in-addr.arpa ip6.arpa {
+          pods insecure
+          fallthrough in-addr.arpa ip6.arpa
+        }
+        prometheus :9153
+        cache 30
+        loop
+        reload
+        loadbalance
+    }
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","data":{"Corefile":".:53 {\n    errors\n    health\n    ready\n    kubernetes cluster.local in-addr.arpa ip6.arpa {\n      pods insecure\n      fallthrough in-addr.arpa ip6.arpa\n    }\n    prometheus :9153\n    cache 30\n    loop\n    reload\n    loadbalance\n}\n"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"coredns","namespace":"kube-system"}}
+  creationTimestamp: "2024-09-27T15:08:34Z"
+  name: coredns
+  namespace: kube-system
+  resourceVersion: "2604"
+  uid: 6251d5c9-0ce1-437e-9f8e-129c11acfe9f
+root@23eb1d5d8ae500e3:~/code# kubectl get service kubernetes
+NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.32.0.1            443/TCP   70m
+root@23eb1d5d8ae500e3:~/code# kubectl get networkpolicies --all-namespaces
+No resources found
+root@23eb1d5d8ae500e3:~/code# kubectl exec -it busybox -- nslookup kube-dns.kube-system.svc.cluster.local
+Server:    10.32.0.10
+Address 1: 10.32.0.10
+nslookup: can't resolve 'kube-dns.kube-system.svc.cluster.local'
+command terminated with exit code 1
+root@23eb1d5d8ae500e3:~/code# kubectl get endpoints kubernetes -o yaml
+apiVersion: v1
+kind: Endpoints
+metadata:
+  creationTimestamp: "2024-09-27T14:39:39Z"
+  labels:
+    endpointslice.kubernetes.io/skip-mirror: "true"
+  name: kubernetes
+  namespace: default
+  resourceVersion: "251"
+  uid: 0efab8c3-913f-4b62-92b0-5b3f146c6723
+subsets:
+- addresses:
+  - ip: 10.0.1.10
+  - ip: 10.0.1.11
+  ports:
+  - name: https
+    port: 6443
+    protocol: TCP
+root@23eb1d5d8ae500e3:~/code# kubectl get nodes -o wide
+NAME           STATUS   ROLES    AGE   VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE           KERNEL-VERSION   CONTAINER-RUNTIME
+ip-10-0-1-20   Ready       56m   v1.21.0   10.0.1.20             Ubuntu 24.04 LTS   6.8.0-1012-aws   containerd://1.4.4
+ip-10-0-1-21   Ready       56m   v1.21.0   10.0.1.21             Ubuntu 24.04 LTS   6.8.0-1012-aws   containerd://1.4.4
+
+
+Given all the outputs you need.
