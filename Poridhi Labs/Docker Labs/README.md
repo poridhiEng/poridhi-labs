@@ -30,11 +30,16 @@
 
 ### Chapter 7: Packaging software in image
 
-- [Building Docker Images from a Container](https://github.com/Minhaz00/Docker-Docs/tree/Docker-in-Action/Chapter%2007/1)
-- [Create and Commit an Ubuntu Container with Git Installed](https://github.com/Minhaz00/Docker-Docs/tree/Docker-in-Action/Chapter%2007/2)
-- [Reviewing filesystem changes](https://github.com/Minhaz00/Docker-Docs/tree/Docker-in-Action/Chapter%2007/3)
-- [Modifying Docker Image Attributes](https://github.com/Minhaz00/Docker-Docs/tree/Docker-in-Action/Chapter%2007/4)
-- [Exploring Docker Image Layers and Size Management](https://github.com/Minhaz00/Docker-Docs/tree/Docker-in-Action/Chapter%2007/5)
+- [Building Docker Images from a Container](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/1)
+
+- [Create and Commit an Ubuntu Container with Git Installed](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/1)
+
+- [Reviewing filesystem changes](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/1)
+
+- [Modifying Docker Image Attributes](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/1)
+
+- [Exploring Docker Image Layers and Size Management](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/1)
+
 
 
 
@@ -53,18 +58,23 @@
 ### Chapter 7: Containers
 
 - [The Lifecycle of a Container](https://github.com/Minhaz00/Docker-Docs/tree/Docker-Deep-Dive/Chapter%2007/Container%20Lifecycle)
+
 - [Differentiating Docker stop vs kill](https://github.com/Minhaz00/Docker-Docs/tree/Docker-Deep-Dive/Chapter%2007/Docker%20stop%20Vs%20kill)
+
 - [Docker Container Restart Policies](https://github.com/Minhaz00/Docker-Docs/tree/Docker-Deep-Dive/Chapter%2007/Restart%20Policies)
+
 - [Running an NGINX Web Server in a Docker Container](https://github.com/Minhaz00/Docker-Docs/tree/Docker-Deep-Dive/Chapter%2007/Running%20a%20web%20server%20in%20a%20docker%20container)
 
 
 ### Chapter 8: Containerizing an app
 
 - [Containerize a single-container app](https://github.com/Minhaz00/Docker-Docs/tree/Docker-Deep-Dive/Chapter%2008/Containerize%20a%20single-container%20app)
+
 - [Multi-Stage Docker Build](https://github.com/Minhaz00/Docker-Docs/tree/Docker-Deep-Dive/Chapter%2008/Moving%20to%20Production%20with%20Multi-stage%20Builds)
 
 ### Chapter 9: Multi-container apps with Compose
 
-- [Intro to Docker Compose](https://github.com/Minhaz00/Docker-Docs/tree/Docker-Deep-Dive/Chapter%2009/1.%20Introduction%20to%20Docker%20Compose)
-- [Deploy the multi-container app](https://github.com/Minhaz00/Docker-Docs/tree/Docker-Deep-Dive/Chapter%2009/2.%20Docker%20Compose%20File%20with%20Services%2C%20Networks%2C%20and%20Volumes)
+- [Intro to Docker Compose](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2009/1.%20Introduction%20to%20Docker%20Compose)
+
+- [Deploy the multi-container app](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2009/2.%20Docker%20Compose%20File%20with%20Services%2C%20Networks%2C%20and%20Volumes)
 
