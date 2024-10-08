@@ -18,7 +18,7 @@ In this setup, we will design and deploy AWS Infrastructure to support Kubernete
 
 ![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-3/images/infra.drawio.svg)
 
-### 1. Configure AWS CLI
+### Configure AWS CLI
 
 ```sh
 aws configure
@@ -26,7 +26,7 @@ aws configure
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-3/images/image-7.png)
 
-### 2. Create a script to install the necessary tools:
+### Create a script to install the necessary tools:
 
 ```sh
 #!/bin/bash
@@ -80,13 +80,14 @@ echo "All tools installed successfully!"
 ```
 This script will install **jq, cfssl, cfssljson, kubectl**, and **python3.8-venv**.
 
-- Now, Save the script as `install_k8s_tools.sh`
-- Make the script executable:
+**1. Save the script as `install_k8s_tools.sh`**
+
+**2. Make the script executable:**
 
 ```sh
 chmod +x install_k8s_tools.sh
 ```
-- Run the script:
+**3. Run the script:**
 
 ```sh
 ./install_k8s_tools.sh

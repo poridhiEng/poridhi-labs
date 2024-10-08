@@ -15,7 +15,7 @@ In this setup, we will design and deploy AWS Infrastructure to support Kubernete
 
 ![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-5/images/infra.drawio.svg)
 
-### 1. Configure AWS CLI
+### Configure AWS CLI
 
 ```sh
 aws configure
@@ -23,7 +23,7 @@ aws configure
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-5/images/image-7.png)
 
-### 2. Create a script to install the necessary tools:
+### Create a script to install the necessary tools:
 
 ```bash
 #!/bin/bash

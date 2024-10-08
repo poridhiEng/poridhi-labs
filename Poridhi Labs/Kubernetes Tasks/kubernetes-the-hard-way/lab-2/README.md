@@ -18,7 +18,7 @@ In this setup, we will design and deploy AWS Infrastructure to support Kubernete
 
 ![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-2/images/infra.drawio.svg)
 
-### 1. Configure AWS CLI
+### Configure AWS CLI
 
 ```sh
 aws configure
@@ -26,7 +26,7 @@ aws configure
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-2/images/image-7.png)
 
-### 2. Create a script to install the necessary tools:
+### Create a script to install the necessary tools:
 
 ```sh
 #!/bin/bash
@@ -459,11 +459,11 @@ cfssl gencert -initca ca-csr.json | cfssljson -bare ca
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-2/images/image-5.png)
 
-## 2. Client and Server Certificates
+## Client and Server Certificates
 
 In this section you will generate client and server certificates for each Kubernetes component and a client certificate for the Kubernetes `admin` user.
 
-### 2.1 The Admin Client Certificate
+### The Admin Client Certificate
 
 Generate the `admin` client certificate and private key:
 
