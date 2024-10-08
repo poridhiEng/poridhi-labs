@@ -2,7 +2,7 @@
 
 In this lab you will learn how to bootstrap two Kubernetes worker nodes, install necessary components, and configure them to join the Kubernetes cluster. The worker nodes are where your applications and services will run. We will configure the worker nodes to communicate with the control plane, manage containers, and handle networking.
 
-![](./images/worker-1.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/worker-1.drawio.svg)
 
 
 ## Overview
@@ -25,14 +25,14 @@ In this setup, we will design and deploy AWS Infrastructure to support Kubernete
 - To enable connectivity and internet access to the nodes, we will create a **public route table** and attach an **internet gateway** to it. This will allow the nodes to communicate with each other and access external resources and services. 
 - Finally, we will utilize Pulumi python to create and manage this AWS infrastructure.
 
-![](./images/infra.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/infra.drawio.svg)
 
 ### 1. Configure AWS CLI
 
 ```sh
 aws configure
 ```
-![alt text](./images/image-7.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-7.png)
 
 ### 2. Create a script to install the necessary tools:
 
@@ -100,7 +100,7 @@ chmod +x install_k8s_tools.sh
 ./install_k8s_tools.sh
 ```
 
-![alt text](./images/image-8.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-8.png)
 
 ## Provisioning Compute Resources
 
@@ -118,7 +118,7 @@ sudo apt update
 sudo apt install python3.8-venv -y
 ```
 
-![alt text](./images/image-9.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-9.png)
 
 **3. Create a New Pulumi Project**
 
@@ -371,7 +371,7 @@ chmod 400 kubernetes.id_rsa
 pulumi up --yes
 ```
 
-![alt text](./images/image-10.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-10.png)
 
 ## Certificate Generation
 
@@ -633,7 +633,7 @@ chmod +x certificate.sh
 ./certificate.sh
 ```
 
-![alt text](./images/image-11.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-11.png)
 
 ## Client Authentication Configs
 
@@ -818,7 +818,7 @@ chmod +x kube_config.sh
 ```sh
 ./kube_config.sh
 ```
-![alt text](./images/image-12.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-12.png)
 
 ## Bootstrapping an etcd Cluster Member
 
@@ -838,7 +838,7 @@ ssh controller-1
 ```sh
 sudo hostnamectl set-hostname controller-0
 ```
-![alt text](./images/image-13.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-13.png)
 
 **2. Controller-1**
 
@@ -929,14 +929,14 @@ Please update the placeholder values of <INTERNAL_IP> and <ETCD_NAME> for `Contr
 INTERNAL_IP="10.0.1.10"
 ETCD_NAME="controller-0"
 ```
-![alt text](./images/image-14.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-14.png)
 For `Controller-1`
 
 ```sh
 INTERNAL_IP="10.0.1.11"
 ETCD_NAME="controller-1"
 ```
-![alt text](./images/image-15.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-15.png)
 
 **1. After Updating, Save the script as `bootstrap_etcd.sh`**
 
@@ -952,7 +952,7 @@ chmod +x bootstrap_etcd.sh
 ./bootstrap_etcd.sh
 ```
 
-![alt text](./images/image-16.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-16.png)
 
 
 ## Verify the etcd Cluster
@@ -963,7 +963,7 @@ First check if etcd service is ruinning on both nodes or not
 sudo systemctl status etcd
 ```
 
-![alt text](./images/image-17.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-17.png)
 
 Once the etcd service is running on both nodes, verify the cluster status by listing the cluster members:
 
@@ -977,7 +977,7 @@ sudo ETCDCTL_API=3 etcdctl member list \
 
 > output
 
-![alt text](./images/image-18.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-18.png)
 
 ## Provision the Kubernetes Control Plane
 
@@ -1132,7 +1132,7 @@ sudo systemctl start kube-apiserver kube-controller-manager kube-scheduler
 
 ### NOTE: Please update the `<PRIVATE_IP_OF_CONTROLLER>`, `<PUBLIC_IP_OF_CONTROLLER>` values with Private_IP and Public_IP of each controller instance.
 
-![alt text](./images/image-19.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-19.png)
 
 
 **1. After updating, Save the script as `provision_k8s_control_plane.sh`**
@@ -1148,7 +1148,7 @@ chmod +x provision_k8s_control_plane.sh
 ./provision_k8s_control_plane.sh
 ```
 
-![alt text](./images/image-20.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-20.png)
 
 > Allow up to 10 seconds for the Kubernetes API Server to fully initialize.
 
@@ -1161,7 +1161,7 @@ kubectl cluster-info --kubeconfig admin.kubeconfig
 ```
 >OUTPUT:
 
-![alt text](./images/image-21.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-21.png)
 
 > Remember to run the above command on each controller node: `controller-0`, `controller-1`.
 
@@ -1176,7 +1176,7 @@ cat <<EOF | sudo tee -a /etc/hosts
 EOF
 ```
 
-![alt text](./images/image-22.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-22.png)
 
 > If this step is missed, the [DNS Cluster Add-on](12-dns-addon.md) testing will
 fail with an error like this: `Error from server: error dialing backend: dial tcp: lookup ip-10-0-1-21 on 127.0.0.53:53: server misbehaving`.
@@ -1239,7 +1239,7 @@ subjects:
 EOF
 ```
 
-![alt text](./images/image-23.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-23.png)
 
 ### Verification of cluster public endpoint
 
@@ -1267,7 +1267,7 @@ curl --cacert ca.pem https://${KUBERNETES_PUBLIC_ADDRESS}/version
 
 > output
 
-![alt text](./images/image-24.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-24.png)
 
 
 
@@ -1327,7 +1327,7 @@ wget -q --show-progress --https-only --timestamping \
   https://storage.googleapis.com/kubernetes-release/release/v1.21.0/bin/linux/amd64/kubelet
 ```
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image.png)
 
 Create the directories required for storing these binaries and configurations:
 
@@ -1354,7 +1354,7 @@ sudo mv crictl kubectl kube-proxy kubelet runc /usr/local/bin/
 sudo mv containerd/bin/* /bin/
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-1.png)
 
 ## Step 4: Configure Container Networking Interface (CNI)
 
@@ -1468,7 +1468,7 @@ sudo mv ${WORKER_NAME}.kubeconfig /var/lib/kubelet/kubeconfig
 sudo mv ca.pem /var/lib/kubernetes/
 ```
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-2.png)
 
 ### For worker-1:
 
@@ -1609,15 +1609,15 @@ Check the status of the containerd, kubelet, kube-proxy
 ```sh
 sudo systemctl status containerd 
 ```
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-3.png)
 ```sh
 sudo systemctl status kubelet
 ```
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-4.png)
 ```sh
 sudo systemctl status kube-proxy
 ```
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-5.png)
 
 > The compute instances created in this tutorial will not have permission to complete this section. Run the following commands from the `same machine` used to create the compute instances.
 
@@ -1629,7 +1629,7 @@ ssh controller-0 kubectl get nodes --kubeconfig admin.kubeconfig
 
 > output
 
-![alt text](./images/image-6.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-6/images/image-6.png)
 
 This output indicates that all worker nodes have successfully joined the Kubernetes cluster and are in the "Ready" state.
 

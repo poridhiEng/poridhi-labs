@@ -4,7 +4,7 @@
 
 In a Kubernetes cluster, secure communication between various components is critical for maintaining the integrity and confidentiality of data and operations. To achieve this, Kubernetes uses Transport Layer Security (TLS) certificates to encrypt communication and authenticate each component. This ensures that only trusted nodes and users can interact with the cluster.
 
-![](./images/cert-2.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-2/images/cert-2.drawio.svg)
 
 This is the second lab on setting up a Kubernetes cluster from scratch on Amazon Web Services (AWS) series. This lab provides detailed instructions for setting up a robust Public Key Infrastructure (PKI) using `CloudFlare's cfssl` tool. We will create a **Certificate Authority (CA)** to issue and manage the certificates required for Kubernetes components such as the `etcd`, `kube-apiserver`, `kube-controller-manager`, `kube-scheduler`, `kubelet`, and `kube-proxy`. By following these steps, you'll establish a secure environment where each component can authenticate and communicate reliably.
 
@@ -16,7 +16,7 @@ In this setup, we will design and deploy AWS Infrastructure to support Kubernete
 - To enable connectivity and internet access to the nodes, we will create a **public route table** and attach an **internet gateway** to it. This will allow the nodes to communicate with each other and access external resources and services. 
 - Finally, we will utilize Pulumi python to create and manage this AWS infrastructure.
 
-![](./images/infra.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-2/images/infra.drawio.svg)
 
 ### 1. Configure AWS CLI
 
@@ -24,7 +24,7 @@ In this setup, we will design and deploy AWS Infrastructure to support Kubernete
 aws configure
 ```
 
-![alt text](./images/image-7.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-2/images/image-7.png)
 
 ### 2. Create a script to install the necessary tools:
 
@@ -92,7 +92,7 @@ chmod +x install_k8s_tools.sh
 ./install_k8s_tools.sh
 ```
 
-![alt text](./images/image-8.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-2/images/image-8.png)
 
 ## Provisioning Compute Resources
 
@@ -110,7 +110,7 @@ sudo apt update
 sudo apt install python3.8-venv -y
 ```
 
-![alt text](./images/image-9.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-2/images/image-9.png)
 
 **3. Create a New Pulumi Project**
 
@@ -363,7 +363,7 @@ chmod 400 kubernetes.id_rsa
 pulumi up --yes
 ```
 
-![alt text](./images/image-6.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-2/images/image-6.png)
 
 ## Export Kubernetes Public Address
 
@@ -380,7 +380,7 @@ KUBERNETES_PUBLIC_ADDRESS=$(aws elbv2 describe-load-balancers \
 export KUBERNETES_PUBLIC_ADDRESS
 echo $KUBERNETES_PUBLIC_ADDRESS
 ```
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-2/images/image-2.png)
 
 ### Export Kubernetes Hostnames
 
@@ -391,7 +391,7 @@ KUBERNETES_HOSTNAMES=kubernetes,kubernetes.default,kubernetes.default.svc,kubern
 export KUBERNETES_HOSTNAMES
 echo $KUBERNETES_HOSTNAMES
 ```
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-2/images/image-3.png)
 
 # Certificate Generation
 
@@ -449,7 +449,7 @@ EOF
 cfssl gencert -initca ca-csr.json | cfssljson -bare ca
 ```
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-2/images/image-4.png)
 
 - **ca-config.json:** Defines the configuration for the CA, including the certificate signing profile. The expiry parameter sets the validity period for the certificates (8760 hours = 1 year).
 
@@ -457,7 +457,7 @@ cfssl gencert -initca ca-csr.json | cfssljson -bare ca
 
 **Results:**
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-2/images/image-5.png)
 
 ## 2. Client and Server Certificates
 
@@ -797,7 +797,7 @@ for instance in worker-0 worker-1; do
 done
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-2/images/image-1.png)
 
 Copy the appropriate certificates and private keys to each **controller** instance:
 
@@ -814,7 +814,7 @@ for instance in controller-0 controller-1; do
 done
 ```
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-2/images/image.png)
 
 > NOTE: Make Sure to use the specific directory for the keypair.
 

@@ -4,7 +4,7 @@
 
 In Kubernetes, configuration files known as kubeconfigs are used to enable various Kubernetes clients, such as the **controller manager**, **kubelet**, **kube-proxy, and scheduler clients**, as well as the **admin user**, to locate and authenticate to the Kubernetes API servers. The kubeconfig files help clients interact with the API server securely and ensure that requests are routed correctly based on roles and permissions defined within the cluster.
 
-![](./images/kube.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-3/images/kube.drawio.svg)
 
 This is the third lab on setting up a Kubernetes cluster from scratch on Amazon Web Services (AWS) series. In this lab you will generate [Kubernetes configuration files](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/), also known as `kubeconfigs`, which enable Kubernetes clients to locate and authenticate to the Kubernetes API Servers.
 
@@ -16,7 +16,7 @@ In this setup, we will design and deploy AWS Infrastructure to support Kubernete
 - To enable connectivity and internet access to the nodes, we will create a **public route table** and attach an **internet gateway** to it. This will allow the nodes to communicate with each other and access external resources and services. 
 - Finally, we will utilize Pulumi python to create and manage this AWS infrastructure.
 
-![](./images/infra.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-3/images/infra.drawio.svg)
 
 ### 1. Configure AWS CLI
 
@@ -24,7 +24,7 @@ In this setup, we will design and deploy AWS Infrastructure to support Kubernete
 aws configure
 ```
 
-![alt text](./images/image-7.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-3/images/image-7.png)
 
 ### 2. Create a script to install the necessary tools:
 
@@ -92,7 +92,7 @@ chmod +x install_k8s_tools.sh
 ./install_k8s_tools.sh
 ```
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-3/images/image-5.png)
 
 ## Provisioning Compute Resources
 
@@ -110,7 +110,7 @@ sudo apt update
 sudo apt install python3.8-venv -y
 ```
 
-![alt text](./images/image-8.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-3/images/image-8.png)
 
 **3. Create a New Pulumi Project**
 
@@ -363,7 +363,7 @@ chmod 400 kubernetes.id_rsa
 pulumi up --yes
 ```
 
-![alt text](./images/image-6.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-3/images/image-6.png)
 
 ## Certificate Generation
 
@@ -625,7 +625,7 @@ chmod +x certificate.sh
 ./certificate.sh
 ```
 
-![alt text](./images/image-9.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-3/images/image-9.png)
 
 ## Generating the Client Authentication Configs
 
@@ -652,7 +652,7 @@ KUBERNETES_PUBLIC_ADDRESS=$(aws elbv2 describe-load-balancers \
 echo $KUBERNETES_PUBLIC_ADDRESS
 ```
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-3/images/image.png)
 
 ### The kubelet Kubernetes Configuration File
 
@@ -692,7 +692,7 @@ done
 
 Results:
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-3/images/image-1.png)
 
 ### The kube-proxy Kubernetes Configuration File
 
@@ -879,7 +879,7 @@ done
 
 ```
 
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-3/images/image-3.png)
 
 Copy the appropriate `kube-controller-manager` and `kube-scheduler` kubeconfig files to each controller instance:
 
@@ -898,7 +898,7 @@ done
 
 > NOTE: Make sure to use the specific path for the keypair
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-3/images/image-4.png)
 
 ## Generating the Data Encryption Config and Key
 
@@ -947,6 +947,6 @@ for instance in controller-0 controller-1; do
 done
 ```
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-3/images/image-2.png)
 
 You have **successfully** generated and distributed the necessary kubeconfig files and encryption configuration for your Kubernetes cluster. This setup ensures secure communication and access control for all Kubernetes components, allowing them to interact with the API server securely and authenticate their actions within the cluster.

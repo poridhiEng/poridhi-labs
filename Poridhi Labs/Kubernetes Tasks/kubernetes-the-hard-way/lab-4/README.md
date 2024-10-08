@@ -5,7 +5,7 @@
 
 Kubernetes components are inherently **stateless**, and they rely on `etcd` to store all cluster-related data, such as configuration, cluster state, and service discovery information.
 
-![](./images/etcd.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-4/images/etcd.drawio.svg)
 
 This is the **fourth** lab on setting up a Kubernetes cluster from scratch on Amazon Web Services (AWS) series. In this guide, we will set up a two-node `etcd` cluster to provide high availability and secure communication between Kubernetes components. This setup is designed to ensure that the cluster state is consistently stored and available even if one `etcd` node goes down.
 
@@ -17,7 +17,7 @@ In this setup, we will design and deploy AWS Infrastructure to support Kubernete
 - To enable connectivity and internet access to the nodes, we will create a **public route table** and attach an **internet gateway** to it. This will allow the nodes to communicate with each other and access external resources and services. 
 - Finally, we will utilize Pulumi python to create and manage this AWS infrastructure.
 
-![](./images/infra.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-4/images/infra.drawio.svg)
 
 ### 1. Configure AWS CLI
 
@@ -25,7 +25,7 @@ In this setup, we will design and deploy AWS Infrastructure to support Kubernete
 aws configure
 ```
 
-![alt text](./images/image-6.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-4/images/image-6.png)
 
 ### 2. Create a script to install the necessary tools:
 
@@ -94,7 +94,7 @@ chmod +x install_k8s_tools.sh
 ./install_k8s_tools.sh
 ```
 
-![alt text](./images/image-7.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-4/images/image-7.png)
 
 ## Provisioning Compute Resources
 
@@ -112,7 +112,7 @@ sudo apt update
 sudo apt install python3.8-venv -y
 ```
 
-![alt text](./images/image-8.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-4/images/image-8.png)
 
 **3. Create a New Pulumi Project**
 
@@ -365,7 +365,7 @@ chmod 400 kubernetes.id_rsa
 pulumi up --yes
 ```
 
-![alt text](./images/image-9.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-4/images/image-9.png)
 
 ## Certificate Generation
 
@@ -622,7 +622,7 @@ This script will install all the necessary certificates.
 chmod +x certificate.sh
 ```
 
-![alt text](./images/image-10.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-4/images/image-10.png)
 
 **5. Run the script:**
 
@@ -813,7 +813,7 @@ chmod +x kube_config.sh
 ```sh
 ./kube_config.sh
 ```
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-4/images/image.png)
 
 
 ## Bootstrapping the etcd Cluster
@@ -834,7 +834,7 @@ We can also set the hostname of each controller:
 ```sh
 sudo hostnamectl set-hostname controller-0
 ```
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-4/images/image-1.png)
 
 **2. Controller-1**
 
@@ -853,7 +853,7 @@ wget -q --show-progress --https-only --timestamping \
   "https://github.com/etcd-io/etcd/releases/download/v3.5.16/etcd-v3.5.16-linux-amd64.tar.gz"
 ```
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-4/images/image-2.png)
 
 Extract and install the `etcd` server and the `etcdctl` command line utility:
 
@@ -909,7 +909,7 @@ echo $INTERNAL_IP
 echo $ETCD_NAME
 ```
 
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-4/images/image-3.png)
 
 ## For Controller-1
 
@@ -1000,7 +1000,7 @@ First check if etcd service is ruinning on both nodes or not
 sudo systemctl status etcd
 ```
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-4/images/image-4.png)
 
 Once the etcd service is running on both nodes, verify the cluster status by listing the cluster members:
 
@@ -1014,7 +1014,7 @@ sudo ETCDCTL_API=3 etcdctl member list \
 
 > output
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-4/images/image-5.png)
 
 This output confirms that both `controller-0` and `controller-1` are part of the etcd cluster and are functioning correctly.
 

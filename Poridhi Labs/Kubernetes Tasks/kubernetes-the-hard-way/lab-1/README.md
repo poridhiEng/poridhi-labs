@@ -17,7 +17,7 @@ By the end of this lab series, you'll have a deeper understanding of how each Ku
 
 In a typical Kubernetes setup, the cluster is divided into control plane nodes and worker nodes. The control plane nodes manage the state of the cluster, while the worker nodes are responsible for running your containerized applications.
 
-![](./images/k8s-2.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-1/images/k8s-2.drawio.svg)
 
 ### Key Components of Kubernetes Architecture
 
@@ -43,7 +43,7 @@ In this setup, we will design and deploy AWS Infrastructure to support Kubernete
 - To enable connectivity and internet access to the nodes, we will create a **public route table** and attach an **internet gateway** to it. This will allow the nodes to communicate with each other and access external resources and services. 
 - Finally, we will utilize Pulumi python to create and manage this AWS infrastructure.
 
-![](./images/infra.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-1/images/infra.drawio.svg)
 
 ## Setting Up Amazon Web Services (AWS) Command Line Interface (CLI)
 
@@ -64,7 +64,7 @@ Run the following command and provide the required information:
 aws configure
 ```
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-1/images/image.png)
 
 > Note: Use aws configure list to verify that your configuration is correct and check the active profile and region settings.
 
@@ -116,7 +116,7 @@ cfssl version
 
 You should see output similar to:
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-1/images/image-1.png)
 
 Similarly, check for `cfssljson`:
 
@@ -148,7 +148,7 @@ Check that `kubectl` is installed correctly by verifying its version:
 kubectl version --client
 ```
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-1/images/image-2.png)
 
 ## Step 4: Provisioning Compute Resources
 
@@ -184,7 +184,7 @@ Run the following command to initialize a new Pulumi project:
 pulumi new aws-python
 ```
 
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-1/images/image-3.png)
 
 Pulumi will guide you through setting up a new project and configuring it to use AWS resources.
 
@@ -510,7 +510,7 @@ pulumi up --yes
 ```
 After the creation check from the AWS console management or PULUMI ouputs for ensuring if all the necessary resources are created or not.
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/kubernetes-the-hard-way/lab-1/images/image-4.png)
 
 ---
 
