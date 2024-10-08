@@ -39,13 +39,13 @@
 
 - [Building Docker Images from a Container](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/1)
 
-- [Create and Commit an Ubuntu Container with Git Installed](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/1)
+- [Create and Commit an Ubuntu Container with Git Installed](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/2)
 
-- [Reviewing filesystem changes](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/1)
+- [Reviewing filesystem changes](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/3)
 
-- [Modifying Docker Image Attributes](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/1)
+- [Modifying Docker Image Attributes](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/4)
 
-- [Exploring Docker Image Layers and Size Management](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/1)
+- [Exploring Docker Image Layers and Size Management](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20in%20Action/Chapter%2007/5)
 
 
 
@@ -56,10 +56,15 @@
 ### Chapter 6: Images
 
 - [Image layers](https://github.com/Minhaz00/Docker-Docs/blob/Docker-Deep-Dive/Chapter%2006/Docker%20Images%20Deep%20Dive/Images%20and%20layers/README.md)
+
 - [Images and containers](https://github.com/Minhaz00/Docker-Docs/blob/Docker-Deep-Dive/Chapter%2006/Docker%20Images%20Deep%20Dive/Intro/README.md)
+
 - [Filter tag](https://github.com/Minhaz00/Docker-Docs/blob/Docker-Deep-Dive/Chapter%2006/Docker%20Images%20Deep%20Dive/filtering/README.md)
+
 - [Image create and delete](https://github.com/Minhaz00/Docker-Docs/blob/Docker-Deep-Dive/Chapter%2006/Docker%20Images%20Deep%20Dive/image-create-del/README.md)
+
 - [Docker image layer sharing and digest](https://github.com/Minhaz00/Docker-Docs/blob/Docker-Deep-Dive/Chapter%2006/Docker%20Images%20Deep%20Dive/layersharing-digest/README.md)
+
 - [Docker Search Command](https://github.com/Minhaz00/Docker-Docs/blob/Docker-Deep-Dive/Chapter%2006/Docker%20Images%20Deep%20Dive/searching/README.md)
 
 ### Chapter 7: Containers

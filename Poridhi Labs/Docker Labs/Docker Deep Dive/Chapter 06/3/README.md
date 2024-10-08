@@ -165,8 +165,8 @@ flask
 
 By following these steps, you can create, build, and share your own Docker images.
 
----
-# Deleting docker images
+
+## Deleting docker images
 
 Deleting a Docker image involves a few simple steps. Below is a step-by-step guide on how to remove Docker images from your system.
 
