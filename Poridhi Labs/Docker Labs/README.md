@@ -75,9 +75,10 @@
 
 ### Chapter 8: Containerizing an app
 
-- [Containerize a single-container app](https://github.com/Minhaz00/Docker-Docs/tree/Docker-Deep-Dive/Chapter%2008/Containerize%20a%20single-container%20app)
+- [Containerize a Single-Container App](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2008/Containerize%20a%20single-container%20app)
 
-- [Multi-Stage Docker Build](https://github.com/Minhaz00/Docker-Docs/tree/Docker-Deep-Dive/Chapter%2008/Moving%20to%20Production%20with%20Multi-stage%20Builds)
+- [Multi-stage Builds with a Simple Node.js App](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/Docker%20Labs/Docker%20Deep%20Dive/Chapter%2008/Moving%20to%20Production%20with%20Multi-stage%20Builds)
+
 
 ### Chapter 9: Multi-container apps with Compose
 
