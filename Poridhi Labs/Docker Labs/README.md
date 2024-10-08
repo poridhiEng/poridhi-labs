@@ -1,4 +1,4 @@
-# Docker Labs List (Sorted by Difficulty)
+# Docker Labs 
 
 This README contains a merged and sorted list of Docker labs from the books "Docker in Action" and "Docker Deep Dive". The labs are organized based on their difficulty level, starting from basic concepts and progressing to more advanced topics.
 
