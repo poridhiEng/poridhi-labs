@@ -2,7 +2,7 @@
 
 In this hands-on lab, we will build a complete MLOps environment using Kubernetes, MLflow, and Amazon S3. This environment enables seamless tracking of machine learning experiments, efficient management of models, and scalable deployment using Kubernetes. By integrating MLflow for experiment tracking and S3 for artifact storage, we will create a robust and production-ready MLOps infrastructure. 
 
-![](./images/x1.svg)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2006/images/x1.svg?raw=true)
 
 The guide will walk you through deploying MLflow on a Kubernetes cluster, configuring S3 as a backend storage, setting up PostgreSQL as a metadata store, and running a sample machine learning experiment. By the end of this lab, you will have a comprehensive understanding of deploying, managing, and scaling machine learning workflows in a containerized environment.
 
@@ -79,7 +79,7 @@ Verify versioning status.
 aws s3api get-bucket-versioning --bucket <your-bucket-name> 
 ```
 
-![alt text](./images/image-7.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2006/images/image-7.png?raw=true)
 
 
 ## Step 3: Creating the MLflow Server with S3 Integration
@@ -445,7 +445,7 @@ kubectl get all
 
 Expected output:
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2006/images/image.png?raw=true)
 
 ## Step 8: Expose MLflow and Check Tracking Results
 
@@ -459,15 +459,15 @@ kubectl get nodes -o wide
 
 Expected output:
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2006/images/image-2.png?raw=true)
 
 Now Create a load balancer from poridhi labs with these `nodeIP` and `nodeport` 30080.
 
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2006/images/image-3.png?raw=true)
 
 Now open the load balancer url in you browser to see the MLflow UI.
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2006/images/image-4.png?raw=true)
 
 
 
@@ -479,17 +479,17 @@ View the logged metrics, parameters, and artifacts in the MLflow UI, which inclu
 - **Metrics**: `accuracy`, `precision`, `recall`, `f1_score`.
 - **Parameters**: `n_estimators`, `max_depth`, `min_samples_split`.
 
-    ![alt text](./images/image-5.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2006/images/image-5.png?raw=true)
 
 - **Artifacts**: `random_forest_model`, `feature_importance.json`, `synthetic_data.csv`, `train_model.py`.
 
-    ![alt text](./images/image-6.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2006/images/image-6.png?raw=true)
 
 ### Verify Artifact Storage in S3
 
 Confirm that the model and data artifacts are stored in the specified S3 bucket using AWS console.
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2006/images/image-1.png?raw=true)
 
 
 
