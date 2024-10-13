@@ -3,7 +3,8 @@
 
 In this lab, we'll set up an MLflow tracking server on an EC2 instance, leveraging Pulumi to manage the infrastructure. The tracking server will use PostgreSQL as the backend store (running on the same EC2 instance) and configure two S3 buckets for artifact and model registries. This setup is highly scalable, providing a robust MLOps infrastructure for managing the lifecycle of machine learning experiments.
 
-![](./images/x3.svg)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2008/images/x3.svg?raw=true)
+
 
 ### Objectives
 - Set up infrastructure (VPC, EC2, S3) using Pulumi
@@ -179,7 +180,7 @@ pulumi preview
 
 Expected output:
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2008/images/image-1.png?raw=true)
 
 ### 6. Run Pulumi:
 Run the pulumi command to create the infrastructure:
@@ -190,7 +191,7 @@ This will create the infrastructure on AWS.
 
 Expected output:
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2008/images/image-2.png?raw=true)
 
 
 
@@ -322,7 +323,7 @@ In the `EC2 instace`, run the following command:
 1. Install AWS CLI:
     ```bash
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-    sudo apt install unzip
+    sudo apt update && sudo apt install unzip
     unzip awscliv2.zip
     sudo ./aws/install
     ```
@@ -361,11 +362,11 @@ In the `EC2 instace`, run the following command:
 
     Expected output:
 
-    ![alt text](./images/image.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2008/images/image.png?raw=true)
 
 5. MLflow server has been started successfully. Now visit `<EC2-public-IP>:5000` from browser, you will see the server:
 
-    ![alt text](./images/image-5.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2008/images/image-5.png?raw=true)
 
 
 ## Step 5: Configure Client for Remote Tracking
@@ -436,11 +437,11 @@ python3 mlflow_example.py
 
 Expected output:
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2008/images/image-4.png?raw=true)
 
 After running the experiment, you can visit the MLflow UI at `http://<your-ec2-public-ip>:5000` and check the stored artifacts and model registries in the respective S3 buckets.
 
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2008/images/image-3.png?raw=true)
 
 ## Conclusion
 

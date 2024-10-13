@@ -3,7 +3,7 @@
 In modern machine learning (ML) workflows, managing and tracking experiments, models, and their parameters can become complex. MLflow is an open-source platform that helps manage this complexity by providing tools for tracking experiments, packaging code, and deploying models. One effective way to scale and manage MLflow in an isolated environment is through containerization, which allows you to package and run the MLflow tracking server along with other dependencies in a Docker container.
 
 
-![](./images/MLOpsLab7.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/1684a1a1a84b7218a35a3f43acc6619e3d2d74af/Poridhi%20Labs/MLOps%20Lab/Lab%2007/images/MLOpsLab7.svg)
 
 
 In this lab, you will learn how to containerize an MLflow Tracking Server using Docker. This environment is suitable for tracking machine learning experiments, and it provides an easy-to-use interface for logging metrics, storing artifacts, and analyzing model results. 
@@ -297,15 +297,16 @@ The MLFlow UI is available at `localhost:5000`. But to access the MLflow UI you 
     hostname -I
     ```
 
-    ![alt text](./images/image.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/1684a1a1a84b7218a35a3f43acc6619e3d2d74af/Poridhi%20Labs/MLOps%20Lab/Lab%2007/images/image.png)
+    
 
 2. Create a new Load Balancer with the `IP` from step 1 and `Port` 5000.
 
-    ![alt text](./images/image-1.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/1684a1a1a84b7218a35a3f43acc6619e3d2d74af/Poridhi%20Labs/MLOps%20Lab/Lab%2007/images/image-1.png)
 
 3. Open the load balancer url in your web browser to access the MLflow UI.
 
-    ![alt text](./images/image-3.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/1684a1a1a84b7218a35a3f43acc6619e3d2d74af/Poridhi%20Labs/MLOps%20Lab/Lab%2007/images/image-3.png)
 
 4. In the UI, you will see the experiment run that logged the metrics and model.
 
