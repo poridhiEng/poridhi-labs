@@ -1,8 +1,8 @@
-# Loki and Promtail Installation and Configuration Guide
+# Server Log Collection using Grafana Loki
 
 This guide provides detailed instructions on how to install and configure **Loki** and **Promtail** for collecting, processing, and querying logs from different servers. We will set up Loki for storing logs and Promtail agents on two nodes **(Node1 and Node2)** to collect logs and forward them to the Loki server. Additionally, we will demonstrate how to query the logs using **Grafana**.
 
-![](./images/arch.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/arch.drawio.svg)
 
 ---
 
@@ -14,7 +14,7 @@ We will need three servers:
 - **Node1 & Node2:** These servers generate logs, which will be collected and sent to the Loki server via Promtail.
 
 
-![](./images/infra.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/infra.drawio.svg)
 
 ## Create AWS Infrastructure
 
@@ -24,7 +24,7 @@ We will need three servers:
 aws configure
 ```
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image.png)
 
 **2. Create a Directory for Your Infrastructure**
 
@@ -46,7 +46,7 @@ sudo apt install python3.8-venv -y
 pulumi new aws-python
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-1.png)
 
 **5. Update the __main.py__ file:**
 
@@ -237,7 +237,7 @@ chmod 400 loki.id_rsa
 pulumi up --yes
 ```
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-2.png)
 
 
 ## Install Loki
@@ -253,7 +253,7 @@ pulumi up --yes
 wget https://github.com/grafana/loki/releases/download/v3.2.0/loki-linux-amd64.zip
 ```
 
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-3.png)
    
 **3. Unzip the Loki binary:**
 
@@ -267,7 +267,7 @@ unzip loki-linux-amd64.zip
 wget https://raw.githubusercontent.com/grafana/loki/main/cmd/loki/loki-local-config.yaml
 ```
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-4.png)
 
 **5. Configure Loki:**
 
@@ -284,7 +284,7 @@ wget https://raw.githubusercontent.com/grafana/loki/main/cmd/loki/loki-local-con
 ./loki-linux-amd64 -config.file=loki-local-config.yaml
 ```
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-5.png)
 
 ### Verify Loki Installation
 
@@ -293,7 +293,7 @@ wget https://raw.githubusercontent.com/grafana/loki/main/cmd/loki/loki-local-con
 http://<LOKI_SERVER_PUBLIC_IP>:3100/metrics
 ```
 
-![alt text](./images/image-6.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-6.png)
 
 If you see the metrics output, the Loki server is running properly.**
 
@@ -309,7 +309,7 @@ Navigate to the Loki release page and find the Promtail binary. For example:
 wget https://github.com/grafana/loki/releases/download/v3.2.0/promtail-linux-amd64.zip
 ```
 
-![alt text](./images/image-7.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-7.png)
 
 **2. Unzip Promtail:**
 
@@ -326,7 +326,7 @@ Download a basic Promtail configuration file:
 wget https://raw.githubusercontent.com/grafana/loki/main/clients/cmd/promtail/promtail-local-config.yaml
 ```
 
-![alt text](./images/image-8.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-8.png)
 
 **2. Edit Promtail Config:**
 
@@ -335,7 +335,7 @@ Update the Loki server URL under the `client` section:
 ```yaml
 url: http://<LOKI_SERVER_PUBLIC_IP>:3100/loki/api/v1/push
 ```
-![alt text](./images/image-9.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-9.png)
 
 Define the log file paths to be collected under the `scrape_configs` section.
 
@@ -346,7 +346,7 @@ Run Promtail with the configuration file:
 ```bash
 ./promtail-linux-amd64 -config.file=promtail-local-config.yaml
 ```
-![alt text](./images/image-10.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-10.png)
 
 > NOTE: Start on both nodes.
 
@@ -375,7 +375,7 @@ wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /etc/apt
 echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
 ```
 
-![alt text](./images/image-11.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-11.png)
 
 **4. Run the following command to update the list of available packages:**
 
@@ -397,7 +397,7 @@ sudo systemctl start grafana-server
 sudo systemctl status grafana-server
 ```
 
-![alt text](./images/image-12.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-12.png)
 
 **7. Configure the Grafana server to start at boot using systemd**
 
@@ -405,7 +405,7 @@ sudo systemctl status grafana-server
 sudo systemctl enable grafana-server.service
 ```
 
-![alt text](./images/image-13.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-13.png)
 
 ## Querying Logs with Grafana
 
@@ -413,11 +413,11 @@ sudo systemctl enable grafana-server.service
 1. Open Grafana and go to **Connections > Add Data Source**.
 2. Select **Loki** as the data source and configure the URL (e.g., `http://<LOKI_SERVER_PUBLIC_IP>:3100` if Grafana is running on the same machine as Loki).
 
-![alt text](./images/image-14.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-14.png)
 
 3. Save the data source and test the connection to ensure it works.
 
-![alt text](./images/image-15.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-15.png)
 
 ### Exploring Logs in Grafana
 
@@ -427,7 +427,7 @@ sudo systemctl enable grafana-server.service
     ```bash
     {job="varlogs", filename="/var/log/syslog"}
     ```
-    ![alt text](./images/image-16.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-16.png)
 
 3. You can filter logs by specific keywords or regular expressions to narrow down results, such as searching for logs containing the term "systemd":
 
@@ -435,7 +435,7 @@ sudo systemctl enable grafana-server.service
    {job="varlogs"} |= "systemd"
    ```
 
-   ![alt text](./images/image-17.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-17.png)
 ---
 
 ## Adding Application Logs to Promtail
@@ -462,7 +462,7 @@ Run the following command to create a new `package.json` file:
 npm init -y
 ```
 
-![alt text](./images/image-18.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-18.png)
 
 ### 3. **Install Required Dependencies**
 
@@ -473,7 +473,7 @@ npm install express
 npm install --save-dev nodemon
 ```
 
-![alt text](./images/image-19.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-19.png)
 
 ### 4. **Create Application Files**
 
@@ -622,7 +622,7 @@ curl -X PUT http://localhost:4000/users/1 \
 -d '{"id": "1", "name": "Jane Doe"}'
 ```
 
-![alt text](./images/image-21.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-21.png)
 
 #### Example: Delete a User (DELETE)
 ```bash
@@ -635,7 +635,7 @@ All requests will be logged in the `app.log` file in the same directory.
 
 Each log entry will look like this:
 
-![alt text](./images/image-22.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-22.png)
 
 ---
 
@@ -657,7 +657,7 @@ static_configs:
         __path__: /home/ubuntu/simple-crud-app/*log
 ```
 
-![alt text](./images/image-23.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-23.png)
 
 **3. Restart Promtail to apply the changes:**
 
@@ -665,7 +665,7 @@ static_configs:
 ./promtail-linux-amd64 -config.file=promtail-local-config.yaml
 ```
 
-![alt text](./images/image-24.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-24.png)
 
 
 ### Exploring Logs in Grafana
@@ -676,11 +676,11 @@ static_configs:
     ```bash
     {filename="/home/ubuntu/simple-crud-app/app.log"} |= ``
     ```
-    ![alt text](./images/image-25.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-25.png)
 
 3. You will get the `app.log` file information:
 
-    ![alt text](./images/image-26.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-26.png)
 ---
 
 ## 6. Conclusion
