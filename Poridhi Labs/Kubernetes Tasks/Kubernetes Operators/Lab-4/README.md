@@ -142,77 +142,7 @@ In this lab, you will define and create a Custom Resource Definition (CRD) for a
 1. **Open the `controllers/vpc_controller.go` file** and replace the content with the following code:
 
    ```go
-   package controller
-
-   import (
-       "context"
-       "fmt"
-       "github.com/go-logr/logr"
-       "sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
-       "sigs.k8s.io/controller-runtime/pkg/reconcile"
-       
-       networkingv1alpha1 "github.com/your-username/vpc-operator/api/v1alpha1"
-       "k8s.io/apimachinery/pkg/runtime"
-       ctrl "sigs.k8s.io/controller-runtime"
-       "sigs.k8s.io/controller-runtime/pkg/client"
-   )
-
-   // VPCReconciler reconciles a VPC object
-   type VPCReconciler struct {
-       client.Client
-       Log    logr.Logger
-       Scheme *runtime.Scheme
-   }
-
-   // Reconcile is the main logic for the controller
-   func (r *VPCReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-       log := r.Log.WithValues("vpc", req.NamespacedName)
-
-       // Fetch the VPC instance
-       var vpc networkingv1alpha1.VPC
-       if err := r.Get(ctx, req.NamespacedName, &vpc); err != nil {
-           log.Error(err, "unable to fetch VPC")
-           return ctrl.Result{}, client.IgnoreNotFound(err)
-       }
-
-       // Define the desired state of the VPC
-       desiredState := fmt.Sprintf("CIDR: %s, Region: %s, Subnets: %v", vpc.Spec.CIDR, vpc.Spec.Region, vpc.Spec.Subnets)
-
-       // Check if the VPC is marked for deletion
-       if !vpc.DeletionTimestamp.IsZero() {
-           log.Info("VPC is marked for deletion", "Name", vpc.Name)
-           return ctrl.Result{}, nil
-       }
-
-       // Implement your VPC creation logic here
-       // For demo purposes, we'll just log the desired state
-       log.Info("Creating/Updating VPC", "Desired State", desiredState)
-
-       // Update the VPC status to reflect changes
-       vpc.Status.State = "Available"
-       if err := r.Status().Update(ctx, &vpc); err != nil {
-           log.Error(err, "unable to update VPC status")
-           return ctrl.Result{}, err
-       }
-
-       // Ensure the VPC has a finalizer for cleanup during deletion
-       if !controllerutil.ContainsFinalizer(&vpc, "vpc.finalizers.networking.example.com") {
-           controllerutil.AddFinalizer(&vpc, "vpc.finalizers.networking.example.com")
-           if err := r.Update(ctx, &vpc); err != nil {
-               log.Error(err, "unable to add finalizer to VPC")
-               return ctrl.Result{}, err
-           }
-       }
-
-       return ctrl.Result{}, nil
-   }
-
-   // SetupWithManager sets up the controller with the Manager
-   func (r *VPCReconciler) SetupWithManager(mgr ctrl.Manager) error {
-       return ctrl.NewControllerManagedBy(mgr).
-           For(&networkingv1alpha1.VPC{}).
-           Complete(r)
-   }
+   
    ```
    *Implements the reconciliation logic for the VPC resource, including fetching the resource, logging its desired state, updating its status, and managing finalizers.*
 
@@ -222,19 +152,19 @@ In this lab, you will define and create a Custom Resource Definition (CRD) for a
 
 1. **Build the Docker image** for your operator:
    ```bash
-   make docker-build IMG=your-username/vpc-operator:latest
+   make docker-build IMG=fazlulkarim105925/vpc-operator:v3.1
    ```
    *Compiles the operator code into a Docker image.*
 
 2. **Push the Docker image** to DockerHub:
    ```bash
-   docker push your-username/vpc-operator:latest
+   docker push fazlulkarim105925/vpc-operator:v3.1
    ```
    *Uploads the Docker image to a container registry.*
 
 3. **Deploy the operator** in your cluster:
    ```bash
-   make deploy IMG=your-username/vpc-operator:latest
+   make deploy IMG=fazlulkarim105925/vpc-operator:v3.1
    ```
    *Deploys the operator to the Kubernetes cluster.*
 
