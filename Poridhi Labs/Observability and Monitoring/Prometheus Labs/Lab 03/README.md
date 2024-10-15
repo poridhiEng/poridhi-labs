@@ -8,7 +8,7 @@ In this lab, we will set up Prometheus, an open-source monitoring and alerting t
 
 3. **Create a systemd Service**: Write a systemd service file to manage Prometheus, allowing it to start automatically on boot and simplifying service management.
 
-![](./images/logo.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/4eb26939f981054bcdeb8c8f4ab05857fb5cca70/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2003/images/logo.svg)
 
 ## Install Prometheus with `Binary` 
 
@@ -17,8 +17,8 @@ In this lab, we will set up Prometheus, an open-source monitoring and alerting t
 1. **Download Prometheus Binary:**
    - Go to the official Prometheus [download page](https://prometheus.io/download/). Copy the link to the latest release of Prometheus for Linux
 
-      ![](./images/new-1.png)
-
+      ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2003/images/new-1.png?raw=true)
+      
    - Download the latest release of Prometheus for Linux by pasting the link we just copied after `wget` command:
      ```bash
      wget https://github.com/prometheus/prometheus/releases/download/v2.53.2/prometheus-2.53.2.linux-amd64.tar.gz
@@ -31,7 +31,7 @@ In this lab, we will set up Prometheus, an open-source monitoring and alerting t
      ```bash
      tar -xvzf prometheus-2.53.2.linux-amd64.tar.gz
      ```
-     ![](./images/new-3.png)
+     ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2003/images/new-3.png?raw=true)
 
 
 3. **Move Prometheus Binaries to `/usr/local/bin`**:
@@ -72,17 +72,17 @@ In this lab, we will set up Prometheus, an open-source monitoring and alerting t
       ```bash
       ifconfig
       ```
-      ![](./images/new-10.png)
+      ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2003/images/new-10.png?raw=true)
     
    - Go to Poridhi's `LoadBalancer`and Create a `LoadBalancer` with the `eht0` IP and port `9090`.
 
-      ![](./images/new-11.png)
+      ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2003/images/new-11.png?raw=true)
 
     - By using the Provided `URL` by `LoadBalancer`, you can access the Prometheus web interface from any browser.
 
     -  Click on the **"Status"** tab in the top menu and select **"Targets"** in Prometheus GUI.
 
-       ![](./images/new-5.png)
+       ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2003/images/new-5.png?raw=true)
    -  You should see a target named `prometheus` with the URL 
       `http://localhost:9090/metrics`. The 
       `UP` status indicates that Prometheus 
@@ -171,13 +171,13 @@ systemd is a system and service manager for Linux operating systems that initial
    sudo systemctl status prometheus
    ```
 
-     ![](./images/new-9.png)
+     ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2003/images/new-9.png?raw=true)
 
 ### Access the Prometheus Web Interface 
 
 By using the Previously Generated `URL` by Poridhi's `LoadBalancer`, you can access the Prometheus web interface from any browser.Which clarify that Prometheus is running with `systemd` as a service.
 
-![](./images/new-8.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2003/images/new-8.png?raw=true)
 
 
 By following these steps, you have successfully installed Prometheus, run it securely as a non-root user, and configured it to run as a systemd service. This setup provides a solid foundation for monitoring metrics in a production environment, with the flexibility to manage the service easily.
