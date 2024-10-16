@@ -2,7 +2,7 @@
 
 In this lab, you will configure Prometheus on `Poridhi's VM` to monitor an AWS EC2 instance using Node Exporter for metrics collection. We will use Terraform to create the AWS infrastructure, install Node Exporter on the EC2 instance, and validate the Prometheus configuration using Promtool.
 
-![](./images/lab-5-logo.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/8c32776fbb1632b6a28a9f935e66b2a5ddaad2eb/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/lab-5-logo.svg)
 
 **Prometheus**: An open-source monitoring system that collects and stores metrics from configured targets.
 
@@ -16,8 +16,7 @@ In this lab, you will configure Prometheus on `Poridhi's VM` to monitor an AWS E
 
 Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table, Route Table Association, Security Group, Key Pair, and EC2 Instance using Terraform.
 
-![](./images/lab-5-infra.svg)
-
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/8c32776fbb1632b6a28a9f935e66b2a5ddaad2eb/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/lab-5-infra.svg)
 
 1. **Configure AWS CLI**:
    - Set up your AWS credentials for Terraform to use:
@@ -25,7 +24,7 @@ Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table,
    ```bash
    aws configure
    ```
-   ![](./images/lab-51.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/lab-51.png?raw=true)
 
    *Note: Install `AWS CLI` and `Terraform` if you are working on your local machine ,as we are working on `Poridhi's VM` ,we have already installed `AWS CLI` and `Terraform`.*
    
@@ -43,7 +42,7 @@ Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table,
    ```bash
    ssh-keygen -t rsa -b 4096 -f prometheus_key_pair
    ```
-   ![](./images/lab-52.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/lab-52.png?raw=true)
 
    *This command will generate `prometheus_key_pair` (private key) and `prometheus_key_pair.pub` (public key) files.*
 
@@ -151,7 +150,7 @@ Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table,
    
    - Review the proposed changes and confirm to deploy the infrastructure.
 
-   ![](./images/lab-53.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/lab-53.png?raw=true)
 
 ### Install Prometheus and Node Exporter
 
@@ -219,7 +218,7 @@ Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table,
     sudo systemctl status prometheus
     ```
 
-    ![](./images/lab-55.png)
+    ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/lab-55.png?raw=true)
 
 2. **Create `exporter.sh` to Install Node Exporter on EC2 Instance**:
    - `ssh` into the EC2 instance.
@@ -233,7 +232,7 @@ Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table,
     ```bash
     terraform output
     ```
-    ![](./images/lab-510.png)
+    ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/lab-510.png?raw=true)
 
    - **Create `exporter.sh` script**:
 
@@ -298,7 +297,7 @@ Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table,
    sudo systemctl status node_exporter
    ```
 
-   ![](./images/lab-54.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/lab-54.png?raw=true)
 
 ### Configure Prometheus to Monitor the Node
 
@@ -320,7 +319,7 @@ Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table,
          - targets: ['<PUBLIC_IP>:9100']
    ```
 
-   ![](./images/lab-56.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/lab-56.png?raw=true)
 
 2. **Validate Prometheus Configuration**:
    - Use Promtool to validate the Prometheus configuration file:
@@ -329,7 +328,7 @@ Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table,
    promtool check config /etc/prometheus/prometheus.yml
    ```
 
-   ![](./images/lab-57.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/lab-57.png?raw=true)
 
    *Promtool is a command-line utility provided by Prometheus to validate configuration files, ensuring there are no syntax errors.*
 
@@ -346,17 +345,17 @@ Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table,
       ```bash
       ifconfig
       ```
-      ![](./images/lab-59.png)
+      ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/lab-59.png?raw=true)
     
    - Go to Poridhi's `LoadBalancer`and Create a `LoadBalancer` with the `eht0` IP and port `9090`.
 
-      ![](./images/new-11.png)
+      ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/new-11.png?raw=true)
 
     - By using the Provided `URL` by `LoadBalancer`, you can access the Prometheus web interface from any browser.
 
     -  Click on the **"Status"** tab in the top menu and select **"Targets"** in Prometheus GUI.
 
-       ![](./images/lab-58.png)
+       ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/lab-58.png?raw=true)
        
        You should see a target named `node` with the URL `http://<PUBLIC_IP>:9100/metrics`. The `UP` status indicates that Node Exporter is successfully running and scraping metrics from the EC2 instance.
 
