@@ -357,7 +357,7 @@ sudo systemctl restart prometheus
 
 ### **Verify Prometheus Scraping**
 
-In the Prometheus UI, the Node Exporter target should now be listed as **UP**, indicating authorized access.
+In the Prometheus UI, the Node Exporter target should now be listed as **UP**, indicating authorized access. It may take some time to get the `up` status.
 
 ![alt text](./images/image-8.png)
 
