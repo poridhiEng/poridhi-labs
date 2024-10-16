@@ -1,4 +1,4 @@
-# Configuring Prometheus to Monitor an AWS EC2 Instance using Terraform and Node Exporter
+# Prometheus Monitoring with Node Exporter
 
 In this lab, you will configure Prometheus on `Poridhi's VM` to monitor an AWS EC2 instance using Node Exporter for metrics collection. We will use Terraform to create the AWS infrastructure, install Node Exporter on the EC2 instance, and validate the Prometheus configuration using Promtool.
 
