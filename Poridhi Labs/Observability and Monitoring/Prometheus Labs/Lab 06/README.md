@@ -189,12 +189,13 @@ Prometheus needs to be configured to scrape the metrics from Node Exporter.
 - **Restart Prometheus:**
 
   ```bash
+  sudo systemctl daemon-reload
   sudo systemctl restart prometheus
   ```
 
 - **Access/Reload the prometheus UI**
 
-  Now you can see that the Prometheus is scraping the node_exporter:
+  Now you can see that the Prometheus is scraping the `node_exporter`. It may take a while to get the `up` state:
 
   ![alt text](./images/image-3.png)
 
@@ -263,17 +264,14 @@ To secure Node Exporter, we'll configure basic authentication.
 
   Update the `ExecStart` directive:
 
+  Before: 
+  ```
+  ExecStart=$NODE_EXPORTER_BIN_PATH/node_exporter
+  ```
+
+  After: 
   ```ini
-  [Unit]
-  Description=Node Exporter
-  After=network.target
-
-  [Service]
-  User=node_exporter
   ExecStart=/usr/local/bin/node_exporter --web.config.file=/etc/node_exporter/config.yml
-
-  [Install]
-  WantedBy=multi-user.target
   ```
 
 ### **4. Set Proper Permissions**
