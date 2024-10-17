@@ -2,8 +2,7 @@
 
 Imagine you're a detective solving the puzzles of a modern, complex system. In this journey, you'll learn how **Observability** becomes your magnifying glass, helping you see deep inside the system using logs, metrics, and traces. You'll understand setting **Service Level Indicators (SLIs)**, **Objectives (SLOs)**, and **Agreements (SLAs)**—tools that ensure everything runs smoothly and reliably. This guide will give you the insights and tools to quickly find and fix issues, improve system performance, and keep everything working well, even when unexpected problems arise.
 
-![alt text](./images/obs.svg)
-
+![alt text](images/obs.svg)
 
 ## What is Observability?
 
@@ -32,11 +31,11 @@ As systems grow in complexity, the need for observability becomes paramount. It 
 
 To achieve observability, organizations focus on three key data types:
 
-1. **Logging**
+1. **Logs**
 2. **Metrics**
-3. **Tracing**
+3. **Traces**
 
-### 1. Logging
+### 1. Logs
 
 **Logs** are records of events that have occurred within a system. Each log entry typically contains:
 
@@ -59,7 +58,7 @@ Logs are essential for diagnosing issues and understanding system behavior. Howe
 
 Metrics are valuable for monitoring system health and performance over time. They can be aggregated and visualized to identify trends, spikes, or anomalies.
 
-![alt text](./images/metrics.png)
+![alt text](./images/metrics.svg)
 
 Each metric typically includes:
 
@@ -70,7 +69,7 @@ Each metric typically includes:
 
 Tools like **Prometheus** are widely used to collect and aggregate metrics for analysis and visualization.
 
-### 3. Tracing
+### 3. Traces
 
 **Traces** allow teams to follow the path of a request through various services and components within a system. Tracing is crucial in microservices architectures to understand how different parts of the system interact.
 
@@ -82,7 +81,7 @@ A trace is composed of multiple **spans**, each representing a unit of work with
 - **Duration**
 - **Parent ID**: Linking spans to form a hierarchy.
 
-![alt text](./images/trace-02.png)
+![alt text](./images/trace-02.svg)
 
 Tracing helps in:
 
@@ -93,7 +92,9 @@ Tracing helps in:
 
 ## Service Level Indicators (SLIs), Objectives (SLOs), and Agreements (SLAs)
 
-Establishing clear performance and reliability targets is essential for meeting user expectations. This is where SLIs, SLOs, and SLAs come into play.
+Establishing clear performance and reliability targets is essential for meeting user expectations. This is where SLIs, SLOs, and SLAs come into play. When designing a system or applications, its important for teams to set
+specific measurable targets/goals to help organizations strike the right balance
+between product development and operation work.
 
 ### Service Level Indicators (SLIs)
 
@@ -123,7 +124,6 @@ SLOs help organizations balance reliability with operational costs. Setting over
 
 An **SLA** is a formal agreement between a service provider and a customer that specifies the SLOs and the consequences if these objectives are not met. SLAs are contractual and may include penalties, such as financial compensation or service credits.
 
----
 
 ## Importance of SLIs, SLOs, and SLAs in Observability
 
@@ -132,25 +132,9 @@ An **SLA** is a formal agreement between a service provider and a customer that 
 - **Accountability**: SLAs formalize the commitment to service quality, holding providers accountable.
 - **Continuous Improvement**: Monitoring SLIs against SLOs drives ongoing enhancements in service reliability.
 
----
-
-## Implementing Observability
-
-To effectively implement observability:
-
-1. **Collect Comprehensive Data**: Gather logs, metrics, and traces from all parts of the system.
-2. **Use the Right Tools**: Implement tools like Prometheus for metrics, centralized logging solutions, and distributed tracing systems.
-3. **Define Meaningful SLIs**: Choose indicators that truly reflect user experience.
-4. **Set Realistic SLOs**: Establish achievable objectives that balance user satisfaction and operational costs.
-5. **Formalize with SLAs**: Create agreements that define expectations and consequences.
-
----
-
 ## Conclusion
 
 Observability is a critical component in modern system design and operation. By leveraging logs, metrics, and traces, organizations can gain deep insights into system behavior, leading to faster issue resolution and improved performance. Coupled with well-defined SLIs, SLOs, and SLAs, observability ensures that systems meet reliability targets and user expectations.
-
-Implementing observability requires careful planning and the right set of tools, but the benefits in terms of system reliability and user satisfaction make it an essential practice in today's complex technological environments.
 
 
 
