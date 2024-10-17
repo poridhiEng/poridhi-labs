@@ -2,7 +2,7 @@
 
 Imagine you're a detective solving the puzzles of a modern, complex system. In this journey, you'll learn how **Observability** becomes your magnifying glass, helping you see deep inside the system using logs, metrics, and traces. You'll understand setting **Service Level Indicators (SLIs)**, **Objectives (SLOs)**, and **Agreements (SLAs)**—tools that ensure everything runs smoothly and reliably. This guide will give you the insights and tools to quickly find and fix issues, improve system performance, and keep everything working well, even when unexpected problems arise.
 
-![alt text](./images/observability.svg)
+![alt text](./images/obs.svg)
 
 
 ## What is Observability?
