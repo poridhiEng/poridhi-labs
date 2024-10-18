@@ -2,7 +2,7 @@
 
 In this lab, you will learn how to set up Prometheus in Docker to monitor container metrics using `cAdvisor`, a tool designed to provide real-time performance data for running containers. `cAdvisor` collects and exposes metrics such as CPU, memory, and network usage from your Docker containers, which Prometheus then scrapes and stores for analysis. This setup enables efficient monitoring of containerized applications.
 
-![](./images/lab9-logo.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2009/images/lab9-logo.svg)
 
 In this lab, you will:
 - Create a Docker network for container communication.
