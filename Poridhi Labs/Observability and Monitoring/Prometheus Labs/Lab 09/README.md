@@ -24,7 +24,8 @@ We can verify the network by running:
 docker network ls
 ```
 
-![](./images/lab91.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2009/images/lab91.png?raw=true)
+
 
 ### Create a Prometheus Configuration File
 
@@ -126,7 +127,7 @@ docker-compose up -d
 
 -  Click on the **"Status"** tab in the top menu and select **"Targets"** in Prometheus GUI.
 
-   ![](./images/lab95.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2009/images/lab95.png?raw=true)
        
    You should see a target named `cadvisor` with the URL `http://cadvisor:8080/metrics`. The `UP` status indicates that `cAdvisor` is successfully running and scraping metrics from the Docker containers.
 
@@ -140,7 +141,7 @@ To see Docker container metrics in Prometheus:
    container_memory_usage_bytes
    ```
 
-   ![](./images/lab94.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2009/images/lab94.png?raw=true)
 
    This will show memory usage for each container in bytes.
 
