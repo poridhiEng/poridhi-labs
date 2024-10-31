@@ -194,7 +194,11 @@ project_root/
 
 ### Configure Prometheus to Scrape Metrics from the Node.js App
 
-1. **Edit the Prometheus configuration file (`/etc/prometheus/prometheus.yml`):**
+1. **Edit the Prometheus configuration file:**
+   ```bash
+   sudo vim /etc/prometheus/prometheus.yml
+   ```
+   - Add the following configuration to the `scrape_configs` section:
    ```yaml
    scrape_configs:
      - job_name: "nodejs_app"
@@ -227,7 +231,7 @@ project_root/
       You should see a target named `nodejs_app` with the URL `http://localhost:8000/metrics`. The `UP` status indicates that the Node.js app is successfully running and scraping metrics.
       
       ![](./images/9.png)
-
+   - You can also expose the nodejs_app application by using the `Poridhi's` `LoadBalancer` similarly to the above steps.(Use the same `eth0` IP and port `8000`).To generate the metrics, use this routes and hit them multiple times `/`,`/error`,`/about` and `/contact`.
   
 ### PromQL Queries
 

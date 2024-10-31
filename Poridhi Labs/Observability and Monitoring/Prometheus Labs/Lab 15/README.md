@@ -2,9 +2,19 @@
 
 Monitoring applications is crucial for understanding their performance and behavior. Prometheus provides various types of metrics, such as Counters, Gauges, Histograms, and Summaries, to collect and analyze data. A Gauge is used to measure values that can increase or decrease over time, such as CPU usage, memory usage, or request latency. In this lab, we will create a simple Node.js application that uses a Gauge to track the latency of requests to different endpoints.
 
+![alt text](./images/logo.svg)
+
 ### Scenario
 You are managing a web application and want to monitor the latency of HTTP requests. Tracking request latency can help identify performance bottlenecks and understand how different endpoints respond under varying loads. This lab will guide you through setting up a Node.js application that exposes a Gauge metric for request latency and configuring Prometheus to monitor the application.
 
+### Directory Structure
+```sh
+project_root/
+├── nodejs_app/
+│   └── app.js               # Node.js application file
+├── Prometheus/
+    └── prometheus.sh        # Script to install Prometheus
+```
 
 ### Set Up the Node.js Application
 
@@ -160,14 +170,17 @@ You are managing a web application and want to monitor the latency of HTTP reque
 
 ### Configure Prometheus to Scrape Metrics from the Node.js App
 
-1. **Edit the Prometheus configuration file (`/etc/prometheus/prometheus.yml`):**
+1. **Edit the Prometheus configuration file:**
+   ```bash
+   sudo vim /etc/prometheus/prometheus.yml
+   ```
+   - Add the following configuration to the `scrape_configs` section:
    ```yaml
    scrape_configs:
      - job_name: "nodejs_app"
        static_configs:
          - targets: ["localhost:8000"]
    ```
-
 2. **Validate and restart Prometheus:**
    ```bash
    promtool check config /etc/prometheus/prometheus.yml
@@ -190,8 +203,10 @@ You are managing a web application and want to monitor the latency of HTTP reque
 
    -  Click on the **"Status"** tab in the top menu and select **"Targets"** in Prometheus GUI.
 
-      You should see a target named `nodejs_app` with the URL `http://localhost:8000/metrics`. The `UP` status indicates that the Node.js app is successfully running and scraping metrics.
+      ![](./images/9.png)
 
+      You should see a target named `nodejs_app` with the URL `http://localhost:8000/metrics`. The `UP` status indicates that the Node.js app is successfully running and scraping metrics.
+   - You can also expose the nodejs_app application by using the `Poridhi's` `LoadBalancer` similarly to the above steps.(Use the same `eth0` IP and port `8000`).To generate the metrics, use this routes and hit them multiple times `/`,`/about`.
 ### PromQL Queries for Gauges
 
 #### 1. **Request Latency (`http_request_latency_seconds`)**
@@ -200,18 +215,21 @@ You are managing a web application and want to monitor the latency of HTTP reque
    ```promql
    http_request_latency_seconds
    ```
+   ![](./images/21.png)
    - Returns the current value of the `http_request_latency_seconds` Gauge, which indicates the latest measured latency.
 
 - **Average Latency Over Time**:
    ```promql
    avg_over_time(http_request_latency_seconds[5m])
    ```
+   ![](./images/22.png)
    - Calculates the average request latency over the last 5 minutes.
 
 - **Maximum Latency Observed**:
    ```promql
    max_over_time(http_request_latency_seconds[5m])
    ```
+   ![](./images/23.png)
    - Finds the maximum request latency recorded over the last 5 minutes.
 
 ### Summary
