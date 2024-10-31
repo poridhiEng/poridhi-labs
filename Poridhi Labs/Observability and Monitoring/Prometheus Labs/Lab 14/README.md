@@ -2,7 +2,7 @@
 
 Monitoring is essential for understanding the performance and behavior of web applications. Prometheus is a robust monitoring and alerting tool that collects metrics and allows for detailed analysis using PromQL (Prometheus Query Language). In this lab, we will set up a Node.js application that exposes custom metrics, install and configure Prometheus to monitor these metrics, and utilize PromQL to analyze the collected data.
 
-![alt text](./images/logo.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/986c30528324f6cbcb24f08a34d155a8fcdb6582/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2014/images/logo.svg)
 
 ### Scenario
 You are managing a web application and need to monitor several key metrics:
@@ -230,7 +230,7 @@ project_root/
 
       You should see a target named `nodejs_app` with the URL `http://localhost:8000/metrics`. The `UP` status indicates that the Node.js app is successfully running and scraping metrics.
       
-      ![](./images/9.png)
+      ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2014/images/9.png?raw=true)
    - You can also expose the nodejs_app application by using the `Poridhi's` `LoadBalancer` similarly to the above steps.(Use the same `eth0` IP and port `8000`).To generate the metrics, use this routes and hit them multiple times `/`,`/error`,`/about` and `/contact`.
   
 ### PromQL Queries
@@ -243,14 +243,14 @@ In Graph Tab of Prometheus GUI, you can use the following PromQL queries to anal
    ```promql
    http_requests_total
    ```
-   ![](./images/1.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2014/images/1.png?raw=true)
    - Returns the total number of HTTP requests received by the application.
 
 - **Rate of HTTP Requests**:
    ```promql
    rate(http_requests_total[1m])
    ```
-   ![](./images/2.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2014/images/2.png?raw=true)
    - Calculates the average rate of HTTP requests per second over the last 1 minute, helping to understand the current request rate trend.
 
 #### 2. **HTTP Response Status Codes (`http_response_status_total`)**
@@ -259,7 +259,7 @@ In Graph Tab of Prometheus GUI, you can use the following PromQL queries to anal
    ```promql
    http_response_status_total
    ```
-   ![](./images/6.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2014/images/6.png?raw=true)
    - Returns the total number of HTTP responses, categorized by status code (e.g., `2xx`, `4xx`, `5xx`).
 
 - **Filter by Status Code Category (e.g., `2xx`)**:
@@ -278,7 +278,7 @@ In Graph Tab of Prometheus GUI, you can use the following PromQL queries to anal
    ```promql
    sum(rate(http_response_status_total{status_code="4xx"}[1m])) / sum(rate(http_response_status_total[1m])) * 100
    ```
-   ![](./images/7.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2014/images/7.png?raw=true)
    - Computes the percentage of `4xx` (client error) responses relative to all responses over the last 1 minute.
 
 #### 3. **Page Visits (`page_visits_total`)**
@@ -287,21 +287,21 @@ In Graph Tab of Prometheus GUI, you can use the following PromQL queries to anal
    ```promql
    page_visits_total
    ```
-   ![](./images/3.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2014/images/3.png?raw=true)
    - Shows the total number of page visits for all pages.
 
 - **Filter by Specific Page (e.g., `home`)**:
    ```promql
    page_visits_total{page="home"}
    ```
-   ![](./images/4.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2014/images/4.png?raw=true)
    - Displays the total number of visits to the home page.
 
 - **Rate of Page Visits**:
    ```promql
    rate(page_visits_total[5m])
    ```
-   ![](./images/5.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2014/images/5.png?raw=true)
    - Calculates the rate of page visits per second over the last 5 minutes for all pages.
 
 - **Sum Across All Pages**:
@@ -317,21 +317,21 @@ In Graph Tab of Prometheus GUI, you can use the following PromQL queries to anal
    ```promql
    application_errors_total
    ```
-   ![](./images/8.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2014/images/8.png?raw=true)
    - Shows the total number of errors that occurred in the application.
 
 - **Rate of Errors**:
    ```promql
    rate(application_errors_total[5m])
    ```
-   ![alt text](./images/11.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2014/images/11.png?raw=true)
    - Calculates the rate of errors occurring over the last 5 minutes.
 
 - **Instantaneous Rate of Errors**:
    ```promql
    irate(application_errors_total[1m])
    ```
-   ![alt text](./images/12.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2014/images/12.png?raw=true)
    - Provides the instantaneous rate of error occurrences over the last 1 minute, useful for identifying sudden error spikes.
 
 #### 5. **Combining Queries**
