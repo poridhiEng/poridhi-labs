@@ -2,6 +2,8 @@
 
 Monitoring is essential for understanding the performance and behavior of web applications. Prometheus is a robust monitoring and alerting tool that collects metrics and allows for detailed analysis using PromQL (Prometheus Query Language). In this lab, we will set up a Node.js application that exposes custom metrics, install and configure Prometheus to monitor these metrics, and utilize PromQL to analyze the collected data.
 
+![alt text](./images/logo.svg)
+
 ### Scenario
 You are managing a web application and need to monitor several key metrics:
 - The total number of HTTP requests.
@@ -11,6 +13,14 @@ You are managing a web application and need to monitor several key metrics:
 
 Tracking these metrics provides valuable insights into traffic trends, error occurrences, and overall system health. This lab will guide you through setting up a Node.js application to expose custom metrics, configuring Prometheus to scrape those metrics, and using PromQL to analyze the data.
 
+### Directory Structure
+```sh
+project_root/
+├── nodejs_app/
+│   └── app.js               # Node.js application file
+├── Prometheus/
+    └── prometheus.sh        # Script to install Prometheus
+```
 
 ### Set Up the Node.js Application
 
@@ -40,92 +50,85 @@ Tracking these metrics provides valuable insights into traffic trends, error occ
 
    // Create Prometheus counters
    const httpRequestCounter = new promClient.Counter({
-       name: 'http_requests_total',
-       help: 'Total number of HTTP requests'
+      name: 'http_requests_total',
+      help: 'Total number of HTTP requests'
    });
 
    const httpStatusCounter = new promClient.Counter({
-       name: 'http_response_status_total',
-       help: 'Total number of HTTP responses, categorized by status code',
-       labelNames: ['status_code']
+      name: 'http_response_status_total',
+      help: 'Total number of HTTP responses, categorized by status code',
+      labelNames: ['status_code']
    });
 
    const pageVisitCounter = new promClient.Counter({
-       name: 'page_visits_total',
-       help: 'Total number of visits to different pages',
-       labelNames: ['page']
+      name: 'page_visits_total',
+      help: 'Total number of visits to different pages',
+      labelNames: ['page']
    });
 
    const errorCounter = new promClient.Counter({
-       name: 'application_errors_total',
-       help: 'Total number of errors in the application'
+      name: 'application_errors_total',
+      help: 'Total number of errors in the application'
    });
 
    // Middleware to count all HTTP requests
    app.use((req, res, next) => {
-       httpRequestCounter.inc(); // Increment the total HTTP request counter
-       next();
+      httpRequestCounter.inc(); // Increment the total HTTP request counter
+      next();
    });
 
    // Route for the home page
    app.get('/', (req, res) => {
-       pageVisitCounter.inc({ page: 'home' }); // Increment the counter for home page visits
-       res.send('Welcome to the Home Page');
+      pageVisitCounter.inc({ page: 'home' }); // Increment the counter for home page visits
+      httpStatusCounter.inc({ status_code: '2xx' });
+      res.send('Welcome to the Home Page');
    });
 
    // Route for the about page
    app.get('/about', (req, res) => {
-       pageVisitCounter.inc({ page: 'about' }); // Increment the counter for about page visits
-       res.send('Welcome to the About Page');
+      pageVisitCounter.inc({ page: 'about' }); // Increment the counter for about page visits
+      httpStatusCounter.inc({ status_code: '2xx' });
+      res.send('Welcome to the About Page');
    });
 
    // Route for the contact page
    app.get('/contact', (req, res) => {
-       pageVisitCounter.inc({ page: 'contact' }); // Increment the counter for contact page visits
-       res.send('Welcome to the Contact Page');
+      pageVisitCounter.inc({ page: 'contact' }); // Increment the counter for contact page visits
+      httpStatusCounter.inc({ status_code: '2xx' });
+      res.send('Welcome to the Contact Page');
    });
 
    // Simulate an error route
    app.get('/error', (req, res) => {
-       const isError = Math.random() > 0.5; // Randomly simulate an error
-       if (isError) {
-           errorCounter.inc(); // Increment the error counter
-           httpStatusCounter.inc({ status_code: '5xx' }); // Increment the counter for 5xx status code
-           res.status(500).send('An error occurred');
-       } else {
-           httpStatusCounter.inc({ status_code: '2xx' }); // Increment the counter for 2xx status code
-           res.send('No error this time');
-       }
+      const isError = Math.random() > 0.5; // Randomly simulate an error
+      if (isError) {
+         errorCounter.inc(); // Increment the error counter
+         httpStatusCounter.inc({ status_code: '5xx' }); // Increment the counter for 5xx status code
+         res.status(500).send('An error occurred');
+      } else {
+         httpStatusCounter.inc({ status_code: '2xx' });
+         res.send('No error this time');
+      }
    });
 
    // Endpoint to expose Prometheus metrics
    app.get('/metrics', async (req, res) => {
-       res.set('Content-Type', promClient.register.contentType);
-       res.end(await promClient.register.metrics());
+      res.set('Content-Type', promClient.register.contentType);
+      res.end(await promClient.register.metrics());
    });
 
-   // Middleware to track HTTP response status codes
+   // Middleware to handle 404 Not Found
    app.use((req, res) => {
-       const statusCode = res.statusCode;
-       let statusCategory;
-
-       if (statusCode >= 200 && statusCode < 300) {
-           statusCategory = '2xx';
-       } else if (statusCode >= 400 && statusCode < 500) {
-           statusCategory = '4xx';
-       } else if (statusCode >= 500 && statusCode < 600) {
-           statusCategory = '5xx';
-       } else {
-           statusCategory = 'other'; // For any other status codes not covered
-       }
-
-       httpStatusCounter.inc({ status_code: statusCategory }); // Increment the counter for the corresponding status category
+      httpStatusCounter.inc({ status_code: '4xx' }); // Increment the counter for 4xx status codes
+      res.status(404); // Set the status to 404
+      res.send('Page Not Found'); // Send 404 response
    });
 
    app.listen(port, () => {
-       console.log(`Node.js app running on http://localhost:${port}`);
+      console.log(`Node.js app running on http://localhost:${port}`);
    });
    ```
+   - This code sets up a basic Node.js application that exposes Prometheus metrics. It includes counters for HTTP requests, response status codes, page visits, and application errors. The application listens on port 8000 and exposes a `/metrics` endpoint to serve the Prometheus metrics.
 
 5. **Run the Node.js application:**
    ```bash
@@ -222,6 +225,8 @@ Tracking these metrics provides valuable insights into traffic trends, error occ
    -  Click on the **"Status"** tab in the top menu and select **"Targets"** in Prometheus GUI.
 
       You should see a target named `nodejs_app` with the URL `http://localhost:8000/metrics`. The `UP` status indicates that the Node.js app is successfully running and scraping metrics.
+      
+      ![](./images/9.png)
 
   
 ### PromQL Queries
@@ -234,15 +239,15 @@ In Graph Tab of Prometheus GUI, you can use the following PromQL queries to anal
    ```promql
    http_requests_total
    ```
+   ![](./images/1.png)
    - Returns the total number of HTTP requests received by the application.
 
 - **Rate of HTTP Requests**:
    ```promql
    rate(http_requests_total[1m])
    ```
-   - Calculates the average
-
- rate of HTTP requests per second over the last 1 minute, helping to understand the current request rate trend.
+   ![](./images/2.png)
+   - Calculates the average rate of HTTP requests per second over the last 1 minute, helping to understand the current request rate trend.
 
 #### 2. **HTTP Response Status Codes (`http_response_status_total`)**
 
@@ -250,6 +255,7 @@ In Graph Tab of Prometheus GUI, you can use the following PromQL queries to anal
    ```promql
    http_response_status_total
    ```
+   ![](./images/6.png)
    - Returns the total number of HTTP responses, categorized by status code (e.g., `2xx`, `4xx`, `5xx`).
 
 - **Filter by Status Code Category (e.g., `2xx`)**:
@@ -268,6 +274,7 @@ In Graph Tab of Prometheus GUI, you can use the following PromQL queries to anal
    ```promql
    sum(rate(http_response_status_total{status_code="4xx"}[1m])) / sum(rate(http_response_status_total[1m])) * 100
    ```
+   ![](./images/7.png)
    - Computes the percentage of `4xx` (client error) responses relative to all responses over the last 1 minute.
 
 #### 3. **Page Visits (`page_visits_total`)**
@@ -276,24 +283,28 @@ In Graph Tab of Prometheus GUI, you can use the following PromQL queries to anal
    ```promql
    page_visits_total
    ```
+   ![](./images/3.png)
    - Shows the total number of page visits for all pages.
 
 - **Filter by Specific Page (e.g., `home`)**:
    ```promql
    page_visits_total{page="home"}
    ```
+   ![](./images/4.png)
    - Displays the total number of visits to the home page.
 
 - **Rate of Page Visits**:
    ```promql
    rate(page_visits_total[5m])
    ```
+   ![](./images/5.png)
    - Calculates the rate of page visits per second over the last 5 minutes for all pages.
 
 - **Sum Across All Pages**:
    ```promql
    sum(rate(page_visits_total[5m]))
    ```
+   
    - Aggregates the visit rate across all pages over the last 5 minutes to get an overall view of page traffic.
 
 #### 4. **Application Errors (`application_errors_total`)**
@@ -302,18 +313,21 @@ In Graph Tab of Prometheus GUI, you can use the following PromQL queries to anal
    ```promql
    application_errors_total
    ```
+   ![](./images/8.png)
    - Shows the total number of errors that occurred in the application.
 
 - **Rate of Errors**:
    ```promql
    rate(application_errors_total[5m])
    ```
+   ![alt text](./images/11.png)
    - Calculates the rate of errors occurring over the last 5 minutes.
 
 - **Instantaneous Rate of Errors**:
    ```promql
    irate(application_errors_total[1m])
    ```
+   ![alt text](./images/12.png)
    - Provides the instantaneous rate of error occurrences over the last 1 minute, useful for identifying sudden error spikes.
 
 #### 5. **Combining Queries**
