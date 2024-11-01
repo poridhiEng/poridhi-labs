@@ -2,7 +2,7 @@
 
 This lab covers the setup and configuration for collecting Kubernetes logs using Grafana Loki. Loki, paired with Promtail and Grafana, provides an efficient solution for aggregating and visualizing logs from Kubernetes clusters. This documentation will guide you through deploying Loki, Promtail, and Grafana in your Kubernetes environment, configuring them to capture logs, and using Grafana for log analysis.
 
-![](./images/k8s-loki.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/K8sLogCollection/images/k8s-loki.drawio.svg)
 
 ---
 
@@ -19,7 +19,7 @@ This lab covers the setup and configuration for collecting Kubernetes logs using
 
 We will require a kubernetes cluster with one master node and atleast one worker node. To create this kubernetes cluster, we will use three AWS ec2 instances and for kubernetes cluster we will setup `k3s`.
 
-![alt text](./images/infra.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/K8sLogCollection/images/infra.drawio.svg)
 
 ## Create AWS Infrastructure
 
@@ -29,7 +29,7 @@ We will require a kubernetes cluster with one master node and atleast one worker
 aws configure
 ```
 
-![alt tet](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image.png)
 
 **2. Create a Directory for Your Infrastructure**
 
@@ -51,7 +51,7 @@ sudo apt install python3.8-venv -y
 pulumi new aws-python
 ```
 
-![alt tex](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-1.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-1.png)
 
 **5. Update the `main.py` file:**
 
@@ -242,7 +242,7 @@ chmod 400 loki.id_rsa
 pulumi up --yes
 ```
 
-![alt tet](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-2.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/ServerLogCollection/images/image-2.png)
 
 
 ## k3s cluster setup
@@ -261,7 +261,7 @@ After SSHing into the controller-0 instance run the folllowing command to instal
 curl -sfL https://get.k3s.io | sh -
 ```
 
-![alt text](./images/image-12.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/K8sLogCollection/images/image-12.png)
 
 **2. Get the K3S token.**
 
@@ -308,7 +308,7 @@ sudo apt-get update
 sudo apt-get install helm
 ```
 
-![alt text](./images/image.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/K8sLogCollection/images/image.png)
 
 
 ## **Deploying Loki, Promtail, and Grafana**
@@ -327,11 +327,11 @@ Check available Loki stack configurations:
 ```bash
 helm search repo loki
 ```
-![alt text](./images/image-2.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/K8sLogCollection/images/image-2.png)
 
 The preferred option for deploying Loki, Promtail, and Grafana is `loki-stack`.
 
-![alt text](./images/image-1.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/K8sLogCollection/images/image-1.png)
 
 **3. Customize Configuration**:
 
@@ -352,7 +352,7 @@ helm install loki grafana/loki-stack -f loki-values.yaml
 ```
 After installation, you should see confirmation that Loki Stack is deployed.
 
-![alt text](./images/image-3.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/K8sLogCollection/images/image-3.png)
 
 > NOTE: If you face any issue with installing. Try changing the kubeconfig file permission for the `ubuntu` user. 
 
@@ -362,7 +362,7 @@ Check that the required pods are running:
 ```bash
 sudo kubectl get all
 ```
-![alt text](./images/image-4.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/K8sLogCollection/images/image-4.png)
 
 ---
 
@@ -434,12 +434,12 @@ Default Grafana username is `admin`. Retrieve the password from the Kubernetes s
 ```bash
 kubectl get secret --namespace <namespace> loki-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 ```
-![alt text](./images/image-5.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/K8sLogCollection/images/image-5.png)
 
 ### **Add Loki as a Data Source**:
    Grafana automatically configures Loki as a data source. Verify this in Grafana under `Settings > Data Sources`.
 
-   ![alt text](./images/image-6.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/K8sLogCollection/images/image-6.png)
 
 ---
 
@@ -510,7 +510,7 @@ docker build -t <your-docker-username>/simple-log-app:latest .
 docker push <your-docker-username>/simple-log-app:latest
 ```
 
-![alt text](./images/image-7.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/K8sLogCollection/images/image-7.png)
 
 Replace `<your-docker-username>` with your Docker Hub username.
 
@@ -549,7 +549,7 @@ Use `kubectl` to apply the deployment:
 kubectl apply -f app-deployment.yaml
 ```
 
-![alt text](./images/image-8.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/K8sLogCollection/images/image-8.png)
 
 
 ## **Promtail Configurations**:
@@ -592,7 +592,7 @@ Promtail collects logs from all pods on each node and forwards them to Loki. Pro
     ```bash
     kubectl apply -f updated-promtail-secret.yaml
     ```
-    ![alt text](./images/image-9.png)
+    ![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/K8sLogCollection/images/image-9.png)
 
     After updating, restart the Promtail pods to load the new secret.
 
@@ -600,11 +600,11 @@ Promtail collects logs from all pods on each node and forwards them to Loki. Pro
    - Go to **Explore** in Grafana.
    - Run a query on the `simple-log-app` pod or app.
 
-   ![alt text](./images/image-10.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/K8sLogCollection/images/image-10.png)
 
    - You will see the generated logs:
 
-   ![alt text](./images/image-11.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Monitoring/K8sLogCollection/images/image-11.png)
 ---
 
 ## **Conclusion**
