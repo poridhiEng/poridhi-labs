@@ -34,7 +34,7 @@ Let's break it down step by step.
 
 ## Step 1: Setting Up the Backend (Node.js with Express)
 
-### 1.1. Create a Directory for the Backend
+### Create a Directory for the Backend
 
 ```bash
 mkdir Full-stack-app
@@ -43,7 +43,7 @@ mkdir backend
 cd backend
 ```
 
-### 1.2. Initialize the Node.js Project
+### Initialize the Node.js Project
 ```bash
 npm init -y
 ```
@@ -52,7 +52,7 @@ npm init -y
 
 This will create a `package.json` file.
 
-### 1.3. Install Dependencies
+### Install Dependencies
 Install `express` to handle server routing.
 
 ```bash
@@ -61,7 +61,7 @@ npm install express cors
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile//images/image-1.png?raw=true)
 
-### 1.4. Create `index.js` for the Backend
+### Create `index.js` for the Backend
 
 In the `backend` directory, create a file called `index.js`:
 
@@ -92,14 +92,14 @@ app.listen(PORT, () => {
 });
 ```
 
-### 1.5. Create a Dockerfile for the Backend
+### Create a Dockerfile for the Backend
 In the `backend` directory, create a `Dockerfile`:
 
 ```bash
 touch Dockerfile
 ```
 
-Add the following content to the `Dockerfile`:
+Add the following contents to the `Dockerfile`:
 
 ```Dockerfile
 # Use the official Node.js image from the Docker Hub
@@ -125,14 +125,14 @@ CMD ["node", "index.js"]
 
 ## Step 2: Setting Up the Frontend (React)
 
-### 2.1. Create a Directory for the Frontend
+### Create a Directory for the Frontend
 
 ```bash
 cd ..
 npx create-react-app frontend
 ```
 
-### 2.2. Modify the React App
+### Modify the React App
 
 Navigate to `frontend/src/App.js` and replace the content with the following code:
 
@@ -247,28 +247,25 @@ DOCKER_USERNAME = your-dockerhub-username
 ```
 - **Variables**: These are placeholders that store common values to avoid repetition. In this case, `DOCKER_USERNAME` holds the username for Docker Hub.
   
-  You can later replace `your-dockerhub-username` with your actual Docker Hub username.
+  You should replace `your-dockerhub-username` with your actual Docker Hub username.
 
 #### Frontend Section
 
 ```makefile
-# Frontend Variables
-FRONTEND_IMAGE_NAME = your-frontend-image-name
+FRONTEND_IMAGE_NAME = <your-frontend-image-name>
 FRONTEND_TAG = latest
 ```
 - **Frontend Variables**: These store information specific to the frontend application, such as the Docker image name and tag.
 
 ```makefile
-# Build the Docker image for the frontend
 build-frontend:
-	docker build -t $(FRONTEND_IMAGE_NAME) ./frontend
+	docker build -t $(FRONTEND_IMAGE_NAME):$(FRONTEND_TAG) ./frontend
 ```
-- **`build-frontend` Target**: This target runs the `docker build` command to build the Docker image for the frontend. The image name is set to `$(FRONTEND_IMAGE_NAME)` (i.e., `react-frontend`).
+- **`build-frontend` Target**: This target runs the `docker build` command to build the Docker image for the frontend. The image name is set to `$(FRONTEND_IMAGE_NAME)` (i.e., `react-frontend:latest`).
   
   `./frontend` is the directory containing the frontend source code and `Dockerfile`.
 
 ```makefile
-# Tag the Docker image for the frontend
 tag-frontend:
 	docker tag $(FRONTEND_IMAGE_NAME):$(FRONTEND_TAG) $(DOCKER_USERNAME)/$(FRONTEND_IMAGE_NAME):$(FRONTEND_TAG)
 ```
@@ -277,14 +274,12 @@ tag-frontend:
   For example, it will tag the image as `your-dockerhub-username/react-frontend:latest`.
 
 ```makefile
-# Push the Docker image for the frontend
 push-frontend:
 	docker push $(DOCKER_USERNAME)/$(FRONTEND_IMAGE_NAME):$(FRONTEND_TAG)
 ```
 - **`push-frontend` Target**: This command pushes the tagged image to DockerHub using the `docker push` command.
 
 ```makefile
-# Combined command to build, tag, and push the frontend Docker image
 all-frontend: build-frontend tag-frontend push-frontend
 ```
 - **`all-frontend` Target**: This is a combined target that calls the `build-frontend`, `tag-frontend`, and `push-frontend` targets sequentially, effectively building, tagging, and pushing the Docker image in one command.
@@ -297,15 +292,16 @@ The backend section is nearly identical to the frontend section, but it operates
 
 ```makefile
 # Backend Variables
-BACKEND_IMAGE_NAME = your-backend-image-name
+BACKEND_IMAGE_NAME = <your-backend-image-name>
 BACKEND_TAG = latest
 ```
-- Backend-specific variables: Here, `nodejs-app-aws-eks` is used as the backend image name.
+
+- Specify the backend image name and tag.
 
 ```makefile
 # Build, tag, and push backend image
 build-backend:
-    docker build -t $(BACKEND_IMAGE_NAME) ./backend
+    docker build -t $(BACKEND_IMAGE_NAME):$(BACKEND_TAG) ./backend
 
 tag-backend:
     docker tag $(BACKEND_IMAGE_NAME):$(BACKEND_TAG) $(DOCKER_USERNAME)/$(BACKEND_IMAGE_NAME):$(BACKEND_TAG)
@@ -315,7 +311,7 @@ push-backend:
 
 all-backend: build-backend tag-backend push-backend
 ```
-- Backend build, tag, push, and clean targets work the same way as the frontend targets but for the backend image.
+- Backend build, tag, push targets work the same way as the frontend targets but for the backend image.
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile//images/image-10.png?raw=true)
 
@@ -328,8 +324,8 @@ all: all-frontend all-backend
 #### `.PHONY` Declaration
 
 ```makefile
-.PHONY: build-frontend tag-frontend push-frontend all-frontend clean-frontend \
-        build-backend tag-backend push-backend all-backend clean-backend clean all
+.PHONY: build-frontend tag-frontend push-frontend all-frontend \
+        build-backend tag-backend push-backend all-backend clean all
 ```
 - **`.PHONY`**: Declares that these targets are not files but commands. This ensures that `make` doesn't get confused by files with the same name as targets.
 
@@ -349,7 +345,7 @@ BACKEND_IMAGE_NAME = nodejs-backend
 BACKEND_TAG = latest
 
 build-frontend:
-	docker build -t $(FRONTEND_IMAGE_NAME) ./frontend
+	docker build -t $(FRONTEND_IMAGE_NAME):$(FRONTEND_TAG) ./frontend
 
 tag-frontend:
 	docker tag $(FRONTEND_IMAGE_NAME):$(FRONTEND_TAG) $(DOCKER_USERNAME)/$(FRONTEND_IMAGE_NAME):$(FRONTEND_TAG)
@@ -360,7 +356,7 @@ push-frontend:
 all-frontend: build-frontend tag-frontend push-frontend
 
 build-backend:
-	docker build -t $(BACKEND_IMAGE_NAME) ./backend
+	docker build -t $(BACKEND_IMAGE_NAME):$(BACKEND_TAG) ./backend
 
 tag-backend:
 	docker tag $(BACKEND_IMAGE_NAME):$(BACKEND_TAG) $(DOCKER_USERNAME)/$(BACKEND_IMAGE_NAME):$(BACKEND_TAG)
@@ -370,9 +366,17 @@ push-backend:
 
 all-backend: build-backend tag-backend push-backend
 
+clean-frontend:
+	docker rmi $(DOCKER_USERNAME)/$(FRONTEND_IMAGE_NAME):$(FRONTEND_TAG) || true
+	docker rmi $(FRONTEND_IMAGE_NAME):$(FRONTEND_TAG) || true
+
+clean-backend:
+	docker rmi $(DOCKER_USERNAME)/$(BACKEND_IMAGE_NAME):$(BACKEND_TAG) || true
+	docker rmi $(BACKEND_IMAGE_NAME):$(BACKEND_TAG) || true
+
 clean: clean-frontend clean-backend
 
-all: frontend backend
+all: all-frontend all-backend
 
 .PHONY: build-frontend tag-frontend push-frontend all-frontend clean-frontend \
         build-backend tag-backend push-backend all-backend clean-backend clean all
@@ -382,35 +386,42 @@ Modify the `DOCKER_USERNAME`, `Image_Name` variable with your DockerHub username
 ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile//images/image-2.png?raw=true)
 
 ### How to Use:
-- First Login into Docker hub
-  ```sh
-  docker login
-  ```
-  Provide the credentials as needed.
+**First Login into Docker hub**
 
-  ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile//images/image-7.png?raw=true)
+```sh
+docker login
+```
+Provide the credentials as needed.
 
-- To build, tag, and push the **frontend** image:
-  ```bash
-  make all-frontend
-  ```
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile//images/image-7.png?raw=true)
 
-- To build, tag, and push the **backend** image:
-  ```bash
-  make all-backend
-  ```
+**To build, tag, and push the **frontend** image:**
 
-- To build, tag, and push **both** images in parallel:
+```bash
+make all-frontend
+```
 
-  ```bash
-  make all
-  ```
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile//images/image-16.png)
 
-  ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile//images/image-3.png?raw=true)
+**To build, tag, and push the **backend** image:**
 
-### Check the created images
+```bash
+make all-backend
+```
 
-After completion of the make command, you can check if docker images:
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile//images/image-17.png)
+
+**To build, tag, and push **both** images in parallel:**
+
+```bash
+make all
+```
+
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile//images/image-3.png?raw=true)
+
+### Check the created Docker images
+
+After completion of the make command, you can check the newly created docker images:
 
 ```sh
 docker images
@@ -418,11 +429,21 @@ docker images
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile//images/image-4.png?raw=true)
 
+### Cleaning the images from local storage
+
+We can run this command to clean the local images:
+
+```bash
+make clean
+```
+
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile//images/image-15.png)
+
 ## Step 4: Running the Application
 
 Now that we have Docker images for both the frontend and backend, let's run the entire application using Docker.
 
-### 4.1. Run the Backend
+### 4.1. Run the Backend server
 Run the backend image:
 
 ```bash
@@ -433,7 +454,8 @@ docker run -p 4000:4000 your-dockerhub-username/<backend-image-name>
 
 This will run the backend server on port 4000.
 
-### 4.2. Run the Frontend
+### 4.2. Run the Frontend Application
+
 Run the frontend image:
 
 ```bash
