@@ -401,7 +401,7 @@ Provide the credentials as needed.
 make all-frontend
 ```
 
-![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile//images/image-16.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile//images/image-16.png)
 
 **To build, tag, and push the **backend** image:**
 
@@ -409,7 +409,7 @@ make all-frontend
 make all-backend
 ```
 
-![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile//images/image-17.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile//images/image-17.png)
 
 **To build, tag, and push **both** images in parallel:**
 
@@ -437,7 +437,7 @@ We can run this command to clean the local images:
 make clean
 ```
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile//images/image-15.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile//images/image-15.png)
 
 ## Step 4: Running the Application
 
