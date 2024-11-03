@@ -169,7 +169,7 @@ export default App;
 
 This fetches the message from the backend and displays it on the frontend.
 
-### 2.3. Create a Dockerfile for the Frontend
+### Create a Dockerfile for the Frontend
 In the `frontend` directory, create a `Dockerfile`:
 
 ```bash
@@ -443,7 +443,7 @@ make clean
 
 Now that we have Docker images for both the frontend and backend, let's run the entire application using Docker.
 
-### 4.1. Run the Backend server
+### Run the Backend server
 Run the backend image:
 
 ```bash
@@ -454,7 +454,7 @@ docker run -p 4000:4000 your-dockerhub-username/<backend-image-name>
 
 This will run the backend server on port 4000.
 
-### 4.2. Run the Frontend Application
+### Run the Frontend Application
 
 Run the frontend image:
 
@@ -462,7 +462,7 @@ Run the frontend image:
 docker run -p 80:80 your-dockerhub-username/<frontend-image-name>
 ```
 
-This will run the frontend on port 80.
+This will run the frontend on port **80.**
 
 ![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Full-stack-app/Docker%20Image%20using%20Makefile//images/image-14.png)
 
