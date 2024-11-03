@@ -324,8 +324,8 @@ all: all-frontend all-backend
 #### `.PHONY` Declaration
 
 ```makefile
-.PHONY: build-frontend tag-frontend push-frontend all-frontend \
-        build-backend tag-backend push-backend all-backend clean all
+.PHONY: build-frontend tag-frontend push-frontend all-frontend clean-frontend \
+        build-backend tag-backend push-backend all-backend clean-backend clean all
 ```
 - **`.PHONY`**: Declares that these targets are not files but commands. This ensures that `make` doesn't get confused by files with the same name as targets.
 
