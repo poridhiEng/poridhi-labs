@@ -11,14 +11,14 @@ This guide explains how to set up and interact with a MySQL server running in a 
     docker pull mysql:latest
     ```
     
-    ![alt text](./images/image-1.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/1/images/image-1.png)
     
     ```bash
     docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 -d mysql:latest
     ```
     
 
-    ![alt text](./images/image-2.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/1/images/image-2.png)
 
 ### Install Telnet
 
@@ -28,7 +28,7 @@ This guide explains how to set up and interact with a MySQL server running in a 
     sudo apt-get install telnet
     ```
     
-    ![alt text](./images/image-3.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/1/images/image-3.png)
     
 
 ### Get Docker Container IP Address
@@ -65,7 +65,7 @@ This guide explains how to set up and interact with a MySQL server running in a 
     
     Here is the output:
     
-    ![alt text](./images/image-4.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/1/images/image-4.png)
     
 
 ### Access MySQL Server in Docker Container
@@ -95,7 +95,7 @@ This guide explains how to set up and interact with a MySQL server running in a 
     2. Grant all privileges on all databases and tables to `newuser` with the ability to grant those privileges to others.
     3. Refresh the MySQL privilege tables to ensure the changes take effect.
 
-    ![alt text](./images/image-5.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/1/images/image-5.png)
 
 ### Install MySQL Client
 
@@ -108,7 +108,7 @@ This guide explains how to set up and interact with a MySQL server running in a 
     
     These commands update the package lists for upgrades and new package installations, then install the MySQL client tools.
     
-    ![alt text](./images/image-6.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/1/images/image-6.png)
 
 ### Verify MySQL Client Installation
 
@@ -134,7 +134,7 @@ This guide explains how to set up and interact with a MySQL server running in a 
 
     Expected result:
 
-    ![alt text](./images/image-7.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/1/images/image-7.png)
     
 
 ### Check User List in MySQL
@@ -147,7 +147,7 @@ This guide explains how to set up and interact with a MySQL server running in a 
     
     This SQL command retrieves the list of users and their associated hosts from the MySQL `user` table. This helps to verify the creation of the new user.
     
-    ![alt text](./images/image-8.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/1/images/image-8.png)
     
 
 ### Summary
