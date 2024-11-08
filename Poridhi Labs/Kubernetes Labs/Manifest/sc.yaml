@@ -1,0 +1,40 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: fast
+provisioner: kubernetes.io/gce-pd
+parameters:
+  type: pd-ssd
+  replication-type: none
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-pvc # Corrected to match the Pod reference
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: fast # Assignment of the storage class
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-pod
+spec:
+  containers:
+    - name: my-app
+      image: alpine
+      command: ["/bin/sh"]
+      args: ["-c", "while true; do sleep 60; done;"]
+      volumeMounts:
+        - mountPath: "/mnt/data"
+          name: my-storage
+  volumes:
+    - name: my-storage
+      persistentVolumeClaim:
+        claimName: my-pvc # Corrected to match the PVC name
