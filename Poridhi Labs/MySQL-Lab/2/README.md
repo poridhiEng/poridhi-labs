@@ -1,14 +1,20 @@
 # Connect Flask App with MySQL  
 
-Creating a Flask application that connects to a MySQL container using the new user involves several steps. Below are the steps to create and run the Flask app, including installing necessary packages, setting up the Flask app, and connecting it to the MySQL database.
+This lab walks you through setting up a Flask application that connects to a MySQL server running in a Docker container. You'll learn how to create and run the Flask app, install the required packages, and set up a MySQL database with a dedicated user.
+
+![alt text](./images/image-6.png)
 
 ## Run the MySQL container
 
-```jsx
+To start a MySQL server in Docker, use the following command:
+
+```sh
 docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 -d mysql:latest
 ```
 
 ## Access MySQL Server in Docker Container
+
+Connect to the MySQL server within the container:
 
 ```bash
 sudo docker exec -it mysql-container mysql -uroot -proot
@@ -32,7 +38,9 @@ These SQL commands are executed within the MySQL client to:
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/2/images/image.png)
 
-## Install Python and Create a Virtual Environment
+## Set Up Python and a Virtual Environment
+
+Install Python and create a virtual environment for your Flask application:
 
 ```bash
 sudo apt-get update
@@ -41,7 +49,9 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-## nstall Flask and MySQL Connector
+## Install Flask and MySQL Connector
+
+With the virtual environment active, install Flask and MySQL connector:
 
 ```bash
 pip install flask mysql-connector-python
@@ -49,7 +59,7 @@ pip install flask mysql-connector-python
 
 ## Create the Flask Application
 
-Full Example Directory Structure
+Directory structure:
 
 ```
 flask_app/
@@ -57,12 +67,16 @@ flask_app/
 ├── venv/
 ```
 
+Set up a new directory for your Flask app:
+
 ```bash
 mkdir flask_app
 cd flask_app
 ```
 
-## Edit `app.py` :
+## Write the Flask Application (app.py)
+
+In `app.py`, add the following code:
 
 ```python
 from flask import Flask, jsonify
@@ -110,7 +124,7 @@ export FLASK_APP=app.py
 export FLASK_ENV=development
 ```
 
-## **Run the Flask Application**
+**Run the Flask Application**
 
 ```bash
 flask run

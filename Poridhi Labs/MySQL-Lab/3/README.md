@@ -1,69 +1,94 @@
 # Flask REST API with MySQL Container
 
-This documentation demonstrates how to create a Flask REST API that connects to a MySQL database running in a Docker container using a new MySQL user.
+This lab walks you through creating a Flask REST API that connects to a MySQL database running in a Docker container. We'll also create a new MySQL user specifically for this API to enhance security and manage access.
 
-## Steps
+## Overview of Steps
+1. Set up MySQL in Docker: Start a MySQL container with a root user and password.
+2. Create a new MySQL user: Add a dedicated user with privileges for this API.
+3. Create a Flask application: Build and configure the Flask API to interact with MySQL.
+4. Connect to MySQL and test the API endpoints: Verify everything works and handle sample API requests.
 
-### 1. First Run the MySQL Container
+![alt text](./images/image.png)
+
+## Run the MySQL Container
+
+Start a MySQL container in Docker with the following command, which creates a MySQL server accessible on port 3306:
 
 ```bash
 docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 -d mysql:latest
 ```
 
-Replace `root` with your desired root password.
+![alt text](./images/image-14.png)
 
-### 2. Access MySQL Server in Docker Container
+>NOTE: Replace `root` with your desired root password.
+
+## Access MySQL Server in Docker Container
+
+Access the MySQL server to create a new user and manage databases:
 
 ```bash
-sudo docker exec -it mysql-container mysql -u root -proot
+sudo docker exec -it mysql-container mysql -u root -p
 ```
+
+![alt text](./images/image-1.png)
 
 This command runs the MySQL client inside the Docker container named `mysql-container`, logging in as the `root` user with the password `root`.
 
-### 3. Create a New MySQL User
+## Create a New MySQL User
+
+Run the following SQL commands in the MySQL client to create a new user:
 
 ```sql
 CREATE USER 'newuser'@'%' IDENTIFIED BY 'newpassword';
 GRANT ALL PRIVILEGES ON *.* TO 'newuser'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 ```
-![](./images/1.png)
 
 These SQL commands are executed within the MySQL client to:
 
-1. Create a new user `newuser` with the password `newpassword`.
-2. Grant all privileges on all databases and tables to `newuser` with the ability to grant those privileges to others.
-3. Refresh the MySQL privilege tables to ensure the changes take effect.
+- Create a new user `newuser` with the password `newpassword`.
+- Grant all privileges on all databases and tables to `newuser` with the ability to grant those privileges to others.
+- Refresh the MySQL privilege tables to ensure the changes take effect.
 
-### 4. Create the Flask Application
+>NOTE: Ensure the newuser credentials match those used in your Flask application’s database connection.
 
-4.1 Create a virtual environment and install the necessary packages:
+## Create the Flask Application
+
+**Create a virtual environment and install the necessary packages:**
+
+1. Install the virtual environment package (if not already installed).
+2. Set up a virtual environment and install Flask and the MySQL connector:
 
 ```bash
-sudo apt install python3.10-venv
+sudo apt update
+sudo apt install python3.8-venv
 python3 -m venv venv
 source venv/bin/activate
 pip install flask mysql-connector-python
 ```
+![alt text](./images/image-4.png)
 
-4.2 Create the Flask Application
+**Create the Flask Application and files**
 
 Example Directory Structure
 
 ```bash
 flask_app/
 ├── app.py
-├── venv/
 ```
+
+Create the directory structure for your Flask app:
 
 ```bash
 mkdir flask_app
 cd flask_app
 ```
 
-4.3 Example Flask rest api
+**Build the Flask API Application**
 
-```bash
+Create a file named `app.py` with the following content:
+
+```py
 from flask import Flask, jsonify, request
 import mysql.connector
 from mysql.connector import Error
@@ -179,28 +204,33 @@ if __name__ == '__main__':
     app.run(debug=True)
 ```
 
-4.4 **Configure and Run the Flask App**
+**Configure and Run the Flask App**
 
-**Set the Environment Variables for Flask**
+1. Set environment variables to enable debug mode and specify the application file:
 
-In the terminal, set the environment variables (Linux/Mac):
+    ```bash
+    export FLASK_APP=app.py
+    export FLASK_ENV=development
+    ```
 
-```bash
-export FLASK_APP=app.py
-export FLASK_ENV=development
-```
+2. Run the flask application
 
-Run the flask application
+    ```bash
+    flask run
+    ```
+3. Check API endpoints ('/'):
 
-```bash
-flask run
-```
+    ```bash
+    curl localhost:5000
+    ```
 
-![](./images/2.png)
+    ![alt text](./images/image-5.png)
 
-Here we can see, there is no database named `mydatabase` . So we have to create a database. To do that we can use `MySQL Client`.
+Here we can see, there is no database named `mydatabase`. So we have to create a database. To do that we can use `MySQL Client`.
 
-### 5. Install MySQL Client
+## Install MySQL Client
+
+To create the mydatabase database from the MySQL client, install MySQL tools:
 
 ```bash
 sudo apt-get update
@@ -209,12 +239,12 @@ sudo apt-get install mysql-client
 
 These commands update the package lists for upgrades and new package installations, then install the MySQL client tools.
 
-### 6. Create Database named `mydatabase`
+## Database Creation
 
-Create the  `mydatabase`  and Verify Database Creation. Grant Permissions to the New User (if not already done).
+Create Database named `mydatabase` and verify Database Creation. Grant Permissions to the New User (if not already done).
 
 ```bash
-mysql -h 127.0.0.1 -u root -proot
+mysql -h 127.0.0.1 -u root -p
 ```
 
 ```sql
@@ -222,45 +252,23 @@ CREATE DATABASE mydatabase;
 GRANT ALL PRIVILEGES ON mydatabase.* TO 'newuser'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 ```
+![alt text](./images/image-7.png)
 
-![](./images/4.png)
-
-### 7. Run the Flask Application again
-
-```sql
-flask run
-```
-
-### 8. Verify the Connection
-
-```bash
-curl http://127.0.0.1:5000
-```
-
-![](./images/5.png)
-
-### 9. Create `user` table in the `mydatabase.`
+## Create table in the `mydatabase`
 
 To perform api endpoints we have to create a `user` table in the `mydatabase`
 
-9.1 First we have to exec into the mysql container
-
-```bash
-sudo docker exec -it mysql-container mysql -u root -proot
-```
-
-9.2 Use the database
+**1. Use the database**
 
 ```bash
 USE mydatabase;
 ```
 
-
-9.3 **Create the `users` Table:**
+**3. Create the `users` Table:**
 
 Create the **`users`** table with the necessary columns. Here is an example SQL statement to create the table with **`id`**, **`name`**, and **`email`** columns:
 
-```bash
+```sql
 CREATE TABLE users (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	name VARCHAR(100) NOT NULL,
@@ -269,7 +277,9 @@ CREATE TABLE users (
 );
 ```
 
-9.4 **Verify Table Creation:**
+![alt text](./images/image-8.png)
+
+**4. Verify Table Creation:**
 
 Check that the table was created successfully:
 
@@ -277,7 +287,9 @@ Check that the table was created successfully:
 SHOW TABLES;
 ```
 
-9.5 **Exit MySQL:**
+![alt text](./images/image-9.png)
+
+**5. Exit MySQL:**
 
 Exit the MySQL shell:
 
@@ -285,43 +297,47 @@ Exit the MySQL shell:
 EXIT;
 ```
 
-![](./images/6.png)
+## Test API Endpoints
 
-### 10. Perform the API endpoints
+**1. Test Database Connection**
 
-1. Get Users
+```sh
+curl localhost:5000
+```
 
-```sql
+![alt text](./images/image-10.png)
+
+**2. Add Users:**
+
+```sh
+curl -X POST -H "Content-Type: application/json" -d '{"name": "John Doe", "email": "john@example.com"}' http://localhost:5000/users
+```
+
+![alt text](./images/image-11.png)
+
+**3. Get Users**
+
+```sh
 curl http://localhost:5000/users
 ```
-2. **Get User by ID**
+**3. Get User by ID**
 
 ```bash
 curl http://localhost:5000/users/<user_id>
 ```
+![alt text](./images/image-12.png)
 
 Replace `user_id` with the ID of the user you want to retrieve.
 
-3. **Add a User:**
-
-```sql
-curl -X POST -H "Content-Type: application/json" -d '{"name": "John Doe", "email": "john@example.com"}' http://localhost:5000/users
-```
-
-![](./images/7.png)
-
-4. To delete a user by their ID using the `DELETE` method, you can use the following **`curl`** command:
+**4. Delete User by ID:**
 
 ```bash
 curl -X DELETE http://localhost:5000/users/<user_id>
 ```
 
-Replace **`<user_id>`** with the actual ID of the user you want to delete. For example, For example, if you want to delete a user with ID **`1`**, the command would be:
+Replace **`<user_id>`** with the actual ID of the user you want to delete.
 
-```bash
-curl -X DELETE http://localhost:5000/users/1
-```
-![](./images/8.png)
+![alt text](./images/image-13.png)
 
 
 ### Notes:
