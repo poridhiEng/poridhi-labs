@@ -2,7 +2,7 @@
 
 This lab will provide a complete walkthrough for setting up a MySQL server in a Docker container, including container configuration, connecting with various tools, and managing user access. With these steps, you’ll learn how to download and run a MySQL Docker image, interact with the server using Telnet and the MySQL client, create new users, and confirm connectivity and permissions.
 
-![alt text](./images/image-14.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/1/images/image-14.png)
 
 ---
 
@@ -27,7 +27,7 @@ This lab will provide a complete walkthrough for setting up a MySQL server in a 
     ```bash
     docker ps
     ```
-    ![alt text](./images/image-15.png)
+    ![Image](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/1/images/image-15.png)
 
 ---
 
@@ -82,7 +82,7 @@ Telnet is a network tool that lets you connect to ports to test if the MySQL ser
    ```
    This logs in to MySQL as the root user with the specified password.
 
-   ![alt text](./images/image-9.png)
+   ![Image](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/1/images/image-9.png)
 
 ---
 
@@ -100,7 +100,7 @@ Telnet is a network tool that lets you connect to ports to test if the MySQL ser
    - `GRANT ALL PRIVILEGES`: Provides full access to all databases for this user.
    - `FLUSH PRIVILEGES`: Updates MySQL to recognize the new permissions.
 
-    ![alt text](./images/image-10.png)
+    ![Image](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/1/images/image-10.png)
 
 ---
 
@@ -120,7 +120,7 @@ Telnet is a network tool that lets you connect to ports to test if the MySQL ser
    ```bash
    mysql --version
    ```
-   ![alt text](./images/image-11.png)
+   ![Image](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/1/images/image-11.png)
 
 ---
 
@@ -136,7 +136,7 @@ Telnet is a network tool that lets you connect to ports to test if the MySQL ser
    - `-u`: Username (`newuser` created in step 6).
    - `-p`: Password
 
-    ![alt text](./images/image-12.png)
+    ![Image](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/1/images/image-12.png)
 
 ---
 
@@ -150,7 +150,7 @@ Telnet is a network tool that lets you connect to ports to test if the MySQL ser
    ```
    - This lists all users and their associated hosts.
 
-   ![alt text](./images/image-13.png)
+   ![Image](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/1/images/image-13.png)
 ---
 
 ### **Summary of Steps**

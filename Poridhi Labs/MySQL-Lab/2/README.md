@@ -2,7 +2,7 @@
 
 This lab walks you through setting up a Flask application that connects to a MySQL server running in a Docker container. You'll learn how to create and run the Flask app, install the required packages, and set up a MySQL database with a dedicated user.
 
-![alt text](./images/image-6.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/2/images/image-6.png)
 
 ## Run the MySQL container
 

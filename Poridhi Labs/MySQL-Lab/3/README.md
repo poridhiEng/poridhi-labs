@@ -8,7 +8,7 @@ This lab walks you through creating a Flask REST API that connects to a MySQL da
 3. Create a Flask application: Build and configure the Flask API to interact with MySQL.
 4. Connect to MySQL and test the API endpoints: Verify everything works and handle sample API requests.
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/3/images/image.png)
 
 ## Run the MySQL Container
 
@@ -18,7 +18,7 @@ Start a MySQL container in Docker with the following command, which creates a My
 docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 -d mysql:latest
 ```
 
-![alt text](./images/image-14.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/3/images/image-14.png)
 
 >NOTE: Replace `root` with your desired root password.
 
@@ -30,7 +30,7 @@ Access the MySQL server to create a new user and manage databases:
 sudo docker exec -it mysql-container mysql -u root -p
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/3/images/image-1.png)
 
 This command runs the MySQL client inside the Docker container named `mysql-container`, logging in as the `root` user with the password `root`.
 
@@ -66,7 +66,7 @@ python3 -m venv venv
 source venv/bin/activate
 pip install flask mysql-connector-python
 ```
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/3/images/image-4.png)
 
 **Create the Flask Application and files**
 
@@ -224,7 +224,7 @@ if __name__ == '__main__':
     curl localhost:5000
     ```
 
-    ![alt text](./images/image-5.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/3/images/image-5.png)
 
 Here we can see, there is no database named `mydatabase`. So we have to create a database. To do that we can use `MySQL Client`.
 
@@ -252,7 +252,7 @@ CREATE DATABASE mydatabase;
 GRANT ALL PRIVILEGES ON mydatabase.* TO 'newuser'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 ```
-![alt text](./images/image-7.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/3/images/image-7.png)
 
 ## Create table in the `mydatabase`
 
@@ -277,7 +277,7 @@ CREATE TABLE users (
 );
 ```
 
-![alt text](./images/image-8.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/3/images/image-8.png)
 
 **4. Verify Table Creation:**
 
@@ -287,7 +287,7 @@ Check that the table was created successfully:
 SHOW TABLES;
 ```
 
-![alt text](./images/image-9.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/3/images/image-9.png)
 
 **5. Exit MySQL:**
 
@@ -305,7 +305,7 @@ EXIT;
 curl localhost:5000
 ```
 
-![alt text](./images/image-10.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/3/images/image-10.png)
 
 **2. Add Users:**
 
@@ -313,7 +313,7 @@ curl localhost:5000
 curl -X POST -H "Content-Type: application/json" -d '{"name": "John Doe", "email": "john@example.com"}' http://localhost:5000/users
 ```
 
-![alt text](./images/image-11.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/3/images/image-11.png)
 
 **3. Get Users**
 
@@ -325,7 +325,7 @@ curl http://localhost:5000/users
 ```bash
 curl http://localhost:5000/users/<user_id>
 ```
-![alt text](./images/image-12.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/3/images/image-12.png)
 
 Replace `user_id` with the ID of the user you want to retrieve.
 
@@ -337,7 +337,7 @@ curl -X DELETE http://localhost:5000/users/<user_id>
 
 Replace **`<user_id>`** with the actual ID of the user you want to delete.
 
-![alt text](./images/image-13.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MySQL-Lab/3/images/image-13.png)
 
 
 ### Notes:
