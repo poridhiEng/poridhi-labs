@@ -7,8 +7,8 @@ This project implements a comprehensive customer churn prediction system using s
 1. [Overview](#1-overview)
 2. [Project Structure](#2-project-structure)
 3. [Environment Setup](#3-environment-setup)
-4. [Data Processing & Model Training](#4-data-processing--model-training)
-5. [Model Tracking with MLflow](#5-model-training-with-mlflow)
+4. [Data Processing & Visualization](#4-data-processing--visualization)
+5. [Model Training & MLflow Tracking](#5-model-training--mlflow-tracking)
 6. [Verification](#6-verification)
 7. [Conclusion](#7-conclusion)
 
