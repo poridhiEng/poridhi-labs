@@ -37,26 +37,27 @@ customer-churn-mlops/
 ```bash
 aws configure
 ```
+![](./images/aws.png)
 
-### Python Environment
-```bash
-pip install ipykernel
-python3 -m ipykernel install --user --name=Poridhi_env --display-name "Python (Poridhi_env)"
+### Install Jupyter Extension
 
-pip install jupyter_contrib_nbextensions
-jupyter contrib nbextension install --user
-```
+In Poridhi's VSCode server, install the Jupyter Extension.
+
+![alt text](./images/jupyter.png)
+
+### Kernal Setup
+
+In Poridhi's VSCode server, create a new Jupyter notebook and select the `python` kernel.
+
+![](./images/kernealselection.png)
 
 ### Create S3 Bucket
 ```bash
-aws s3api create-bucket \
-    --bucket <unique-bucket-name> \
-    --region ap-southeast-1 \
-    --create-bucket-configuration LocationConstraint=ap-southeast-1
+aws s3api create-bucket --bucket <unique-bucket-name> --region ap-southeast-1 --create-bucket-configuration LocationConstraint=ap-southeast-1 
 
-aws s3api put-bucket-versioning \
-    --bucket <unique-bucket-name> \
-    --versioning-configuration Status=Enabled
+aws s3api put-bucket-versioning --bucket <unique-bucket-name> --versioning-configuration Status=Enabled
+
+aws s3api get-bucket-versioning --bucket <unique-bucket-name>
 ```
 
 ### Docker Configuration
