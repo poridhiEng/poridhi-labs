@@ -1,6 +1,8 @@
 # Customer Churn Prediction with MLflow, PostgreSQL & AWS S3
 This project implements a comprehensive customer churn prediction system using seven different machine learning models. The project uses telco customer churn data to predict whether a customer will discontinue their service. We integrate MLflow for experiment tracking, PostgreSQL for metadata storage, and Amazon S3 for artifact storage.
 
+![](./images/mlops-lab-09.svg)
+
 ## Table of Contents
 1. [Overview](#1-overview)
 2. [Project Structure](#2-project-structure)
@@ -26,8 +28,7 @@ customer-churn-mlops/
 │   └── docker-compose.yml         
 ├── notebooks/
 │   ├── churn_prediction.ipynb      
-│   └── WA_Fn-UseC_-Telco-Customer-Churn.csv    
-├── README.md  
+│   └── WA_Fn-UseC_-Telco-Customer-Churn.csv
 ```                     
 
 ## 3. Environment Setup
