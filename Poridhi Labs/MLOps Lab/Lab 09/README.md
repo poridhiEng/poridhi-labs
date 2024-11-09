@@ -152,7 +152,7 @@ To access the MLflow UI with poridhi's Loadbalancer, use the following steps:
     
 - Go to Poridhi's `LoadBalancer`and Create a `LoadBalancer` with the `eht0` IP and port `5000`.
 
-  ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/new-11.png?raw=true)
+  ![](./images/lb.png)
 
 - By using the Provided `URL` by `LoadBalancer`, you can access the MLflow UI from any browser.
 
