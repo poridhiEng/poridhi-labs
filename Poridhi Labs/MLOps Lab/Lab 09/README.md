@@ -2,7 +2,7 @@
 This project implements a comprehensive customer churn prediction system using seven different machine learning models. The project uses telco customer churn data to predict whether a customer will discontinue their service. We integrate MLflow for experiment tracking, PostgreSQL for metadata storage, and Amazon S3 for artifact storage.
 
 ## Table of Contents
-1. [Introduction](#1-introduction)
+1. [Overview](#1-overview)
 2. [Project Structure](#2-project-structure)
 3. [Environment Setup](#3-environment-setup)
 4. [Data Processing & Model Training](#4-data-processing--model-training)
@@ -10,7 +10,7 @@ This project implements a comprehensive customer churn prediction system using s
 6. [Verification](#6-verification)
 7. [Conclusion](#7-conclusion)
 
-## 1. Introduction
+## 1. Overview
 This project implements churn prediction using 7 different ML models while incorporating MLOps best practices:
 - Experiment tracking with MLflow
 - Model metadata storage in PostgreSQL
