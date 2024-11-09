@@ -1,7 +1,7 @@
 # Customer Churn Prediction with MLflow, PostgreSQL & AWS S3
 This project implements a comprehensive customer churn prediction system using seven different machine learning models. The project uses telco customer churn data to predict whether a customer will discontinue their service. We integrate MLflow for experiment tracking, PostgreSQL for metadata storage, and Amazon S3 for artifact storage.
 
-![](./images/mlops-lab-09.svg)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/mlops-lab-09.svg?raw=true)
 
 ## Table of Contents
 1. [Overview](#1-overview)
@@ -37,19 +37,19 @@ customer-churn-mlops/
 ```bash
 aws configure
 ```
-![](./images/aws.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/aws.png?raw=true)
 
 ### Install Jupyter Extension
 
 In Poridhi's VSCode server, install the Jupyter Extension.
 
-![alt text](./images/jupyter.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/jupyter.png?raw=true)
 
-### Kernal Setup
+### Kernel Setup
 
 In Poridhi's VSCode server, create a new Jupyter notebook and select the `python` kernel.
 
-![](./images/kernealselection.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/kernealselection.png?raw=true)
 
 ### Create S3 Bucket
 ```bash
@@ -154,7 +154,7 @@ To access the MLflow UI with poridhi's Loadbalancer, use the following steps:
     
 - Go to Poridhi's `LoadBalancer`and Create a `LoadBalancer` with the `eht0` IP and port `5000`.
 
-  ![](./images/lb.png)
+  ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/lb.png?raw=true)
 
 - By using the Provided `URL` by `LoadBalancer`, you can access the MLflow UI from any browser.
 
@@ -924,21 +924,21 @@ This MLflow run consolidates and visualizes the performance comparison of seven 
 1. Navigate to the MLflow UI with url provided by the `Poridhi's Loadbalancer`.
 2. Navigate to "Experiments" tab and select "Customer Churn Prediction-lab-01"
 
-    ![](./images/1.png)
+    ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/1.png?raw=true)
 
 3. For each model run, verify the parameters, metrics, and artifacts.For example we can see the overview, metrics & artifacts for `SVM`:
 
     **Overview of `SVM`**:
 
-    ![](./images/svm-1.png)
+    ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/svm-1.png?raw=true)
 
     **Model Metrics**:
 
-    ![](./images/svm-2.png)
+    ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/svm-2.png?raw=true)
 
     **Artifacts**:
 
-    ![](./images/svm-3.png)
+    ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/svm-3.png?raw=true)
 
     By following the above steps, you can verify the parameters, metrics, and artifacts for other models as well.
 
@@ -946,13 +946,13 @@ This MLflow run consolidates and visualizes the performance comparison of seven 
 
 In the MLflow UI, navigate to "Model Comparison" experiment and verify the comparison plot and CSV files with accuracy metrics.
 
-![](./images/image.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/image.png?raw=true)
 
 ### S3 Artifact Verification
 
 Go to AWS Console and navigate to S3 bucket `<your-bucket-name>` to verify the artifacts.
 
-![alt text](./images/s3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/s3.png?raw=true)
 
 For each model run, you should see the artifacts in the S3 bucket.
 
@@ -971,7 +971,7 @@ For each model run, you should see the artifacts in the S3 bucket.
     SELECT * FROM experiments;
     ```
 
-    ![](./images/psql.png)
+    ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/psql.png?raw=true)
 
 3. View runs and metrics:
     ```sql
@@ -986,7 +986,7 @@ For each model run, you should see the artifacts in the S3 bucket.
     ORDER BY r.start_time DESC;
     ```
 
-    ![](./images/psql-2.png)
+    ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/psql-2.png?raw=true)
 
 
 ## 7. Conclusion
