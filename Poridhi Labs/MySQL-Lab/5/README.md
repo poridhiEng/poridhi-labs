@@ -226,7 +226,7 @@ This documentation demonstrates how to create a Flask REST API that connects to 
 Build using docker-compose up  command
 
 ```bash
-    docker-compose up --build
+docker-compose up --build
 ```
 
 ![](./images/9.png)

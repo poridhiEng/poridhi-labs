@@ -1,40 +1,50 @@
-
 # Flask REST API with SQLAlchemy, MySQL, and Docker
 
-## Introduction
+In this lab, we'll demonstrate how to integrate SQLAlchemy with Flask to create a REST API connected to a MySQL database. Additionally, we'll utilize Docker to deploy the entire setup as containers, providing a consistent and isolated environment for development and production.
 
-Flask is a lightweight and flexible web framework for Python, ideal for building RESTful APIs. SQLAlchemy is a powerful SQL toolkit and Object-Relational Mapping (ORM) library for Python, providing a high-level abstraction for database interactions.
+![alt text](image-12.png)
 
-In this guide, we'll demonstrate how to integrate SQLAlchemy with Flask to create a REST API connected to a MySQL database. Additionally, we'll utilize Docker to deploy the entire setup as containers, providing a consistent and isolated environment for development and production.
+## Overview
+
+**Flask:** A lightweight and flexible web framework for Python, ideal for building RESTful APIs.
+
+**SQLAlchemy:** A powerful SQL toolkit and Object-Relational Mapping (ORM) library for Python, providing a high-level abstraction for database interactions.
+
+**Docker:** A containerization platform that allows us to package our application and its dependencies into a single
+container, making it easy to deploy and manage.
 
 ## Step 1: Set Up Flask REST API
 
 ### Project Structure
 
-```
+Organize your project files as follows:
+
+```sh
 flask_mysql_docker/
-├── app.py
-├── Dockerfile
-├── docker-compose.yml
-└── init_db.sql
+├── app.py               # Flask application
+├── Dockerfile           # Docker configuration for Flask
+├── docker-compose.yml   # Docker Compose configuration for multi-container setup
+└── init_db.sql          # SQL script to initialize the database
 ```
 
 ### Installation
 
-First, create a project directory:
+**1. Create the project directory:**
 
 ```bash
 mkdir flask_mysql_docker
 cd flask_mysql_docker
 ```
 
-Next, install Flask, SQLAlchemy, and MySQL connector:
+**2. Install Flask, SQLAlchemy, and MySQL connector:**
 
 ```bash
 pip install Flask Flask-SQLAlchemy mysql-connector-python
 ```
 
 ### Flask Application (app.py)
+
+The `app.py` file contains the Flask application and database schema.
 
 ```python
 from flask import Flask, jsonify, request
@@ -123,9 +133,13 @@ CREATE TABLE IF NOT EXISTS users (
 );
 ```
 
+This script creates a database `(test_db)` and a `users` table, if they do not already exist.
+
 ## Step 3: Set Up Docker
 
 ### Dockerfile
+
+The Dockerfile defines the Flask app container.
 
 ```dockerfile
 # Dockerfile
@@ -143,7 +157,9 @@ EXPOSE 5000
 CMD ["python", "app.py"]
 ```
 
-### docker-compose.yml
+### Docker Compose Configuration (docker-compose.yml)
+
+The `docker-compose.yml` file configures multi-container deployment. It sets up two services: the database (MySQL) and the web app (Flask).
 
 ```yaml
 version: '3.8'
@@ -160,7 +176,7 @@ services:
     volumes:
       - ./init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
     ports:
-      - "3307:3306"
+      - "3306:3306"
 
   web:
     build: .
@@ -173,41 +189,13 @@ services:
       - db
 ```
 
-### Install Docker Compose on Ubuntu
+### Complete Setup:
 
-First, update your package index:
-
-```bash
-sudo apt update
-```
-
-Install the required packages to ensure that curl and gnupg are installed:
-
-```bash
-sudo apt install curl gnupg
-```
-
-Download the Docker Compose binary into the `/usr/local/bin` directory:
-
-```bash
-sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-```
-
-Apply executable permissions to the binary:
-
-```bash
-sudo chmod +x /usr/local/bin/docker-compose
-```
-
-Verify that docker-compose is installed correctly:
-
-```bash
-docker-compose --version
-```
-
-You should see the version of Docker Compose printed to the terminal.
+![alt text](image.png)
 
 ## Step 4: Build and Run Docker Containers
+
+Run the following command to build and start the containers:
 
 ```bash
 sudo docker-compose up --build
@@ -215,20 +203,27 @@ sudo docker-compose up --build
 
 The `sudo docker-compose up --build` command initiates the building of Docker images as per specifications in the `docker-compose.yml` file, then starts the corresponding containers, ensuring any changes in Dockerfiles or application code are incorporated before container initialization.
 
+![alt text](image-1.png)
+
 ## Step 5: Verify Connection
+
+Test if the API is running by sending a request to the root endpoint:
 
 ```bash
 curl http://localhost:5000
 ```
+
+![alt text](image-9.png)
 
 ## Step 6: Check Database
 
 ### Install MySQL Client
 
 ```bash
-sudo apt-get update
-sudo apt-get install mysql-client
+sudo apt update
+sudo apt install mysql-client
 ```
+![alt text](image-2.png)
 
 ### Get MySQL Server IP
 
@@ -237,18 +232,11 @@ docker ps
 docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <container_id>
 ```
 
+![alt text](image-3.png)
+
 The `docker inspect` command extracts and displays the IP address of a specific container using a Go template, facilitating network-related tasks and troubleshooting within Docker environments.
 
 ### Test MySQL Connection Using Telnet
-
-### Install Telnet
-
-If you don't already have `telnet` installed, you can install it using the following command:
-
-```bash
-sudo apt-get update
-sudo apt-get install telnet
-```
 
 Use `telnet` to test the connection to the MySQL server. Replace `<mysql_ip_address>` with the IP address you obtained in the previous step, and `3306` is the default MySQL port.
 
@@ -256,21 +244,28 @@ Use `telnet` to test the connection to the MySQL server. Replace `<mysql_ip_addr
 telnet <mysql_ip_address> 3306
 ```
 
+>If you don't already have `telnet` installed, you can install it using the following command:
+
+```bash
+sudo apt-get update
+sudo apt-get install telnet
+```
+
 If the connection is successful, you will see something like this:
 
-```plaintext
-Trying <mysql_ip_address>...
-Connected to <mysql_ip_address>.
-Escape character is '^]'.
-```
+![alt text](image-4.png)
 
 This confirms that the MySQL server is accessible from the network.
 
 ### Log in to MySQL
 
 ```bash
-mysql -h <mysql_server_ip> -u newuser -pnewpass test_db
+mysql -h <mysql_server_ip> -u newuser -p
 ```
+
+![alt text](image-5.png)
+
+> NOTE: You will be prompted to give the newuser password. Provide correct credentials and login.
 
 ### Verify Database and Tables
 
@@ -279,8 +274,15 @@ To verify that your database and tables are set up correctly, you can run the fo
 ```sql
 SHOW DATABASES;
 USE test_db;
+```
+
+To show the table under the `test_db` database:
+
+```sql
 SHOW TABLES;
 ```
+
+![alt text](image-7.png)
 
 You should see the `test_db` database and the `users` table listed.
 
@@ -293,33 +295,37 @@ INSERT INTO users (name, email) VALUES ('Jane Doe', 'jane@example.com');
 SELECT * FROM users;
 ```
 
+![alt text](image-8.png)
+
 ## Step 7: Testing the API
 
-### Add a User
+### 1. Add a User
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '{"name": "John Doe", "email": "john@example.com"}' http://localhost:5000/users
+curl -X POST -H "Content-Type: application/json" -d '{"name": "Jack", "email": "jack@example.com"}' http://localhost:5000/users
 ```
 
-### Get all Users
+### 2. Get all Users
 
 ```bash
 curl http://localhost:5000/users
 ```
 
-### Get User by ID
+![alt text](image-10.png)
+
+### 3. Get User by ID
 
 ```bash
 curl http://localhost:5000/users/<user_id>
 ```
 
-### Delete a User
+### 4. Delete a User
 
 ```bash
 curl -X DELETE http://localhost:5000/users/<user_id>
 ```
 
-![](/images/out-1.png)
+![alt text](image-11.png)
 
 ## MySQL Connection Issues
 
@@ -339,5 +345,7 @@ Add a simple retry mechanism in your Flask app:
 
 **Solution:**
 Ensure your `init_db.sql` file has no syntax errors and matches the MySQL version's requirements you are using. Double-check the SQL statements for typos or incorrect commands.
+
+---
 
 By following these steps, you can thoroughly test the MySQL setup and ensure it is correctly integrated with your Flask application running in Docker containers.
