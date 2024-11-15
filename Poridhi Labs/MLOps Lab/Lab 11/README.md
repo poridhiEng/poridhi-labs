@@ -2,7 +2,7 @@
 
 This project implements a comprehensive player market value prediction system using XGBoost Regressor. The project uses football/soccer player data to predict player market values. We integrate MLflow for experiment tracking, PostgreSQL for metadata storage, and Amazon S3 for artifact storage.
 
-![alt text](./images/Arch-diagram-11.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/d69c7f66cd31eaae413123799dc1c7b44c2357bc/Poridhi%20Labs/MLOps%20Lab/Lab%2011/images/Arch-diagram-11.svg)
 
 ## Table of Contents
 
@@ -60,13 +60,13 @@ aws s3api get-bucket-versioning --bucket <unique-bucket-name>
 
 Change the `<unique-bucket-name>` to your own bucket name.
 
-![alt text](./images/image.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/Lab%2011/images/image.png)
 
 ### Kernel Setup
 
 In Poridhi's VSCode server, create a new Jupyter notebook. Open notebook and select the `Python 3.8.10` kernel to run the code.
 
-![alt text](./images/5.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/Lab%2011/images/5.png)
 
 ### Docker Configuration
 
@@ -627,21 +627,21 @@ model
 1. Navigate to the MLflow UI with url provided by the `Poridhi's Loadbalancer`.
 2. Navigate to "Experiments" tab and select "market_value_prediction"
 
-    ![alt text](./images/image-1.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/Lab%2011/images/image-1.png)
 
 3. For each model run, verify the parameters, metrics, and artifacts. For example we can see the overview, metrics & artifacts for `model_training_20241115_11`:
 
     **Overview of `model_training_20241115_11`**:
 
-    ![alt text](./images/image-2.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/Lab%2011/images/image-2.png)
 
     **Model Metrics**:
 
-    ![alt text](./images/image-3.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/Lab%2011/images/image-3.png)
 
     **Artifacts**:
 
-    ![alt text](./images/image-4.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/Lab%2011/images/image-4.png)
 
 By following the above steps, you can verify the parameters, metrics, and artifacts for `grid_search_20241115_1907` as well.
 
@@ -649,13 +649,13 @@ By following the above steps, you can verify the parameters, metrics, and artifa
 
 In the MLflow UI, navigate to "Model Registry" and verify the registered model and its version in the "Production" stage.
 
-![alt text](./images/image-5.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/Lab%2011/images/image-5.png)
 
 ### S3 Artifact Verification
 
 Go to AWS Console and navigate to S3 bucket `<your-bucket-name>` to verify the artifacts.
 
-![alt text](./images/image-6.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/Lab%2011/images/image-6.png)
 
 For each model run, you should see the artifacts in the S3 bucket.
 
@@ -674,7 +674,7 @@ For each model run, you should see the artifacts in the S3 bucket.
     SELECT * FROM experiments;
     ```
 
-    ![alt text](./images/image-7.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/Lab%2011/images/image-7.png)
 
 3. View runs and metrics:
     ```sql
@@ -689,7 +689,7 @@ For each model run, you should see the artifacts in the S3 bucket.
     ORDER BY r.start_time DESC;
     ```
 
-    ![alt text](./images/image-8.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/Lab%2011/images/image-8.png)
 
 
 ## Conclusion
