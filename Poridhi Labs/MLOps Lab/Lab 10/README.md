@@ -2,6 +2,7 @@
 
 This project leverages the "House Prices - Advanced Regression Techniques" dataset and implements a saleprice prediction model using XGBoost Regressor. We integrate MLflow for experiment tracking, PostgreSQL for metadata storage, and Amazon S3 for artifact storage.
 
+![alt text](./images/image-28.png)
 
 ## Table of Contents
 - [Overview](#1-overview)
@@ -26,7 +27,7 @@ This project implements Saleprice Prediction with XGBoost Regressor while incorp
 ## 2. Project Structure
 
 ```sh
-customer-churn-mlops/
+Saleprice-Prediction-with-XGBoost-Regressor/
 ├── Docker/
 │   ├── .env
 │   ├── Dockerfile
@@ -937,7 +938,9 @@ You will see the registered model version in the MLflow UI.
 
 ![alt text](./images/image-18.png)
 
-So, we have successfully registered the best model to the model registry and transitioned it to the production stage. We can now use this model for predictions.
+So, we have successfully registered the best model to the model registry and transitioned it to the production stage. We can now use this model for predictions. We can also see the model registry in the MLflow UI. After all the steps, the MLflow UI should look like this showcasing the registered model, experiment, runs, and metrics:
+
+![alt text](./images/image-27.png)
 
 ## 7. Verification
 
