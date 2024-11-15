@@ -28,7 +28,8 @@ This project implements Saleprice Prediction with XGBoost Regressor while incorp
 ```sh
 customer-churn-mlops/
 ├── Docker/
-│   ├── Dockerfile                  
+│   ├── .env
+│   ├── Dockerfile
 │   └── docker-compose.yml         
 ├── Notebooks/
 │   ├── saleprice-prediction-with-xgboost-regressor.ipynb    
@@ -120,6 +121,16 @@ networks:
 volumes:
   postgres_data:
 ```
+
+Create a `.env` file in the same directory as `docker-compose.yml` and add the following:
+
+```bash
+AWS_ACCESS_KEY_ID=<your-access-key-id>
+AWS_SECRET_ACCESS_KEY=<your-secret-access-key>
+AWS_DEFAULT_REGION=<your-region>
+```
+
+>NOTE: Replace `<your-access-key-id>`, `<your-secret-access-key>`, and `<your-region>` with your own AWS credentials and region. Make sure to keep the `.env` file private by not pushing it to the remote repository.
 
 **Key Features:**
 
