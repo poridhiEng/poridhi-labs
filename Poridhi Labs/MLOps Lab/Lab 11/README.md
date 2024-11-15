@@ -389,9 +389,9 @@ print(f'y_train: {y_train.shape}')
 print(f'y_test: {y_test.shape}')
 ```
 
-### Model Training & MLflow Tracking
+## Model Training & MLflow Tracking
 
-#### 1. Set MLflow configuration
+### Set MLflow configuration
 
 ```python
 # Set MLflow tracking URI
@@ -400,7 +400,7 @@ mlflow.set_tracking_uri("http://localhost:5000")
 mlflow.set_experiment("market_value_prediction")
 ```
 
-#### 2. Hyperparameter tuning
+### Hyperparameter tuning
 
 ```python
 param_grid = {'nthread':[4], 
@@ -415,7 +415,7 @@ param_grid = {'nthread':[4],
 param_grid
 ```
 
-#### 3. MLflow run for grid search
+### MLflow run for grid search
 
 ```python
 with mlflow.start_run(run_name=f"grid_search_{datetime.now().strftime('%Y%m%d_%H%M')}"):
@@ -458,7 +458,7 @@ with mlflow.start_run(run_name=f"grid_search_{datetime.now().strftime('%Y%m%d_%H
 best_params = grid_search.best_params_
 ```
 
-#### 4. MLflow run for model training and evaluation
+### MLflow run for model training and evaluation
 
 ```python
 
@@ -520,7 +520,9 @@ with mlflow.start_run(run_name=f"model_training_{datetime.now().strftime('%Y%m%d
     )
 ```
 
-#### 5. Model lifecycle management
+### Model lifecycle management
+
+#### 1. Transition model to a new stage
 
 ```python
 def transition_model_stage(model_name, version, stage):
@@ -536,7 +538,7 @@ def transition_model_stage(model_name, version, stage):
     )
 ```
 
-#### 6. Loading production model
+#### 2. Loading production model
 
 ```python
 def load_production_model():
@@ -549,7 +551,7 @@ def load_production_model():
     return model
 ```
 
-#### 7. Look into evaluation metrics
+#### 3. Look into evaluation metrics
 
 ```python
 print("Model evaluation metrics:")
@@ -557,19 +559,19 @@ for metric_name, metric_value in metrics.items():
     print(f"{metric_name}: {metric_value:.4f}")
 ```
 
-#### 8. Transition model to staging
+#### 4. Transition model to staging
 
 ```python
 transition_model_stage("MarketValuePredictor", 4, "Staging")
 ```
 
-#### 9. Transition model to production
+#### 5. Transition model to production
 
 ```python
 transition_model_stage("MarketValuePredictor", 4, "Production")
 ```
 
-#### 10. Get the production model
+#### 6. Get the production model
 
 ```python
 model = load_production_model()
