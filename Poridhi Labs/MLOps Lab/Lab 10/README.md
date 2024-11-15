@@ -2,7 +2,7 @@
 
 This project leverages the "House Prices - Advanced Regression Techniques" dataset and implements a saleprice prediction model using XGBoost Regressor. We integrate MLflow for experiment tracking, PostgreSQL for metadata storage, and Amazon S3 for artifact storage.
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-28.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-29.png)
 
 ## Table of Contents
 - [Overview](#1-overview)
