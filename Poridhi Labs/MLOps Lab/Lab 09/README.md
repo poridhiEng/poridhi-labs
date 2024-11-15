@@ -53,11 +53,11 @@ aws s3api get-bucket-versioning --bucket <unique-bucket-name>
 
 In Poridhi's VSCode server, create a new Jupyter notebook and select on right top corner of the screen `select kernal` and choose `python`.
 
-![](./images/kernal.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/kernal.png?raw=true)
 
 ### Docker Configuration
 
-Create `docker-compose.yml` file:
+With the help of `docker-compose.yml` file, we will create a PostgreSQL database and MLflow server.
 ```yaml
 version: '3.8'
 
@@ -110,13 +110,6 @@ volumes:
 
 `<your-access-key-id>` and `<your-secret-access-key>` replace with your AWS access key ID and secret access key.
 
-Key Features:
-1. PostgreSQL for metadata storage
-2. MLflow server with S3 integration
-3. Environment variable management
-4. Health checks
-5. Data persistence
-
 #### Dockerfile
 ```dockerfile
 FROM python:3.8-slim-buster
@@ -157,7 +150,7 @@ To access the MLflow UI with poridhi's Loadbalancer, use the following steps:
 
 - By using the Provided `URL` by `LoadBalancer`, you can access the MLflow UI from any browser.
 
-   ![alt text](./images/mlflow.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/mlflow.png?raw=true)
 
 ## Data Processing & Visualization
 
@@ -440,7 +433,7 @@ print("Testing set shape:", X_test.shape)
 
 For training the Customer Churn Prediction model, we will use 7 different ML models. For each model we will track various parameters, metrics, and artifacts with best practices of MLOps.
 
-![](./images/models.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/752b0f1d4da0f7e8b6ecd2088bc27cb47b3accc7/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/models.svg)
 
 ### Logistic Regression  
  
@@ -1058,7 +1051,7 @@ In the MLflow UI, navigate to "Model Comparison" experiment and verify the compa
 
 In the MLflow UI, navigate to "Model Registry" and verify the registered model and its version in the "Production" stage.
 
-![](./images/bestmodel.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/bestmodel.png?raw=true)
 
 ### S3 Artifact Verification
 
