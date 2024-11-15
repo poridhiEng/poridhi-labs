@@ -2,6 +2,8 @@
 
 This project implements a comprehensive player market value prediction system using XGBoost Regressor. The project uses football/soccer player data to predict player market values. We integrate MLflow for experiment tracking, PostgreSQL for metadata storage, and Amazon S3 for artifact storage.
 
+![alt text](./images/Arch-diagram-11.svg)
+
 ## Table of Contents
 
 1. [Overview](#overview)
@@ -9,6 +11,7 @@ This project implements a comprehensive player market value prediction system us
 3. [Environment Setup](#environment-setup)
 4. [Data Processing & Visualization](#data-processing--visualization)
 5. [Model Training & MLflow Tracking](#model-training--mlflow-tracking)
+6. [Model lifecycle management](#model-lifecycle-management)
 6. [Verification](#verification)
 7. [Conclusion](#conclusion)
 
@@ -27,12 +30,16 @@ This project implements player market value prediction using XGBoost Regressor w
 
 ```
 market-value-prediction/
-├── docker/
-│   ├── Dockerfile                  
-│   └── docker-compose.yml         
-├── notebooks/
-│   ├── market-value-prediction-with-xgboost-regressor_mlflow-updated.ipynb      
+├── Dataset/
 │   └── top5_leagues_player.csv
+├── mlflow_data/
+├── mlruns/
+├── docker-compose.yml
+├── Dockerfile
+├── feature_importance.png
+├── grid_search_results.png
+├── prediction_scatter.png
+└── market-value.ipynb
 ```                     
 
 ## Environment Setup
@@ -44,19 +51,22 @@ aws configure
 ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/aws.png?raw=true)
 
 ### Create S3 Bucket
+
 ```bash
 aws s3api create-bucket --bucket <unique-bucket-name> --region ap-southeast-1 --create-bucket-configuration LocationConstraint=ap-southeast-1 
-
 aws s3api put-bucket-versioning --bucket <unique-bucket-name> --versioning-configuration Status=Enabled
-
 aws s3api get-bucket-versioning --bucket <unique-bucket-name>
 ```
+
+Change the `<unique-bucket-name>` to your own bucket name.
+
+![alt text](./images/image.png)
 
 ### Kernel Setup
 
 In Poridhi's VSCode server, create a new Jupyter notebook. Open notebook and select the `Python 3.8.10` kernel to run the code.
 
-![alt text](5.png)
+![alt text](./images/5.png)
 
 ### Docker Configuration
 
@@ -110,6 +120,8 @@ networks:
 volumes:
   postgres_data:
 ```
+
+Change the `<your-access-key-id>` and `<your-secret-access-key>` to your own AWS credentials provided in the lab.
 
 Key Features:
 1. PostgreSQL for metadata storage
@@ -208,7 +220,7 @@ import kagglehub
 import os
 import shutil
 path = kagglehub.dataset_download('oles04/top-leagues-player', force_download=True)
-destination_path = '/root/code/Dataset'
+destination_path = '/root/code/market-value-prediction/Dataset'
 shutil.copytree(path, destination_path, dirs_exist_ok=True)
 
 df_players = pd.read_csv('./Dataset/top5_leagues_player.csv', index_col = [0])
@@ -538,9 +550,9 @@ with mlflow.start_run(run_name=f"model_training_{datetime.now().strftime('%Y%m%d
 
 MLflow in this code is tracking the actual model training process after hyperparameter tuning. It logs training data information (sample size, feature count), the chosen hyperparameters, and multiple performance metrics (MAE, MSE, RMSE) for both training and test sets. It also stores visualizations of feature importance and prediction accuracy. Finally, MLflow registers the trained model with a signature that specifies input/output formats, making it ready for deployment. This comprehensive logging creates a complete record of the model's training process and performance, which is crucial for model governance, reproducibility, and deployment tracking.
 
-### Model lifecycle management
+## Model lifecycle management
 
-#### 1. Transition model to a new stage
+### 1. Transition model to a new stage
 
 ```python
 def transition_model_stage(model_name, version, stage):
@@ -560,7 +572,7 @@ This function manages model lifecycle stages in MLflow's registry:
 - Enables testing models in staging before promoting to production
 - Maintains history by archiving older versions
 
-#### 2. Loading production model
+### 2. Loading production model
 
 ```python
 def load_production_model():
@@ -577,7 +589,7 @@ This function simply retrieves the current production model from MLflow's regist
 - Returns loaded model ready for making predictions
 - Useful when deploying model for inference/predictions
 
-#### 3. Look into evaluation metrics
+### 3. Look into evaluation metrics
 
 ```python
 print("Model evaluation metrics:")
@@ -585,19 +597,23 @@ for metric_name, metric_value in metrics.items():
     print(f"{metric_name}: {metric_value:.4f}")
 ```
 
-#### 4. Example usage: Transition model to staging
+### 4. Example usage: Transition model to staging
 
 ```python
-transition_model_stage("MarketValuePredictor", 4, "Staging")
+transition_model_stage("MarketValuePredictor", 1, "Staging")
 ```
 
-#### 5. Example usage: Transition model to production
+Here, `1` denotes the version of the registered model.
+
+### 5. Example usage: Transition model to production
 
 ```python
-transition_model_stage("MarketValuePredictor", 4, "Production")
+transition_model_stage("MarketValuePredictor", 1, "Production")
 ```
 
-#### 6. Get the production model
+Here, `1` denotes the version of the registered model.
+
+### 6. Get the production model
 
 ```python
 model = load_production_model()
@@ -609,37 +625,37 @@ model
 ### Model Tracking Verification in MLflow
 
 1. Navigate to the MLflow UI with url provided by the `Poridhi's Loadbalancer`.
-2. Navigate to "Experiments" tab and select "Customer Churn Prediction-lab-01"
+2. Navigate to "Experiments" tab and select "market_value_prediction"
 
-    ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/1.png?raw=true)
+    ![alt text](./images/image-1.png)
 
-3. For each model run, verify the parameters, metrics, and artifacts.For example we can see the overview, metrics & artifacts for `SVM`:
+3. For each model run, verify the parameters, metrics, and artifacts. For example we can see the overview, metrics & artifacts for `model_training_20241115_11`:
 
-    **Overview of `SVM`**:
+    **Overview of `model_training_20241115_11`**:
 
-    ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/svm-1.png?raw=true)
+    ![alt text](./images/image-2.png)
 
     **Model Metrics**:
 
-    ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/svm-2.png?raw=true)
+    ![alt text](./images/image-3.png)
 
     **Artifacts**:
 
-    ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/svm-3.png?raw=true)
+    ![alt text](./images/image-4.png)
 
-    By following the above steps, you can verify the parameters, metrics, and artifacts for other models as well.
+By following the above steps, you can verify the parameters, metrics, and artifacts for `grid_search_20241115_1907` as well.
 
-### Model Comparison Verification
+### Register Model Verification
 
-In the MLflow UI, navigate to "Model Comparison" experiment and verify the comparison plot and CSV files with accuracy metrics.
+In the MLflow UI, navigate to "Model Registry" and verify the registered model and its version in the "Production" stage.
 
-![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/image.png?raw=true)
+![alt text](./images/image-5.png)
 
 ### S3 Artifact Verification
 
 Go to AWS Console and navigate to S3 bucket `<your-bucket-name>` to verify the artifacts.
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/s3.png?raw=true)
+![alt text](./images/image-6.png)
 
 For each model run, you should see the artifacts in the S3 bucket.
 
@@ -658,7 +674,7 @@ For each model run, you should see the artifacts in the S3 bucket.
     SELECT * FROM experiments;
     ```
 
-    ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/psql.png?raw=true)
+    ![alt text](./images/image-7.png)
 
 3. View runs and metrics:
     ```sql
@@ -673,7 +689,7 @@ For each model run, you should see the artifacts in the S3 bucket.
     ORDER BY r.start_time DESC;
     ```
 
-    ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/psql-2.png?raw=true)
+    ![alt text](./images/image-8.png)
 
 
 ## Conclusion
