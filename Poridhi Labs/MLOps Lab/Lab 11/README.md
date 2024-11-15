@@ -417,6 +417,13 @@ param_grid
 
 ### MLflow run for grid search
 
+- Performs hyperparameter tuning using GridSearchCV
+- Tests multiple combinations of parameters for XGBoost model
+- Tracks parameter combinations and their performance
+- Creates visualization of parameter search results
+- Finds and saves best performing parameters
+
+
 ```python
 with mlflow.start_run(run_name=f"grid_search_{datetime.now().strftime('%Y%m%d_%H%M')}"):
     # Log the search space
@@ -458,7 +465,16 @@ with mlflow.start_run(run_name=f"grid_search_{datetime.now().strftime('%Y%m%d_%H
 best_params = grid_search.best_params_
 ```
 
+MLflow in this code is tracking and logging the hyperparameter tuning process for future reference and reproducibility. When conducting grid search to find optimal hyperparameters for the XGBoost model, MLflow records the entire parameter search space, the best parameters found, and the corresponding performance metrics. It also stores visualizations showing how different parameter combinations performed. This automated logging creates a comprehensive record that helps compare different experiments, reproduce successful results, and understand which parameters worked best.
+
 ### MLflow run for model training and evaluation
+
+- Uses best parameters from grid search to train final model
+- Records training data characteristics
+- Tracks model performance metrics on both train/test sets
+- Creates visualizations for feature importance and predictions
+- Registers final model with input/output signature for deployment
+- Saves model artifacts and metrics for future reference
 
 ```python
 
@@ -520,16 +536,14 @@ with mlflow.start_run(run_name=f"model_training_{datetime.now().strftime('%Y%m%d
     )
 ```
 
+MLflow in this code is tracking the actual model training process after hyperparameter tuning. It logs training data information (sample size, feature count), the chosen hyperparameters, and multiple performance metrics (MAE, MSE, RMSE) for both training and test sets. It also stores visualizations of feature importance and prediction accuracy. Finally, MLflow registers the trained model with a signature that specifies input/output formats, making it ready for deployment. This comprehensive logging creates a complete record of the model's training process and performance, which is crucial for model governance, reproducibility, and deployment tracking.
+
 ### Model lifecycle management
 
 #### 1. Transition model to a new stage
 
 ```python
 def transition_model_stage(model_name, version, stage):
-    """
-    Transition a model to a new stage in the lifecycle
-    Stages: None -> Staging -> Production -> Archived
-    """
     client = mlflow.tracking.MlflowClient()
     client.transition_model_version_stage(
         name=model_name,
@@ -538,18 +552,30 @@ def transition_model_stage(model_name, version, stage):
     )
 ```
 
+This function manages model lifecycle stages in MLflow's registry:
+
+- Takes model name, version number, and desired stage as inputs
+- Uses MLflowClient to transition model between stages (None -> Staging -> Production -> Archived)
+- Helps control which model version is actively deployed
+- Enables testing models in staging before promoting to production
+- Maintains history by archiving older versions
+
 #### 2. Loading production model
 
 ```python
 def load_production_model():
-    """
-    Load the current production model
-    """
     model = mlflow.pyfunc.load_model(
         model_uri=f"models:/MarketValuePredictor/Production"
     )
     return model
 ```
+
+This function simply retrieves the current production model from MLflow's registry:
+
+- Uses mlflow.pyfunc.load_model() to load model from registry
+- The URI format models:/ModelName/Stage specifies which model version to load
+- Returns loaded model ready for making predictions
+- Useful when deploying model for inference/predictions
 
 #### 3. Look into evaluation metrics
 
@@ -559,13 +585,13 @@ for metric_name, metric_value in metrics.items():
     print(f"{metric_name}: {metric_value:.4f}")
 ```
 
-#### 4. Transition model to staging
+#### 4. Example usage: Transition model to staging
 
 ```python
 transition_model_stage("MarketValuePredictor", 4, "Staging")
 ```
 
-#### 5. Transition model to production
+#### 5. Example usage: Transition model to production
 
 ```python
 transition_model_stage("MarketValuePredictor", 4, "Production")
