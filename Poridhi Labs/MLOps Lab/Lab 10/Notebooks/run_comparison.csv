@@ -1,0 +1,6 @@
+run_id,r2_score,rmse,mae,parameters
+ac821149bfe64bd6843f5699c0831ed4,0.9847636095164564,9799.131500770305,7218.69193367616,"{'n_estimators': '1100', 'min_child_weight': '1', 'max_depth': '2', 'learning_rate': '0.1', 'booster': 'gbtree', 'base_score': '0.25'}"
+bcd07f4e27be43c7a466c0f3591653a3,0.9847636095164564,9799.131500770305,7218.69193367616,"{'n_estimators': '1100', 'min_child_weight': '1', 'max_depth': '2', 'learning_rate': '0.1', 'booster': 'gbtree', 'base_score': '0.25'}"
+27f6b5aa72514930acf3ab39dbc54123,,,,{}
+b685ad09d72342c1843c89ac9a45386b,,,,"{'dataset_size': '2881', 'num_features': '174'}"
+1a08e5097ee14f9d8df0dbc2c8953e01,,,,{}
