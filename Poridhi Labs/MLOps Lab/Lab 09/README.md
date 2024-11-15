@@ -4,52 +4,39 @@ This project implements a comprehensive customer churn prediction system using s
 ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/3265abfa3be556d1dcbfa3b2e8c9240bd6a065d9/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/mlops-lab-09.svg)
 
 ## Table of Contents
-1. [Overview](#1-overview)
-2. [Project Structure](#2-project-structure)
-3. [Environment Setup](#3-environment-setup)
-4. [Data Processing & Visualization](#4-data-processing--visualization)
-5. [Model Training & MLflow Tracking](#5-model-training--mlflow-tracking)
-6. [Verification](#6-verification)
-7. [Conclusion](#7-conclusion)
+- [Overview](#overview)
+- [Project Structure](#project-structure)
+- [Environment Setup](#environment-setup)
+- [Data Processing & Visualization](#data-processing--visualization)
+- [Model Training & MLflow Tracking](#model-training--mlflow-tracking)
+- [Verification](#verification)
+- [Conclusion](#conclusion)
 
-## 1. Overview
-This project implements churn prediction using 7 different ML models while incorporating MLOps best practices:
+## Overview
+This project implements churn prediction using 7 different ML models, for each model we will track various parameters, metrics, and artifacts with best practices of MLOps. In this project we will use:
 - Experiment tracking with MLflow
 - Model metadata storage in PostgreSQL
 - Artifact storage in AWS S3
 - Containerized deployment using Docker
 - Comparison of multiple models' performance
 
-## 2. Project Structure
+## Project Structure
 ```
 customer-churn-mlops/
-├── docker/
-│   ├── Dockerfile                  
-│   └── docker-compose.yml         
-├── notebooks/
-│   ├── churn_prediction.ipynb      
+├── Dockerfile                  
+├── docker-compose.yml         
+├── Dataset/
 │   └── WA_Fn-UseC_-Telco-Customer-Churn.csv
-```                     
+├── churn_prediction.ipynb
+```                  
 
-## 3. Environment Setup
+## Environment Setup
 
 ### Configure AWS
 ```bash
 aws configure
 ```
 ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/aws.png?raw=true)
-
-### Install Jupyter Extension
-
-In Poridhi's VSCode server, install the Jupyter Extension.
-
-![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/jupyter.png?raw=true)
-
-### Kernel Setup
-
-In Poridhi's VSCode server, create a new Jupyter notebook and select the `python` kernel.
-
-![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/kernealselection.png?raw=true)
 
 ### Create S3 Bucket
 ```bash
@@ -59,6 +46,14 @@ aws s3api put-bucket-versioning --bucket <unique-bucket-name> --versioning-confi
 
 aws s3api get-bucket-versioning --bucket <unique-bucket-name>
 ```
+
+`<unique-bucket-name>` replace with your unique bucket name.
+
+### Kernel Setup
+
+In Poridhi's VSCode server, create a new Jupyter notebook and select on right top corner of the screen `select kernal` and choose `python`.
+
+![](./images/kernal.png)
 
 ### Docker Configuration
 
@@ -113,6 +108,8 @@ volumes:
   postgres_data:
 ```
 
+`<your-access-key-id>` and `<your-secret-access-key>` replace with your AWS access key ID and secret access key.
+
 Key Features:
 1. PostgreSQL for metadata storage
 2. MLflow server with S3 integration
@@ -137,6 +134,8 @@ CMD ["mlflow", "server", \
      "--default-artifact-root", "s3://<unique-bucket-name>", \
      "--artifacts-destination", "s3://<unique-bucket-name>"]
 ```
+
+`<unique-bucket-name>` replace with your unique bucket name.
 #### Build and run the containers
 ```bash
 docker-compose up --build -d
@@ -158,21 +157,27 @@ To access the MLflow UI with poridhi's Loadbalancer, use the following steps:
 
 - By using the Provided `URL` by `LoadBalancer`, you can access the MLflow UI from any browser.
 
-## 4. Data Processing & Visualization
+   ![alt text](./images/mlflow.png)
+
+## Data Processing & Visualization
 
 ### Install required libraries
 ```bash
-pip install numpy pandas matplotlib seaborn plotly imbalanced-learn nbformat ipython xgboost mlflow boto3
+pip install numpy pandas matplotlib seaborn plotly imbalanced-learn nbformat ipython xgboost mlflow boto3 kagglehub 
 ```
 
 ### Import libraries
+Imports required libraries for data processing, ML training, and MLflow tracking.
+
 ```python
 # Basic data processing
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+import kagglehub
+import os
+import shutil
 # Machine Learning
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
@@ -188,13 +193,24 @@ import mlflow.sklearn
 from mlflow.models import infer_signature
 ``` 
 
+
 ### Configure MLflow
 ```python
 mlflow.set_tracking_uri("http://localhost:5000")
-mlflow.set_experiment("Customer Churn Prediction-lab 01")
+mlflow.set_experiment("Customer Churn Prediction")
 ```
 
 ### About Dataset
+
+Download the dataset from Kaggle using kagglehub.
+
+```bash
+path = kagglehub.dataset_download('blastchar/telco-customer-churn', force_download=True)
+destination_path = '/root/code/Dataset'
+shutil.copytree(path, destination_path, dirs_exist_ok=True)
+```
+
+After running the above code cell, you should see a new folder named `Dataset` in the project directory. Which contains the downloaded dataset `WA_Fn-UseC_-Telco-Customer-Churn.csv`.
 
 **Context**: Predict behavior to retain customers. You can analyze all relevant customer data and develop focused customer retention programs.
 
@@ -210,8 +226,7 @@ The data set includes information about:
 - Demographic info about customers – gender, age range, and if they have partners and dependent
 
 ### Data Preprocessing & Initial Visualization
-
-To download the dataset, click [here](https://www.kaggle.com/datasets/blastchar/telco-customer-churn).
+Loads the dataset, explores basic information, and creates a correlation heatmap to visualize relationships between numeric features.
 
 ```python
 # Import necessary libraries
@@ -228,7 +243,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Load dataset and check basic information
-main_df = pd.read_csv("WA_Fn-UseC_-Telco-Customer-Churn.csv")
+main_df = pd.read_csv("./Dataset/WA_Fn-UseC_-Telco-Customer-Churn.csv")
 df = main_df.copy()
 
 # Show basic dataset information
@@ -248,6 +263,7 @@ plt.show()
 ```
 
 ### Data Cleaning & Feature Engineering
+Cleans the dataset by dropping unnecessary columns, handling missing values, and visualizing relationships between key features.
 
 ```python
 # Drop unnecessary columns and handle missing values
@@ -288,6 +304,7 @@ fig.show()
 
 ### Data Preprocessing for Categorical Features
 Handles categorical value replacements and transformations
+
 ```python
 # Replace categorical values
 df.replace('No internet service', 'No', inplace=True)
@@ -305,6 +322,7 @@ df['gender'].replace({'Female':1,'Male':0}, inplace=True)
 
 ### Churn Analysis Visualizations
 Focuses on visualizing churn patterns
+
 ```python
 # Churn distribution by Senior Citizen status
 diag = px.histogram(df, x="Churn", color="SeniorCitizen")
@@ -319,6 +337,7 @@ diag.show()
 
 ### Service and Contract Analysis Visualizations
 Shows distribution of various service features through pie charts. Each chart is a separate pie chart.
+
 ```python
 # 1. Multiple Lines Distribution
 labels = df['MultipleLines'].unique()
@@ -360,7 +379,10 @@ diag.update_layout(
 )
 diag.show()
 ```
+
 ### Feature Engineering
+Performs one-hot encoding for multi-category variables and scales numerical features. One-hot encoding is used to convert categorical variables into numerical format, which is necessary for machine learning algorithms.
+
 ```python
 # One-hot encoding for multi-category variables
 # Handle variables with more than 2 categories
@@ -384,12 +406,9 @@ for i in two_cate:
     df[i].replace({"No":0, "Yes":1}, inplace=True)
 ```
 
-Key aspects:
-- One-hot encoding for categorical variables
-- Numerical feature scaling using MinMaxScaler
-- Binary category conversion
-
 ### Final Data Processing and Analysis
+Visualizes final correlations after feature engineering and splits the data into features and target.
+
 ```python
 # Visualize final correlations after feature engineering
 plt.figure(figsize=(15, 10))
@@ -416,27 +435,37 @@ X_train, X_test, y_train, y_test = train_test_split(
 print("\nTraining set shape:", X_train.shape)
 print("Testing set shape:", X_test.shape)
 ```
-Key aspects:
-   - Correlation analysis visualization
-   - Data splitting into features and target
-   - Train-test split for modeling
-   - Shape verification for all data splits
-## 5. Model Training & MLflow Tracking
 
-### Logistic Regression
+## Model Training & MLflow Tracking
 
-For Logistic Regression, MLflow will track the following:
+For training the Customer Churn Prediction model, we will use 7 different ML models. For each model we will track various parameters, metrics, and artifacts with best practices of MLOps.
 
-**Parameters Tracked**: max_iter, random_state, n_jobs
+![](./images/models.svg)
 
-**Key Features**: Binary classification baseline model
+### Logistic Regression  
+ 
+Implements logistic regression for binary classification. Tracks parameters, metrics, and artifacts using MLflow.
 
-**Artifacts**: Confusion matrix, Classification report
+**MLflow Tracking:**  
+- **Parameters:** `max_iter`, `random_state`, `n_jobs`  
+- **Metrics:** Accuracy, Precision, Recall, F1 Score  
+- **Artifacts:** Confusion Matrix, Classification Report, Trained Model  
 
 ```python
-# Using Logistics Regression
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
+from sklearn.metrics import (
+    confusion_matrix,
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score,
+    classification_report
+)
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+import mlflow
+from mlflow.models import infer_signature
 
 with mlflow.start_run(run_name="logistic_regression"):
     # Create and train model
@@ -456,7 +485,7 @@ with mlflow.start_run(run_name="logistic_regression"):
     pred_lg = model_lg.predict(X_test)
     
     # Calculate and log accuracy
-    lg = round(accuracy_score(y_test, pred_lg)*100, 2)
+    lg = round(accuracy_score(y_test, pred_lg) * 100, 2)
     mlflow.log_metric("accuracy", lg)
     
     # Log classification report
@@ -468,31 +497,54 @@ with mlflow.start_run(run_name="logistic_regression"):
     # Create and log confusion matrix
     plt.figure(figsize=(8, 6))
     cm1 = confusion_matrix(y_test, pred_lg)
-    sns.heatmap(cm1/np.sum(cm1), annot=True, fmt='0.2%', cmap="Reds")
+    sns.heatmap(cm1 / np.sum(cm1), annot=True, fmt='.2%', cmap="Reds")
     plt.title("Logistic Regression Confusion Matrix")
     plt.savefig("lg_confusion_matrix.png")
     plt.close()
     mlflow.log_artifact("lg_confusion_matrix.png")
+    
+    # Calculate and log additional metrics
+    precision = precision_score(y_test, pred_lg)
+    recall = recall_score(y_test, pred_lg)
+    f1 = f1_score(y_test, pred_lg)
+    mlflow.log_metrics({
+        "precision": precision,
+        "recall": recall,
+        "f1": f1
+    })
     
     # Log the model
     signature = infer_signature(X_train, pred_lg)
     mlflow.sklearn.log_model(model_lg, "logistic_regression_model", signature=signature)
 
 print(f"Logistic Regression Accuracy: {lg}%")
+print("\nClassification Report:")
+print(clf_report)
 ```
+### Decision Tree  
 
-### Decision Tree
+Trains a decision tree classifier for binary classification. Tracks parameters, metrics, and artifacts using MLflow.
 
-For Decision Tree, MLflow will track the following:
-
-**Parameters Tracked**: max_depth, random_state
-
-**Key Features**: Visualizes feature importance
-
-**Artifacts**: Confusion matrix, Classification report
+**MLflow Tracking:**  
+- **Parameters:** `max_depth`, `random_state`  
+- **Metrics:** Accuracy, Precision, Recall, F1 Score  
+- **Artifacts:** Confusion Matrix, Classification Report, Trained Model  
 
 ```python
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import (
+    confusion_matrix,
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score,
+    classification_report
+)
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+import mlflow
+from mlflow.models import infer_signature
 
 with mlflow.start_run(run_name="decision_tree"):
     # Create and train model
@@ -511,7 +563,7 @@ with mlflow.start_run(run_name="decision_tree"):
     pred_dt = model_dt.predict(X_test)
     
     # Calculate and log accuracy
-    dt = round(accuracy_score(y_test, pred_dt)*100, 2)
+    dt = round(accuracy_score(y_test, pred_dt) * 100, 2)
     mlflow.log_metric("accuracy", dt)
     
     # Log classification report
@@ -523,27 +575,39 @@ with mlflow.start_run(run_name="decision_tree"):
     # Create and log confusion matrix
     plt.figure(figsize=(8, 6))
     cm2 = confusion_matrix(y_test, pred_dt)
-    sns.heatmap(cm2/np.sum(cm2), annot=True, fmt='0.2%', cmap="Reds")
+    sns.heatmap(cm2 / np.sum(cm2), annot=True, fmt='.2%', cmap="Reds")
     plt.title("Decision Tree Classifier Confusion Matrix")
     plt.savefig("dt_confusion_matrix.png")
     plt.close()
     mlflow.log_artifact("dt_confusion_matrix.png")
+    
+    # Calculate and log additional metrics
+    precision = precision_score(y_test, pred_dt, average="weighted")
+    recall = recall_score(y_test, pred_dt, average="weighted")
+    f1 = f1_score(y_test, pred_dt, average="weighted")
+    mlflow.log_metrics({
+        "precision": precision,
+        "recall": recall,
+        "f1": f1
+    })
     
     # Log the model
     signature = infer_signature(X_train, pred_dt)
     mlflow.sklearn.log_model(model_dt, "decision_tree_model", signature=signature)
 
 print(f"Decision Tree Accuracy: {dt}%")
+print("\nClassification Report:")
+print(clf_report)
 ```
-### Random Forest
 
-For Random Forest, MLflow will track the following:
+### Random Forest  
 
-**Parameters Tracked**: n_estimators, min_samples_leaf, random_state
+Trains a random forest classifier for binary classification. Tracks parameters, metrics, and artifacts using MLflow.
 
-**Key Features**: Visualizes feature importance
-
-**Artifacts**: Confusion matrix, Classification report
+**MLflow Tracking:**  
+- **Parameters:** `n_estimators`, `min_samples_leaf`, `random_state`  
+- **Metrics:** Accuracy, Precision, Recall, F1 Score  
+- **Artifacts:** Confusion Matrix, Classification Report, Feature Importance, Trained Model
 
 ```python
 from sklearn.ensemble import RandomForestClassifier
@@ -566,7 +630,7 @@ with mlflow.start_run(run_name="random_forest"):
     pred_rf = model_rf.predict(X_test)
     
     # Calculate and log accuracy
-    rf = round(accuracy_score(y_test, pred_rf)*100, 2)
+    rf = round(accuracy_score(y_test, pred_rf) * 100, 2)
     mlflow.log_metric("accuracy", rf)
     
     # Log classification report
@@ -578,21 +642,30 @@ with mlflow.start_run(run_name="random_forest"):
     # Create and log confusion matrix
     plt.figure(figsize=(8, 6))
     cm3 = confusion_matrix(y_test, pred_rf)
-    sns.heatmap(cm3/np.sum(cm3), annot=True, fmt='0.2%', cmap="Reds")
-    plt.title("Random Forest Classifier Confusion Matrix")
+    sns.heatmap(cm3 / np.sum(cm3), annot=True, fmt='.2%', cmap="Reds")
+    plt.title("Random Forest Confusion Matrix")
     plt.savefig("rf_confusion_matrix.png")
     plt.close()
     mlflow.log_artifact("rf_confusion_matrix.png")
+    
+    # Calculate and log additional metrics
+    precision = precision_score(y_test, pred_rf, average="weighted")
+    recall = recall_score(y_test, pred_rf, average="weighted")
+    f1 = f1_score(y_test, pred_rf, average="weighted")
+    mlflow.log_metrics({
+        "precision": precision,
+        "recall": recall,
+        "f1": f1
+    })
     
     # Log feature importance
     feature_importance = pd.DataFrame({
         'feature': X_train.columns,
         'importance': model_rf.feature_importances_
     }).sort_values('importance', ascending=False)
-    
     plt.figure(figsize=(10, 6))
     sns.barplot(x='importance', y='feature', data=feature_importance.head(10))
-    plt.title('Top 10 Feature Importance')
+    plt.title("Top 10 Feature Importance - Random Forest")
     plt.savefig("rf_feature_importance.png")
     plt.close()
     mlflow.log_artifact("rf_feature_importance.png")
@@ -601,17 +674,17 @@ with mlflow.start_run(run_name="random_forest"):
     signature = infer_signature(X_train, pred_rf)
     mlflow.sklearn.log_model(model_rf, "random_forest_model", signature=signature)
 
-print(f"Random Forest Accuracy: {rf}%")
+print(f"Random Forest Metrics: Accuracy={rf}%, Precision={precision}, Recall={recall}, F1={f1}")
 ```
-### XGBoost
 
-For XGBoost, MLflow will track the following:
+### XGBoost  
 
-**Parameters Tracked**: max_depth, n_estimators, learning_rate, random_state, n_jobs
+Trains an XGBoost classifier for binary classification. Tracks parameters, metrics, and artifacts using MLflow.
 
-**Key Features**: High-performance gradient boosting model
-
-**Artifacts**: Confusion matrix, Classification report
+**MLflow Tracking:**  
+- **Parameters:** `max_depth`, `n_estimators`, `learning_rate`, `random_state`, `n_jobs`  
+- **Metrics:** Accuracy, Precision, Recall, F1 Score  
+- **Artifacts:** Confusion Matrix, Classification Report, Trained Model  
 
 ```python
 from xgboost import XGBClassifier
@@ -619,7 +692,7 @@ from xgboost import XGBClassifier
 with mlflow.start_run(run_name="xgboost"):
     # Create and train model
     model_xgb = XGBClassifier(max_depth=8, n_estimators=125, random_state=0, 
-                             learning_rate=0.03, n_jobs=5)
+                              learning_rate=0.03, n_jobs=5)
     
     # Log parameters
     mlflow.log_params({
@@ -637,7 +710,7 @@ with mlflow.start_run(run_name="xgboost"):
     pred_xgb = model_xgb.predict(X_test)
     
     # Calculate and log accuracy
-    xgb = round(accuracy_score(y_test, pred_xgb)*100, 2)
+    xgb = round(accuracy_score(y_test, pred_xgb) * 100, 2)
     mlflow.log_metric("accuracy", xgb)
     
     # Log classification report
@@ -646,30 +719,29 @@ with mlflow.start_run(run_name="xgboost"):
         f.write(clf_report)
     mlflow.log_artifact("xgb_classification_report.txt")
     
-    # Create and log confusion matrix
+    # Log confusion matrix
     plt.figure(figsize=(8, 6))
     cm4 = confusion_matrix(y_test, pred_xgb)
-    sns.heatmap(cm4/np.sum(cm4), annot=True, fmt='0.2%', cmap="Reds")
-    plt.title("XGBoost Classifier Confusion Matrix")
+    sns.heatmap(cm4 / np.sum(cm4), annot=True, fmt='.2%', cmap="Reds")
+    plt.title("XGBoost Confusion Matrix")
     plt.savefig("xgb_confusion_matrix.png")
     plt.close()
     mlflow.log_artifact("xgb_confusion_matrix.png")
     
-    # Log the model
+    # Log model
     signature = infer_signature(X_train, pred_xgb)
     mlflow.sklearn.log_model(model_xgb, "xgboost_model", signature=signature)
 
-print(f"XGBoost Accuracy: {xgb}%")
+print(f"XGBoost Metrics: Accuracy={xgb}%, Precision={precision}, Recall={recall}, F1={f1}")
 ```
-### KNeighborsClassifier
+### KNeighborsClassifier  
 
-For KNeighborsClassifier, MLflow will track the following:
+Trains a KNeighbors classifier for binary classification. Tracks parameters, metrics, and artifacts using MLflow.
 
-**Parameters Tracked**: n_neighbors, leaf_size
-
-**Key Features**: Simple and interpretable model
-
-**Artifacts**: Confusion matrix, Classification report
+**MLflow Tracking:**  
+- **Parameters:** `n_neighbors`, `leaf_size`  
+- **Metrics:** Accuracy, Precision, Recall, F1 Score  
+- **Artifacts:** Confusion Matrix, Classification Report, Trained Model  
 
 ```python
 from sklearn.neighbors import KNeighborsClassifier
@@ -691,7 +763,7 @@ with mlflow.start_run(run_name="kneighbors"):
     pred_kn = model_kn.predict(X_test)
     
     # Calculate and log accuracy
-    kn = round(accuracy_score(y_test, pred_kn)*100, 2)
+    kn = round(accuracy_score(y_test, pred_kn) * 100, 2)
     mlflow.log_metric("accuracy", kn)
     
     # Log classification report
@@ -700,32 +772,29 @@ with mlflow.start_run(run_name="kneighbors"):
         f.write(clf_report)
     mlflow.log_artifact("kn_classification_report.txt")
     
-    # Create and log confusion matrix
+    # Log confusion matrix
     plt.figure(figsize=(8, 6))
     cm5 = confusion_matrix(y_test, pred_kn)
-    sns.heatmap(cm5/np.sum(cm5), annot=True, fmt='0.2%', cmap="Reds")
-    plt.title("KNeighbors Classifier Confusion Matrix")
+    sns.heatmap(cm5 / np.sum(cm5), annot=True, fmt='.2%', cmap="Reds")
+    plt.title("KNeighbors Confusion Matrix")
     plt.savefig("kn_confusion_matrix.png")
     plt.close()
     mlflow.log_artifact("kn_confusion_matrix.png")
     
-    # Log the model
+    # Log model
     signature = infer_signature(X_train, pred_kn)
     mlflow.sklearn.log_model(model_kn, "kneighbors_model", signature=signature)
 
-print(f"KNeighbors Accuracy: {kn}%")
-print("\nClassification Report:")
-print(classification_report(y_test, pred_kn))
+print(f"KNeighbors Metrics: Accuracy={kn}%, Precision={precision}, Recall={recall}, F1={f1}")
 ```
-### SVM
+### SVM  
 
-For SVM, MLflow will track the following:
+Trains a Support Vector Machine (SVM) classifier using the RBF kernel for binary classification. Tracks parameters, metrics, and artifacts with MLflow.
 
-**Parameters Tracked**: kernel, random_state
-
-**Key Features**: High-performance kernel method
-
-**Artifacts**: Confusion matrix, Classification report
+**MLflow Tracking:**  
+- **Parameters:** `kernel`, `random_state`  
+- **Metrics:** Accuracy, Precision, Recall, F1 Score  
+- **Artifacts:** Confusion Matrix, Classification Report, Trained Model  
 
 ```python
 from sklearn.svm import SVC
@@ -793,15 +862,14 @@ print(f"SVM Classifier Accuracy: {sv}%")
 print("\nClassification Report:")
 print(classification_report(y_test, pred_svm))
 ```
-### AdaBoost Classifier
+### AdaBoost Classifier  
 
-For AdaBoost Classifier, MLflow will track the following:
+Trains an AdaBoost classifier for binary classification. Tracks parameters, metrics, and artifacts with MLflow.
 
-**Parameters Tracked**: learning_rate, n_estimators, random_state
-
-**Key Features**: Boosting ensemble method
-
-**Artifacts**: Confusion matrix, Classification report
+**MLflow Tracking:**  
+- **Parameters:** `learning_rate`, `n_estimators`, `random_state`  
+- **Metrics:** Accuracy, Precision, Recall, F1 Score  
+- **Artifacts:** Confusion Matrix, Classification Report, Feature Importance, Trained Model  
 
 ```python
 from sklearn.ensemble import AdaBoostClassifier
@@ -828,7 +896,7 @@ with mlflow.start_run(run_name="adaboost"):
     pred_ada = model_ada.predict(X_test)
     
     # Calculate and log accuracy
-    ada = round(accuracy_score(y_test, pred_ada)*100, 2)
+    ada = round(accuracy_score(y_test, pred_ada) * 100, 2)
     mlflow.log_metric("accuracy", ada)
     
     # Log classification report
@@ -837,11 +905,11 @@ with mlflow.start_run(run_name="adaboost"):
         f.write(clf_report)
     mlflow.log_artifact("ada_classification_report.txt")
     
-    # Create and log confusion matrix
+    # Log confusion matrix
     plt.figure(figsize=(8, 6))
     cm7 = confusion_matrix(y_test, pred_ada)
-    sns.heatmap(cm7/np.sum(cm7), annot=True, fmt='0.2%', cmap="Reds")
-    plt.title("AdaBoost Classifier Confusion Matrix")
+    sns.heatmap(cm7 / np.sum(cm7), annot=True, fmt='.2%', cmap="Reds")
+    plt.title("AdaBoost Confusion Matrix")
     plt.savefig("ada_confusion_matrix.png")
     plt.close()
     mlflow.log_artifact("ada_confusion_matrix.png")
@@ -851,28 +919,23 @@ with mlflow.start_run(run_name="adaboost"):
         'feature': X_train.columns,
         'importance': model_ada.feature_importances_
     }).sort_values('importance', ascending=False)
-    
     plt.figure(figsize=(10, 6))
     sns.barplot(x='importance', y='feature', data=feature_importance.head(10))
-    plt.title('AdaBoost - Top 10 Feature Importance')
+    plt.title("Top 10 Feature Importance - AdaBoost")
     plt.savefig("ada_feature_importance.png")
     plt.close()
     mlflow.log_artifact("ada_feature_importance.png")
     
-    # Log the model
+    # Log model
     signature = infer_signature(X_train, pred_ada)
     mlflow.sklearn.log_model(model_ada, "adaboost_model", signature=signature)
 
-print(f"AdaBoost Accuracy: {ada}%")
-print("\nClassification Report:")
-print(classification_report(y_test, pred_ada))
+print(f"AdaBoost Metrics: Accuracy={ada}%, Precision={precision}, Recall={recall}, F1={f1}")
 ```
 
 ### Model Comparison
 
-For Model Comparison, MLflow will track the following:
-
-**Artifacts**: Comparison plot, CSV files with accuracy metrics 
+To compare the performance of different models, we will create a bar plot visualization and CSV files with accuracy metrics. For this we will use the accuracy scores of each model.
 
 ```python
 # Create and log model comparison visualization in MLflow
@@ -915,10 +978,53 @@ with mlflow.start_run(run_name="model_comparison"):
     sorted_models.to_csv("sorted_model_comparison.csv", index=False)
     mlflow.log_artifact("sorted_model_comparison.csv")
 ```
-This MLflow run consolidates and visualizes the performance comparison of seven different machine learning models, generating a bar plot visualization and CSV files with accuracy metrics, enabling easy tracking and comparison of model performances through the MLflow dashboard
 
+### Register Best Model
 
-## 6. Verification 
+To register the best model, we will use the `MlflowClient` to search for the best run based on accuracy and then register the model from the best run to the model registry and transition it to the 'Production' stage.
+
+```python
+from mlflow.tracking import MlflowClient
+
+def register_best_model(experiment_name="Customer Churn Prediction"):
+    """
+    Registers the best-performing model from the MLflow experiment
+    to the model registry and transitions it to the 'Production' stage.
+    """
+    client = MlflowClient()
+    
+    # Retrieve experiment details
+    experiment = client.get_experiment_by_name(experiment_name)
+    if not experiment:
+        raise ValueError(f"Experiment '{experiment_name}' not found.")
+    
+    # Identify the best run based on a key metric (e.g., accuracy)
+    best_run = client.search_runs(
+        experiment_ids=[experiment.experiment_id],
+        order_by=["metrics.accuracy DESC"]
+    )[0]
+    
+    # Register the model from the best run
+    model_uri = f"runs:/{best_run.info.run_id}/model"
+    model_name = "customer_churn_prediction_model"
+    model_version = mlflow.register_model(model_uri, model_name)
+    
+    # Transition the model to the 'Production' stage
+    client.transition_model_version_stage(
+        name=model_name,
+        version=model_version.version,
+        stage="Production"
+    )
+    
+    print(f"Model {model_name} version {model_version.version} is now in 'Production' stage.")
+    return model_version
+
+# Call the function after model training and comparison
+best_model_version = register_best_model()
+print(f"Registered model version: {best_model_version.version}")
+```
+
+## Verification 
 
 ### Model Tracking Verification in MLflow
 1. Navigate to the MLflow UI with url provided by the `Poridhi's Loadbalancer`.
@@ -947,6 +1053,12 @@ This MLflow run consolidates and visualizes the performance comparison of seven 
 In the MLflow UI, navigate to "Model Comparison" experiment and verify the comparison plot and CSV files with accuracy metrics.
 
 ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/image.png?raw=true)
+
+### Register Best Model Verification
+
+In the MLflow UI, navigate to "Model Registry" and verify the registered model and its version in the "Production" stage.
+
+![](./images/bestmodel.png)
 
 ### S3 Artifact Verification
 
@@ -989,5 +1101,5 @@ For each model run, you should see the artifacts in the S3 bucket.
     ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2009/images/psql-2.png?raw=true)
 
 
-## 7. Conclusion
+## Conclusion
 In this lab, we implemented a complete MLOps pipeline for a customer churn prediction problem. We used MLflow for model tracking, S3 for artifact storage, and PostgreSQL for metadata storage for each model run. The visualization analysis revealed important insights about customer churn patterns, particularly its relationship with service usage, payment methods, and contract types.
