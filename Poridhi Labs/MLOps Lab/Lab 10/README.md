@@ -2,7 +2,7 @@
 
 This project leverages the "House Prices - Advanced Regression Techniques" dataset and implements a saleprice prediction model using XGBoost Regressor. We integrate MLflow for experiment tracking, PostgreSQL for metadata storage, and Amazon S3 for artifact storage.
 
-![alt text](./images/image-28.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-28.png)
 
 ## Table of Contents
 - [Overview](#1-overview)
@@ -46,13 +46,13 @@ Saleprice-Prediction-with-XGBoost-Regressor/
 ```bash
 aws configure
 ```
-![alt text](./images/image-24.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-24.png)
 
 ### Kernel Setup
 
 In Poridhi's VSCode server, create a new Jupyter notebook and select the `python` kernel.
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-2.png)
 
 ### Create S3 Bucket
 
@@ -67,7 +67,7 @@ aws s3api get-bucket-versioning --bucket <unique-bucket-name>
 ```
 >NOTE: Replace `<unique-bucket-name>` with your own bucket name. Make sure the bucket name is unique across all AWS accounts.
 
-![alt text](./images/image-25.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-25.png)
 
 ### Docker Configuration
 
@@ -169,11 +169,11 @@ docker-compose up --build -d
 #### Access the MLflow UI
 To access the MLflow UI, goto `PORTS` section and click on the provided link. `Poridhi's VSCode server` will automatically open the MLflow UI in your default browser.
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image.png)
 
 After clicking on the link, you will be redirected to the MLflow UI:
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-1.png)
 
 ## 4. Data Processing & Visualization
 
@@ -218,7 +218,7 @@ mlflow.set_experiment("House Price Prediction lab 10")
 
 First, download the dataset from [here](https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data) and save it in the `Notebooks` folder.
 
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-3.png)
 
 ### Load Dataset
 
@@ -227,7 +227,7 @@ train_data = pd.read_csv('./house-prices-advanced-regression-techniques/train.cs
 train_data.head()
 ```
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-4.png)
 
 ### Training Data Cleaning and Preprocessing
 
@@ -236,7 +236,7 @@ train_data.head()
 ```python
 train_data.info()
 ```
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-5.png)
 
 **Check for missing values**
 
@@ -247,7 +247,7 @@ train_data.isnull().sum()
 train_data.shape
 ```
 
-![alt text](./images/image-6.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-6.png)
 
 Here we can see that `LotFrontage` has 259 missing values.
 
@@ -288,7 +288,7 @@ After filling the missing values, we can see that there are still missing values
 ```python
 train_data.isnull().sum().sum()
 ```
-![alt text](./images/image-7.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-7.png)
 
 **Visualizing missing values:**
 
@@ -297,7 +297,7 @@ import seaborn as sns
 sns.heatmap(train_data.isnull(),yticklabels=False,cbar=False,cmap='coolwarm')
 ```
 
-![alt text](./images/image-8.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-8.png)
 
 - **Purpose**: Displays a heatmap to visualize where missing values (`NaN`) exist in the dataset.
   - **`train_data.isnull()`**: Creates a boolean DataFrame where `True` indicates missing values and `False` indicates non-missing values.
@@ -513,7 +513,7 @@ for col in boolean_columns:
 
 final_data.dtypes
 ```
-![alt text](./images/image-10.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-10.png)
 
 ```python
 numeric_columns = final_data.select_dtypes(include=['int64', 'float64']).columns
@@ -522,7 +522,7 @@ final_data[numeric_columns] = final_data[numeric_columns].astype(float)
 final_data.dtypes
 ```
 
-![alt text](./images/image-9.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-9.png)
 
 **Purpose**:
 - Converts `boolean_columns` to integer type for consistent numerical representation.
@@ -538,7 +538,7 @@ for col in null_columns:
     print(f"{col}: {final_data[col].isnull().sum()} nulls")
 ```
 
-![alt text](./images/image-11.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-11.png)
 
 **8. Handling Remaining Missing Values**
 
@@ -555,7 +555,7 @@ for col in null_columns:
 print("Remaining null values:", final_data.isnull().sum().sum())
 ```
 
-![alt text](./images/image-12.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-12.png)
 
 - **Purpose**:
   - Ensures all missing values have been addressed, with `0` nulls expected.
@@ -600,7 +600,7 @@ with mlflow.start_run(run_name="data_preprocessing") as run:
 
 After running the above code, we can see the parameters, metrics and artifacts in the MLflow UI.
 
-![alt text](./images/image-14.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-14.png)
 
 ### Data set split training and testing
 
@@ -615,7 +615,7 @@ data_test=final_data.iloc[1422:,:]
 X_train=data_train.drop(['SalePrice'],axis=1)
 y_train=data_train['SalePrice']
 ```
-![alt text](./images/image-15.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-15.png)
 
 ``X_train:`` This selects all columns except for SalePrice from data_train as features. drop(['SalePrice'], axis=1) removes the target variable (SalePrice) from the DataFrame, leaving only the predictors (features).
 
@@ -746,13 +746,13 @@ with mlflow.start_run(run_name="model_training") as run:
     print(f"Best parameters: {random_cv.best_params_}")
 ```
 
-![alt text](./images/image-26.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-26.png)
 
 **MLflow Outputs:**
 
 You will see the best score and parameters in the MLflow UI.
 
-![alt text](./images/image-16.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-16.png)
 
 **Pickling the Best Model**
 
@@ -835,7 +835,7 @@ The code makes predictions, logs metrics and artifacts (CSV, plot), and manages 
 
 You will see the prediction statistics in the MLflow UI.
 
-![alt text](./images/image-17.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-17.png)
 
 ### Comparing Different Runs
 
@@ -894,7 +894,7 @@ best_runs = compare_runs()
 
 You will see the best performing runs in the MLflow UI.
 
-![alt text](./images/image-19.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-19.png)
 
 ### Registering the Best Model
 
@@ -936,11 +936,11 @@ print(f"Registered model version: {best_model_version.version}")
 
 You will see the registered model version in the MLflow UI.
 
-![alt text](./images/image-18.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-18.png)
 
 So, we have successfully registered the best model to the model registry and transitioned it to the production stage. We can now use this model for predictions. We can also see the model registry in the MLflow UI. After all the steps, the MLflow UI should look like this showcasing the registered model, experiment, runs, and metrics:
 
-![alt text](./images/image-27.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-27.png)
 
 ## 7. Verification
 
@@ -948,7 +948,7 @@ So, we have successfully registered the best model to the model registry and tra
 
 As we have used the default S3 bucket, go to AWS Console and navigate to S3 bucket <your-bucket-name> to verify the artifacts.
 
-![alt text](./images/image-20.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-20.png)
 
 For each model run, you should see the artifacts in the S3 bucket.
 
@@ -971,7 +971,7 @@ psql -h localhost -U mlflow -d mlflow
 SELECT * FROM experiments;
 ```
 
-![alt text](./images/image-21.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-21.png)
 
 **3. View the registered models:**
 
@@ -979,7 +979,7 @@ SELECT * FROM experiments;
 SELECT * FROM registered_models;
 ```
 
-![alt text](./images/image-22.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-22.png)
 
 **4. View runs and metrics:**
 
@@ -996,7 +996,7 @@ ORDER BY r.start_time DESC;
 ```
 > Replace the experiment_id with the id of the experiment you want to view.
 
-![alt text](./images/image-23.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/Lab%2010/images/image-23.png)
 
 
 ## 8. Conclusion
