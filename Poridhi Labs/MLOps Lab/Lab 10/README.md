@@ -43,6 +43,8 @@ Saleprice-Prediction-with-XGBoost-Regressor/
 
 ### Configure AWS
 
+Configure AWS CLI with your access key ID and secret access key.
+
 ```bash
 aws configure
 ```
@@ -122,6 +124,7 @@ networks:
 volumes:
   postgres_data:
 ```
+**Environment Variables**
 
 Create a `.env` file in the same directory as `docker-compose.yml` and add the following:
 
@@ -158,8 +161,11 @@ CMD ["mlflow", "server", \
      "--host", "0.0.0.0", \
      "--port", "5000", \
      "--backend-store-uri", "postgresql://mlflow:mlflow@postgres/mlflow", \
-     "--default-artifact-root", "s3://saleprice-prediction/mlflow-artifacts"]
+     "--default-artifact-root", "s3://<unique-bucket-name>/mlflow-artifacts"]
 ```
+
+>NOTE: Replace `<unique-bucket-name>` with your own bucket name.
+
 #### Build and run the containers
 
 ```bash
@@ -184,6 +190,8 @@ Create a new Jupyter notebook and install the required libraries:
 ```bash
 pip install numpy pandas matplotlib seaborn plotly imbalanced-learn nbformat ipython xgboost mlflow boto3
 ```
+
+>NOTE: Make sure to install Jupyter extensions.
 
 ### Importing Libraries
 
