@@ -2,7 +2,7 @@
 
 This documentation provides a step-by-step guide to creating Helm charts for deploying Kubernetes applications. By following this guide, you will learn how to generate a Helm chart, understand its folder structure, and apply templating to customize deployments for different environments such as development, staging, and production.
 
-![alt text](./images/overview.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Labs/Lab-HelmChart/images/overview.png)
 
 ## **Introduction to Helm Charts**
 Helm is a package manager for Kubernetes that simplifies the deployment process by bundling Kubernetes resources into reusable templates called charts. A Helm chart allows you to deploy your application with a single command, reducing complexity and ensuring consistency across environments.
@@ -23,7 +23,7 @@ After installing Helm CLI, you can verify the installation by running:
 helm version
 ```
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Labs/Lab-HelmChart//images/image.png)
 
 **2. Kubernetes Cluster**
 
@@ -52,7 +52,7 @@ helm create web-server
 
 This command generates a folder structure for the Helm chart:
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Labs/Lab-HelmChart//images/image-1.png)
 
 ## Folder and File Structure Overview**
 
@@ -197,7 +197,7 @@ Example:
 helm install custom-nginx-release web-server/
 ```
 
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Labs/Lab-HelmChart//images/image-3.png)
 
 Verify deployment:
 
@@ -206,7 +206,7 @@ kubectl get all
 ```
 You should see resources such as Pods, Services, and Deployments.
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Labs/Lab-HelmChart//images/image-2.png)
 
 #### **Access the Application**
 
@@ -224,19 +224,19 @@ kubectl get nodes -o wide
 kubectl get svc
 ```
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Labs/Lab-HelmChart//images/image-4.png)
 
 **3. Create a loadbalancer using the NodeIP and NodePort.**
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Labs/Lab-HelmChart//images/image-5.png)
 
 **4. Access the application using the loadbalancer URL.**
 
-![alt text](./images/image-6.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Labs/Lab-HelmChart//images/image-6.png)
 
 Here is the nginx application running on the loadbalancer.
 
-![alt text](./images/image-7.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Labs/Lab-HelmChart//images/image-7.png)
 
 ---
 
@@ -251,7 +251,7 @@ kubectl create namespace prod
 kubectl create namespace dev
 ```
 
-![alt text](./images/image-8.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Labs/Lab-HelmChart//images/image-8.png)
 
 #### 2. Define Base Values in `values.yaml`
 
@@ -406,7 +406,7 @@ helm upgrade nginx-custom-release web-server/ --values web-server/values.yaml
 helm install nginx-custom-dev web-server/ --values web-server/values.yaml -f web-server/values-dev.yaml -n dev
 ```
 
-![alt text](./images/image-9.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Labs/Lab-HelmChart//images/image-9.png)
 
 **Development Deployment:**
 
@@ -414,7 +414,7 @@ helm install nginx-custom-dev web-server/ --values web-server/values.yaml -f web
 helm install nginx-custom-prod web-server/ --values web-server/values.yaml -f web-server/values-prod.yaml -n prod
 ```
 
-![alt text](./images/image-10.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Labs/Lab-HelmChart//images/image-10.png)
 
 ### Verify the Deployment
 
@@ -425,7 +425,7 @@ After deploying the helm chart, we can verify the deployment by running the foll
 ```bash
 helm ls --all-namespaces
 ```
-![alt text](./images/image-11.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Labs/Lab-HelmChart//images/image-11.png)
 
 **2. Default Deployment**
 
@@ -438,7 +438,7 @@ kubectl get all
 ```bash
 kubectl get all -n prod
 ```
-![alt text](./images/image-12.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Labs/Lab-HelmChart//images/image-12.png)
 
 **3. Development Deployment**
 
@@ -446,21 +446,21 @@ kubectl get all -n prod
 kubectl get all -n dev
 ```
 
-![alt text](./images/image-13.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Labs/Lab-HelmChart//images/image-13.png)
 
 ### Access the Application
 
 To access the application, we can use Poridhi's loadbalancer. Create loadbalancers for the production and development deployment in the same way as we did in the previous section and access the application using the loadbalancer URL.
 
-![alt text](./images/image-16.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Labs/Lab-HelmChart//images/image-16.png)
 
 **Here is the nginx application running on the production environment.**
 
-![alt text](./images/image-15.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Labs/Lab-HelmChart//images/image-15.png)
 
 **Here is the nginx application running on the dev environment.**
 
-![alt text](./images/image-14.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Labs/Lab-HelmChart//images/image-14.png)
 
 ---
 
