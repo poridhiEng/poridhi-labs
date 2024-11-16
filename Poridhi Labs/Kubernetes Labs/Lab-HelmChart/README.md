@@ -105,8 +105,7 @@ We will deploy a simple nginx application with a deployment, service and configm
 - `service.yaml`
 - `configmap.yaml`
 
-Fill the contents of `templates/deployment.yaml` with the following:
-
+**Fill the contents of `templates/deployment.yaml` with the following:**
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -129,7 +128,7 @@ spec:
     spec:
       containers:
       - name: nginx-container
-        image: konami98/:latest
+        image: konami98/nginx-custom:latest
         ports:
         - containerPort: 80
         envFrom:
@@ -144,7 +143,7 @@ spec:
             cpu: "100m"
 ```
 
-Fill the contents of `templates/service.yaml` with the following:
+**Fill the contents of `templates/service.yaml` with the following:**
 
 ```yaml
 apiVersion: v1
@@ -166,7 +165,7 @@ spec:
   type: NodePort
 ```
 
-Fill the contents of `templates/configmap.yaml` with the following:
+**Fill the contents of `templates/configmap.yaml` with the following:**
 
 ```yaml
 apiVersion: v1
@@ -182,7 +181,7 @@ data:
 
 ---
 
-### Deploy the Application**
+### Deploy the Application
 
 #### **Install the Chart**
 
