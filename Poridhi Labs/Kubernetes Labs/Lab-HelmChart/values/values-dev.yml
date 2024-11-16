@@ -1,0 +1,5 @@
+namespace: dev
+
+configmap:
+  data:
+    CUSTOM_HEADER: 'Nginx webserver is running on the PROD environment!'

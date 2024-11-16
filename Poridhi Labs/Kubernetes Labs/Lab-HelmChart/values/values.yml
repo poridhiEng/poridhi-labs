@@ -1,0 +1,14 @@
+appName: nginx-custom
+
+port: 80
+
+namespace: default
+
+configmap:
+  name: nginx-configmap
+  data:
+    CUSTOM_HEADER: 'This app was deployed with helm!'
+
+image:
+  name: konami98/nginx-custom
+  tag: latest
