@@ -43,14 +43,20 @@ FastAPI is a modern, fast (high-performance) web framework for building APIs wit
 
 ### **1. Installing FastAPI**
 
-1. **Create a Virtual Environment:**
+1. **Install the Python Virtual Environment Package:**
+   ```bash
+   sudo apt update
+   sudo apt install python3.8-venv
+   ```
+
+2. **Create a Virtual Environment:**
    Open a terminal in your project directory and create a virtual environment:
    ```bash
-   python -m venv venv-fastapi
+   python3 -m venv venv-fastapi
    source venv-fastapi/bin/activate
    ```
 
-2. **Install FastAPI and Uvicorn:**
+3. **Install FastAPI and Uvicorn:**
    Run the following command to install FastAPI and Uvicorn (ASGI server):
    ```bash
    pip install fastapi uvicorn
@@ -76,12 +82,29 @@ FastAPI is a modern, fast (high-performance) web framework for building APIs wit
 2. **Run the Server:**  
    Use Uvicorn to start the development server:
    ```bash
-   uvicorn main:app --reload
+   uvicorn main:app --reload --host 0.0.0.0
    ```
    - Open [http://127.0.0.1:8000](http://127.0.0.1:8000) to view the response.
    - Access interactive API docs at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
 
+### **3. Access FastAPI Application using Poridhi's Loadbalancer**
 
+To access the FastAPI Application with poridhi's Loadbalancer, use the following steps:
+
+- Find the `eth0` IP address for the `Poridhi's VM` currently you are running by using the command:
+
+  ```bash
+  ifconfig
+  ```
+  ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/lab-59.png?raw=true)
+    
+- Go to Poridhi's `LoadBalancer`and Create a `LoadBalancer` with the `eht0` IP and port `8000`.
+
+  ![alt text](image.png)
+
+- By using the Provided `URL` by `LoadBalancer`, you can access the FastAPI Application from any browser.
+
+  ![alt text](image-1.png)
 
 ## **Defining API Endpoints**
 
@@ -89,7 +112,7 @@ FastAPI is a modern, fast (high-performance) web framework for building APIs wit
 ```python
 @app.get("/")
 async def index():
-    return {"message": "Welcome to FastAPI!"}
+    return {"message": "Hello, FastAPI!"}
 ```
 
 ### **Example 2: List Endpoint**
@@ -109,7 +132,7 @@ async def get_bands():
 ### **Run and Test:**
 Visit [http://127.0.0.1:8000/bands](http://127.0.0.1:8000/bands) to view the list of bands.
 
-
+![alt text](image-2.png)
 
 ## **Pydantic Models for Data Validation**
 
@@ -178,7 +201,7 @@ async def get_bands_with_albums():
 ### **Run and Test:**
 Visit [http://127.0.0.1:8000/bands_with_albums](http://127.0.0.1:8000/bands_with_albums) to see nested data.
 
-
+![alt text](image-3.png)
 
 ## **Using Query Parameters**
 
@@ -194,7 +217,7 @@ async def bands_by_genre(genre: str):
 ### **Run and Test:**
 Visit [http://127.0.0.1:8000/bands_by_genre?genre=rock](http://127.0.0.1:8000/bands_by_genre?genre=rock).
 
-
+![alt text](image-4.png)
 
 ## **Handling Request Bodies**
 
@@ -211,7 +234,7 @@ async def add_band(band: Band):
 ### **Run and Test:**
 - Use Swagger UI to test the `POST` request at `/bands`.
 
-
+    ![alt text](image-5.png)
 
 ## **Interactive API Documentation**
 
