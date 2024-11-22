@@ -1,87 +1,105 @@
-# **Database Integration with FastAPI using SQLModel**
-
-This document provides a comprehensive guide on integrating SQLModel with FastAPI to build a fully functional Bookstore API. It explains all steps, from environment setup to implementing database interactions and deploying the application.
+# Database Integration with FastAPI
 
 
-## **1. Setting Up the Environment**
+This guide walks you through the process of integrating FastAPI with SQLModel to create a simple RESTful API. FastAPI is a modern Python web framework for building APIs quickly and efficiently, while SQLModel simplifies working with SQL databases using Python classes.
 
-### **Step 1: Create a Virtual Environment**
-A virtual environment isolates your project dependencies. Use the following commands to create and activate it:
 
-```bash
-# Create virtual environment
-python3 -m venv venv
+## Overview of the Project
+We will create a Bookstore API that allows users to perform CRUD operations (Create, Read, Update, Delete) on a database of books. The project includes features like:
 
-# Activate the virtual environment
-source venv/bin/activate
-```
+- Defining a database schema using SQLModel.
+- Exposing RESTful API endpoints using FastAPI.
+- Managing a SQLite database (default) with flexibility for other databases via environment variables.
 
-### **Step 2: Install Required Libraries**
-Install the necessary libraries using `pip`:
+## **Step 1: Set Up the Environment**
+
+**1. Create a folder for the project**:
+
+Create a folder for the project:
 
 ```bash
-# Install dependencies individually
-pip install fastapi sqlmodel uvicorn python-dotenv
+mkdir fastapi-sqlmodel-app
+cd fastapi-sqlmodel-app
 ```
 
-Alternatively, create a `requirements.txt` file (explained in Step 3) and install all dependencies at once:
+**3. Install required libraries**:
 
 ```bash
-# Install from requirements.txt
-pip install -r requirements.txt
+pip install fastapi uvicorn sqlmodel mysql-connector-python sqlalchemy
 ```
 
+**4. Create a `requirements.txt` file**:
 
-### **Step 3: Create a `requirements.txt` File**
-List the required libraries with version specifications to ensure compatibility:
+Create a `requirements.txt` file and add the following dependencies:
 
-```txt
+```text
 fastapi>=0.68.0
 sqlmodel>=0.0.8
 uvicorn>=0.15.0
 python-dotenv>=0.19.0
 ```
+Install dependencies using:
 
-## **2. Database Configuration**
+```bash
+pip install -r requirements.txt
+```
 
-### **Step 4: Create `database.py`**
-This file handles database configuration, connections, and session management.
+---
+
+## **Step 2: Directory Structure**
+    
+Create the following file structure for the project:
+
+```
+fastapi-sqlmodel-app/
+│
+├── app/
+│   ├── __init__.py
+│   ├── database.py
+│   ├── models.py
+│   ├── schemas.py
+│   ├── crud.py
+│   ├── api.py
+│   └── main.py
+│
+├── .env
+├── requirements.txt
+└── README.md
+```
+
+## **Step 3: Database Configuration**
+
+### **`database.py`**
+
+This file manages the database connection, table creation, and session dependency.
 
 ```python
 from sqlmodel import create_engine, Session, SQLModel
 from dotenv import load_dotenv
 import os
 
-# Load environment variables
 load_dotenv()
 
-# Database connection string from .env
-Database_URL = os.getenv("DATABASE_URL")
+# Load database URL from environment variables
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./test.db")
 
-# Create database engine
-engine = create_engine(Database_URL, echo=True)
+# Create the engine
+engine = create_engine(DATABASE_URL, echo=True)
 
 # Create database tables
 def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
 
-# Dependency to provide database sessions
+# Dependency for session
 def get_session():
     with Session(engine) as session:
         yield session
 ```
 
-### Key Points:
-- **Environment Variables:** Use `.env` for secure database connection strings.
-- **`engine`:** Manages communication with the database.
-- **`create_db_and_tables`:** Initializes database tables.
-- **`get_session`:** Provides a session for database operations.
+## **Step 4: Define Models**
 
-
-## **3. Define Models**
-
-### **Step 5: Create `models.py`**
-Define database models representing tables and their fields.
+### **`models.py`**
+Models define the structure of the database tables.
 
 ```python
 from typing import Optional
@@ -98,22 +116,19 @@ class BookBase(SQLModel):
     created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
     updated_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
 
-class Book(BookBase, table=True):
+class Book(BookBase, table=True):  # Represents a table
     id: Optional[int] = Field(default=None, primary_key=True)
 
     def update_timestamp(self):
         self.updated_at = datetime.utcnow()
 ```
 
-### Key Points:
-- **Base Model (`BookBase`):** Defines common fields across schemas.
-- **Database Table (`Book`):** Inherits from `BookBase` and sets `table=True`.
+---
 
+## **Step 5: Define Schemas**
 
-## **4. Define Schemas**
-
-### **Step 6: Create `schemas.py`**
-Schemas define the shape of data for API requests and responses.
+### **`schemas.py`**
+Schemas specify the request and response formats for API operations.
 
 ```python
 from typing import Optional, List
@@ -154,38 +169,34 @@ class BookSearchResults(SQLModel):
     size: int
 ```
 
-### Key Points:
-- **`BookCreate`:** Used for creating books.
-- **`BookRead`:** Used for fetching book details.
-- **`BookUpdate`:** Handles partial updates.
-- **`BookSearchResults`:** Encapsulates search results with pagination.
+---
 
+## **Step 6: CRUD Operations**
 
-## **5. CRUD Operations**
-
-### **Step 7: Create `crud.py`**
-This file contains reusable functions for database interactions.
+### **`crud.py`**
+Handles all database operations (Create, Read, Update, Delete).
 
 ```python
 from sqlmodel import Session, select
 from typing import List, Optional
-from . import models, schemas
+from .models import Book
+from .schemas import BookCreate, BookUpdate, BookSearchResults
 
-def create_book(session: Session, book: schemas.BookCreate) -> models.Book:
-    db_book = models.Book.from_orm(book)
+def create_book(session: Session, book: BookCreate) -> Book:
+    db_book = Book.from_orm(book)
     session.add(db_book)
     session.commit()
     session.refresh(db_book)
     return db_book
 
-def get_book(session: Session, book_id: int) -> Optional[models.Book]:
-    return session.get(models.Book, book_id)
+def get_book(session: Session, book_id: int) -> Optional[Book]:
+    return session.get(Book, book_id)
 
-def get_books(session: Session, offset: int = 0, limit: int = 10) -> List[models.Book]:
-    return session.exec(select(models.Book).offset(offset).limit(limit)).all()
+def get_books(session: Session, offset: int = 0, limit: int = 10) -> List[Book]:
+    return session.exec(select(Book).offset(offset).limit(limit)).all()
 
-def update_book(session: Session, book_id: int, book_data: schemas.BookUpdate) -> Optional[models.Book]:
-    db_book = session.get(models.Book, book_id)
+def update_book(session: Session, book_id: int, book_data: BookUpdate) -> Optional[Book]:
+    db_book = session.get(Book, book_id)
     if not db_book:
         return None
     for key, value in book_data.dict(exclude_unset=True).items():
@@ -197,7 +208,7 @@ def update_book(session: Session, book_id: int, book_data: schemas.BookUpdate) -
     return db_book
 
 def delete_book(session: Session, book_id: int) -> bool:
-    db_book = session.get(models.Book, book_id)
+    db_book = session.get(Book, book_id)
     if not db_book:
         return False
     session.delete(db_book)
@@ -205,79 +216,116 @@ def delete_book(session: Session, book_id: int) -> bool:
     return True
 ```
 
-## **6. API Routes**
+---
 
-### **Step 8: Create `api.py`**
-Defines API endpoints and integrates CRUD functions.
+## **Step 7: API Router**
+
+### **`api.py`**
+Defines the API routes and binds them to the CRUD operations.
 
 ```python
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlmodel import Session
 from typing import List
-from . import crud, schemas, database
+from .crud import create_book, get_books, get_book, update_book, delete_book
+from .schemas import BookCreate, BookRead, BookUpdate, BookSearchResults
+from .database import get_session
 
 router = APIRouter()
 
-@router.post("/books/", response_model=schemas.BookRead)
-def create_book(book: schemas.BookCreate, session: Session = Depends(database.get_session)):
-    return crud.create_book(session, book)
+@router.post("/books/", response_model=BookRead)
+def create(book: BookCreate, session: Session = Depends(get_session)):
+    return create_book(session, book)
 
-@router.get("/books/", response_model=List[schemas.BookRead])
-def list_books(offset: int = 0, limit: int = Query(default=10, le=100), session: Session = Depends(database.get_session)):
-    return crud.get_books(session, offset, limit)
+@router.get("/books/", response_model=List[BookRead])
+def read_all(offset: int = 0, limit: int = Query(default=10, le=100), session: Session = Depends(get_session)):
+    return get_books(session, offset, limit)
 
-@router.get("/books/{book_id}", response_model=schemas.BookRead)
-def get_book(book_id: int, session: Session = Depends(database.get_session)):
-    book = crud.get_book(session, book_id)
+@router.get("/books/{book_id}", response_model=BookRead)
+def read(book_id: int, session: Session = Depends(get_session)):
+    book = get_book(session, book_id)
     if not book:
         raise HTTPException(status_code=404, detail="Book not found")
     return book
 
-@router.put("/books/{book_id}", response_model=schemas.BookRead)
-def update_book(book_id: int, book_data: schemas.BookUpdate, session: Session = Depends(database.get_session)):
-    book = crud.update_book(session, book_id, book_data)
+@router.put("/books/{book_id}", response_model=BookRead)
+def update(book_id: int, book_data: BookUpdate, session: Session = Depends(get_session)):
+    book = update_book(session, book_id, book_data)
     if not book:
         raise HTTPException(status_code=404, detail="Book not found")
     return book
 
 @router.delete("/books/{book_id}")
-def delete_book(book_id: int, session: Session = Depends(database.get_session)):
-    if not crud.delete_book(session, book_id):
+def delete(book_id: int, session: Session = Depends(get_session)):
+    if not delete_book(session, book_id):
         raise HTTPException(status_code=404, detail="Book not found")
     return {"message": "Book deleted successfully"}
 ```
 
-## **7. Application Entry Point**
+---
 
-### **Step 9: Create `main.py`**
-Initializes the FastAPI application.
+## **Step 8: Main Application**
+
+### **`main.py`**
+Starts the FastAPI application.
 
 ```python
 from fastapi import FastAPI
-from database import create_db_and_tables
-from api import router
+from app.database import create_db_and_tables
+from app.api import router
 
-app = FastAPI(
-    title="Bookstore API",
-    description="An API for managing books using FastAPI and SQLModel",
-    version="1.0.0"
-)
+app = FastAPI(root_path="ROOT_PATH", title="BookStore API", version="1.0.0")
 
-app.include_router(router, prefix="/api/v1")
+# Define a route for "/"
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to the FastAPI application!"}
 
 @app.on_event("startup")
 def on_startup():
     create_db_and_tables()
+
+app.include_router(router, prefix="/api/v1")
 ```
 
-## **8. Run the Application**
+## **Step 9: Environment Variables**
 
-### **Step 10: Start the Server**
-Run the application using `uvicorn`:
+Create a `.env` file and add the following variables:
+
+```
+DATABASE_URL=<DATABASE_URL>
+ROOT_PATH=<ROOT_PATH>
+```
+>NOTE: Replace `<DATABASE_URL>` and `<ROOT_PATH>` with your own values.
+
+## Database Setup
+
+For database integration, running MySQL as a Docker container can simplify your development process and keep your database environment consistent.
+
+**Start a MySQL container using the command below:**
 
 ```bash
-uvicorn main:app --reload
+docker run --name fastapi-mysql \
+-e MYSQL_ROOT_PASSWORD=<your_root_password> \
+-e MYSQL_DATABASE=fastapi_db \
+-p 3306:3306 \
+-v mysql_data:/var/lib/mysql \
+-d mysql:latest
 ```
 
-## **Conclusion**
-This guide illustrates how to build and integrate a database with FastAPI using SQLModel. The example creates a fully functional Bookstore API with features like CRUD operations, validation, and search functionality.
+>NOTE: Replace `your_root_password` with your own password.
+
+**Check the container status using the command below:**
+
+```bash
+docker ps
+```
+
+## Running the Application**
+
+Run the application using `uvicorn`:
+```bash
+uvicorn app.main:app --reload
+```
+
+
