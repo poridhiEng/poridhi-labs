@@ -26,8 +26,16 @@ cd fastapi-sqlmodel-app
 **Install required libraries**:
 
 ```bash
-pip install fastapi uvicorn sqlmodel mysql-connector-python sqlalchemy
+pip install fastapi uvicorn sqlmodel mysql-connector-python python-dotenv
 ```
+
+Here's a brief explanation of why each library is needed:
+
+- **`uvicorn`**: A lightweight, fast ASGI server to run FastAPI applications. It supports asynchronous operations and is essential for serving your FastAPI application.
+
+- **`sqlmodel`**: A library that combines the functionality of SQLAlchemy and Pydantic, allowing you to define database models and schemas in one place while enabling seamless interactions with SQL databases.
+
+- **`python-dotenv`**: A library for loading environment variables from a `.env` file. This is useful for securely managing sensitive information, like database connection strings, in your project.
 
 **Create a `requirements.txt` file**:
 
@@ -315,7 +323,7 @@ API_TITLE=My Custom API
 API_VERSION=2.0.0
 ```
 
->NOTE: Replace `<ROOT_PATH>`, `<user>`, `<password>`, `<host>`, `<port>`, and `<database>` with your own values. The `<ROOT_PATH>` should be the URL of the load balancer.
+>NOTE: Replace `<ROOT_PATH>`, `<user>`, `<password>`, `<host>`, `<port>`, and `<database>` with your own values. The `<ROOT_PATH>` should be the URL of the load balancer. You will get the URL of the load balancer after running the application.
 
 ## **Step 11: Running the Application**
 
