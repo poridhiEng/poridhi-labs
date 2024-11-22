@@ -12,6 +12,22 @@ We will create a Bookstore API that allows users to perform CRUD operations (Cre
 - Exposing RESTful API endpoints using FastAPI.
 - Managing a SQLite database (default) with flexibility for other databases via environment variables.
 
+## Table of Contents
+
+- [Set Up the Environment](#step-1-set-up-the-environment)
+- [Define Models](#step-2-define-models)
+- [Define Schemas](#step-3-define-schemas)
+- [CRUD Operations](#step-4-crud-operations)
+- [API Router](#step-5-api-router)
+- [Main Application](#step-6-main-application)
+- [Database Setup](#step-7-database-setup)
+- [Environment Variables](#step-8-environment-variables)
+- [Running the Application](#step-9-running-the-application)
+- [Testing the API](#step-10-testing-the-api)
+- [Verify the Database](#step-11-verify-the-database)
+- [Conclusion](#conclusion)
+
+
 ## **Step 1: Set Up the Environment**
 
 **Create a folder for the project**:
