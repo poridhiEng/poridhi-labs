@@ -29,8 +29,6 @@ cd fastapi-sqlmodel-app
 pip install fastapi uvicorn sqlmodel mysql-connector-python python-dotenv
 ```
 
-Here's a brief explanation of why each library is needed:
-
 - **`uvicorn`**: A lightweight, fast ASGI server to run FastAPI applications. It supports asynchronous operations and is essential for serving your FastAPI application.
 
 - **`sqlmodel`**: A library that combines the functionality of SQLAlchemy and Pydantic, allowing you to define database models and schemas in one place while enabling seamless interactions with SQL databases.
@@ -269,11 +267,22 @@ def delete(book_id: int, session: Session = Depends(get_session)):
 Starts the FastAPI application.
 
 ```python
+import os
 from fastapi import FastAPI
 from app.database import create_db_and_tables
 from app.api import router
+from dotenv import load_dotenv
 
-app = FastAPI(root_path="ROOT_PATH", title="BookStore API", version="1.0.0")
+# Load environment variables from a .env file
+load_dotenv()
+
+# Get environment variables, with defaults if they don't exist
+ROOT_PATH = os.getenv("ROOT_PATH", "/")  # Default root_path if not found
+API_TITLE = os.getenv("API_TITLE", "BookStore API")  # Default title
+API_VERSION = os.getenv("API_VERSION", "1.0.0")  # Default version
+
+# Create the FastAPI app instance using environment variables
+app = FastAPI(root_path=ROOT_PATH, title=API_TITLE, version=API_VERSION)
 
 # Define a route for "/"
 @app.get("/")
@@ -282,8 +291,10 @@ def read_root():
 
 @app.on_event("startup")
 def on_startup():
+    # Ensure the database and tables are created
     create_db_and_tables()
 
+# Include the router for API versioning
 app.include_router(router, prefix="/api/v1")
 ```
 
@@ -318,12 +329,15 @@ Create a `.env` file and add the following variables:
 
 ```
 DATABASE_URL="mysql+pymysql://<user>:<password>@<host>:<port>/<database>"
-ROOT_PATH="<ROOT_PATH>"
 API_TITLE=My Custom API
 API_VERSION=2.0.0
 ```
 
->NOTE: Replace `<ROOT_PATH>`, `<user>`, `<password>`, `<host>`, `<port>`, and `<database>` with your own values. The `<ROOT_PATH>` should be the URL of the load balancer. You will get the URL of the load balancer after running the application.
+>NOTE: Replace `<ROOT_PATH>`, `<user>`, `<password>`, `<host>`, `<port>`, and `<database>` with your own values.
+
+Here is an example of the `.env` file:
+
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2002/images/image-21.png)
 
 ## **Step 11: Running the Application**
 
@@ -341,9 +355,9 @@ This lab is intended to be run on **Poridhi Labs**. After running the applicatio
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2002/images/image.png)
 
-**Update the `<ROOT_PATH>` in the `.env` file:**
+**Add the `<ROOT_PATH>` environment variable in the `.env` file:**
 
-Copy the URL of the load balancer and update the `<ROOT_PATH>` in the `.env` file.
+Copy the URL of the load balancer and add the `<ROOT_PATH>` environment variable in the `.env` file.
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2002/images/image-20.png)
 
