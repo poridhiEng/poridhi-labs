@@ -1,7 +1,8 @@
 # Database Integration with FastAPI
 
-
 This guide walks you through the process of integrating FastAPI with SQLModel to create a simple RESTful API. FastAPI is a modern Python web framework for building APIs quickly and efficiently, while SQLModel simplifies working with SQL databases using Python classes.
+
+![alt text](./images/banner.svg)
 
 
 ## Overview of the Project
@@ -43,8 +44,6 @@ Install dependencies using:
 ```bash
 pip install -r requirements.txt
 ```
-
----
 
 ## **Step 2: Directory Structure**
     
@@ -169,8 +168,6 @@ class BookSearchResults(SQLModel):
     size: int
 ```
 
----
-
 ## **Step 6: CRUD Operations**
 
 ### **`crud.py`**
@@ -216,8 +213,6 @@ def delete_book(session: Session, book_id: int) -> bool:
     return True
 ```
 
----
-
 ## **Step 7: API Router**
 
 ### **`api.py`**
@@ -262,8 +257,6 @@ def delete(book_id: int, session: Session = Depends(get_session)):
     return {"message": "Book deleted successfully"}
 ```
 
----
-
 ## **Step 8: Main Application**
 
 ### **`main.py`**
@@ -288,17 +281,7 @@ def on_startup():
 app.include_router(router, prefix="/api/v1")
 ```
 
-## **Step 9: Environment Variables**
-
-Create a `.env` file and add the following variables:
-
-```
-DATABASE_URL=<DATABASE_URL>
-ROOT_PATH=<ROOT_PATH>
-```
->NOTE: Replace `<DATABASE_URL>` and `<ROOT_PATH>` with your own values.
-
-## Database Setup
+## **Step 9: Database Setup**
 
 For database integration, running MySQL as a Docker container can simplify your development process and keep your database environment consistent.
 
@@ -321,11 +304,224 @@ docker run --name fastapi-mysql \
 docker ps
 ```
 
-## Running the Application**
+![alt text](./images/image-19.png)
 
-Run the application using `uvicorn`:
+## **Step 10: Environment Variables**
+
+Create a `.env` file and add the following variables:
+
+```
+DATABASE_URL="mysql+pymysql://<user>:<password>@<host>:<port>/<database>"
+ROOT_PATH="<ROOT_PATH>"
+API_TITLE=My Custom API
+API_VERSION=2.0.0
+```
+
+>NOTE: Replace `<ROOT_PATH>`, `<user>`, `<password>`, `<host>`, `<port>`, and `<database>` with your own values. The `<ROOT_PATH>` should be the URL of the load balancer.
+
+Here is an example of the `.env` file:
+
+![alt text](./images/image-20.png)
+
+## **Step 11: Running the Application**
+
+**Run the application using `uvicorn`:**
+
 ```bash
 uvicorn app.main:app --reload
 ```
 
+![alt text](./images/image-18.png)
 
+**Access the Application:**
+
+This lab is intended to be run on **Poridhi Labs**. After running the application, the API server will be forwarded to a load balancer.
+
+![alt text](./images/image.png)
+
+Access the API using the provided URL.
+
+![alt text](./images/image-1.png)
+
+## **Step 12: Testing the API**
+
+To test your FastAPI application and its API endpoints, you can use **`curl` commands**, a tool like **Postman**, or the **Swagger UI (accessible via `<ROOT_PATH>/docs`)** . Here's how you can test the endpoints with `curl`:
+
+### **1. List All Books**
+
+**GET /api/v1/books/**  
+
+Retrieve a list of all books in the database.
+
+```bash
+curl -X GET "http://127.0.0.1:8000/api/v1/books/" -H "accept: application/json" | jq .
+```
+
+![alt text](./images/image-2.png)
+
+>NOTE: The `jq` command is used to format the JSON response. If you don't have `jq` installed, install it using `sudo apt-get install jq` on Linux.
+
+### **2. Create a New Book**
+
+**POST /api/v1/books/**
+
+Create a new book by sending a JSON payload.
+
+```bash
+curl -X POST "http://127.0.0.1:8000/api/v1/books/" \
+-H "accept: application/json" \
+-H "Content-Type: application/json" \
+-d '{
+  "title": "The Great Gatsby",
+  "author": "F. Scott Fitzgerald",
+  "year": 1925,
+  "price": 10.99,
+  "in_stock": true,
+  "description": "A novel set in the 1920s."
+}' | jq .
+```
+
+![alt text](./images/image-3.png)
+
+### **3. Get a Specific Book by ID**
+
+**GET /api/v1/books/{book_id}**  
+Replace `{book_id}` with the ID of the book you want to retrieve.
+
+```bash
+curl -X GET "http://127.0.0.1:8000/api/v1/books/9" -H "accept: application/json" | jq .
+```
+
+![alt text](./images/image-4.png)
+
+### **4. Update a Book**
+
+**PUT /api/v1/books/{book_id}**
+
+Replace `{book_id}` with the ID of the book to update. Include only the fields you want to change in the payload.
+
+```bash
+curl -X PUT "http://127.0.0.1:8000/api/v1/books/9" \
+-H "accept: application/json" \
+-H "Content-Type: application/json" \
+-d '{
+  "price": 20.99,
+  "in_stock": false
+}' | jq .
+```
+
+![alt text](./images/image-5.png)
+
+### **5. Delete a Book**
+
+**DELETE /api/v1/books/{book_id}**
+
+Replace `{book_id}` with the ID of the book you want to delete.
+
+```bash
+curl -X DELETE "http://127.0.0.1:8000/api/v1/books/9" -H "accept: application/json" | jq .
+```
+![alt text](./images/image-6.png)
+
+### **6. Search and Paginate Books**
+
+**GET /api/v1/books/?offset=0&limit=5**
+
+Fetch a paginated list of books starting from the offset and limited to a number of records.
+
+```bash
+curl -X GET "http://127.0.0.1:8000/api/v1/books/?offset=0&limit=5" -H "accept: application/json" | jq .
+```
+
+![alt text](./images/image-7.png)
+
+### **Testing via Swagger UI**
+
+To test the API endpoints using Swagger UI, follow these steps:
+
+#### **Navigate to `<ROOT_PATH>/docs` in your browser.**
+
+Replace `<ROOT_PATH>` with the URL of the load balancer.
+
+![alt text](./images/image-8.png)
+
+Now use the interactive interface to explore and test the API endpoints.
+
+**1. List All Books**
+
+**GET /api/v1/books/**
+
+Get a list of all books in the database. Click on the **Try it out** button and then **Execute** to see the response.
+
+![alt text](./images/image-9.png)
+
+**Output:**
+
+![alt text](./images/image-10.png)
+
+### **2. Create a New Book**
+
+**POST /api/v1/books/**
+
+Create a new book by sending a JSON payload. Click on the **Try it out** button and then **Execute** to see the response.
+
+![alt text](./images/image-11.png)
+
+**Output:**
+
+![alt text](./images/image-12.png)
+
+### **3. Get a Specific Book by ID**
+
+**GET /api/v1/books/{book_id}**
+
+Replace `{book_id}` with the ID of the book you want to retrieve.
+
+![alt text](./images/image-13.png)
+
+**Output:**
+
+![alt text](./images/image-14.png)
+
+Now, continue testing the other endpoints in a similar manner.
+
+### **4. Update a Book**
+
+**PUT /api/v1/books/{book_id}**
+
+Replace `{book_id}` with the ID of the book to update. Include only the fields you want to change in the payload.
+
+### **5. Delete a Book**
+
+**DELETE /api/v1/books/{book_id}**
+
+Replace `{book_id}` with the ID of the book you want to delete. Click on the **Try it out** button and then **Execute** to see the response.
+
+
+## **Step 13: Verify the Database**
+
+You can verify the database by checking the tables and records.
+
+```bash
+docker ps
+docker exec -it <container_id> mysql -uroot -p
+```
+
+![alt text](./images/image-15.png)
+
+
+After entering the password, you can check the tables and records.
+
+```bash
+show databases;
+use fastapi_db;
+show tables;
+select * from book;
+```
+
+![alt text](./images/image-17.png)
+
+
+## Conclusion
+
+So we have successfully created a FastAPI application that integrates with a MySQL database using SQLModel. This setup allows you to perform CRUD operations on a database of books, and you can extend this foundation to build more complex APIs.
