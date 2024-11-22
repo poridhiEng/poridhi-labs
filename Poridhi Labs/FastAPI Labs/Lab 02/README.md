@@ -317,10 +317,6 @@ API_VERSION=2.0.0
 
 >NOTE: Replace `<ROOT_PATH>`, `<user>`, `<password>`, `<host>`, `<port>`, and `<database>` with your own values. The `<ROOT_PATH>` should be the URL of the load balancer.
 
-Here is an example of the `.env` file:
-
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2002/images/image-20.png)
-
 ## **Step 11: Running the Application**
 
 **Run the application using `uvicorn`:**
@@ -336,6 +332,12 @@ uvicorn app.main:app --reload
 This lab is intended to be run on **Poridhi Labs**. After running the application, the API server will be forwarded to a load balancer.
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2002/images/image.png)
+
+**Update the `<ROOT_PATH>` in the `.env` file:**
+
+Copy the URL of the load balancer and update the `<ROOT_PATH>` in the `.env` file.
+
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2002/images/image-20.png)
 
 Access the API using the provided URL.
 
