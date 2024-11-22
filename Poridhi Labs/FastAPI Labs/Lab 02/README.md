@@ -14,7 +14,7 @@ We will create a Bookstore API that allows users to perform CRUD operations (Cre
 
 ## **Step 1: Set Up the Environment**
 
-**1. Create a folder for the project**:
+**Create a folder for the project**:
 
 Create a folder for the project:
 
@@ -23,13 +23,13 @@ mkdir fastapi-sqlmodel-app
 cd fastapi-sqlmodel-app
 ```
 
-**3. Install required libraries**:
+**Install required libraries**:
 
 ```bash
 pip install fastapi uvicorn sqlmodel mysql-connector-python sqlalchemy
 ```
 
-**4. Create a `requirements.txt` file**:
+**Create a `requirements.txt` file**:
 
 Create a `requirements.txt` file and add the following dependencies:
 
