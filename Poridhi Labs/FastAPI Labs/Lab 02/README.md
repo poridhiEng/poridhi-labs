@@ -15,17 +15,18 @@ We will create a Bookstore API that allows users to perform CRUD operations (Cre
 ## Table of Contents
 
 - [Set Up the Environment](#step-1-set-up-the-environment)
-- [Define Models](#step-2-define-models)
-- [Define Schemas](#step-3-define-schemas)
-- [CRUD Operations](#step-4-crud-operations)
-- [API Router](#step-5-api-router)
-- [Main Application](#step-6-main-application)
-- [Database Setup](#step-7-database-setup)
-- [Environment Variables](#step-8-environment-variables)
-- [Running the Application](#step-9-running-the-application)
-- [Testing the API](#step-10-testing-the-api)
-- [Verify the Database](#step-11-verify-the-database)
-- [Conclusion](#conclusion)
+- [Directory Structure](#step-2-directory-structure)
+- [Database Configuration](#step-3-database-configuration)
+- [Define Models](#step-4-define-models)
+- [Define Schemas](#step-5-define-schemas)
+- [CRUD Operations](#step-6-crud-operations)
+- [API Router](#step-7-api-router)
+- [Main Application](#step-8-main-application)
+- [Database Setup](#step-9-database-setup)
+- [Environment Variables](#step-10-environment-variables)
+- [Running the Application](#step-11-running-the-application)
+- [Testing the API](#step-12-testing-the-api)
+- [Verify the Database](#step-13-verify-the-database)
 
 
 ## **Step 1: Set Up the Environment**
