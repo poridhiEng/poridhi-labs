@@ -3,7 +3,7 @@
 
 This lab provides a comprehensive guide to implementing a Machine Learning Model Drift Monitoring System. The system is designed to detect and visualize drift in machine learning models, ensuring their reliability and performance over time. It focuses on a diamond price prediction model as a case study.
 
-![](./images/./Arch-diagram.svg)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2012/images/Arch-diagram.svg?raw=true)
 
 ### Data Drift
 
@@ -25,11 +25,11 @@ The primary objective of this project is to create a real-time monitoring system
 
 ### Data Flow Diagram
 
-![](./images/./Data-flow.svg)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2012/images/Data-flow.svg?raw=true)
 
 ### Deployment Architecture
 
-![](./images/deploy.svg)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2012/images/deploy.svg?raw=true)
 
 ## Step-by-Step Solution
 
@@ -536,7 +536,7 @@ Now create the load balancer for Model API using the IP and port `5000`.
 
 Create another load balancer for Grafana using the IP and port `3000`.
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2012/images/image.png?raw=true)
 
 
 
@@ -544,9 +544,10 @@ Create another load balancer for Grafana using the IP and port `3000`.
 #### 6.2 Accessing the Services
 
 - **Model API**: 
-Open the load balancer for Model API in the browser or send POST requests to the service using `postman` at `/predict` endpoint.
+    
+    Open the load balancer for Model API in the browser or send POST requests to the service using `postman` at `/predict` endpoint.
 
-    ![alt text](./images/image-1.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2012/images/image-1.png?raw=true)
 
 
 - **Grafana**: 
@@ -567,11 +568,13 @@ Open the load balancer for Model API in the browser or send POST requests to the
 
     Here is an example for data drift:
 
-    ![alt text](./images/image-2.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2012/images/image-2.png?raw=true)
 
     You can also create a dashboard using the these as follows:
 
-    ![alt text](./images/image-3.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2012/images/image-3.png?raw=true)
+
+    https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2012/images/image.png?raw=true
 
 ### 8. Common Issues
 
