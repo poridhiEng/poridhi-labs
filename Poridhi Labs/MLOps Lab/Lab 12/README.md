@@ -15,13 +15,12 @@ Concept drift happens when the fundamental relationships between features and th
 
 ## Task Overview
 
-The primary objective of this project is to create a real-time monitoring system that detects both data drift and concept drift in a diamond price prediction model. The system will automatically retrain the model when drift exceeds predefined thresholds, providing a robust solution for maintaining model accuracy.
+The primary objective of this project is to create a real-time monitoring system that detects both data drift and concept drift in a diamond price prediction model. 
 
 ### Key Features:
 - Monitors model health by detecting data and concept drift.
 - Simulates real data changes to test the model's robustness.
 - Visualizes drift metrics in real-time using Grafana.
-- Automatically retrains the model when necessary.
 
 ### Data Flow Diagram
 
@@ -125,21 +124,6 @@ y_reference = diamonds["price"]
 DATA_DRIFT_THRESHOLD = 0.15
 CONCEPT_DRIFT_THRESHOLD = 0.15
 
-# Add new Prometheus metrics for retraining
-retraining_counter = Gauge("model_retraining_count", "Number of times model has been retrained")
-
-def retrain_model():
-    global model_pipeline
-    print("Retraining model with new data...")
-    train_model()
-    
-    try:
-        model_pipeline = joblib.load(MODEL_PATH)
-        print("Model successfully retrained and reloaded")
-        retraining_counter.inc()
-    except Exception as e:
-        print(f"Error reloading model after retraining: {e}")
-
 def monitor_drifts():
     global X_reference, y_reference, model_pipeline
     
@@ -195,8 +179,6 @@ def monitor_drifts():
             if is_concept_drift:
                 print(f"- Concept drift detected (Score: {concept_drift_score:.4f}")
             
-            print("Initiating model retraining...")
-            retrain_model()
             
             X_reference = X_current
             y_reference = y_current
@@ -564,7 +546,6 @@ Create another load balancer for Grafana using the IP and port `3000`.
    - Add panels for:
      - `data_drift`
      - `concept_drift`
-     - `model_retraining_count`
 
     Here is an example for data drift:
 
@@ -574,7 +555,7 @@ Create another load balancer for Grafana using the IP and port `3000`.
 
     ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2012/images/image-3.png?raw=true)
 
-    https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2012/images/image.png?raw=true
+
 
 ### 8. Common Issues
 
@@ -588,4 +569,4 @@ Create another load balancer for Grafana using the IP and port `3000`.
 
 ### Conclusion
 
-The ML Model Drift Monitoring System provides a robust framework for ensuring the reliability of machine learning models over time. By implementing real-time monitoring, automatic retraining, and visualization through Grafana, this system addresses the challenges posed by model drift effectively. This documentation serves as a comprehensive guide to setting up and utilizing the system, ensuring that users can maintain high model performance in production environments.
+The ML Model Drift Monitoring System provides a robust framework for ensuring the reliability of machine learning models over time. By implementing real-time monitoring, and visualization through Grafana, this system addresses the challenges posed by model drift effectively. This documentation serves as a comprehensive guide to setting up and utilizing the system, ensuring that users can maintain high model performance in production environments.
