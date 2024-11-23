@@ -1,0 +1,146 @@
+# mysql-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-secret
+type: Opaque
+data:
+  MYSQL_ROOT_PASSWORD: cm9vdA==  # base64 encoded 'root'
+  MYSQL_DATABASE: ZmFzdGFwaV9kYg==       # base64 encoded 'fastapi_db'
+---
+# mysql-pv.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+---
+# mysql-pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+# mysql-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.0
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: MYSQL_DATABASE
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pvc
+---
+# mysql-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  selector:
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+  clusterIP: None  # Headless service for MySQL
+---
+# fastapi-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fastapi-config
+data:
+  API_TITLE: "BookStore API"
+  API_VERSION: "1.0.0"
+  DATABASE_URL: "mysql+pymysql://root:root@mysql:3306/fastapi_db"
+  ROOT_PATH: "https://66dbf2e36722fdb9097e9eb3-lb-351.bm-north.lab.poridhi.io/8000"
+---
+# fastapi-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fastapi-app
+  template:
+    metadata:
+      labels:
+        app: fastapi-app
+    spec:
+      containers:
+      - name: fastapi-app
+        image: konami98/fastapi-app:latest  # You'll need to build and push this image
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - configMapRef:
+            name: fastapi-config
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+---
+# fastapi-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi-service
+spec:
+  selector:
+    app: fastapi-app
+  ports:
+  - port: 80
+    targetPort: 8000
+  type: NodePort

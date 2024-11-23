@@ -40,27 +40,33 @@ mkdir fastapi-sqlmodel-app
 cd fastapi-sqlmodel-app
 ```
 
-**Install required libraries**:
-
-```bash
-pip install fastapi uvicorn sqlmodel mysql-connector-python python-dotenv
-```
-
-- **`uvicorn`**: A lightweight, fast ASGI server to run FastAPI applications. It supports asynchronous operations and is essential for serving your FastAPI application.
-
-- **`sqlmodel`**: A library that combines the functionality of SQLAlchemy and Pydantic, allowing you to define database models and schemas in one place while enabling seamless interactions with SQL databases.
-
-- **`python-dotenv`**: A library for loading environment variables from a `.env` file. This is useful for securely managing sensitive information, like database connection strings, in your project.
-
 **Create a `requirements.txt` file**:
 
 Create a `requirements.txt` file and add the following dependencies:
 
 ```text
-fastapi>=0.68.0
-sqlmodel>=0.0.8
-uvicorn>=0.15.0
-python-dotenv>=0.19.0
+annotated-types==0.7.0
+anyio==4.5.2
+cffi==1.17.1
+click==8.1.7
+cryptography==43.0.3
+exceptiongroup==1.2.2
+fastapi==0.115.5
+greenlet==3.1.1
+h11==0.14.0
+idna==3.10
+mysql-connector-python==9.0.0
+pycparser==2.22
+pydantic==2.10.1
+pydantic-core==2.27.1
+PyMySQL==1.1.1
+python-dotenv==1.0.1
+sniffio==1.3.1
+SQLAlchemy==2.0.36
+sqlmodel==0.0.22
+starlette==0.41.3
+typing-extensions==4.12.2
+uvicorn==0.32.1
 ```
 Install dependencies using:
 
@@ -368,9 +374,7 @@ uvicorn app.main:app --reload
 
 **Access the Application:**
 
-This lab is intended to be run on **Poridhi Labs**. After running the application, the API server will be forwarded to a load balancer.
-
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2002/images/image.png)
+This lab is intended to be run on **Poridhi's Cloud Platform**. After running the application, the API server will be forwarded to a load balancer.
 
 **Add the `<ROOT_PATH>` environment variable in the `.env` file:**
 
