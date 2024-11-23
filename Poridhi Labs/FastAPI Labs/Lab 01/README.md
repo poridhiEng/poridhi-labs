@@ -12,7 +12,7 @@ FastAPI is a modern, fast (high-performance) web framework for building APIs wit
 
 ## **Basic Workflow of FastAPI**
 
-![alt text](./images/arch-fastapi.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/b258d10e351c57f35274f8b8089a4f7fd0a0243f/Poridhi%20Labs/FastAPI%20Labs/Lab%2001/images/arch-fastapi.svg)
 
 1. **Define Endpoints:** Use Python decorators (`@app.get`, `@app.post`, etc.) to define routes for HTTP methods.
 2. **Add Route Paths:** Assign URL paths to endpoints to define the API structure.
@@ -102,11 +102,11 @@ To access the FastAPI Application with poridhi's Loadbalancer, use the following
     
 - Go to Poridhi's `LoadBalancer`and Create a `LoadBalancer` with the `eht0` IP and port `8000`.
 
-  ![alt text](./images/image.png)
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2001/images/image.png)
 
 - By using the Provided `URL` by `LoadBalancer`, you can access the FastAPI Application from any browser.
 
-  ![alt text](./images/image-1.png)
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2001/images/image-1.png)
 
 ## **Defining API Endpoints**
 
@@ -134,7 +134,7 @@ async def get_bands():
 ### **Run and Test:**
 Visit `<Poridhi's Loadbalancer link>/bands` to view the list of bands.
 
-![alt text](./images/image-2.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2001/images/image-2.png)
 
 ## **Pydantic Models for Data Validation**
 
@@ -203,7 +203,7 @@ async def get_bands_with_albums():
 ### **Run and Test:**
 Visit `<Poridhi's Loadbalancer link>/bands_with_albums` to see nested data.
 
-![alt text](./images/image-3.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2001/images/image-3.png)
 
 ## **Using Query Parameters**
 
@@ -219,7 +219,7 @@ async def bands_by_genre(genre: str):
 ### **Run and Test:**
 Visit `<Poridhi's Loadbalancer link>/bands_by_genre?genre=rock` to filter the data.
 
-![alt text](./images/image-4.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2001/images/image-4.png)
 
 ## **Handling Request Bodies**
 
@@ -236,7 +236,7 @@ async def add_band(band: Band):
 ### **Run and Test:**
 - Use Swagger UI to test the `POST` request at `/bands`.
 
-    ![alt text](./images/image-5.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2001/images/image-5.png)
 
 ### **Conclusion**
 
