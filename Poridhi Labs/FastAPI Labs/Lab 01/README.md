@@ -1,4 +1,4 @@
-# **FastAPI Fundamentals**
+# **FastAPI Fundamentals: Building and Validating APIs**
 
 ## **What is FastAPI?**
 FastAPI is a modern, fast (high-performance) web framework for building APIs with Python. It leverages standard Python type hints to enable features like automatic data validation and interactive API documentation.
@@ -11,6 +11,8 @@ FastAPI is a modern, fast (high-performance) web framework for building APIs wit
 
 
 ## **Basic Workflow of FastAPI**
+
+![alt text](./images/arch-fastapi.svg)
 
 1. **Define Endpoints:** Use Python decorators (`@app.get`, `@app.post`, etc.) to define routes for HTTP methods.
 2. **Add Route Paths:** Assign URL paths to endpoints to define the API structure.
@@ -84,8 +86,8 @@ FastAPI is a modern, fast (high-performance) web framework for building APIs wit
    ```bash
    uvicorn main:app --reload --host 0.0.0.0
    ```
-   - Open [http://127.0.0.1:8000](http://127.0.0.1:8000) to view the response.
-   - Access interactive API docs at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
+   - Open `8000` ports to view the response.
+   - Access interactive API docs at `8000/docs`.
 
 ### **3. Access FastAPI Application using Poridhi's Loadbalancer**
 
@@ -100,11 +102,11 @@ To access the FastAPI Application with poridhi's Loadbalancer, use the following
     
 - Go to Poridhi's `LoadBalancer`and Create a `LoadBalancer` with the `eht0` IP and port `8000`.
 
-  ![alt text](image.png)
+  ![alt text](./images/image.png)
 
 - By using the Provided `URL` by `LoadBalancer`, you can access the FastAPI Application from any browser.
 
-  ![alt text](image-1.png)
+  ![alt text](./images/image-1.png)
 
 ## **Defining API Endpoints**
 
@@ -130,9 +132,9 @@ async def get_bands():
 ```
 
 ### **Run and Test:**
-Visit [http://127.0.0.1:8000/bands](http://127.0.0.1:8000/bands) to view the list of bands.
+Visit `<Poridhi's Loadbalancer link>/bands` to view the list of bands.
 
-![alt text](image-2.png)
+![alt text](./images/image-2.png)
 
 ## **Pydantic Models for Data Validation**
 
@@ -199,9 +201,9 @@ async def get_bands_with_albums():
 ```
 
 ### **Run and Test:**
-Visit [http://127.0.0.1:8000/bands_with_albums](http://127.0.0.1:8000/bands_with_albums) to see nested data.
+Visit `<Poridhi's Loadbalancer link>/bands_with_albums` to see nested data.
 
-![alt text](image-3.png)
+![alt text](./images/image-3.png)
 
 ## **Using Query Parameters**
 
@@ -215,9 +217,9 @@ async def bands_by_genre(genre: str):
 ```
 
 ### **Run and Test:**
-Visit [http://127.0.0.1:8000/bands_by_genre?genre=rock](http://127.0.0.1:8000/bands_by_genre?genre=rock).
+Visit `<Poridhi's Loadbalancer link>/bands_by_genre?genre=rock` to filter the data.
 
-![alt text](image-4.png)
+![alt text](./images/image-4.png)
 
 ## **Handling Request Bodies**
 
@@ -234,18 +236,8 @@ async def add_band(band: Band):
 ### **Run and Test:**
 - Use Swagger UI to test the `POST` request at `/bands`.
 
-    ![alt text](image-5.png)
-
-## **Interactive API Documentation**
-
-FastAPI automatically generates:
-- **Swagger UI:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-- **ReDoc:** [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
-
-
+    ![alt text](./images/image-5.png)
 
 ### **Conclusion**
 
 FastAPI makes API development fast, efficient, and highly interactive. Using Pydantic for validation, decorators for routing, and Uvicorn for deployment ensures a modern and scalable framework for building APIs.
-
-Let me know if you'd like detailed examples for advanced features like authentication, middleware, or database integration!
