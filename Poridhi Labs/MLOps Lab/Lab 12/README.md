@@ -24,9 +24,7 @@ The primary objective of this project is to create a real-time monitoring system
 
 ### Data Flow Diagram
 
-<!-- ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2012/images/Data-flow.svg?raw=true) -->
-
-![](./images/Data-flow.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/29fe36075fcff92236dfbffec952fc09aca5cebe/Poridhi%20Labs/MLOps%20Lab/Lab%2012/images/Data-flow.svg)
 
 ### Deployment Architecture
 
