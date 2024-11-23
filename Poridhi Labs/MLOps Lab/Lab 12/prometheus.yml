@@ -1,0 +1,13 @@
+# Prometheus Configuration for ML Model Monitoring
+#
+# This configuration sets up Prometheus to scrape metrics from the ML application.
+# It collects data and concept drift metrics every 5 seconds.
+
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: 'ml_monitoring'
+    static_configs:
+      - targets: ['app:8000']
+    metrics_path: '/metrics'

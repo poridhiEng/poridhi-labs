@@ -1,0 +1,69 @@
+services:
+  # Application service
+  app:
+    # Build the application from the current directory
+    build: .
+    # Expose the Flask app on port 5000 and Prometheus metrics on port 8000
+    ports:
+      - "5000:5000"  # Flask app
+      - "8000:8000"  # Prometheus metrics
+    # Mount the source code directory to the container
+    volumes:
+      - ./src:/app/src
+    # Connect the service to the monitoring network
+    networks:
+      - monitoring-network
+
+  # Prometheus service
+  prometheus:
+    # Use the latest Prometheus image from Docker Hub
+    image: prom/prometheus:latest
+    # Expose Prometheus on port 9090
+    ports:
+      - "9090:9090"
+    # Configure Prometheus with the provided configuration file and data storage
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    # Mount the Prometheus configuration file and data volume
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    # Connect the service to the monitoring network
+    networks:
+      - monitoring-network
+
+  # Grafana service
+  grafana:
+    # Use the latest Grafana OSS image from Docker Hub
+    image: grafana/grafana-oss:latest
+    # Expose Grafana on port 3000
+    ports:
+      - "3000:3000"
+    # Set environment variables for Grafana configuration
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+    # Mount the Grafana data volume
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    # Connect the service to the monitoring network
+    networks:
+      - monitoring-network
+    # Ensure Grafana starts after Prometheus
+    depends_on:
+      - prometheus
+
+# Define the monitoring network
+networks:
+  monitoring-network:
+    # Use the bridge network driver
+    driver: bridge
+
+# Define named volumes for data persistence
+volumes:
+  grafana-storage:
+  prometheus_data:
