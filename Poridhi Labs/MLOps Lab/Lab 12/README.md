@@ -26,6 +26,8 @@ The primary objective of this project is to create a real-time monitoring system
 
 <!-- ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2012/images/Data-flow.svg?raw=true) -->
 
+![](./images/Data-flow.svg)
+
 ### Deployment Architecture
 
 ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2012/images/deploy.svg?raw=true)
