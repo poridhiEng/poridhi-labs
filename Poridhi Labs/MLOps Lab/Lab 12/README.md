@@ -1,5 +1,5 @@
 
-# ML Model Drift Monitoring System Documentation
+# ML Model Drift Monitoring System
 
 This lab provides a comprehensive guide to implementing a Machine Learning Model Drift Monitoring System. The system is designed to detect and visualize drift in machine learning models, ensuring their reliability and performance over time. It focuses on a diamond price prediction model as a case study.
 
