@@ -14,6 +14,27 @@ We will create a Bookstore API that allows users to perform CRUD operations (Cre
 - Deploying the application in Kubernetes.
 
 
+## Requirements
+
+**Install pip**
+
+To install pip for Python 3, run:
+
+```sh
+sudo apt update
+sudo apt install python3-pip
+```
+
+**Verify the installation**
+
+Once installed, you can verify that pip is working by checking its version:
+
+```sh
+pip3 --version
+```
+
+![alt text](image.png)
+
 ## **Step 1: Set Up the Environment**
 
 **Create a folder for the project**:
@@ -24,6 +45,53 @@ Create a folder for the project:
 mkdir fastapi-sqlmodel-app
 cd fastapi-sqlmodel-app
 ```
+
+**Step 2: Directory Structure**
+    
+Create the following file structure for the project:
+
+```
+fastapi-sqlmodel-app/
+│
+├── app/
+│   ├── __init__.py
+│   ├── database.py
+│   ├── models.py
+│   ├── schemas.py
+│   ├── crud.py
+│   ├── api.py
+│   └── main.py
+│
+├── .env
+├── requirements.txt
+└── README.md
+```
+
+
+**Commands to create the directory:**
+```sh
+# Create the root project directory
+mkdir -p fastapi-sqlmodel-app/app
+
+# Create the necessary Python files inside the 'app' directory
+touch fastapi-sqlmodel-app/app/__init__.py
+touch fastapi-sqlmodel-app/app/database.py
+touch fastapi-sqlmodel-app/app/models.py
+touch fastapi-sqlmodel-app/app/schemas.py
+touch fastapi-sqlmodel-app/app/crud.py
+touch fastapi-sqlmodel-app/app/api.py
+touch fastapi-sqlmodel-app/app/main.py
+
+# Create the .env file
+touch fastapi-sqlmodel-app/.env
+
+# Create the requirements.txt file
+touch fastapi-sqlmodel-app/requirements.txt
+
+# Create the README.md file
+touch fastapi-sqlmodel-app/README.md
+```
+
 
 **Create a `requirements.txt` file**:
 
@@ -53,31 +121,11 @@ starlette==0.41.3
 typing-extensions==4.12.2
 uvicorn==0.32.1
 ```
-Install dependencies using:
+
+**Install dependencies using:**
 
 ```bash
 pip install -r requirements.txt
-```
-
-## **Step 2: Directory Structure**
-    
-Create the following file structure for the project:
-
-```
-fastapi-sqlmodel-app/
-│
-├── app/
-│   ├── __init__.py
-│   ├── database.py
-│   ├── models.py
-│   ├── schemas.py
-│   ├── crud.py
-│   ├── api.py
-│   └── main.py
-│
-├── .env
-├── requirements.txt
-└── README.md
 ```
 
 ## **Step 3: Database Configuration**
@@ -342,7 +390,7 @@ First create a `manifests` folder in the root directory of the project.
 
 **1. mysql-secret.yaml**
 
-```bash
+```yaml
 apiVersion: v1
 kind: Secret
 metadata:
