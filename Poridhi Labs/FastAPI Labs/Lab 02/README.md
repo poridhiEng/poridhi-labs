@@ -48,6 +48,8 @@ Once installed, you can verify that pip is working by checking its version:
 pip3 --version
 ```
 
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2003/images/image.png)
+
 
 
 ## **Step 1: Set Up the Environment**
@@ -321,7 +323,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Get environment variables, with defaults if they don't exist
-ROOT_PATH = os.getenv("ROOT_PATH", "/")  # Default root_path if not found
 API_TITLE = os.getenv("API_TITLE", "BookStore API")  # Default title
 API_VERSION = os.getenv("API_VERSION", "1.0.0")  # Default version
 
@@ -357,7 +358,7 @@ docker run --name fastapi-mysql \
 -d mysql:latest
 ```
 
->NOTE: Replace `your_root_password` with your own password.
+>NOTE: Replace `your_root_password` with your own password. We have set the default database name as `fastapi_db`.
 
 **Check the container status using the command below:**
 
@@ -395,21 +396,28 @@ uvicorn app.main:app --reload
 
 **Access the Application:**
 
-This lab is intended to be run on **Poridhi's Cloud Platform**. After running the application, the API server will be forwarded to a load balancer.
+This lab is intended to be run on **Poridhi's Cloud Platform**. To access this appplication we need to create a LoadBalancer. 
 
-**Add the `<ROOT_PATH>` environment variable in the `.env` file:**
+To access the FastAPI Application with `Poridhi's Loadbalancer`, use the following steps:
 
-Copy the URL of the load balancer and add the `<ROOT_PATH>` environment variable in the `.env` file.
+**1. Find the `eth0` IP address for the Poridhi's VM currently you are running by using the command:**
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2002/images/image-20.png)
+```sh
+ifconfig
+```
 
-Access the API using the provided URL.
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2003/images/image-6.png)
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2002/images/image-1.png)
+**2. Go to Poridhi's LoadBalancer and Create a LoadBalancer with the `eht0` IP and port `8000` of the FastAPI**
+
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2003/images/image-7.png)
+
+
+**3. By using the Provided `URL` by LoadBalancer, you can access the FastAPI Application from any browser.**
 
 ## **Step 12: Testing the API**
 
-To test your FastAPI application and its API endpoints, you can use **`curl` commands**, a tool like **Postman**, or the **Swagger UI (accessible via `<ROOT_PATH>/docs`)** . Here's how you can test the endpoints with `curl`:
+To test your FastAPI application and its API endpoints, you can use **`curl` commands**, a tool like **Postman**, or the **Swagger UI**  . Here's how you can test the endpoints with `curl`:
 
 ### **1. List All Books**
 
