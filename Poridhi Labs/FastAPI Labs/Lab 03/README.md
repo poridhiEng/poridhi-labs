@@ -14,6 +14,11 @@ We will create a Bookstore API that allows users to perform CRUD operations (Cre
 - Deploying the application in Kubernetes.
 
 
+### Kubernetes Deployment Architecture
+
+![alt text](./images/arch.png)
+
+
 ## Requirements
 
 **Install pip**
@@ -33,7 +38,7 @@ Once installed, you can verify that pip is working by checking its version:
 pip3 --version
 ```
 
-![alt text](image.png)
+![alt text](./images/image.png)
 
 ## **Step 1: Set Up the Environment**
 
@@ -61,17 +66,18 @@ fastapi-sqlmodel-app/
 │   ├── crud.py
 │   ├── api.py
 │   └── main.py
-│
-├── .env
+|-- manifests/
 ├── requirements.txt
-└── README.md
 ```
 
 
-**Commands to create the directory:**
+**Commands to create the directories:**
+
 ```sh
 # Create the root project directory
 mkdir -p fastapi-sqlmodel-app/app
+
+mkdir -p fastapi-sqlmodel-app/manifests
 
 # Create the necessary Python files inside the 'app' directory
 touch fastapi-sqlmodel-app/app/__init__.py
@@ -82,14 +88,8 @@ touch fastapi-sqlmodel-app/app/crud.py
 touch fastapi-sqlmodel-app/app/api.py
 touch fastapi-sqlmodel-app/app/main.py
 
-# Create the .env file
-touch fastapi-sqlmodel-app/.env
-
 # Create the requirements.txt file
 touch fastapi-sqlmodel-app/requirements.txt
-
-# Create the README.md file
-touch fastapi-sqlmodel-app/README.md
 ```
 
 
@@ -333,12 +333,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Get environment variables, with defaults if they don't exist
-ROOT_PATH = os.getenv("ROOT_PATH", "/")  # Default root_path if not found
+
 API_TITLE = os.getenv("API_TITLE", "BookStore API")  # Default title
 API_VERSION = os.getenv("API_VERSION", "1.0.0")  # Default version
 
 # Create the FastAPI app instance using environment variables
-app = FastAPI(root_path=ROOT_PATH, title=API_TITLE, version=API_VERSION)
+app = FastAPI(title=API_TITLE, version=API_VERSION)
 
 # Define a route for "/"
 @app.get("/")
@@ -380,8 +380,8 @@ CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 ## **Step 10: Build and push the Docker Image**
 
 ```bash
-docker build -t <your-docker-username>/fastapi-sqlmodel-app:latest .
-docker push <your-docker-username>/fastapi-sqlmodel-app:latest
+docker build -t <your-dockerhub-username>/<imageName>:<version> .
+docker push <your-dockerhub-username>/<imageName>:<version>
 ```
 
 ## **Step 11: Deploy the Application in Kubernetes**
@@ -400,6 +400,8 @@ data:
   MYSQL_ROOT_PASSWORD: cm9vdA==  # base64 encoded 'root'
   MYSQL_DATABASE: ZmFzdGFwaV9kYg==       # base64 encoded 'fastapi_db'
 ```
+
+> Use base64 encoded value of Password and Database Name
 
 **2. mysql-pv.yaml**
 
@@ -500,7 +502,7 @@ metadata:
 data:
   API_TITLE: "BookStore API"
   API_VERSION: "1.0.0"
-  DATABASE_URL: "mysql+pymysql://root:$(MYSQL_ROOT_PASSWORD)@mysql:3306/$(MYSQL_DATABASE)"
+  DATABASE_URL: "mysql+pymysql://root:root@mysql:3306/fastapi_db"
 ```
 
 **7. fastapi-deployment.yaml**
@@ -522,7 +524,7 @@ spec:
     spec:
       containers:
       - name: fastapi-app
-        image: <your-docker-username>/fastapi-sqlmodel-app:latest
+        image: <your-docker-username>/<image_name>:<version>
         ports:
         - containerPort: 8000
         envFrom:
@@ -561,15 +563,185 @@ spec:
 **Apply the Kubernetes Manifests**
 
 ```bash
-kubectl apply -f manifests/
+kubectl apply -f manifests/*
 ```
 
 **Verify the Application**
 
 ```bash
-kubectl get pods
-kubectl get services
+kubectl get all
 ```
+
+![alt text](./images/image-1.png)
 
 ## **Step 12: Access the Application**
 
+To access the FastAPI Application with `Poridhi's Loadbalancer`, use the following steps:
+
+**1. Find the `eth0` IP address for the Poridhi's VM currently you are running by using the command:**
+
+```sh
+ifconfig
+```
+
+![alt text](./images/image-6.png)
+
+**2. Go to Poridhi's LoadBalancer and Create a LoadBalancer with the `eht0` IP and port `Nodeport` of the FastAPI service Nodeport.**
+
+
+You can get the FlaskAPI service Nodeport by running this command:
+
+```sh
+kubectl get svc
+```
+
+![alt text](./images/image-7.png)
+
+
+**3. By using the Provided `URL` by LoadBalancer, you can access the FastAPI Application from any browser.**
+
+
+## **Step 13: Testing the API**
+
+To test your FastAPI application and its API endpoints, you can use **`curl` commands**, a tool like **Postman**, or the **Swagger UI**. Here's how you can test the endpoints with `curl`:
+
+### **1. List All Books**
+
+**GET /api/v1/books/**  
+
+Retrieve a list of all books in the database.
+
+```bash
+curl -X GET "https://66dbf2e46722fdb9097e9eb5-lb-716.bm-east.lab.poridhi.io/api/v1/books/" -H "accept: application/json" | jq .
+```
+
+![alt text](./images/image-2.png)
+
+>NOTE: The `jq` command is used to format the JSON response. If you don't have `jq` installed, install it using `sudo apt-get install jq` on Linux.
+
+### **2. Create a New Book**
+
+**POST /api/v1/books/**
+
+Create a new book by sending a JSON payload.
+
+```bash
+curl -X POST "https://66dbf2e46722fdb9097e9eb5-lb-716.bm-east.lab.poridhi.io/api/v1/books/" \
+-H "accept: application/json" \
+-H "Content-Type: application/json" \
+-d '{
+  "title": "The Great Gatsby",
+  "author": "F. Scott Fitzgerald",
+  "year": 1925,
+  "price": 10.99,
+  "in_stock": true,
+  "description": "A novel set in the 1920s."
+}' | jq .
+```
+
+![alt text](./images/image-3.png)
+
+
+
+### **3. Get a Specific Book by ID**
+
+**GET /api/v1/books/{book_id}**  
+Replace `{book_id}` with the ID of the book you want to retrieve.
+
+```bash
+curl -X GET "http://127.0.0.1:8000/api/v1/books/9" -H "accept: application/json" | jq .
+```
+
+![alt text](./images/image-4.png)
+
+### **4. Update a Book**
+
+**PUT /api/v1/books/{book_id}**
+
+Replace `{book_id}` with the ID of the book to update. Include only the fields you want to change in the payload.
+
+```bash
+curl -X PUT "http://127.0.0.1:8000/api/v1/books/9" \
+-H "accept: application/json" \
+-H "Content-Type: application/json" \
+-d '{
+  "price": 20.99,
+  "in_stock": false
+}' | jq .
+```
+
+### **5. Delete a Book**
+
+**DELETE /api/v1/books/{book_id}**
+
+Replace `{book_id}` with the ID of the book you want to delete.
+
+```bash
+curl -X DELETE "http://127.0.0.1:8000/api/v1/books/9" -H "accept: application/json" | jq .
+```
+![alt text](./images/image-5.png)
+
+
+### **Testing via Swagger UI**
+
+To test the API endpoints using Swagger UI, follow these steps:
+
+#### **Navigate to Loadbalancer UI in your browser.**
+
+![alt text](./images/image-9.png)
+
+Now use the interactive interface to explore and test the API endpoints.
+
+**1. List All Books**
+
+**GET /api/v1/books/**
+
+Get a list of all books in the database. Click on the **Try it out** button and then **Execute** to see the response.
+
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2002/images/image-9.png)
+
+**Output:**
+
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2002/images/image-10.png)
+
+### **2. Create a New Book**
+
+**POST /api/v1/books/**
+
+Create a new book by sending a JSON payload. Click on the **Try it out** button and then **Execute** to see the response.
+
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2002/images/image-11.png)
+
+**Output:**
+
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2002/images/image-12.png)
+
+### **3. Get a Specific Book by ID**
+
+**GET /api/v1/books/{book_id}**
+
+Replace `{book_id}` with the ID of the book you want to retrieve.
+
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2002/images/image-13.png)
+
+**Output:**
+
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2002/images/image-14.png)
+
+Now, continue testing the other endpoints in a similar manner.
+
+### **4. Update a Book**
+
+**PUT /api/v1/books/{book_id}**
+
+Replace `{book_id}` with the ID of the book to update. Include only the fields you want to change in the payload.
+
+### **5. Delete a Book**
+
+**DELETE /api/v1/books/{book_id}**
+
+Replace `{book_id}` with the ID of the book you want to delete. Click on the **Try it out** button and then **Execute** to see the response.
+
+## Conclusion
+
+So we have successfully created a FastAPI application and created a Docker Image. Then we have deployed the setup in Kubernetes. This setup allows you to perform CRUD operations on a database of books, and you can extend this foundation to build more complex APIs.

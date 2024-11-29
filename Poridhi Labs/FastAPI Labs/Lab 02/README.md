@@ -29,6 +29,25 @@ We will create a Bookstore API that allows users to perform CRUD operations (Cre
 - [Verify the Database](#step-13-verify-the-database)
 
 
+## Requirements
+
+**Install pip**
+
+To install pip for Python 3, run:
+
+```sh
+sudo apt update
+sudo apt install python3-pip
+```
+
+**Verify the installation**
+
+Once installed, you can verify that pip is working by checking its version:
+
+```sh
+pip3 --version
+```
+
 ## **Step 1: Set Up the Environment**
 
 **Create a folder for the project**:
