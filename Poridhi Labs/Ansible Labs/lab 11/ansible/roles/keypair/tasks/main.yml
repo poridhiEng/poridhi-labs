@@ -1,0 +1,6 @@
+---
+- name: Create key pair using key_material obtained using 'file' lookup plugin
+  amazon.aws.ec2_key:
+    name: "{{ key_name }}"
+    key_material: "{{ lookup('file', private_key_path + '.pub') }}"
+  register: key_pair

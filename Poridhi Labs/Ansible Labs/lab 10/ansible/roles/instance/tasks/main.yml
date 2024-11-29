@@ -1,0 +1,20 @@
+---
+- name: Launch EC2 instance
+  amazon.aws.ec2_instance:
+    name: my_instance
+    key_name: "{{ key_name }}"
+    instance_type: "{{ instance_type }}"
+    image_id: "{{ ami }}"
+    region: "{{ region }}"
+    vpc_subnet_id: "{{ subnet.subnet.id }}"
+    security_group: "{{ sg.group_id }}"
+    network:
+      assign_public_ip: true
+    wait: yes
+    tags:
+      Name: my_instance
+  register: ec2_instance
+
+- name: Output instance information
+  debug:
+    msg: "EC2 instance launched with ID: {{ ec2_instance.instance_ids[0] }} and Public IP: {{ ec2_instance.instances[0].public_ip_address }}"

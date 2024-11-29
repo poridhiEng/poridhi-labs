@@ -1,0 +1,13 @@
+[ubuntu]
+ubuntu-instance ansible_host={{ ubuntu_instance_ip }} ansible_user=ubuntu
+
+[amazon]
+amazonlinux-instance ansible_host={{ amazon_instance_ip }} ansible_user=ec2-user
+
+[redhat]
+redhat-instance ansible_host={{ redhat_instance_ip }} ansible_user=ec2-user
+
+[launched:children]
+ubuntu
+amazon
+redhat

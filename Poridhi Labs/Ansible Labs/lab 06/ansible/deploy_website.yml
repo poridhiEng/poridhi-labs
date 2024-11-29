@@ -1,0 +1,30 @@
+---
+- name: Deploy two different websites on Nginx
+  hosts: webservers
+  become: yes
+  vars_files:
+    - vars/websites.yml
+  tasks:
+    - name: Update apt repository cache
+      apt:
+        update_cache: yes
+        
+    - name: Ensure Nginx is installed
+      apt:
+        name: nginx
+        state: present
+      tags: nginx
+
+    - name: Copy website files
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+      when: inventory_hostname == item.name
+      with_items: "{{ websites }}"
+      notify: restart nginx
+
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted

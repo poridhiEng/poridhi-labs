@@ -1,0 +1,10 @@
+---
+- name: Create VPC, subnet, route table, internet gateway, security group, ec2 instances
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  roles:
+    - vpc
+    - keypair
+    - security
+    - instance

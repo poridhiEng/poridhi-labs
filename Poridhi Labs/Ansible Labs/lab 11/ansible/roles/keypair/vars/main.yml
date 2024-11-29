@@ -1,0 +1,3 @@
+---
+key_name: "my-key-pair"
+private_key_path: "~/.ssh/id_rsa" # Replace with your private key file path

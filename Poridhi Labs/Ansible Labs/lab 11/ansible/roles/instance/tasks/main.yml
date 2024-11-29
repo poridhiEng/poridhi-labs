@@ -1,0 +1,52 @@
+- name: Launch EC2 instances
+  amazon.aws.ec2_instance:
+    name: "{{ item.name }}"
+    key_name: "{{ key_name }}"
+    instance_type: "{{ item.instance_type }}"
+    image_id: "{{ item.ami_id }}"
+    region: "{{ region }}"
+    vpc_subnet_id: "{{ subnet.subnet.id }}"
+    security_group: "{{ sg.group_id }}"
+    network:
+      assign_public_ip: true
+    tags:
+      Name: "{{ item.name }}"
+    wait: yes
+    state: present
+  with_items:
+    - { name: "Ubuntu-Instance", ami_id: "ami-060e277c0d4cce553", instance_type: "t2.micro" }
+    - { name: "AmazonLinux-Instance", ami_id: "ami-009c9406091cbd65a", instance_type: "t2.micro" }
+    - { name: "RedHat-Instance", ami_id: "ami-0b748249d064044e8", instance_type: "t2.micro" }
+  register: ec2
+
+# - name: Debug EC2 module output
+#   debug:
+#     var: ec2
+
+- name: Define group mappings
+  set_fact:
+    group_mappings:
+      Ubuntu-Instance: ubuntu
+      AmazonLinux-Instance: amazon
+      RedHat-Instance: redhat
+
+- name: Collect instance IPs and add to groups
+  set_fact:
+    instance_ips: "{{ instance_ips | default({}) | combine({ item.tags.Name: item.network_interfaces[0].association.public_ip }) }}"
+  with_items: "{{ ec2.results | map(attribute='instances') | flatten }}"
+  when: item.state.name == 'running'
+
+- name: Generate hosts.ini
+  template:
+    src: hosts.ini.j2
+    dest: ./hosts.ini
+  vars:
+    ubuntu_instance_ip: "{{ instance_ips['Ubuntu-Instance'] }}"
+    amazon_instance_ip: "{{ instance_ips['AmazonLinux-Instance'] }}"
+    redhat_instance_ip: "{{ instance_ips['RedHat-Instance'] }}"
+
+- name: Display instance details
+  debug:
+    msg: "Instance {{ item.instance_id }} with public IP {{ item.network_interfaces[0].association.public_ip }} is launched and running."
+  with_items: "{{ ec2.results | map(attribute='instances') | flatten }}"
+  when: item.state.name == 'running'

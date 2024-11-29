@@ -1,0 +1,39 @@
+---
+- name: Create VPC
+  amazon.aws.ec2_vpc_net:
+    name: my_vpc
+    cidr_block: "{{ vpc_cidr_block }}"
+    region: "{{ region }}"
+    tags:
+      Name: my_vpc
+  register: vpc
+
+- name: Create subnet
+  amazon.aws.ec2_vpc_subnet:
+    vpc_id: "{{ vpc.vpc.id }}"
+    cidr: "{{ subnet_cidr_block }}"
+    region: "{{ region }}"
+    tags:
+      Name: my_subnet
+  register: subnet
+
+- name: Create internet gateway
+  amazon.aws.ec2_vpc_igw:
+    vpc_id: "{{ vpc.vpc.id }}"
+    region: "{{ region }}"
+    tags:
+      Name: my_igw
+  register: igw
+
+- name: Set up public subnet route table
+  amazon.aws.ec2_vpc_route_table:
+    vpc_id: "{{ vpc.vpc.id }}"
+    region: "{{ region }}"
+    tags:
+      Name: Public-route-table
+    subnets:
+      - "{{ subnet.subnet.id }}"
+    routes:
+      - dest: 0.0.0.0/0
+        gateway_id: "{{ igw.gateway_id }}"
+  register: public_route_table

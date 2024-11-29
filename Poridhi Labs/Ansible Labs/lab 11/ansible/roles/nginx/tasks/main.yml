@@ -1,0 +1,52 @@
+---
+- name: Install Python 3 on Amazon Linux
+  when: ansible_os_family == "RedHat" and ansible_distribution == "Amazon"
+  dnf:
+    name: python3
+    state: present
+
+- name: Install Python 3 on Red Hat
+  when: ansible_os_family == "RedHat" and ansible_distribution != "Amazon"
+  dnf:
+    name: python3
+    state: present
+
+- name: Install NGINX on Ubuntu
+  when: ansible_os_family == "Debian"
+  apt:
+    name: nginx
+    state: present
+    update_cache: yes
+
+- name: Install NGINX on Amazon Linux
+  when: ansible_os_family == "RedHat" and ansible_distribution == "Amazon"
+  dnf:
+    name: nginx
+    state: present
+
+- name: Install NGINX on Red Hat
+  when: ansible_os_family == "RedHat" and ansible_distribution != "Amazon"
+  dnf:
+    name: nginx
+    state: present
+
+- name: Start and enable NGINX service on Ubuntu
+  when: ansible_os_family == "Debian"
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: Start and enable NGINX service on Amazon Linux
+  when: ansible_os_family == "RedHat" and ansible_distribution == "Amazon"
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: Start and enable NGINX service on Red Hat
+  when: ansible_os_family == "RedHat" and ansible_distribution != "Amazon"
+  service:
+    name: nginx
+    state: started
+    enabled: yes

@@ -1,0 +1,23 @@
+---
+- name: Create security group
+  amazon.aws.ec2_security_group:
+    name: "{{ security_group_name }}"
+    description: "{{ security_group_description }}"
+    vpc_id: "{{ vpc.vpc.id }}"
+    region: "{{ region }}"
+    rules:
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 443
+        to_port: 443
+        cidr_ip: 0.0.0.0/0
+    tags:
+      Name: "{{ security_group_name }}"
+  register: sg

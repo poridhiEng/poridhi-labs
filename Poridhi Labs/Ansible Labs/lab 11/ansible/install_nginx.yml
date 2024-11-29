@@ -1,0 +1,6 @@
+---
+- name: Install NGINX on different instances
+  hosts: launched
+  become: yes
+  roles:
+    - nginx

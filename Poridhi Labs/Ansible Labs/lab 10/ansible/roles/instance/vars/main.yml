@@ -1,0 +1,5 @@
+---
+ami: "ami-060e277c0d4cce553"  # Replace with your preferred AMI ID
+instance_type: "t2.micro"
+key_name: "my-key-pair"
+region: "ap-southeast-1"
