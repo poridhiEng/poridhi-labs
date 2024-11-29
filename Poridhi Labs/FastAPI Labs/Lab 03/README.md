@@ -742,6 +742,8 @@ Replace `{book_id}` with the ID of the book to update. Include only the fields y
 
 Replace `{book_id}` with the ID of the book you want to delete. Click on the **Try it out** button and then **Execute** to see the response.
 
+Now, continue testing the other endpoints in a similar manner.
+
 ## Conclusion
 
 So we have successfully created a FastAPI application and created a Docker Image. Then we have deployed the setup in Kubernetes. This setup allows you to perform CRUD operations on a database of books, and you can extend this foundation to build more complex APIs.
