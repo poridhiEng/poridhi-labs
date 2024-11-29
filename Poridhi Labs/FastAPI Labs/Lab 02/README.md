@@ -48,6 +48,8 @@ Once installed, you can verify that pip is working by checking its version:
 pip3 --version
 ```
 
+
+
 ## **Step 1: Set Up the Environment**
 
 **Create a folder for the project**:

@@ -6,6 +6,7 @@ This guide walks you through the process of integrating FastAPI with SQLModel to
 
 
 ## Overview of the Project
+
 We will create a Bookstore API that allows users to perform CRUD operations (Create, Read, Update, Delete) on a database of books. The project includes features like:
 
 - Defining a database schema using SQLModel.
@@ -16,14 +17,14 @@ We will create a Bookstore API that allows users to perform CRUD operations (Cre
 
 ### Kubernetes Deployment Architecture
 
-![alt text](./images/arch.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2003/images/arch.png)
 
 
 ## Requirements
 
 **Install pip**
 
-To install pip for Python 3, run:
+To install pip for Python3, run:
 
 ```sh
 sudo apt update
@@ -38,7 +39,7 @@ Once installed, you can verify that pip is working by checking its version:
 pip3 --version
 ```
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2003/images/image.png)
 
 ## **Step 1: Set Up the Environment**
 
@@ -572,7 +573,7 @@ kubectl apply -f manifests/*
 kubectl get all
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2003/images/image-1.png)
 
 ## **Step 12: Access the Application**
 
@@ -584,7 +585,7 @@ To access the FastAPI Application with `Poridhi's Loadbalancer`, use the followi
 ifconfig
 ```
 
-![alt text](./images/image-6.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2003/images/image-6.png)
 
 **2. Go to Poridhi's LoadBalancer and Create a LoadBalancer with the `eht0` IP and port `Nodeport` of the FastAPI service Nodeport.**
 
@@ -595,7 +596,7 @@ You can get the FlaskAPI service Nodeport by running this command:
 kubectl get svc
 ```
 
-![alt text](./images/image-7.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2003/images/image-7.png)
 
 
 **3. By using the Provided `URL` by LoadBalancer, you can access the FastAPI Application from any browser.**
@@ -615,7 +616,7 @@ Retrieve a list of all books in the database.
 curl -X GET "https://66dbf2e46722fdb9097e9eb5-lb-716.bm-east.lab.poridhi.io/api/v1/books/" -H "accept: application/json" | jq .
 ```
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2003/images/image-2.png)
 
 >NOTE: The `jq` command is used to format the JSON response. If you don't have `jq` installed, install it using `sudo apt-get install jq` on Linux.
 
@@ -639,7 +640,7 @@ curl -X POST "https://66dbf2e46722fdb9097e9eb5-lb-716.bm-east.lab.poridhi.io/api
 }' | jq .
 ```
 
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2003/images/image-3.png)
 
 
 
@@ -652,7 +653,7 @@ Replace `{book_id}` with the ID of the book you want to retrieve.
 curl -X GET "http://127.0.0.1:8000/api/v1/books/9" -H "accept: application/json" | jq .
 ```
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2003/images/image-4.png)
 
 ### **4. Update a Book**
 
@@ -679,7 +680,7 @@ Replace `{book_id}` with the ID of the book you want to delete.
 ```bash
 curl -X DELETE "http://127.0.0.1:8000/api/v1/books/9" -H "accept: application/json" | jq .
 ```
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2003/images/image-5.png)
 
 
 ### **Testing via Swagger UI**
@@ -688,7 +689,7 @@ To test the API endpoints using Swagger UI, follow these steps:
 
 #### **Navigate to Loadbalancer UI in your browser.**
 
-![alt text](./images/image-9.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2003/images/image-9.png)
 
 Now use the interactive interface to explore and test the API endpoints.
 
