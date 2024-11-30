@@ -17,7 +17,7 @@ We will create a Bookstore API that allows users to perform CRUD operations (Cre
 
 ### Kubernetes Deployment Architecture
 
-![](./images/k8s.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2003/images/k8s.drawio.svg)
 
 
 ## Requirements
