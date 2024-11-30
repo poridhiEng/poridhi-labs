@@ -355,6 +355,9 @@ def on_startup():
 app.include_router(router, prefix="/api/v1")
 ```
 
+> NOTE: As we will deploy the FlaskAPP in Kubernetes, we will pass the required enviorment variables in the Kubernetes manifest file.
+
+
 ## **Step 9: Dockerize the Application**
 
 First create a `Dockerfile` in the root directory of the project. Add the following code to the `Dockerfile`:
@@ -381,8 +384,8 @@ CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 ## **Step 10: Build and push the Docker Image**
 
 ```bash
-docker build -t <your-dockerhub-username>/<imageName>:<version> .
-docker push <your-dockerhub-username>/<imageName>:<version>
+docker build -t <your-dockerhub-userName>/<imageName>:<version> .
+docker push <your-dockerhub-userName>/<imageName>:<version>
 ```
 
 ## **Step 11: Deploy the Application in Kubernetes**
@@ -525,7 +528,7 @@ spec:
     spec:
       containers:
       - name: fastapi-app
-        image: <your-docker-username>/<image_name>:<version>
+        image: <your-dockerhub-userName>/<image_name>:<version>
         ports:
         - containerPort: 8000
         envFrom:
@@ -618,7 +621,7 @@ curl -X GET "https://66dbf2e46722fdb9097e9eb5-lb-716.bm-east.lab.poridhi.io/api/
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/FastAPI%20Labs/Lab%2003/images/image-2.png)
 
->NOTE: The `jq` command is used to format the JSON response. If you don't have `jq` installed, install it using `sudo apt-get install jq` on Linux.
+>NOTE: The `jq` command is used to format the JSON response. If you don't have `jq` installed, you can install it using `sudo apt-get install jq` on Linux.
 
 ### **2. Create a New Book**
 
