@@ -8,7 +8,7 @@ Feast integrates with your existing tools (e.g., databases, analytics) and simpl
 
 ## FEAST Architecture
 
-![](./feast_drawio.svg)
+![](./images/feast_drawio.svg)
 
 This architecture diagram provides an overview of how Feast manages and serves machine learning features. Here's a simplified explanation:
 
@@ -167,7 +167,7 @@ feast apply
 
 #### Output
 
-![alt text](image.png)
+![alt text](./images/image.png)
 
 
 
