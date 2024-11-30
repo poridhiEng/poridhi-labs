@@ -36,7 +36,6 @@ Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table,
    ```bash
    mkdir terraform-aws-prometheus
    ```
-
    - Generate a key pair to use for accessing the EC2 instance:
    
    ```bash
