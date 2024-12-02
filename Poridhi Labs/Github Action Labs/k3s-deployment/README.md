@@ -2,7 +2,7 @@
 
 This project aims to automate the deployment of a *lightweight Kubernetes distribution (k3s)* on AWS using `GitHub Actions` for orchestration, `Pulumi` for infrastructure as code (IaC), and `Ansible` for configuration management.
 
-![alt text](./images/k3s-deployment1.drawio.svg)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/k3s-deployment/images/k3s-deployment1.drawio.svg)
 
 ### Key Components
 
@@ -646,7 +646,7 @@ git push
 
 **1. Check GitHub Actions logs**
 
-![alt text](https://github.com/Konami33/k3s-deployment/raw/main/images/actions.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/k3s-deployment/images/actions.png)
 
 **2. After successful completion of the workflows, we can SSH into the Git-runner instance**
 
@@ -659,7 +659,7 @@ git push
   ```sh
   ssh -i ~/.ssh/my-key-pair.pem ubuntu@<git-runner-ip>
   ```
-  ![alt text](https://github.com/Konami33/k3s-deployment/raw/main/images/Screenshot%202024-07-04%20061633.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/k3s-deployment/images/Screenshot%202024-07-04%20061633.png)
 
 - Now you are in the Git-runner instance
 - You check if the ansible directory is copied successfully
@@ -667,7 +667,7 @@ git push
   ls
   cd ansible
   ```  
-  ![alt text](https://github.com/Konami33/k3s-deployment/raw/main/images/Screenshot%202024-07-05%20123554.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/k3s-deployment/images/Screenshot%202024-07-05%20123554.png)
 
 3. SSH into Master node instance
 
@@ -683,7 +683,7 @@ git push
   ```
   here you can see the Master node and the worker node has been deployed successfully and in `ready` state
 
-  ![alt text](https://github.com/Konami33/k3s-deployment/raw/main/images/Screenshot%202024-07-05%20113714.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/k3s-deployment/images/Screenshot%202024-07-05%20113714.png)
 
 ## Lets deploy a NGINX pod in the k3s cluster.
 
@@ -726,7 +726,7 @@ git push
 
 Here we can see our nginx pod is deployed in the k3s cluster and working  fine.
 
-![alt text](https://github.com/Konami33/k3s-deployment/raw/main/images/Screenshot%202024-07-05%20114808.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/k3s-deployment/images/Screenshot%202024-07-05%20114808.png)
 
 ---
 
