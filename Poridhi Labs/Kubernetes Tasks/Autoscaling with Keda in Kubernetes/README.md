@@ -162,6 +162,15 @@ RUN go build -o main .
 CMD ["./main"]
 ```
 
+## Building and pushing the Docker Image
+
+```sh
+docker build -t <DOCKERHUB_USERNAME>/<IMAGE_NAME>:<VERSION> .
+docker push <DOCKERHUB_USERNAME>/<IMAGE_NAME>:<VERSION>
+```
+
+![alt text](image.png)
+
 
 ##  kubernetes/deployment.yaml
 
@@ -173,9 +182,9 @@ metadata:
   labels:
     app: goprometheus
 spec:
-  replicas: 1  # Starting with 1 replica
+  replicas: 2 # Starting with 2 replica
   selector:
-    matchLabels:
+    matchLabe ls:
       app: goprometheus
   template:
     metadata:
