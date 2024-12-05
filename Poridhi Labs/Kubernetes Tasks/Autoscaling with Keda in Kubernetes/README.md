@@ -1,20 +1,22 @@
 # Autoscaling with Keda and Prometheus Using Custom Metrics
 
-This documentation explains how to autoscale Kubernetes pods based on custom Prometheus metrics using Keda (Kubernetes Event-Driven Autoscaler). The process includes creating a custom metric in Go, deploying the app on Kubernetes, configuring Prometheus for metrics scraping, and setting up Keda to enable autoscaling based on these metrics.
 
-![](./images/auto.drawio.svg)
+Autoscaling with KEDA and Prometheus Using Custom Metrics
+This documentation provides a step-by-step guide to implement autoscaling for Kubernetes pods using KEDA (Kubernetes Event-Driven Autoscaler), Prometheus, and custom metrics. The process includes creating a custom metric in Go, deploying the app on Kubernetes, configuring Prometheus for metrics scraping, and setting up Keda to enable autoscaling based on these metrics. By combining these tools, Kubernetes can scale workloads dynamically based on real-time metrics derived from the application.
+
+![](./images/keda1.drawio.svg)
 
 ## Key Components Overview
 
 **Prometheus**
 
-Prometheus is an open-source monitoring and alerting toolkit. It collects and stores metrics as time series data, characterized by a metric name, timestamp, and optional key-value pairs called labels. It’s widely used for Kubernetes monitoring because of its efficient scraping and querying mechanisms.
+Prometheus is an open-source monitoring and alerting toolkit designed for reliability and scalability. It uses a pull-based approach to scrape metrics from endpoints, storing them as time-series data. Prometheus is commonly integrated with Kubernetes for monitoring workloads and cluster health.
 
-**Keda**
+**KEDA**
 
-Keda is an event-driven autoscaler for Kubernetes that scales workloads based on custom metrics or events like queue length, message rates, or Prometheus queries.
+KEDA is an open-source event-driven autoscaler that extends Kubernetes Horizontal Pod Autoscalers (HPA) by enabling scaling based on various custom metrics or external triggers. Examples include message queue length, database records, or Prometheus queries.
 
-## Requirements
+## Prerequirements
 
 ### **1. Install Go**
 
@@ -42,8 +44,6 @@ sudo apt update && sudo apt upgrade -y
 sudo tar -xvf go1.21.0.linux-amd64.tar.gz -C /usr/local
 ```
 
----
-
 **Set Up Go Environment Variables**
 
 ```bash
@@ -58,6 +58,7 @@ Check the installed Go version to ensure it's working:
 ```bash
 go version
 ```
+
 **2. Install helm**
 
 Make sure you have helm installed on you machine or you can install this using the following command:
@@ -72,7 +73,9 @@ Check the helm version
 helm version
 ```
 
-## Go application
+## Go Application: Exposing Custom Metrics
+
+The following Go application exposes custom Prometheus metrics:
 
 ```go
 // main.go
@@ -148,7 +151,22 @@ func orderHandler(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-## Dockerfile
+### Code Explanation
+
+**Custom Metrics Defined:**
+
+- `http_requests_total_with_path`: Tracks HTTP requests by URL path.
+- `http_request_duration_seconds`: Measures request duration.
+- `product_order_total`: Counts the total number of product orders.
+
+**Key Functionality:**
+
+- `orderHandler`: Simulates order placement, increments counters, and tracks response times.
+- `/metrics`: Exposes metrics in Prometheus-compatible format.
+
+### Dockerize the Application
+
+Here is the Dockerfile to Dockerize the Go application.
 
 ```Dockerfile
 FROM golang:1.22-alpine
@@ -162,17 +180,27 @@ RUN go build -o main .
 CMD ["./main"]
 ```
 
-## Building and pushing the Docker Image
+### Build and Push the Docker Image
+
+Now build the docker image and push it to your dockerhub repository.
 
 ```sh
 docker build -t <DOCKERHUB_USERNAME>/<IMAGE_NAME>:<VERSION> .
 docker push <DOCKERHUB_USERNAME>/<IMAGE_NAME>:<VERSION>
 ```
 
+> NOTE: Make sure to update the <> values
+
 ![alt text](image.png)
 
 
-##  kubernetes/deployment.yaml
+##  Deploying on Kubernetes
+
+Now to deploy this application into kubernetes, we have to write Kubernetes manifests file.
+
+### Kubernetes Manifests Files
+
+**1. deployment.yaml**
 
 ```yaml
 apiVersion: apps/v1
@@ -209,7 +237,9 @@ spec:
             cpu: "250m"
 ```
 
-## kubernetes/service.yaml
+
+**2. service.yaml**
+
 ```yaml
 apiVersion: v1
 kind: Service
@@ -225,7 +255,8 @@ spec:
   type: ClusterIP
 ```
 
-## kubernetes/keda-scaledobject.yaml
+**3. keda-scaledobject.yaml**
+
 ```yaml
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
@@ -248,7 +279,8 @@ spec:
       query: sum(rate(product_order_total[5m])) * 300
 ```
 
-## prometheus-values.yaml
+**4. prometheus-values.yaml**
+
 ```yaml
 extraScrapeConfigs: |
   - job_name: 'goprometheus'
@@ -257,55 +289,74 @@ extraScrapeConfigs: |
       - targets: ['goprometheus-service.default.svc.cluster.local:8181']
 ```
 
-## helm installations
+## Helm installations and Upgrade
+
+**1. Install Prometheus**
 
 ```sh
-# Install Helm
-curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
-
-# Install Prometheus using Helm
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 helm install prometheus prometheus-community/prometheus -n prometheus --create-namespace
+```
 
-# Install KEDA
+**2. Install KEDA**
+
+```sh
 helm repo add kedacore https://kedacore.github.io/charts
 helm repo update
 helm install keda kedacore/keda --namespace keda --create-namespace
 ```
 
 
-## Build and deploy
+### Update the Prometheus Configuration
 
 ```sh
-# Build and push the Docker image
-docker build -t your-registry/goprometheuskeda:v1 .
-docker push your-registry/goprometheuskeda:v1
-
-# Update Prometheus configuration
 helm upgrade --install prometheus prometheus-community/prometheus -f prometheus-values.yaml -n prometheus
+```
 
-# Deploy the application
-kubectl apply -f kubernetes/deployment.yaml
-kubectl apply -f kubernetes/service.yaml
-kubectl apply -f kubernetes/keda-scaledobject.yaml
+## Deploy the application in kubernetes
+
+```sh
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+kubectl apply -f keda-scaledobject.yaml
 ```
 
 
-## test
+## Testing and Monitoring the setup
+
+This section demonstrates how to test the service scaling and monitor its behavior using Kubernetes tools
+
+**1. Port-forward service**
+
+Use the `kubectl port-forward` command to expose services locally for testing.
 
 ```sh
-# Port forward the service
 kubectl port-forward svc/goprometheus-service 8181:8181
-
 kubectl port-forward svc/prometheus-server -n prometheus 9090:80
+```
 
+2. Generate load manually:
+
+Execute the following command to send multiple requests to the service, simulating a basic load: 
+```sh
 # Generate load
 for i in {1..30}; do curl http://localhost:8181/product; done
+```
 
+3. Monitor resource scaling:
+
+Use the watch command to observe the pods, horizontal pod autoscaler (HPA), and scaled object in real time.
+
+```sh
 # Monitor scaling
 watch -n 1 'kubectl get pods,hpa,scaledobject'
 ```
+
+
+## Automated Load Testing with Python
+
+Now we will test scaling of the application automatically. The `load_test.py` script creates a simulated workload for the service. It generates high, no-load, and medium load phases to test the system's responsiveness and scalability.
 
 
 ## load_test.py
@@ -346,30 +397,51 @@ if __name__ == "__main__":
     main()
 ```
 
+Run the script using Python:
 
-I'll help you set up Grafana and create dashboards to visualize the metrics. Let's do this step by step.
+```sh
+python load_test.py
+```
 
-1. First, let's install Grafana using Helm:
+## Setting up Grafana for Visualization
+
+Now we will set up Grafana and create dashboards to visualize the metrics. Let's do this step by step.
+
+**1. First, let's install Grafana using Helm:**
 
 ```bash
-# Add Grafana Helm repository
 helm repo add grafana https://grafana.github.io/helm-charts
 helm repo update
-
-# Install Grafana
 helm install grafana grafana/grafana -n monitoring --create-namespace
 ```
 
-2. Get the admin password:
+2. Expose the Grafana service using Nodeport:
+
+```sh
+helm upgrade --install grafana grafana/grafana \
+  --namespace monitoring \
+  --set service.type=NodePort \
+  --set service.nodePort=30080
+```
+
+<!-- **3. Port-forward the Grafana service:**
+
+```bash
+kubectl port-forward svc/grafana -n monitoring 3000:80
+``` -->
+
+**4. Create a load-balancer to access Grafana.**
+
+
+
+**5. Get the admin password to login into Grafana:**
+
 ```bash
 kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode
 ```
 
-3. Access Grafana:
-```bash
-kubectl port-forward svc/grafana -n monitoring 3000:80
-```
-Then visit: http://localhost:3000 (login with admin and the password from step 2)
+
+## Create a Grafana Dashboard
 
 Now, let's create a dashboard to monitor our metrics. Here's the dashboard configuration:
 
@@ -650,53 +722,54 @@ Now, let's create a dashboard to monitor our metrics. Here's the dashboard confi
 
 To set up the dashboard:
 
-1. First, configure the Prometheus data source:
-   - In Grafana, go to Configuration → Data Sources
-   - Click "Add data source"
-   - Select "Prometheus"
-   - Set URL to: `http://prometheus-server.prometheus.svc.cluster.local`
-   - Click "Save & Test"
+**1. First, configure the Prometheus data source:**
 
-2. Import the dashboard:
-   - Go to Create → Import
-   - Paste the JSON configuration above
-   - Click "Load"
-   - Select your Prometheus data source
-   - Click "Import"
+- In Grafana, go to Configuration → Data Sources
+- Click "Add data source"
+- Select "Prometheus"
+- Set URL to: `http://prometheus-server.prometheus.svc.cluster.local`
+- Click "Save & Test"
 
-3. The dashboard includes:
-   - Request rate graph (shows requests per 5 minutes)
-   - Number of active pods
-   - Average response time
+**2. Import the dashboard:**
 
-To test the visualization:
+- Go to Create → Import
+- Paste the JSON configuration above
+- Click "Load"
+- Select your Prometheus data source
+- Click "Import"
 
-1. Run the load test script from earlier:
+**3. The dashboard includes:**
+
+- Request rate graph (shows requests per 5 minutes)
+- Number of active pods
+- Average response time
+
+
+### Test the visualization:
+
+**1. Run the load test script from earlier:**
+
 ```bash
 python load_test.py
 ```
 
-2. Watch the Grafana dashboard (http://localhost:3000) to see:
-   - Request rate increasing during high load
-   - Number of pods scaling up and down
-   - Response time variations
+**2. Watch the Grafana dashboard to see:**
 
-You can modify the dashboard by:
+- Request rate increasing during high load
+- Number of pods scaling up and down
+- Response time variations
+
+**You can modify the dashboard by:**
+
 - Adjusting time ranges
 - Adding more metrics
 - Creating alerts based on thresholds
 - Customizing visualization styles
 
 
+### **Conclusion**
 
-## nodeport
-
-```sh
-helm upgrade --install grafana grafana/grafana \
-  --namespace monitoring \
-  --set service.type=NodePort \
-  --set service.nodePort=30080
-```
+This guide demonstrated how to set up autoscaling using **KEDA** and **Prometheus** to manage Kubernetes workloads dynamically. By leveraging custom metrics, we configured real-time scaling, monitored performance with Grafana, and validated the setup with load tests. This event-driven approach ensures efficient resource usage, scalability, and responsiveness, providing a foundation for optimizing Kubernetes applications.
 
 
 
