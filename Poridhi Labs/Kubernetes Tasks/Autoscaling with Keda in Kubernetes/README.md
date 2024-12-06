@@ -485,10 +485,7 @@ Now, let's create a dashboard to monitor our metrics.
 
 **2. Build the dashboard:**
 
-This step-by-step guide explains how to manually create a Grafana dashboard to monitor specific metrics. Below is a breakdown of the steps:
-
-### **Step 2: Add Panels for Monitoring**
-Each panel represents a specific metric visualization. Here's how to add them:
+This step-by-step guide explains how to manually create a Grafana dashboard to monitor specific metrics. Each panel represents a specific metric visualization. Here's how to add them:
 
 #### **(a) Request Rate Panel**
 
@@ -523,8 +520,8 @@ count(kube_pod_status_ready{namespace="default", condition="true"})
 - This counts all pods in the `default` namespace where the `condition` is `true` (ready state).
 
 **3. Customize Panel**:
-   - Title: **Number of Pods**.
-   - Visualization Type: **Stat** (a single large number showing the current pod count).
+- Title: **Number of Pods**.
+- Visualization Type: **Stat** (a single large number showing the current pod count).
 **4. Save this panel.**
 
 #### **(c) Response Time Panel**
