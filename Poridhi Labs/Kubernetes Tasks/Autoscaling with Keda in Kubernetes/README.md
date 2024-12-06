@@ -4,7 +4,7 @@
 Autoscaling with KEDA and Prometheus Using Custom Metrics
 This documentation provides a step-by-step guide to implement autoscaling for Kubernetes pods using KEDA (Kubernetes Event-Driven Autoscaler), Prometheus, and custom metrics. The process includes creating a custom metric in Go, deploying the app on Kubernetes, configuring Prometheus for metrics scraping, and setting up Keda to enable autoscaling based on these metrics. By combining these tools, Kubernetes can scale workloads dynamically based on real-time metrics derived from the application.
 
-![](./images/keda1.drawio.svg)
+![alt text](./images/./images/keda1.drawio.svg)
 
 ## Key Components Overview
 
@@ -30,13 +30,11 @@ sudo apt update && sudo apt upgrade -y
 
 **Download the Latest Go Package**
 
-1. Visit the [Go Downloads page](https://go.dev/dl/) to check for the latest version.
+Visit the [Go Downloads page](https://go.dev/dl/) to check for the latest version. For example, to download version `1.21.0`:
 
-2. Use `wget` to download the Go tarball. For example, to download version `1.21.0`:
-
-   ```bash
-   wget https://go.dev/dl/go1.21.0.linux-amd64.tar.gz
-   ```
+```bash
+wget https://go.dev/dl/go1.21.0.linux-amd64.tar.gz
+```
 
 **Extract the Go Package**
 
@@ -59,6 +57,8 @@ Check the installed Go version to ensure it's working:
 go version
 ```
 
+![alt text](./images/image-1.png)
+
 **2. Install helm**
 
 Make sure you have helm installed on you machine or you can install this using the following command:
@@ -72,6 +72,24 @@ Check the helm version
 ```sh
 helm version
 ```
+
+![alt text](./images/image-2.png)
+
+**Configure helm:**
+
+If you are facing this issue:
+
+![alt text](./images/image-3.png)
+
+This is due to the fact that, Helm is unable to connect to the Kubernetes cluster. As helm could not find the the correct kubeconfig file in this directory: `~/.kube/config` To solve this issue, we have to set up the correct path of kubeconfig file. This will solve the issue.
+
+```sh
+kubectl config view --raw > /root/.kube/config
+chmod 600 /root/.kube/config
+```
+
+![alt text](./images/image-4.png)
+
 
 ## Go Application: Exposing Custom Metrics
 
@@ -191,7 +209,7 @@ docker push <DOCKERHUB_USERNAME>/<IMAGE_NAME>:<VERSION>
 
 > NOTE: Make sure to update the <> values
 
-![alt text](image.png)
+![alt text](./images/image.png)
 
 
 ##  Deploying on Kubernetes
@@ -210,9 +228,9 @@ metadata:
   labels:
     app: goprometheus
 spec:
-  replicas: 2 # Starting with 2 replica
+  replicas: 2  # Starting with 2 replica
   selector:
-    matchLabe ls:
+    matchLabels:
       app: goprometheus
   template:
     metadata:
@@ -225,7 +243,7 @@ spec:
     spec:
       containers:
       - name: goprometheus
-        image: your-registry/goprometheuskeda:v1  # Replace with your image
+        image: konami98/go_app_metrics:v1  # Replace with your image
         ports:
         - containerPort: 8181
         resources:
@@ -279,16 +297,6 @@ spec:
       query: sum(rate(product_order_total[5m])) * 300
 ```
 
-**4. prometheus-values.yaml**
-
-```yaml
-extraScrapeConfigs: |
-  - job_name: 'goprometheus'
-    scrape_interval: 15s
-    static_configs:
-      - targets: ['goprometheus-service.default.svc.cluster.local:8181']
-```
-
 ## Helm installations and Upgrade
 
 **1. Install Prometheus**
@@ -299,6 +307,8 @@ helm repo update
 helm install prometheus prometheus-community/prometheus -n prometheus --create-namespace
 ```
 
+![alt text](./images/image-5.png)
+
 **2. Install KEDA**
 
 ```sh
@@ -307,12 +317,28 @@ helm repo update
 helm install keda kedacore/keda --namespace keda --create-namespace
 ```
 
+![alt text](./images/image-6.png)
+
 
 ### Update the Prometheus Configuration
+
+**Create a `prometheus-values.yaml` which will contain the scrap configs of Prometheus**
+
+```yaml
+extraScrapeConfigs: |
+  - job_name: 'goprometheus'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['goprometheus-service.default.svc.cluster.local:8181']
+```
+
+Now update the prometheus:
 
 ```sh
 helm upgrade --install prometheus prometheus-community/prometheus -f prometheus-values.yaml -n prometheus
 ```
+
+![alt text](./images/image-7.png)
 
 ## Deploy the application in kubernetes
 
@@ -322,12 +348,18 @@ kubectl apply -f service.yaml
 kubectl apply -f keda-scaledobject.yaml
 ```
 
+![alt text](./images/image-8.png)
+
 
 ## Testing and Monitoring the setup
 
 This section demonstrates how to test the service scaling and monitor its behavior using Kubernetes tools
 
 **1. Port-forward service**
+
+Check the services. Go application is deployed in the `default` namespace while Prometheus service is deployed in the `prometheus` namespace using helm.
+
+![alt text](./images/image-10.png)
 
 Use the `kubectl port-forward` command to expose services locally for testing.
 
@@ -336,78 +368,46 @@ kubectl port-forward svc/goprometheus-service 8181:8181
 kubectl port-forward svc/prometheus-server -n prometheus 9090:80
 ```
 
-2. Generate load manually:
+![alt text](./images/image-9.png)
 
-Execute the following command to send multiple requests to the service, simulating a basic load: 
-```sh
-# Generate load
-for i in {1..30}; do curl http://localhost:8181/product; done
-```
+**2. Monitor resource scaling:**
 
-3. Monitor resource scaling:
-
-Use the watch command to observe the pods, horizontal pod autoscaler (HPA), and scaled object in real time.
+Use the watch command to observe the pods, horizontal pod autoscaler (HPA), and scaled object in real time. Open a new terminal and run this command:
 
 ```sh
 # Monitor scaling
 watch -n 1 'kubectl get pods,hpa,scaledobject'
 ```
 
+**Initial situation:**
 
-## Automated Load Testing with Python
+![alt text](./images/image-11.png)
 
-Now we will test scaling of the application automatically. The `load_test.py` script creates a simulated workload for the service. It generates high, no-load, and medium load phases to test the system's responsiveness and scalability.
+**3. Generate load manually:**
 
-
-## load_test.py
-
-```py
-import requests
-import time
-import threading
-from datetime import datetime
-
-def send_requests(duration_seconds, requests_per_second):
-    end_time = time.time() + duration_seconds
-    
-    while time.time() < end_time:
-        try:
-            response = requests.get('http://localhost:8181/product')
-            print(f"[{datetime.now().strftime('%H:%M:%S')}] Status: {response.status_code}")
-        except requests.exceptions.RequestException as e:
-            print(f"Error: {e}")
-        
-        # Sleep for 1/requests_per_second seconds
-        time.sleep(1.0 / requests_per_second)
-
-def main():
-    print("Starting load test...")
-    print("Phase 1: High load (30 seconds)")
-    send_requests(30, 5)  # 5 requests per second for 30 seconds
-    
-    print("\nPhase 2: No load (60 seconds)")
-    time.sleep(60)  # Wait for 60 seconds with no load
-    
-    print("\nPhase 3: Medium load (30 seconds)")
-    send_requests(30, 2)  # 2 requests per second for 30 seconds
-    
-    print("\nLoad test completed")
-
-if __name__ == "__main__":
-    main()
-```
-
-Run the script using Python:
+Execute the following command to send multiple requests to the service, simulating a basic load:
 
 ```sh
-python load_test.py
+for i in {1..30}; do curl http://localhost:8181/product; done
 ```
+
+![alt text](./images/image-12.png)
+
+After generating the load, wait for some time and monitor the watch terminal for the scaling. You will see hpa scale our deployment according to the load.
+
+![alt text](./images/image-13.png)
+
+**Rescaling:**
+
+When there is no load, it will automatically scale down to minimum replicas:
+
+![alt text](./images/image-14.png)
 
 ## Setting up Grafana for Visualization
 
-Now we will set up Grafana and create dashboards to visualize the metrics. Let's do this step by step.
+Now we will set up Grafana and create dashboards to visualize the metrics. Grafana will use prometheus as data source and show the mertrices in the dashboard. Let's do this step by step.
 
-**1. First, let's install Grafana using Helm:**
+**1. Install Grafana using Helm:**
 
 ```bash
 helm repo add grafana https://grafana.github.io/helm-charts
@@ -415,7 +415,11 @@ helm repo update
 helm install grafana grafana/grafana -n monitoring --create-namespace
 ```
 
-2. Expose the Grafana service using Nodeport:
+![alt text](./images/image-15.png)
+
+**2. Expose the Grafana service using Nodeport:**
+
+The Grafana service type will by default ClusterIP. We will convert it into NodePort service to access through `Poridhi's Loadbalancer`. 
 
 ```sh
 helm upgrade --install grafana grafana/grafana \
@@ -424,14 +428,28 @@ helm upgrade --install grafana grafana/grafana \
   --set service.nodePort=30080
 ```
 
+![alt text](./images/image-16.png)
+
 <!-- **3. Port-forward the Grafana service:**
 
 ```bash
 kubectl port-forward svc/grafana -n monitoring 3000:80
 ``` -->
 
-**4. Create a load-balancer to access Grafana.**
+**3. Create a load-balancer to access Grafana.**
 
+First get the MasterNode IP:
+
+```sh
+kubectl get nodes -o wide
+```
+
+![alt text](./images/image-17.png)
+
+
+Create a load-balancer with the MasterNode IP and the NodePort of the Grafana service(`30080`):
+
+![alt text](./images/image-18.png)
 
 
 **5. Get the admin password to login into Grafana:**
@@ -439,6 +457,10 @@ kubectl port-forward svc/grafana -n monitoring 3000:80
 ```bash
 kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode
 ```
+
+![alt text](./images/image-19.png)
+
+Use the password and login into Grafana.
 
 
 ## Create a Grafana Dashboard
@@ -724,15 +746,23 @@ To set up the dashboard:
 
 **1. First, configure the Prometheus data source:**
 
-- In Grafana, go to Configuration → Data Sources
+- In Grafana, go to Configuration → **`Data Sources`**
 - Click "Add data source"
 - Select "Prometheus"
+
+  ![alt text](./images/image-20.png)
+
 - Set URL to: `http://prometheus-server.prometheus.svc.cluster.local`
+
+  ![alt text](./images/image-21.png)
+
 - Click "Save & Test"
+
+  ![alt text](./images/image-22.png)
 
 **2. Import the dashboard:**
 
-- Go to Create → Import
+- Go to Dashboards → Create → Import
 - Paste the JSON configuration above
 - Click "Load"
 - Select your Prometheus data source
@@ -744,6 +774,53 @@ To set up the dashboard:
 - Number of active pods
 - Average response time
 
+Here is the Final Dashboard:
+
+![alt text](./images/image-23.png)
+
+## Automated Load Testing with Python
+
+Now we will test scaling of the application automatically. The `load_test.py` script creates a simulated workload for the service. It generates high, no-load, and medium load phases to test the system's responsiveness and scalability.
+
+
+## load_test.py
+
+```py
+import requests
+import time
+import threading
+from datetime import datetime
+
+def send_requests(duration_seconds, requests_per_second):
+    end_time = time.time() + duration_seconds
+    
+    while time.time() < end_time:
+        try:
+            response = requests.get('http://localhost:8181/product')
+            print(f"[{datetime.now().strftime('%H:%M:%S')}] Status: {response.status_code}")
+        except requests.exceptions.RequestException as e:
+            print(f"Error: {e}")
+        
+        # Sleep for 1/requests_per_second seconds
+        time.sleep(1.0 / requests_per_second)
+
+def main():
+    print("Starting load test...")
+    print("Phase 1: High load (30 seconds)")
+    send_requests(30, 5)  # 5 requests per second for 30 seconds
+    
+    print("\nPhase 2: No load (60 seconds)")
+    time.sleep(60)  # Wait for 60 seconds with no load
+    
+    print("\nPhase 3: Medium load (30 seconds)")
+    send_requests(30, 2)  # 2 requests per second for 30 seconds
+    
+    print("\nLoad test completed")
+
+if __name__ == "__main__":
+    main()
+```
+
 
 ### Test the visualization:
 
@@ -753,18 +830,19 @@ To set up the dashboard:
 python load_test.py
 ```
 
+![alt text](./images/image-24.png)
+
 **2. Watch the Grafana dashboard to see:**
 
 - Request rate increasing during high load
 - Number of pods scaling up and down
 - Response time variations
 
-**You can modify the dashboard by:**
+![alt text](./images/image-25.png)
 
-- Adjusting time ranges
-- Adding more metrics
-- Creating alerts based on thresholds
-- Customizing visualization styles
+After the load condition, the deployment will be scale down to minium replicas:
+
+![alt text](./images/image-26.png)
 
 
 ### **Conclusion**

@@ -2,7 +2,10 @@
 
 In the previous lab, we have created the AWS infrastucture (AWS VPC, Subnet, Internet Gateway, Route Table, Security Group, Key Pair, and EC2 Instance) using Ansible using a single playbook. Now in this lab we will organize the infrastucture into distinct roles to ensure modularity and ease of management.
 
-![alt text](https://github.com/Konami33/Ansible-Labs/raw/main/lab%2010/images/image-6.png)
+<!-- ![alt text](https://github.com/Konami33/Ansible-Labs/raw/main/lab%2010/images/image-6.png) -->
+
+
+![](./images/arch.drawio.svg)
 
 ## Project Structure
 
@@ -176,7 +179,6 @@ Now We need to configure our AWS credentials. We can do this by using the AWS cr
 - **vars/main.yml**
 
 ```yml
----
 vpc_cidr_block: "10.0.0.0/16"
 subnet_cidr_block: "10.0.1.0/24"
 region: "ap-southeast-1"

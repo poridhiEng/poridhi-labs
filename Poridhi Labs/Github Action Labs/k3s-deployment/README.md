@@ -69,27 +69,27 @@ The deployment process involves the following steps:
 
 ## Step 01: Setup Pulumi Project
 
-1. Create a new directory for your Pulumi project:
+**1. Create a new directory for your Pulumi project:**
 
-    ```bash
-    mkdir Infra
-    cd Infra
-    ```
-2. Install python venv
+```bash
+mkdir Infra
+cd Infra
+```
+**2. Install python venv**
 
-    ```sh
-    sudo apt-get update
-    sudo apt install
-    ```
-3. nitialize a new Pulumi AWS Python project:
+```sh
+sudo apt-get update
+sudo apt install
+```
+**3. Initialize a new Pulumi AWS Python project:**
 
-    ```bash
-    pulumi new aws-python
-    ```
+```bash
+pulumi new aws-python
+```
 
-4. **Define AWS Resources to be created using PULUMI**
+**4. Define AWS Resources to be created using PULUMI**
 
-    Edit the Python scripts (`__main__.py`) in your PULUMI project:
+Edit the Python scripts (`__main__.py`) in your PULUMI project:
 
 ```python
 import os
@@ -288,15 +288,15 @@ pulumi.export('worker2_private_ip', worker_instance_2.private_ip)
 
 **1. Save secrets and AWS credentials as Github secrets**
 
-  - Go to your GitHub repository.
-  - Navigate to **Settings** > **Secrets and variables** > **Actions** > **New repository secret**.
+- Go to your GitHub repository.
+- Navigate to **Settings** > **Secrets and variables** > **Actions** > **New repository secret**.
 - Add these secrets with these contents:
 
-  - `AWS_ACCESS_KEY_ID` -> `AWS access key`
+  - `AWS_ACCESS_KEY_ID`
 
-  - `AWS_SECRET_ACCESS_KEY` -> `AWS secret key`
+  - `AWS_SECRET_ACCESS_KEY`
 
-  - `PULUMI_ACCESS_TOKEN` -> `Pulumi access key`
+  - `PULUMI_ACCESS_TOKEN`
 
 ## Step 03: Configure GitHub Actions for Infrastructure Deployment
 
@@ -358,7 +358,7 @@ jobs:
         run: pulumi up --yes --cwd Infra
 ```
 
-2. Create the GitHub action workflow `setup-git-runner.yml`:
+**2. Create the GitHub action workflow `setup-git-runner.yml`:**
 
 This GitHub Actions workflow will run after the `Deploy Infrastructure` workflow completes. Its primary purpose is to configure a GitHub Runner on an EC2 instance, set up `Ansible` on that instance, and prepare the environment for deploying a k3s cluster using Ansible.
 
