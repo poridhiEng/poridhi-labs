@@ -463,11 +463,11 @@ kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-pass
 Use the password and login into Grafana.
 
 
-## Create a Grafana Dashboard
+## Configure Grafana Dashboard
 
-Now, let's create a dashboard to monitor our metrics.
+Now, let's create a dashboard to monitor the metrics.
 
-**1. First, configure the Prometheus data source:**
+### **Configure the Prometheus data source:**
 
 - In Grafana, go to Configuration → **`Data Sources`**
 - Click "Add data source"
@@ -483,9 +483,9 @@ Now, let's create a dashboard to monitor our metrics.
 
   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-22.png)
 
-**2. Build the dashboard:**
+### **Build the dashboard:**
 
-This step-by-step guide explains how to manually create a Grafana dashboard to monitor specific metrics. Each panel represents a specific metric visualization. Here's how to add them:
+Now we will create a Grafana dashboard to monitor specific metrics. Each panel represents a specific metric visualization. Here's how to add them:
 
 #### **(a) Request Rate Panel**
 
@@ -504,6 +504,7 @@ rate(product_order_total[5m]) * 300
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-27.png)
 
 **3. Customize Panel**:
+
 - Title: **Request Rate**.
 - Visualization Type: Select **Time series** to show a line chart over time.
 
@@ -514,14 +515,18 @@ rate(product_order_total[5m]) * 300
 **1. Add another panel for tracking the number of active pods in your Kubernetes cluster.**
 
 **2. Query**: Use this PromQL query:
+
 ```
 count(kube_pod_status_ready{namespace="default", condition="true"})
 ```
+
 - This counts all pods in the `default` namespace where the `condition` is `true` (ready state).
 
 **3. Customize Panel**:
+
 - Title: **Number of Pods**.
 - Visualization Type: **Stat** (a single large number showing the current pod count).
+
 **4. Save this panel.**
 
 #### **(c) Response Time Panel**
@@ -534,6 +539,7 @@ count(kube_pod_status_ready{namespace="default", condition="true"})
 rate(http_request_duration_seconds_sum[5m]) / rate(http_request_duration_seconds_count[5m])
 ```
 - This divides the total request duration by the number of requests over the last 5 minutes, giving the average response time.
+
 **3. Customize Panel**:
 
 - Title: **Average Response Time**.
@@ -541,26 +547,19 @@ rate(http_request_duration_seconds_sum[5m]) / rate(http_request_duration_seconds
 
 **4. Save this panel.**
 
----
-
-### **Step 3: Configure Dashboard Settings**
+### **Configure Dashboard Settings**
 Once all panels are added, configure the overall dashboard settings for optimal viewing.
 
-**1. Access Settings**: 
-- Click the **gear icon** at the top right corner of the dashboard.
-**2. Set Refresh Rate**: 
-- Configure the refresh rate to **5 seconds** for near real-time updates.
+**1. Access Settings**: Click the **gear icon** at the top right corner of the dashboard.
+
+**2. Set Refresh Rate**: Configure the refresh rate to **5 seconds** for near real-time updates.
+
 **3. Set Time Range**:
+
 - Default to show data for the **last 30 minutes**.
 - This can be changed in the time picker in the top-right corner.
-**4. Save the Dashboard**:
-- Click the **Save Dashboard** icon and name it **"Application Metrics"**.
 
-**3. The dashboard includes:**
-
-- Request rate graph (shows requests per 5 minutes)
-- Number of active pods
-- Average response time
+**4. Save the Dashboard**: Click the **Save Dashboard** icon and name it **"Application Metrics"**.
 
 Here is the Final Dashboard:
 
@@ -628,7 +627,7 @@ python load_test.py
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-25.png)
 
-After the load condition, the deployment will be scale down to minium replicas:
+During the normal load condition, the deployment will be scale down to minimum replicas:
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-26.png)
 
