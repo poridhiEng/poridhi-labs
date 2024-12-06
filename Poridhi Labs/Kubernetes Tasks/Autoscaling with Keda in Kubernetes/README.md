@@ -465,284 +465,7 @@ Use the password and login into Grafana.
 
 ## Create a Grafana Dashboard
 
-Now, let's create a dashboard to monitor our metrics. Here's the dashboard configuration:
-
-```json
-{
-  "annotations": {
-    "list": []
-  },
-  "editable": true,
-  "fiscalYearStartMonth": 0,
-  "graphTooltip": 0,
-  "links": [],
-  "liveNow": false,
-  "panels": [
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 20,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "smooth",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 0
-      },
-      "id": 1,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "rate(product_order_total[5m]) * 300",
-          "legendFormat": "Requests per 5m",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Request Rate",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 0
-      },
-      "id": 2,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "10.0.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "count(kube_pod_status_ready{namespace=\"default\", condition=\"true\"})",
-          "legendFormat": "Active Pods",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Number of Pods",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 20,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "smooth",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "s"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 8
-      },
-      "id": 3,
-      "options": {
-        "legend": {
-          "calcs": [
-            "mean",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "rate(http_request_duration_seconds_sum[5m]) / rate(http_request_duration_seconds_count[5m])",
-          "legendFormat": "Response Time",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Average Response Time",
-      "type": "timeseries"
-    }
-  ],
-  "refresh": "5s",
-  "schemaVersion": 38,
-  "style": "dark",
-  "tags": [],
-  "templating": {
-    "list": []
-  },
-  "time": {
-    "from": "now-30m",
-    "to": "now"
-  },
-  "timepicker": {},
-  "timezone": "",
-  "title": "Application Metrics",
-  "uid": "application-metrics",
-  "version": 1,
-  "weekStart": ""
-}
-
-```
-
-To set up the dashboard:
+Now, let's create a dashboard to monitor our metrics.
 
 **1. First, configure the Prometheus data source:**
 
@@ -760,13 +483,81 @@ To set up the dashboard:
 
   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-22.png)
 
-**2. Import the dashboard:**
+**2. Build the dashboard:**
 
-- Go to Dashboards → Create → Import
-- Paste the JSON configuration above
-- Click "Load"
-- Select your Prometheus data source
-- Click "Import"
+This step-by-step guide explains how to manually create a Grafana dashboard to monitor specific metrics. Below is a breakdown of the steps:
+
+### **Step 2: Add Panels for Monitoring**
+Each panel represents a specific metric visualization. Here's how to add them:
+
+#### **(a) Request Rate Panel**
+
+**1. Add Visualization:**
+
+- Click on **"Add new panel"** to create a new visualization.
+- Choose your **Prometheus data source** (configured earlier).
+
+**2. **Query**: Use the PromQL query:**
+
+```
+rate(product_order_total[5m]) * 300
+```
+- This calculates the request rate over the past 5 minutes, scaled by a factor of 300.
+
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-27.png)
+
+**3. Customize Panel**:
+- Title: **Request Rate**.
+- Visualization Type: Select **Time series** to show a line chart over time.
+
+**4. Save this panel.**
+
+#### **(b) Active Pods Panel**
+
+**1. Add another panel for tracking the number of active pods in your Kubernetes cluster.**
+
+**2. Query**: Use this PromQL query:
+```
+count(kube_pod_status_ready{namespace="default", condition="true"})
+```
+- This counts all pods in the `default` namespace where the `condition` is `true` (ready state).
+
+**3. Customize Panel**:
+   - Title: **Number of Pods**.
+   - Visualization Type: **Stat** (a single large number showing the current pod count).
+**4. Save this panel.**
+
+#### **(c) Response Time Panel**
+
+**1. Add a third panel for monitoring average response time.**
+
+**2. Query**: Use this PromQL query:
+
+```
+rate(http_request_duration_seconds_sum[5m]) / rate(http_request_duration_seconds_count[5m])
+```
+- This divides the total request duration by the number of requests over the last 5 minutes, giving the average response time.
+**3. Customize Panel**:
+
+- Title: **Average Response Time**.
+- Visualization Type: **Time series** (to track changes in response time over time).
+
+**4. Save this panel.**
+
+---
+
+### **Step 3: Configure Dashboard Settings**
+Once all panels are added, configure the overall dashboard settings for optimal viewing.
+
+**1. Access Settings**: 
+- Click the **gear icon** at the top right corner of the dashboard.
+**2. Set Refresh Rate**: 
+- Configure the refresh rate to **5 seconds** for near real-time updates.
+**3. Set Time Range**:
+- Default to show data for the **last 30 minutes**.
+- This can be changed in the time picker in the top-right corner.
+**4. Save the Dashboard**:
+- Click the **Save Dashboard** icon and name it **"Application Metrics"**.
 
 **3. The dashboard includes:**
 
