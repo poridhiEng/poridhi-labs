@@ -619,6 +619,8 @@ python load_test.py
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-24.png)
 
+> Make Sure you have Port-forwarded the Go application Service.
+
 **2. Watch the Grafana dashboard to see:**
 
 - Request rate increasing during high load
