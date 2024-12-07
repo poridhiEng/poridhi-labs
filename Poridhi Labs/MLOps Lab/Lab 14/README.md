@@ -180,6 +180,11 @@ def train_model():
 if __name__ == "__main__":
     train_model()
 ```
+### **Train the Model**
+
+```bash
+python src/train.py
+```
 
 ## Step 3: Adding drift detection methods
 
