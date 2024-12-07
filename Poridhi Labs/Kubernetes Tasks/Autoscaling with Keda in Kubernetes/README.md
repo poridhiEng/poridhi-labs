@@ -230,7 +230,7 @@ metadata:
   labels:
     app: goprometheus
 spec:
-  replicas: 2  # Starting with 2 replica
+  replicas: 2  # Running one pod on each worker node
   selector:
     matchLabels:
       app: goprometheus
@@ -243,9 +243,11 @@ spec:
         prometheus.io/port: "8181"
         prometheus.io/path: "/metrics"
     spec:
+      nodeSelector:
+        role: worker-node
       containers:
       - name: goprometheus
-        image: konami98/go_app_metrics:v1  # Replace with your image
+        image: your-registry/goprometheuskeda:v1
         ports:
         - containerPort: 8181
         resources:
@@ -283,12 +285,11 @@ apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
   name: goprometheus-scaledobject
-  namespace: default
 spec:
   scaleTargetRef:
     name: goprometheus-deployment
-  minReplicaCount: 1
-  maxReplicaCount: 5
+  minReplicaCount: 2  # Minimum 2 pods (one per worker node)
+  maxReplicaCount: 6  # Maximum 3 pods per worker node
   cooldownPeriod: 30
   pollingInterval: 15
   triggers:
@@ -343,10 +344,19 @@ helm upgrade --install prometheus prometheus-community/prometheus -f prometheus-
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-7.png)
 
+
+## Labeling the Worker Nodes
+
+First get the worker node name:
+
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image.png)
+
 ```sh
-kubectl label nodes cluster-66dbf2e36722fdb9097e9eb3-mnn-worker-1 role=worker-node
-kubectl label nodes cluster-66dbf2e36722fdb9097e9eb3-mnn-worker-2 role=worker-node
+kubectl label nodes <worker-1> role=worker-node
+kubectl label nodes <worker-2> role=worker-node
 ```
+
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-1.png)
 
 
 ## Deploy the application in kubernetes
