@@ -266,13 +266,14 @@ kind: Service
 metadata:
   name: goprometheus-service
 spec:
+  type: NodePort
   selector:
     app: goprometheus
   ports:
-    - protocol: TCP
-      port: 8181
+    - port: 8181
       targetPort: 8181
-  type: ClusterIP
+      nodePort: 30081
+      protocol: TCP
 ```
 
 **3. keda-scaledobject.yaml**
@@ -342,6 +343,12 @@ helm upgrade --install prometheus prometheus-community/prometheus -f prometheus-
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-7.png)
 
+```sh
+kubectl label nodes cluster-66dbf2e36722fdb9097e9eb3-mnn-worker-1 role=worker-node
+kubectl label nodes cluster-66dbf2e36722fdb9097e9eb3-mnn-worker-2 role=worker-node
+```
+
+
 ## Deploy the application in kubernetes
 
 ```sh
@@ -357,27 +364,26 @@ kubectl apply -f keda-scaledobject.yaml
 
 This section demonstrates how to test the service scaling and monitor its behavior using Kubernetes tools
 
-**1. Port-forward service**
+**1. Expose the Go application NodePort Service Using LoadBalancer:**
 
-Check the services. Go application is deployed in the `default` namespace while Prometheus service is deployed in the `prometheus` namespace using helm.
-
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-10.png)
-
-Use the `kubectl port-forward` command to expose services locally for testing.
+First get the MasterNode IP:
 
 ```sh
-kubectl port-forward svc/goprometheus-service 8181:8181
-kubectl port-forward svc/prometheus-server -n prometheus 9090:80
+kubectl get nodes -o wide
 ```
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-9.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-28.png)
+
+
+Create a load-balancer with the MasterNode IP and the NodePort of the Grafana service(`30081`):
+
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-31.png)
 
 **2. Monitor resource scaling:**
 
 Use the watch command to observe the pods, horizontal pod autoscaler (HPA), and scaled object in real time. Open a new terminal and run this command:
 
 ```sh
-# Monitor scaling
 watch -n 1 'kubectl get pods,hpa,scaledobject'
 ```
 
@@ -390,14 +396,14 @@ watch -n 1 'kubectl get pods,hpa,scaledobject'
 Execute the following command to send multiple requests to the service, simulating a basic load:
 
 ```sh
-for i in {1..30}; do curl http://localhost:8181/product; done
+for i in {1..30}; do curl <load-balancer-address>; done
 ```
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-12.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-29.png)
 
 After generating the load, wait for some time and monitor the watch terminal for the scaling. You will see hpa scale our deployment according to the load.
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-13.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-30.png)
 
 **Rescaling:**
 
@@ -432,29 +438,12 @@ helm upgrade --install grafana grafana/grafana \
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-16.png)
 
-<!-- **3. Port-forward the Grafana service:**
-
-```bash
-kubectl port-forward svc/grafana -n monitoring 3000:80
-``` -->
 
 **3. Create a load-balancer to access Grafana.**
 
-First get the MasterNode IP:
+Create a load-balancer with the MasterNode IP and the NodePort of the Grafana service(`30080`).
 
-```sh
-kubectl get nodes -o wide
-```
-
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-17.png)
-
-
-Create a load-balancer with the MasterNode IP and the NodePort of the Grafana service(`30080`):
-
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-18.png)
-
-
-**5. Get the admin password to login into Grafana:**
+**4. Get the admin password to login into Grafana:**
 
 ```bash
 kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode
