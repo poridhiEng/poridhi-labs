@@ -36,7 +36,7 @@ Let's consider an example: Imagine a robot trained to sort apples based on size 
 
 Monitoring for data drift helps detect when the production data has changed so we can retrain the model with more recent data to ensure reliable performance.
 
-![](./images/graph.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/graph.png?raw=true)
    
 ### **Concept Drift**
 Concept drift occurs when the relationship between the input features and the target variable changes over time. In essence, the rules or logic the model learned during training no longer align with the current environment.
