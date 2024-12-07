@@ -2,7 +2,7 @@
 
 Hosting Jenkins on a Kubernetes cluster provides an efficient way to manage deployments and leverage the dynamic scalability of Kubernetes. By running Jenkins in such an environment, you can easily integrate with Kubernetes-based workloads and dynamically scale Jenkins agents based on demand.
 
-![alt text](./images/k8s-jenkins-1.drawio.svg)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2009/images/k8s-jenkins-1.drawio.svg)
 
 This guide provides a step-by-step walkthrough to set up Jenkins on a Kubernetes cluster. 
 
@@ -139,7 +139,7 @@ spec:
 kubectl get nodes
 ```
 
-![alt text](./images/image-6.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2009/images/image-6.png)
 
 Apply the volume configuration:
 
@@ -224,7 +224,7 @@ kubectl get deployments -n devops-tools
 kubectl describe deployments -n devops-tools
 ```
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2009/images/image.png)
 
 #### **Step 5: Expose Jenkins**
 
@@ -263,16 +263,16 @@ To access the Jenkins UI, we have to create a Load-Balancer.
 
 First Get the MasterNode IP.
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2009/images/image-1.png)
 
 Create a LoadBalancer Using the MasterNode IP and NodePort(32000)
 
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2009/images/image-2.png)
 
 Access Jenkins using the load-balancer's UI.
 
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2009/images/image-3.png)
 
 ---
 
@@ -280,7 +280,7 @@ Access Jenkins using the load-balancer's UI.
 
 Jenkins will ask for the initial Admin password when you access the dashboard for the first time.
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2009/images/image-4.png)
 
 To retrieve the admin password:
 
@@ -296,7 +296,7 @@ kubectl get pods -n devops-tools
 kubectl logs <jenkins-pod-name> -n devops-tools
 ```
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2009/images/image-5.png)
 
 **3. Or, directly extract the password:**
 
