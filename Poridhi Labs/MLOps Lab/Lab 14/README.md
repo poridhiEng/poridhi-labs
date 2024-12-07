@@ -2,6 +2,8 @@
 
 Machine learning projects require **continuous monitoring** post-deployment to ensure the model's performance doesn’t degrade. Tools like **Grafana** allow data scientists and ML engineers to monitor and visualize production models in real-time, enabling timely actions when performance drops.
 
+![](lab-14.svg)
+
 In this lab, we will:
 - Build a regression model to predict diamond prices.
 - Create a REST API to serve predictions and expose monitoring metrics.
@@ -10,15 +12,39 @@ In this lab, we will:
 - Deploy the system using Docker and Docker Compose.
 - Set up Discord alerts for drift threshold.
 
+## Table of Contents
+
+- [Setting Up the Environment](#step-1-setting-up-the-environment)
+- [Setup the Model](#step-2-setup-the-model)
+- [Adding drift detection methods](#step-3-adding-drift-detection-methods)
+- [Serve the Model as a REST API](#step-4-serve-the-model-as-a-rest-api)
+- [Dockerizing the Application](#step-5-dockerizing-the-application)
+- [Running the Application](#step-6-running-the-application)
+- [Adding Prometheus as a Data Source in Grafana](#step-7-adding-prometheus-as-a-data-source-in-grafana)
+- [Setting up Alerts for Drift Threshold in Grafana](#step-8-setting-up-alerts-for-drift-threshold-in-grafana)
 
 ## **Why Monitoring Is Necessary**
-ML models degrade in production due to:
-1. **Data Drift**: Changes in input data distributions compared to training data.
-   - **Example**: A robot trained to sort red apples might fail when faced with green apples.
-   - **Impact**: Poor predictions due to outdated input patterns.
-2. **Concept Drift**: Changes in the relationship between input features and the target variable.
-   - **Example**: A preference shift to underripe apples changes the model's logic.
-   - **Impact**: Model assumptions become invalid, requiring updates.
+
+Machine learning models degrade in production over the time due to various reasons. The two most common reasons are:
+
+### **Data Drift**
+Data drift occurs when the statistical properties of the input data (features) used by the model in production change significantly compared to the data it was trained on. This causes the model to encounter unseen or irrelevant patterns, leading to poor predictions.
+
+Let's consider an example: Imagine a robot trained to sort apples based on size and color. It was trained to identify ripe red apples of a specific size range. However, in the next harvest season, the orchard starts producing a new variety of green ripe apples.
+- **Problem**: The robot fails to recognize the new apples because its training data only included red apples.
+- **Impact**: The robot makes mistakes because the input data (green apples) has drifted from the data it was trained on (red apples).
+
+Monitoring for data drift helps detect when the production data has changed so we can retrain the model with more recent data to ensure reliable performance.
+   
+### **Concept Drift**
+Concept drift occurs when the relationship between the input features and the target variable changes over time. In essence, the rules or logic the model learned during training no longer align with the current environment.
+
+Revisit the apple-sorting robot. Initially, the robot was trained to classify a “good apple” based on its ripeness and appearance. Now, let’s say consumer preferences have shifted, and people start preferring slightly underripe apples. Even though the apples look the same, the definition of what constitutes a “good apple” has changed.
+
+- **Problem**: The robot’s predictions fail because the target variable (what is considered a good apple) has changed.
+- **Impact**: The model’s assumptions about the relationship between input features (size, color) and the target variable (good/bad apple) are no longer valid.
+
+Monitoring for concept drift helps detect when the model's assumptions are no longer valid so we can retrain the model with more recent data to ensure reliable performance.
 
 ## **Why It Matters**
 Monitoring detects drift early, enabling:
@@ -53,7 +79,7 @@ grafana_model_monitoring/
 
 
 
-## Setting Up the Environment
+## Step 1: Setting Up the Environment
 
 **Create a Virtual Environment**:
    ```bash
@@ -89,7 +115,7 @@ grafana_model_monitoring/
    pip install -r requirements.txt
    ```
 
-## Setup the Model
+## Step 2: Setup the Model
 
 In this lab, we will use the `Diamonds` dataset from the `Seaborn` library to predict diamond prices. This dataset includes both numerical and categorical features, necessitating pre-processing before model training.
 
@@ -155,10 +181,7 @@ if __name__ == "__main__":
     train_model()
 ```
 
-**Train the Model**:
-```bash
-python src/train.py
-```
+## Step 3: Adding drift detection methods
 
 ### Data Drift Detection
 
@@ -211,7 +234,7 @@ def detect_concept_drift(
     return is_drift, relative_performance_decrease
 ```
 
-## **Serve the Model as a REST API**
+## Step 4: Serve the Model as a REST API
 
 The `app.py` script sets up a Flask API to serve predictions and monitor model drift using Prometheus.
 
@@ -301,7 +324,7 @@ if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
 ```
 
-## **Dockerizing the Application**
+## Step 5: Dockerizing the Application
 
 #### **Dockerfile**
 ```dockerfile
@@ -365,7 +388,7 @@ scrape_configs:
 
 This configuration sets up Prometheus to scrape metrics from the Flask API running on the `app` service.
 
-## Running the Application
+## Step 6: Running the Application
 
 ### Build and Start Services
 
@@ -404,7 +427,7 @@ http://localhost:5000/predict
 To check the metrics, open the `load balancer` for Metrics in the browser.
 
 
-### **Adding Prometheus as a Data Source in Grafana**
+## Step 7: Adding Prometheus as a Data Source in Grafana
 
 1. **Log in to Grafana**:
    - Open your browser and visit the `load balancer` for Grafana.
@@ -426,7 +449,7 @@ To check the metrics, open the `load balancer` for Metrics in the browser.
 - Click **"+ Create dashboard"** and **"+ Add visualization"** to start editing the first visualization.
 - Select `Prometheus` as the data source.
 
-**Add Data Drift Panel**
+#### **Add Data Drift Panel**
 
 In the panel edit view:
    - Navigate to the **Query** tab.
@@ -462,7 +485,7 @@ Your Grafana dashboard now includes two panels:
 
 ![alt text](image-7.png)
 
-## Setting Up Discord Alerts for Drift Threshold in Grafana
+## Step 8: Setting up Alerts for Drift Threshold in Grafana
 
 This document guides you through setting up Discord alerts for detecting drift scores crossing a custom threshold in Grafana.
 
