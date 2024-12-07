@@ -84,7 +84,7 @@ grafana_model_monitoring/
 **Create a Virtual Environment**:
    ```bash
    sudo apt update
-   apt install python3.8-venv
+   apt install python3.8-venv -y
    python3 -m venv venv
    source venv/bin/activate
    ```
@@ -174,16 +174,11 @@ def train_model():
     print(f"Model MSE: {mse}")
 
     # Save the entire pipeline
-    joblib.dump(model_pipeline, "model_pipeline.joblib")
+    joblib.dump(model_pipeline, "../model_pipeline.joblib")
     print("Model pipeline saved successfully.")
 
 if __name__ == "__main__":
     train_model()
-```
-### **Train the Model**
-
-```bash
-python src/train.py
 ```
 
 ## Step 3: Adding drift detection methods
@@ -272,7 +267,7 @@ app = Flask(__name__)
 
 # Load the model pipeline
 try:
-    model_pipeline = joblib.load("model_pipeline.joblib")
+    model_pipeline = joblib.load("../model_pipeline.joblib")
     print("Model pipeline loaded successfully")
 except Exception as e:
     print(f"Error loading model pipeline: {e}")
