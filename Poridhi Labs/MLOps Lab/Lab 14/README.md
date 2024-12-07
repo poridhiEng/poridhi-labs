@@ -2,7 +2,7 @@
 
 Machine learning projects require **continuous monitoring** post-deployment to ensure the model's performance doesn’t degrade. Tools like **Grafana** allow data scientists and ML engineers to monitor and visualize production models in real-time, enabling timely actions when performance drops.
 
-![](lab-14.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/2b53526c1b191de449c3f0b829615aa01fda88f2/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/lab-14.svg)
 
 In this lab, we will:
 - Build a regression model to predict diamond prices.
@@ -76,8 +76,6 @@ grafana_model_monitoring/
 ├── docker-compose.yml       # Docker Compose configuration
 ├── requirements.txt         # Python dependencies
 ```
-
-
 
 ## Step 1: Setting Up the Environment
 
@@ -412,7 +410,7 @@ Create a `load balancer` for Grafana using the IP and port `3000`.
 
 Create another `load balancer` for Metrics using the IP and port `8000`.
 
-![alt text](image-2.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-2.png?raw=true)
 
 #### Testing the Services
 
@@ -422,7 +420,7 @@ curl -X POST -H "Content-Type: application/json" \
 -d '{"carat": 0.5, "cut": "Ideal", "color": "E", "clarity": "VS1", "depth": 61.5, "table": 55}' \
 http://localhost:5000/predict
 ```
-![alt text](image-1.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-1.png?raw=true)
 
 To check the metrics, open the `load balancer` for Metrics in the browser.
 
@@ -458,10 +456,10 @@ In the panel edit view:
    - Click **Run queries** to display the graph. It will show the data drift score in different time intervals.
    - Add `Data_Drift` as panel title under `time series` on right side.
 
-     ![](image-3.png)
+     ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-3.png?raw=true)
    - Save the Dashboard as `Monitoring Dashboard`.
 
-     ![alt text](image-4.png)
+     ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-4.png?raw=true)
 
 
 #### **Add Concept Drift Panel**
@@ -469,7 +467,7 @@ In the panel edit view:
 Navigate to Dashboard and select `Monitoring Dashboard`.
    - click on `Add` icon on the top right corner and select `Visualization`.
 
-     ![alt text](image-6.png)
+     ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-6.png?raw=true)
 
    - Select the **`concept_drift`** metric from the **Metrics Explorer**.
    - Click **Run queries** to display the graph. It will show the concept drift score in different time intervals.
@@ -483,7 +481,7 @@ Your Grafana dashboard now includes two panels:
 1. **Data Drift Panel**: Displays the `data_drift` metric
 2. **Concept Drift Panel**: Displays the `concept_drift` metric
 
-![alt text](image-7.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-7.png?raw=true)
 
 ## Step 8: Setting up Alerts for Drift Threshold in Grafana
 
@@ -498,7 +496,7 @@ This document guides you through setting up Discord alerts for detecting drift s
    - Choose **Create my own** and then **For me and my friends**.  
    - Provide a server name, e.g., *Model Monitoring Alerts*.  
 
-   ![alt text](image-8.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-8.png?raw=true)
 
 3. **Add a Text Channel**:  
    - Click the **+** button next to *Text Channels* in the top-left.  
@@ -508,14 +506,14 @@ This document guides you through setting up Discord alerts for detecting drift s
    - Click **Create Webhook**.  
    - Copy the generated webhook URL and save it securely.
 
-   ![alt text](image-9.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-9.png?raw=true)
 
 ### **Configuring Grafana to Use Discord Webhook**
 
 1. **Navigate to Contact Points**:  
    - Open Grafana and go to **Home > Alerting > Contact points**.  
 
-   ![alt text](image-10.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-10.png?raw=true)
 
 2. **Create a New Contact Point**:  
    - Click **+ Add contact point**.  
@@ -523,13 +521,13 @@ This document guides you through setting up Discord alerts for detecting drift s
    - Select **Discord** as the integration type.  
    - Paste the Discord webhook URL. 
 
-   ![alt text](image-11.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-11.png?raw=true)
 
 3. **Test the Connection**:  
    - Click **Test** to send a test alert.  
    - Verify in Discord that the test alert has been received.  
 
-   ![alt text](image-12.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-12.png?raw=true)
 
 4. **Save the Contact Point**:  
    - Click **Save contact point** to store the configuration.
@@ -543,20 +541,20 @@ This document guides you through setting up Discord alerts for detecting drift s
    - Select the relevant metric pane and click **Edit**.  
    - Navigate to the **Alert** tab and choose **New alert rule**.  
 
-   ![alt text](image-13.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-13.png?raw=true)
 
 3. **Define Query and Alert Condition**:  
    - Under **Define query and alert condition**, click **Code**, then **Run queries**.  
    - Select the relevant metric (e.g., `data_drift`) as the first input (A). 
 
-   ![alt text](image-14.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-14.png?raw=true)
 
 4. **Set a Threshold**:  
    - In the **Expressions** section, set a custom threshold under **Thresholds**.  
    - Example: Set the threshold to `0.026` to trigger an alert when the drift score exceeds this value.  
    - Use the **Preview** button to verify.
 
-   ![alt text](image-15.png)  
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-15.png?raw=true)  
 
 5. **Set Evaluation Behavior**:  
    - Under **Set evaluation behavior**, set the **Pending period** to **None** for immediate alerts.  
@@ -565,7 +563,7 @@ This document guides you through setting up Discord alerts for detecting drift s
 6. **Configure Labels and Notifications**:  
    - Under **Configure labels and notifications**, select the Discord webhook contact point.  
 
-   ![alt text](image-16.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-16.png?raw=true)
 
 7. **Add Annotations (Optional)**:  
    - Provide a summary or custom message for the alert.  
@@ -577,8 +575,8 @@ This document guides you through setting up Discord alerts for detecting drift s
 
 1. **Test Alerts**: Simulate conditions to verify that alerts are triggered and delivered to the Discord channel. 
 
-   ![alt text](image-17.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-17.png?raw=true)
 
 2. **Monitor**: Confirm that alerts fire when the drift threshold is crossed. 
 
-   ![alt text](image-18.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-18.png?raw=true)
