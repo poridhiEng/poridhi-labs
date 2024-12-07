@@ -2,7 +2,7 @@
 
 This document introduces you to the world of machine learning model monitoring through Grafana using the example of a simple regression model. By the end, we will have a monitoring system set up that can send alerts when production performance drops
 
-![alt text](image.png)
+![alt text](./images/data-drift.drawio.svg)
 
 ## Prerequisites
 - Python 3.8+
@@ -369,7 +369,7 @@ docker-compose up -d
        - Visualization: Graph
        - Add threshold at 0.1
 
-![alt text](<Screenshot 2024-12-06 225318.png>)
+![alt text](./images/Screenshot%202024-12-06%20225318.png)
 
 ## 8. Alert Configuration
 
@@ -397,9 +397,9 @@ docker-compose up -d
    - Add custom message
    - Save rule
 
-   ![alt text](<Screenshot 2024-12-06 225522.png>)
+   ![alt text](./images/Screenshot%202024-12-06%20225522.png)
 
-   ![alt text](<Screenshot 2024-12-06 211540.png>)
+   ![alt text](./images/Screenshot%202024-12-06%20211540.png)
 
 Your monitoring system is now complete! The system will:
 - Serve predictions via the Flask API
