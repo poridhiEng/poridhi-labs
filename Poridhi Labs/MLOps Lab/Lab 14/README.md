@@ -582,3 +582,7 @@ This document guides you through setting up Discord alerts for detecting drift s
 2. **Monitor**: Confirm that alerts fire when the drift threshold is crossed. 
 
    ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-18.png?raw=true)
+
+## Conclusion
+
+This lab demonstrated how to monitor data and concept drift in a machine learning model using Prometheus and Grafana. By setting up alerts, you can proactively detect and respond to changes in your model's performance, ensuring it remains accurate and reliable over time.
