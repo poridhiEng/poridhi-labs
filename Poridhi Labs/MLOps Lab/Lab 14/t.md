@@ -1,4 +1,4 @@
-# **Model Monitoring with Grafana and Prometheus**
+# **Monitoring Machine Learning Models**
 
 Machine learning projects require **continuous monitoring** post-deployment to ensure the model's performance doesn’t degrade. Tools like **Grafana** allow data scientists and ML engineers to monitor and visualize production models in real-time, enabling timely actions when performance drops.
 
@@ -37,7 +37,6 @@ Monitoring detects drift early, enabling:
 - **APScheduler**: Scheduling drift checks.
 
 
-
 ## Project Structure
 ```
 grafana_model_monitoring/
@@ -58,6 +57,7 @@ grafana_model_monitoring/
 
 **Create a Virtual Environment**:
    ```bash
+   sudo apt update
    apt install python3.8-venv
    python3 -m venv venv
    source venv/bin/activate
