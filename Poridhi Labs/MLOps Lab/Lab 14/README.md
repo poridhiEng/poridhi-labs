@@ -398,6 +398,18 @@ Run the following command to build and start the services defined in the `docker
 docker-compose up --build -d
 ```
 
+To check the status of the containers, run the following command:
+
+```bash
+docker ps
+```
+
+To check the logs of the containers, run the following command:
+
+```bash
+docker logs <container_id>
+```
+
 ### Create Load balancer for Grafana 
 
 Create poridhis load balancer for Grafana to expose the services. Get the `eth0` IP address using the following command:
