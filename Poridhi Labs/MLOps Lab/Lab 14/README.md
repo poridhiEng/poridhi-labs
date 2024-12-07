@@ -2,6 +2,8 @@
 
 Machine learning projects require **continuous monitoring** post-deployment to ensure the model's performance doesn’t degrade. Tools like **Grafana** allow data scientists and ML engineers to monitor and visualize production models in real-time, enabling timely actions when performance drops.
 
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/2b53526c1b191de449c3f0b829615aa01fda88f2/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/lab-14.svg)
+
 In this lab, we will:
 - Build a regression model to predict diamond prices.
 - Create a REST API to serve predictions and expose monitoring metrics.
@@ -10,15 +12,39 @@ In this lab, we will:
 - Deploy the system using Docker and Docker Compose.
 - Set up Discord alerts for drift threshold.
 
+## Table of Contents
+
+- [Setting Up the Environment](#step-1-setting-up-the-environment)
+- [Setup the Model](#step-2-setup-the-model)
+- [Adding drift detection methods](#step-3-adding-drift-detection-methods)
+- [Serve the Model as a REST API](#step-4-serve-the-model-as-a-rest-api)
+- [Dockerizing the Application](#step-5-dockerizing-the-application)
+- [Running the Application](#step-6-running-the-application)
+- [Adding Prometheus as a Data Source in Grafana](#step-7-adding-prometheus-as-a-data-source-in-grafana)
+- [Setting up Alerts for Drift Threshold in Grafana](#step-8-setting-up-alerts-for-drift-threshold-in-grafana)
 
 ## **Why Monitoring Is Necessary**
-ML models degrade in production due to:
-1. **Data Drift**: Changes in input data distributions compared to training data.
-   - **Example**: A robot trained to sort red apples might fail when faced with green apples.
-   - **Impact**: Poor predictions due to outdated input patterns.
-2. **Concept Drift**: Changes in the relationship between input features and the target variable.
-   - **Example**: A preference shift to underripe apples changes the model's logic.
-   - **Impact**: Model assumptions become invalid, requiring updates.
+
+Machine learning models degrade in production over the time due to various reasons. The two most common reasons are:
+
+### **Data Drift**
+Data drift occurs when the statistical properties of the input data (features) used by the model in production change significantly compared to the data it was trained on. This causes the model to encounter unseen or irrelevant patterns, leading to poor predictions.
+
+Let's consider an example: Imagine a robot trained to sort apples based on size and color. It was trained to identify ripe red apples of a specific size range. However, in the next harvest season, the orchard starts producing a new variety of green ripe apples.
+- **Problem**: The robot fails to recognize the new apples because its training data only included red apples.
+- **Impact**: The robot makes mistakes because the input data (green apples) has drifted from the data it was trained on (red apples).
+
+Monitoring for data drift helps detect when the production data has changed so we can retrain the model with more recent data to ensure reliable performance.
+   
+### **Concept Drift**
+Concept drift occurs when the relationship between the input features and the target variable changes over time. In essence, the rules or logic the model learned during training no longer align with the current environment.
+
+Revisit the apple-sorting robot. Initially, the robot was trained to classify a “good apple” based on its ripeness and appearance. Now, let’s say consumer preferences have shifted, and people start preferring slightly underripe apples. Even though the apples look the same, the definition of what constitutes a “good apple” has changed.
+
+- **Problem**: The robot’s predictions fail because the target variable (what is considered a good apple) has changed.
+- **Impact**: The model’s assumptions about the relationship between input features (size, color) and the target variable (good/bad apple) are no longer valid.
+
+Monitoring for concept drift helps detect when the model's assumptions are no longer valid so we can retrain the model with more recent data to ensure reliable performance.
 
 ## **Why It Matters**
 Monitoring detects drift early, enabling:
@@ -51,9 +77,7 @@ grafana_model_monitoring/
 ├── requirements.txt         # Python dependencies
 ```
 
-
-
-## Setting Up the Environment
+## Step 1: Setting Up the Environment
 
 **Create a Virtual Environment**:
    ```bash
@@ -89,7 +113,7 @@ grafana_model_monitoring/
    pip install -r requirements.txt
    ```
 
-## Setup the Model
+## Step 2: Setup the Model
 
 In this lab, we will use the `Diamonds` dataset from the `Seaborn` library to predict diamond prices. This dataset includes both numerical and categorical features, necessitating pre-processing before model training.
 
@@ -155,10 +179,7 @@ if __name__ == "__main__":
     train_model()
 ```
 
-**Train the Model**:
-```bash
-python src/train.py
-```
+## Step 3: Adding drift detection methods
 
 ### Data Drift Detection
 
@@ -211,7 +232,7 @@ def detect_concept_drift(
     return is_drift, relative_performance_decrease
 ```
 
-## **Serve the Model as a REST API**
+## Step 4: Serve the Model as a REST API
 
 The `app.py` script sets up a Flask API to serve predictions and monitor model drift using Prometheus.
 
@@ -301,7 +322,7 @@ if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
 ```
 
-## **Dockerizing the Application**
+## Step 5: Dockerizing the Application
 
 #### **Dockerfile**
 ```dockerfile
@@ -365,7 +386,7 @@ scrape_configs:
 
 This configuration sets up Prometheus to scrape metrics from the Flask API running on the `app` service.
 
-## Running the Application
+## Step 6: Running the Application
 
 ### Build and Start Services
 
@@ -389,7 +410,7 @@ Create a `load balancer` for Grafana using the IP and port `3000`.
 
 Create another `load balancer` for Metrics using the IP and port `8000`.
 
-![alt text](image-2.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-2.png?raw=true)
 
 #### Testing the Services
 
@@ -399,12 +420,12 @@ curl -X POST -H "Content-Type: application/json" \
 -d '{"carat": 0.5, "cut": "Ideal", "color": "E", "clarity": "VS1", "depth": 61.5, "table": 55}' \
 http://localhost:5000/predict
 ```
-![alt text](image-1.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-1.png?raw=true)
 
 To check the metrics, open the `load balancer` for Metrics in the browser.
 
 
-### **Adding Prometheus as a Data Source in Grafana**
+## Step 7: Adding Prometheus as a Data Source in Grafana
 
 1. **Log in to Grafana**:
    - Open your browser and visit the `load balancer` for Grafana.
@@ -426,7 +447,7 @@ To check the metrics, open the `load balancer` for Metrics in the browser.
 - Click **"+ Create dashboard"** and **"+ Add visualization"** to start editing the first visualization.
 - Select `Prometheus` as the data source.
 
-**Add Data Drift Panel**
+#### **Add Data Drift Panel**
 
 In the panel edit view:
    - Navigate to the **Query** tab.
@@ -435,10 +456,10 @@ In the panel edit view:
    - Click **Run queries** to display the graph. It will show the data drift score in different time intervals.
    - Add `Data_Drift` as panel title under `time series` on right side.
 
-     ![](image-3.png)
+     ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-3.png?raw=true)
    - Save the Dashboard as `Monitoring Dashboard`.
 
-     ![alt text](image-4.png)
+     ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-4.png?raw=true)
 
 
 #### **Add Concept Drift Panel**
@@ -446,7 +467,7 @@ In the panel edit view:
 Navigate to Dashboard and select `Monitoring Dashboard`.
    - click on `Add` icon on the top right corner and select `Visualization`.
 
-     ![alt text](image-6.png)
+     ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-6.png?raw=true)
 
    - Select the **`concept_drift`** metric from the **Metrics Explorer**.
    - Click **Run queries** to display the graph. It will show the concept drift score in different time intervals.
@@ -460,9 +481,9 @@ Your Grafana dashboard now includes two panels:
 1. **Data Drift Panel**: Displays the `data_drift` metric
 2. **Concept Drift Panel**: Displays the `concept_drift` metric
 
-![alt text](image-7.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-7.png?raw=true)
 
-## Setting Up Discord Alerts for Drift Threshold in Grafana
+## Step 8: Setting up Alerts for Drift Threshold in Grafana
 
 This document guides you through setting up Discord alerts for detecting drift scores crossing a custom threshold in Grafana.
 
@@ -475,7 +496,7 @@ This document guides you through setting up Discord alerts for detecting drift s
    - Choose **Create my own** and then **For me and my friends**.  
    - Provide a server name, e.g., *Model Monitoring Alerts*.  
 
-   ![alt text](image-8.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-8.png?raw=true)
 
 3. **Add a Text Channel**:  
    - Click the **+** button next to *Text Channels* in the top-left.  
@@ -485,14 +506,14 @@ This document guides you through setting up Discord alerts for detecting drift s
    - Click **Create Webhook**.  
    - Copy the generated webhook URL and save it securely.
 
-   ![alt text](image-9.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-9.png?raw=true)
 
 ### **Configuring Grafana to Use Discord Webhook**
 
 1. **Navigate to Contact Points**:  
    - Open Grafana and go to **Home > Alerting > Contact points**.  
 
-   ![alt text](image-10.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-10.png?raw=true)
 
 2. **Create a New Contact Point**:  
    - Click **+ Add contact point**.  
@@ -500,13 +521,13 @@ This document guides you through setting up Discord alerts for detecting drift s
    - Select **Discord** as the integration type.  
    - Paste the Discord webhook URL. 
 
-   ![alt text](image-11.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-11.png?raw=true)
 
 3. **Test the Connection**:  
    - Click **Test** to send a test alert.  
    - Verify in Discord that the test alert has been received.  
 
-   ![alt text](image-12.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-12.png?raw=true)
 
 4. **Save the Contact Point**:  
    - Click **Save contact point** to store the configuration.
@@ -520,20 +541,20 @@ This document guides you through setting up Discord alerts for detecting drift s
    - Select the relevant metric pane and click **Edit**.  
    - Navigate to the **Alert** tab and choose **New alert rule**.  
 
-   ![alt text](image-13.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-13.png?raw=true)
 
 3. **Define Query and Alert Condition**:  
    - Under **Define query and alert condition**, click **Code**, then **Run queries**.  
    - Select the relevant metric (e.g., `data_drift`) as the first input (A). 
 
-   ![alt text](image-14.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-14.png?raw=true)
 
 4. **Set a Threshold**:  
    - In the **Expressions** section, set a custom threshold under **Thresholds**.  
    - Example: Set the threshold to `0.026` to trigger an alert when the drift score exceeds this value.  
    - Use the **Preview** button to verify.
 
-   ![alt text](image-15.png)  
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-15.png?raw=true)  
 
 5. **Set Evaluation Behavior**:  
    - Under **Set evaluation behavior**, set the **Pending period** to **None** for immediate alerts.  
@@ -542,7 +563,7 @@ This document guides you through setting up Discord alerts for detecting drift s
 6. **Configure Labels and Notifications**:  
    - Under **Configure labels and notifications**, select the Discord webhook contact point.  
 
-   ![alt text](image-16.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-16.png?raw=true)
 
 7. **Add Annotations (Optional)**:  
    - Provide a summary or custom message for the alert.  
@@ -554,8 +575,8 @@ This document guides you through setting up Discord alerts for detecting drift s
 
 1. **Test Alerts**: Simulate conditions to verify that alerts are triggered and delivered to the Discord channel. 
 
-   ![alt text](image-17.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-17.png?raw=true)
 
 2. **Monitor**: Confirm that alerts fire when the drift threshold is crossed. 
 
-   ![alt text](image-18.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-18.png?raw=true)
