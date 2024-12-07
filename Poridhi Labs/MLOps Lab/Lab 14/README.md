@@ -1,5 +1,9 @@
 # Setting Up Model Monitoring with Grafana and Prometheus
 
+This document introduces you to the world of machine learning model monitoring through Grafana using the example of a simple regression model. By the end, we will have a monitoring system set up that can send alerts when production performance drops
+
+![alt text](image.png)
+
 ## Prerequisites
 - Python 3.8+
 - Docker and Docker Compose
