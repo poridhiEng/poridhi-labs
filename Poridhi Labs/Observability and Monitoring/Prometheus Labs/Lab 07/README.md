@@ -75,7 +75,7 @@ sudo ./prometheus.sh
 
 ### **2. Setup Script for Node Exporter**
 
-Similarly, create a setup script for Node Exporter.
+Similarly, create a setup script for Node Exporter.  
 
 #### **Create a Script as `exporter.sh`**
 
@@ -147,7 +147,6 @@ sudo ./exporter.sh
   ![alt text](./images/image.png)
 
 - Create a load balancer from `Poridhi Lab` by providing the `IP` and `port: 9090`.
-
 
 - Access the UI by opening the load balancer URL from browser. Go to *status > target*. We can see that prometheus has only one target and it is prometheus itself. Currently, it doesn't have `node_exporter` as its target to scrape. We have to configure the prometheus to scrape the `node_exporter`. 
 
