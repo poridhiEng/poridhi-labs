@@ -2,7 +2,7 @@
 
 PromQL (Prometheus Query Language) is a powerful tool for analyzing time-series metrics. It provides features for **aggregation** and **vector matching**, enabling detailed insights into system performance and behavior. With Aggregation and Vector Matching, you can perform complex queries and analyze metrics more effectively. We will use Prometheus to collect metrics from Node Exporter and perform aggregation and vector matching queries.
 
-![](./images/banaer.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/e2a1a2e086407a3ed174a9c47936995572ca8acc/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2011/images/banaer.svg)
 
 
 
@@ -126,11 +126,13 @@ Use the script below to install and configure Prometheus.
    ```bash
    ifconfig
    ```
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/lab-59.png?raw=true)
+   
 2. Configure a LoadBalancer using your IP and port `9090`.
 
 3. Access Prometheus through the provided URL. Verify the `node_exporter` target is **UP** under **Status > Targets**.
 
-   ![](./images/1.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2011/images/1.png?raw=true)
 
 ## **PromQL Aggregation Queries**
 
@@ -141,7 +143,7 @@ Perform a sum of available memory across all nodes.
 ```promql
 sum(node_memory_MemAvailable_bytes)
 ```
-![](./images/2.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2011/images/2.png?raw=true)
 
 
 ### 2. Averaging Metrics
@@ -150,7 +152,7 @@ Perform an average of free disk space per mountpoint.
 ```promql
 avg(node_filesystem_avail_bytes) by (mountpoint)
 ```
-![](./images/3.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2011/images/3.png?raw=true)
 
 
 ### 3. Counting Instances
@@ -168,7 +170,7 @@ Finds the maximum memory available among all nodes.
 ```promql
 max(node_memory_MemAvailable_bytes)
 ```
-![](./images/4.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2011/images/4.png?raw=true)
 
 ### 5. Minimum Value
 
@@ -201,7 +203,7 @@ Calculates the average percentage of CPU used across all nodes.
 ```promql
 100 - avg(rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100
 ```
-![](./images/5.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2011/images/5.png?raw=true)
 
 ## **PromQL Vector Matching Queries**
 
@@ -212,8 +214,7 @@ Matches free and total disk space for the same mount point to calculate the perc
 ```promql
 (node_filesystem_avail_bytes / node_filesystem_size_bytes) * 100
 ```
-![](./images/6.png)
-
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2011/images/6.png?raw=true)
 
 ### 2. Ignoring Labels
 
@@ -222,7 +223,7 @@ Ignores the `fstype` label and matches vectors by `mountpoint` and `instance`.
 ```promql
 node_filesystem_avail_bytes / ignoring(fstype) node_filesystem_size_bytes * 100
 ```
-![](./images/7.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2011/images/7.png?raw=true)
 
 ### 3. Matching by Instance
 
@@ -233,7 +234,7 @@ sum(rate(node_cpu_seconds_total{mode="user"}[1m])) by (instance)
 /
 sum(rate(node_cpu_seconds_total{mode="idle"}[1m])) by (instance)
 ```
-![](./images/8.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2011/images/8.png?raw=true)
 
 ### 4. Many-to-One Matching (`group_left`)
 
@@ -243,7 +244,7 @@ Matches multiple disk reads to a single instance. In this case, `Many-to-One` re
 rate(node_disk_reads_completed_total[5m]) / on(instance) group_left() rate(node_disk_writes_completed_total[5m])
 ```
 
-![](./images/9.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2011/images/9.png?raw=true)
 
 ### 5. Network Traffic Comparison
 
@@ -253,7 +254,7 @@ Compares received and transmitted network traffic for performance analysis.
 rate(node_network_receive_bytes_total[5m]) / rate(node_network_transmit_bytes_total[5m])
 ```
 
-![](./images/91.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2011/images/91.png?raw=true)
 
 ## **Conclusion**
 
