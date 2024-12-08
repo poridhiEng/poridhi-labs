@@ -1,0 +1,27 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: pyprometheus-scaledobject
+spec:
+  scaleTargetRef:
+    name: pyprometheus-deployment
+  minReplicaCount: 2
+  maxReplicaCount: 6
+  cooldownPeriod: 10
+  pollingInterval: 5
+  triggers:
+  - type: prometheus
+    metadata:
+      serverAddress: http://prometheus-server.prometheus.svc.cluster.local:80
+      metricName: recent_request_rate
+      threshold: '5'  # Scale up when there are more than 5 requests per second
+      query: |
+        # Calculate requests per second over last 30 seconds
+        sum(
+          rate(
+            http_requests_total_with_path_total{url="/product"}[30s]
+          )
+        )
+        or
+        # Return 0 if there are no requests
+        vector(0)
