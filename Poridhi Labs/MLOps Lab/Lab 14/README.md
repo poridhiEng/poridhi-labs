@@ -35,6 +35,8 @@ Let's consider an example: Imagine a robot trained to sort apples based on size 
 - **Impact**: The robot makes mistakes because the input data (green apples) has drifted from the data it was trained on (red apples).
 
 Monitoring for data drift helps detect when the production data has changed so we can retrain the model with more recent data to ensure reliable performance.
+
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/graph.png?raw=true)
    
 ### **Concept Drift**
 Concept drift occurs when the relationship between the input features and the target variable changes over time. In essence, the rules or logic the model learned during training no longer align with the current environment.
@@ -82,7 +84,7 @@ grafana_model_monitoring/
 **Create a Virtual Environment**:
    ```bash
    sudo apt update
-   apt install python3.8-venv
+   apt install python3.8-venv -y
    python3 -m venv venv
    source venv/bin/activate
    ```
@@ -172,7 +174,7 @@ def train_model():
     print(f"Model MSE: {mse}")
 
     # Save the entire pipeline
-    joblib.dump(model_pipeline, "model_pipeline.joblib")
+    joblib.dump(model_pipeline, "../model_pipeline.joblib")
     print("Model pipeline saved successfully.")
 
 if __name__ == "__main__":
@@ -265,7 +267,7 @@ app = Flask(__name__)
 
 # Load the model pipeline
 try:
-    model_pipeline = joblib.load("model_pipeline.joblib")
+    model_pipeline = joblib.load("../model_pipeline.joblib")
     print("Model pipeline loaded successfully")
 except Exception as e:
     print(f"Error loading model pipeline: {e}")
@@ -394,6 +396,18 @@ Run the following command to build and start the services defined in the `docker
 
 ```bash
 docker-compose up --build -d
+```
+
+To check the status of the containers, run the following command:
+
+```bash
+docker ps
+```
+
+To check the logs of the containers, run the following command:
+
+```bash
+docker logs <container_id>
 ```
 
 ### Create Load balancer for Grafana 
@@ -580,3 +594,7 @@ This document guides you through setting up Discord alerts for detecting drift s
 2. **Monitor**: Confirm that alerts fire when the drift threshold is crossed. 
 
    ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MLOps%20Lab/Lab%2014/images/image-18.png?raw=true)
+
+## Conclusion
+
+This lab demonstrated how to monitor data and concept drift in a machine learning model using Prometheus and Grafana. By setting up alerts, you can proactively detect and respond to changes in your model's performance, ensuring it remains accurate and reliable over time.
