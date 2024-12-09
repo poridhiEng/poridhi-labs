@@ -292,7 +292,7 @@ kubectl apply -f service.yaml
 kubectl apply -f keda-scaledobject.yaml
 ```
 
-![alt text](./images/image-8.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/KEDA%20with%20python/images/image-8.png)
 
 
 ## Testing and Monitoring the setup
@@ -324,7 +324,7 @@ watch -n 1 'kubectl get pods,hpa,scaledobject'
 
 **Initial situation:**
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/KEDA%20with%20python/images/image-1.png)
 
 **3. Generate load manually:**
 
@@ -334,28 +334,28 @@ Execute the following command to send multiple requests to the service, simulati
 for i in {1..50}; do curl <load-balancer-address>; done
 ```
 
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/KEDA%20with%20python/images/image-3.png)
 
 After generating the load, wait for some time and monitor the watch terminal for the scaling. You will see hpa scale our deployment according to the load.
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/KEDA%20with%20python/images/image-2.png)
 
 **Rescaling:**
 
 When there is no load, it will automatically scale down to minimum replicas:
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/KEDA%20with%20python/images/image.png)
 
 
 **Prometheuse Dashboard**
 
 First access the Prometheus UI by creating a loadbalancer stated previously. Then you can test the queries in the Prometheus UI:
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/KEDA%20with%20python/images/image-5.png)
 
 Total httl request count:
 
-![alt text](./images/image-7.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/KEDA%20with%20python/images/image-7.png)
 
 ### **Conclusion**
 
