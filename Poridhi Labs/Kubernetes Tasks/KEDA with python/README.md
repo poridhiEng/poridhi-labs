@@ -50,7 +50,7 @@ chmod 600 /root/.kube/config
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-4.png)
 
 
-## Go Application: Exposing Custom Metrics
+## Python Application: Exposing Custom Metrics
 
 The following Go application exposes custom Prometheus metrics:
 
@@ -59,55 +59,30 @@ from flask import Flask, request, Response
 from prometheus_client import Counter, Histogram, generate_latest
 import time
 
-# Create a Flask application
 app = Flask(__name__)
 
-# Prometheus metrics
-http_request_count_with_path = Counter(
-    'http_requests_total_with_path',
-    'Number of HTTP requests by path.',
-    ['url']
-)
-
-http_request_duration = Histogram(
-    'http_request_duration_seconds',
-    'Response time of HTTP request.',
-    ['path']
-)
-
-order_books_counter = Counter(
-    'product_order_total',
-    'Total number of product orders'
+# Counter for all HTTP requests
+total_http_requests = Counter(
+    'http_requests_total',
+    'Total number of HTTP requests',
+    ['method', 'endpoint']
 )
 
 @app.route('/')
-def home_route():
+def roor_route():
+    total_http_requests.labels(method=request.method, endpoint='/').inc()
     return "Welcome", 200
 
 @app.route('/product')
 def order_handler():
-    start_time = time.time()
-
-    # Increment counters
-    order_books_counter.inc()
-    http_request_count_with_path.labels(url=request.path).inc()
-
-    # Simulate processing delay
-    time.sleep(0.1)
-
-    # Calculate request duration
-    duration = time.time() - start_time
-    http_request_duration.labels(path=request.path).observe(duration)
-
+    total_http_requests.labels(method=request.method, endpoint='/product').inc()
     return "Order placed!", 200
 
 @app.route('/metrics')
 def metrics():
-    # Return Prometheus metrics
     return Response(generate_latest(), mimetype="text/plain")
 
 if __name__ == '__main__':
-    # Start the Flask server
     app.run(host='0.0.0.0', port=8181)
 ```
 
@@ -166,18 +141,18 @@ Now to deploy this application into kubernetes, we have to write Kubernetes mani
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: goprometheus-deployment
+  name: pyprometheus-deployment
   labels:
-    app: goprometheus
+    app: pyprometheus
 spec:
   replicas: 2  # Running one pod on each worker node
   selector:
     matchLabels:
-      app: goprometheus
+      app: pyprometheus
   template:
     metadata:
       labels:
-        app: goprometheus
+        app: pyprometheus
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8181"
@@ -186,8 +161,8 @@ spec:
       nodeSelector:
         role: worker-node
       containers:
-      - name: goprometheus
-        image: your-registry/goprometheuskeda:v1
+      - name: pyprometheus
+        image: <DOCKERHUB_USERNAME>/<IMAGE_NAME>:<VERSION>
         ports:
         - containerPort: 8181
         resources:
@@ -206,11 +181,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: goprometheus-service
+  name: pyprometheus-service
 spec:
   type: NodePort
   selector:
-    app: goprometheus
+    app: pyprometheus
   ports:
     - port: 8181
       targetPort: 8181
@@ -224,21 +199,31 @@ spec:
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: goprometheus-scaledobject
+  name: pyprometheus-scaledobject
 spec:
   scaleTargetRef:
-    name: goprometheus-deployment
-  minReplicaCount: 2  # Minimum 2 pods (one per worker node)
-  maxReplicaCount: 6  # Maximum 3 pods per worker node
-  cooldownPeriod: 30
-  pollingInterval: 15
+    name: pyprometheus-deployment
+  minReplicaCount: 2
+  maxReplicaCount: 6
+  cooldownPeriod: 10
+  pollingInterval: 5
+  advanced:
+    horizontalPodAutoscalerConfig:
+      behavior:
+        scaleDown:
+          stabilizationWindowSeconds: 10
+          policies:
+          - type: Pods
+            value: 1
+            periodSeconds: 10
   triggers:
   - type: prometheus
     metadata:
       serverAddress: http://prometheus-server.prometheus.svc.cluster.local:80
-      metricName: request_rate
-      threshold: '20'
-      query: sum(rate(product_order_total[5m])) * 300
+      metricName: request_count
+      threshold: '50'  # Scale when total requests exceed 50 in last 30s
+      query: |
+        sum(increase(http_requests_total{endpoint=~".*"}[30s])) or vector(0)
 ```
 
 ## Helm installations and Upgrade
@@ -270,10 +255,10 @@ helm install keda kedacore/keda --namespace keda --create-namespace
 
 ```yaml
 extraScrapeConfigs: |
-  - job_name: 'goprometheus'
+  - job_name: 'pyprometheus'
     scrape_interval: 15s
     static_configs:
-      - targets: ['goprometheus-service.default.svc.cluster.local:8181']
+      - targets: ['pyprometheus-service.default.svc.cluster.local:8181']
 ```
 
 Now update the prometheus:
@@ -307,7 +292,7 @@ kubectl apply -f service.yaml
 kubectl apply -f keda-scaledobject.yaml
 ```
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-8.png)
+![alt text](./images/image-8.png)
 
 
 ## Testing and Monitoring the setup
@@ -339,67 +324,39 @@ watch -n 1 'kubectl get pods,hpa,scaledobject'
 
 **Initial situation:**
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-11.png)
+![alt text](./images/image-1.png)
 
 **3. Generate load manually:**
 
 Execute the following command to send multiple requests to the service, simulating a basic load:
 
 ```sh
-for i in {1..30}; do curl <load-balancer-address>; done
+for i in {1..50}; do curl <load-balancer-address>; done
 ```
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-29.png)
+![alt text](./images/image-3.png)
 
 After generating the load, wait for some time and monitor the watch terminal for the scaling. You will see hpa scale our deployment according to the load.
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-30.png)
+![alt text](./images/image-2.png)
 
 **Rescaling:**
 
 When there is no load, it will automatically scale down to minimum replicas:
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Autoscaling%20with%20Keda%20in%20Kubernetes/images/image-14.png)
+![alt text](./images/image.png)
+
+
+**Prometheuse Dashboard**
+
+First access the Prometheus UI by creating a loadbalancer stated previously. Then you can test the queries in the Prometheus UI:
+
+![alt text](./images/image-5.png)
+
+Total httl request count:
+
+![alt text](./images/image-7.png)
 
 ### **Conclusion**
 
 This guide demonstrated how to set up autoscaling using **KEDA** and **Prometheus** to manage Kubernetes workloads dynamically. By leveraging custom metrics, we configured real-time scaling, monitored performance with Grafana, and validated the setup with load tests. This event-driven approach ensures efficient resource usage, scalability, and responsiveness, providing a foundation for optimizing Kubernetes applications.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```sh
-# First check raw counter
-http_requests_total_with_path_total{url="/product"}
-
-# Then check rate
-rate(http_requests_total_with_path_total{url="/product"}[2m])
-
-# Finally check sum
-sum(rate(http_requests_total_with_path_total{url="/product"}[2m]))
-```

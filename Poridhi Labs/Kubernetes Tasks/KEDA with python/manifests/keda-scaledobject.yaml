@@ -9,19 +9,20 @@ spec:
   maxReplicaCount: 6
   cooldownPeriod: 10
   pollingInterval: 5
+  advanced:
+    horizontalPodAutoscalerConfig:
+      behavior:
+        scaleDown:
+          stabilizationWindowSeconds: 10
+          policies:
+          - type: Pods
+            value: 1
+            periodSeconds: 10
   triggers:
   - type: prometheus
     metadata:
       serverAddress: http://prometheus-server.prometheus.svc.cluster.local:80
-      metricName: recent_request_rate
-      threshold: '5'  # Scale up when there are more than 5 requests per second
+      metricName: request_count
+      threshold: '100'  # Scale when total requests exceed 100 in last 30s
       query: |
-        # Calculate requests per second over last 30 seconds
-        sum(
-          rate(
-            http_requests_total_with_path_total{url="/product"}[30s]
-          )
-        )
-        or
-        # Return 0 if there are no requests
-        vector(0)
+        sum(increase(http_requests_total[30s])) or vector(0)
