@@ -152,6 +152,10 @@ sudo ./exporter.sh
 
   ![alt text](./images/image-1.png)
 
+- Access the Node exporter metrics by creating another load balancer from `Poridhi Lab` using the `port: 9100`.
+
+  <Node_exporter_image>
+
 ### **4. Configure Prometheus to Scrape Node Exporter**
 
 Prometheus needs to be configured to scrape the metrics from Node Exporter.
@@ -186,7 +190,7 @@ Prometheus needs to be configured to scrape the metrics from Node Exporter.
   ![alt text](./images/image-3.png)
 
 
-## **1. Generate a TLS Certificate for Node Exporter**
+## **Generate a TLS Certificate for Node Exporter**
 
 Use the `openssl` command below to generate a self-signed certificate and private key for Node Exporter:
 
@@ -197,108 +201,147 @@ openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 \
 -addext "subjectAltName = DNS:localhost"
 ```
 
-This command generates a 2048-bit RSA key and a certificate valid for 365 days with `localhost` as the Common Name (CN).
+A `node_exporter.key` file and a `node_exporter.crt` file is going to generate using this command. This is going to be our certificates. When we do an `ls -l`, we should see that we have our certificate and key file there.
 
-### **2. Configure Node Exporter to Use HTTPS**
+## **Configure Node Exporter to Use HTTPS**
 
-Move the generated certificate and key to a secure location and set appropriate permissions:
+- Create a folder named `node_exporter` in `/etc/` directory.
 
-```bash
-sudo mkdir -p /etc/node_exporter/ssl
-sudo mv node_exporter.crt node_exporter.key /etc/node_exporter/ssl/
-sudo chmod 600 /etc/node_exporter/ssl/*
-sudo chown -R node_exporter:node_exporter /etc/node_exporter/ssl
+  ```bash
+  sudo mkdir -p /etc/node_exporter
+  ```
+
+- Move the generated certificate and key to the `node_exporter` directory:
+
+  ```bash
+  sudo mv node_exporter.* /etc/node_exporter/
+  ```
+
+- Create a web configuration file for Node Exporter to enable TLS:
+
+  ```bash
+  sudo vi /etc/node_exporter/web-config.yml
+  ```
+
+  Add the following content:
+
+  ```yaml
+  tls_server_config:
+    cert_file: node_exporter.crt
+    key_file: node_exporter.key
+  ```
+
+- Update the permission to the folder for the user `node_exporter`:
+
+  ```bash
+  sudo chown -R node_exporter:node_exporter /etc/node_exporter
+  ```
+
+- Update the Node Exporter systemd service to use the web configuration:
+
+  ```bash
+  sudo vi /etc/systemd/system/node_exporter.service
+  ```
+
+  Modify the `ExecStart` directive:
+
+  ```ini
+  ExecStart=/usr/local/bin/node_exporter \
+    --web.config.file=/etc/node_exporter/ssl/web-config.yml
+  ```
+
+- Reload systemd and restart Node Exporter to apply the changes:
+
+  ```bash
+  sudo systemctl daemon-reload
+  sudo systemctl restart node_exporter
+  ```
+
+- Check the status of `node_exporter` services, and check if the TLS is enabled using:
+
+  ```bash
+  sudo systemctl status node_exporter
+  ```
+
+Here, we can see that `TLS is enabled` in the `node_exporter` service.
+
+### Verify the Metrics Locally
+
+Now, if we do a curl for the metrics path, we will specifically use `https`.
+
+```bash 
+curl https://localhost:9100/metrics
 ```
 
-Create a web configuration file for Node Exporter to enable TLS:
+We'll get an error for this command. This only occurs just because we use self-signed certificates, so it's not able to identify us properly. If we had used certificates from a trusted authority, like Let's Encrypt, then we wouldn't encounter this issue. 
 
-```bash
-sudo vi /etc/node_exporter/ssl/web-config.yml
+When using `curl`, we need to include the `-k` flag to allow an insecure connection.
+
+```bash 
+curl -k https://localhost:9100/metrics
 ```
 
-Add the following content:
+Now we have Encryption enabled at the Node exporter level.
 
-```yaml
-tls_server_config:
-  cert_file: /etc/node_exporter/ssl/node_exporter.crt
-  key_file: /etc/node_exporter/ssl/node_exporter.key
-```
+## **Configure Prometheus to Use HTTPS for Scraping Node Exporter**
 
-Update the Node Exporter systemd service to use the web configuration:
+As we have Node Metrics publishing on HTTPS, we might see an error on Prometheus with the Updated node exporter as `down`.
 
-```bash
-sudo vi /etc/systemd/system/node_exporter.service
-```
+To enable HTTPS for scraping, we need to update Prometheus configuration to get metrics from nodes with HTTPS endpoints.
 
-Modify the `ExecStart` directive:
+### **(a) Copy the Certificate**
 
-```ini
-ExecStart=/usr/local/bin/node_exporter \
-  --web.config.file=/etc/node_exporter/ssl/web-config.yml
-```
+- Copy the `node_exporter.crt` file from the node exporter server to the Prometheus server at `/etc/prometheus`:
 
-Reload systemd and restart Node Exporter to apply the changes:
+  ```bash
+  sudo cp /etc/node_exporter/node_exporter.crt /etc/prometheus/
+  ```
 
-```bash
-sudo systemctl daemon-reload
-sudo systemctl restart node_exporter
-sudo systemctl enable node_exporter
-```
+- Update the permission to the CRT file using:
 
-### **3. Configure Prometheus to Use HTTPS for Scraping Node Exporter**
+  ```bash
+  sudo chown -R prometheus:prometheus /etc/prometheus
+  ```
 
-To enable HTTPS for scraping, we need to copy the Node Exporter's certificate to the Prometheus server and update the Prometheus configuration.
+### **(b) Update the Prometheus Configuration to Use HTTPS**
 
-#### **(a) Copy the Certificate**
+- Edit the Prometheus configuration file:
 
-Copy the certificate from Node Exporter to the Prometheus server:
+  ```bash
+  sudo vi /etc/prometheus/prometheus.yml
+  ```
 
-```bash
-sudo mkdir -p /etc/prometheus/ssl
-sudo cp /etc/node_exporter/ssl/node_exporter.crt /etc/prometheus/ssl/
-sudo chown -R prometheus:prometheus /etc/prometheus/ssl
-sudo chmod 600 /etc/prometheus/ssl/node_exporter.crt
-```
+- Change the following scrape configuration for Node Exporter under `scrape_configs`:
 
-#### **(b) Update the Prometheus Configuration to Use HTTPS**
+  ```yaml
+  scrape_configs:
+    - job_name: 'node_exporter'
+      scheme: https
+      tls_config:
+        ca_file: /etc/prometheus/node_exporter.crt
+        insecure_skip_verify: true
+      static_configs:
+        - targets: ['localhost:9100']
+  ```
 
-Edit the Prometheus configuration file:
+  The `scheme: https` tells Prometheus to use HTTPS, and `insecure_skip_verify: true` is added because we are using a self-signed certificate.
 
-```bash
-sudo vi /etc/prometheus/prometheus.yml
-```
+### **(c) Restart the Prometheus Service**
 
-Add the following scrape configuration for Node Exporter under `scrape_configs`:
+- Restart Prometheus to apply the configuration changes:
 
-```yaml
-scrape_configs:
-  - job_name: 'node_exporter'
-    scheme: https
-    static_configs:
-      - targets: ['localhost:9100']
-    tls_config:
-      insecure_skip_verify: true
-```
+  ```bash
+  sudo systemctl daemon-reload
+  sudo systemctl restart prometheus
+  ```
 
-The `scheme: https` tells Prometheus to use HTTPS, and `insecure_skip_verify: true` is added because we are using a self-signed certificate.
+## **Verify the HTTPS Configuration**
 
-#### **(c) Restart the Prometheus Service**
-
-Restart Prometheus to apply the configuration changes:
-
-```bash
-sudo systemctl daemon-reload
-sudo systemctl restart prometheus
-sudo systemctl enable prometheus
-```
-
-### **4. Verify the HTTPS Configuration**
-
-Access the Prometheus UI using the Prometheus button on the top bar. Navigate to **Status -> Targets** to view the status of the scraped targets.
+Access the Prometheus UI using the `Poridhi's Load Balancer` you created earlier. Navigate to **Status -> Targets** to view the status of the scraped targets.
 
 - If the configuration is correct, both the Prometheus and Node Exporter targets should be listed as **UP**.
 - If the Node Exporter target is **DOWN**, you may see an error code indicating the problem (e.g., `401 Unauthorized` or `TLS handshake failure`). Double-check the certificate and configuration settings.
 
 ## **Conclusion**
 
-You've successfully configured Prometheus to scrape Node Exporter over HTTPS, ensuring secure communication. This setup enhances the monitoring environment's security by encrypting the data in transit. Now, both nodes should be displayed as being scraped over HTTPS in the Prometheus UI.
+You've successfully configured Prometheus to scrape Node Exporter over HTTPS, ensuring secure communication. This ensures that sensitive monitoring data remains protected during transit, enhancing the overall security of your environment. With this setup, you are better equipped to maintain a reliable and secure monitoring infrastructure.
