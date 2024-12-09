@@ -192,7 +192,7 @@ By using the Provided `URL` by `LoadBalancer`, you can access the Prometheus web
 
 Click on the **"Status"** tab in the top menu and select **"Service Discovery"** in Prometheus GUI. Here you will see `node_exporter`, when you click on it you will see the `Discovered Labels` and `Target Labels`.
 
-![alt text](image.png)
+![alt text](./images/image.png)
 
 
 ## **Relabeling In Prometheus**
@@ -200,6 +200,13 @@ Click on the **"Status"** tab in the top menu and select **"Service Discovery"**
 Now, let's explore various relabeling options. Below are some common examples:
 
 ### **1. Renaming a Label (Extracting Part of the Instance Label)**
+
+Open the `prometheus.yml` file:
+```bash
+sudo vim /etc/prometheus/prometheus.yml
+```
+
+Update the `prometheus.yml` file with the following configuration to extract part of the `instance` label using a regular expression and renames it to the `host` label. The `regex` ensures that only the first part of the `instance` (before any `/` or `-`) is captured and stored in the `host` label.
 
 ```yaml
 scrape_configs:
@@ -213,11 +220,23 @@ scrape_configs:
         regex: '([^/-]+).*'
 ```
 
-![alt text](./images/2.png)
+Restart the Prometheus service to apply the changes:
+```bash
+sudo systemctl restart prometheus
+```
 
-This relabeling rule extracts part of the `instance` label using a regular expression and renames it to the `host` label. The `regex` ensures that only the first part of the `instance` (before any `/` or `-`) is captured and stored in the `host` label.
+Now in the Prometheus `Service Discovery` tab, you will see the `host` label instead of the `instance` label.
+
+![alt text](./images/1.png)
 
 ### **2. Changing Label Value Based on a Condition**
+
+Open the `prometheus.yml` file:
+```bash
+sudo vim /etc/prometheus/prometheus.yml
+```
+
+Update the `prometheus.yml` file with the following configuration to change the `type` label value based on a condition. The `regex` checks if the `type` label matches either `database` or `firewall`. If so, it sets the `metric_type` label to `critical`.
 
 ```yaml
 scrape_configs:
@@ -232,9 +251,24 @@ scrape_configs:
         replacement: 'critical'
 ```
 
-This rule checks if the `type` label matches either `database` or `firewall`. If so, it sets the `metric_type` label to `critical`. This can help categorize critical metrics for easier filtering or alerting.
+Restart the Prometheus service to apply the changes:
+
+```bash
+sudo systemctl restart prometheus
+```
+
+Now in the Prometheus `Service Discovery` tab, you will see the `metric_type` label instead of the `type` label.
+
+![alt text](./images/2.png)
 
 ### **3. Combining Multiple Labels into a Single Label**
+
+Open the `prometheus.yml` file:
+```bash
+sudo vim /etc/prometheus/prometheus.yml
+```
+
+Update the `prometheus.yml` file with the following configuration to combine the `region` and `environment` labels into a single label called `region_environment`.
 
 ```yaml
 scrape_configs:
@@ -247,9 +281,24 @@ scrape_configs:
         target_label: 'region_environment'
 ```
 
-This rule combines the `region` and `environment` labels into a single label called `region_environment`. This can be useful for creating more descriptive labels that combine related information (e.g., `us-west-production`).
+Restart the Prometheus service to apply the changes:
+
+```bash
+sudo systemctl restart prometheus
+```
+
+Now in the Prometheus `Service Discovery` tab, you will see the `region_environment` label instead of the `region` and `environment` labels.
+
+![alt text](./images/3.png)
 
 ### **4. Modifying Label Values Based on Conditions (Environment Change)**
+
+Open the `prometheus.yml` file:
+```bash
+sudo vim /etc/prometheus/prometheus.yml
+```
+
+Update the `prometheus.yml` file with the following configuration to modify the `region` label value based on the `environment` label. The `regex` checks if the `environment` label is set to `production`. If so, it sets the `region` label to `prod-region`.
 
 ```yaml
 scrape_configs:
@@ -264,10 +313,24 @@ scrape_configs:
         regex: 'production'
 ```
 
+Restart the Prometheus service to apply the changes:
 
-This rule looks for the `production` value in the `environment` label and changes the `region` label to `prod-region` accordingly. This can be helpful for normalizing environment labels across different regions.
+```bash
+sudo systemctl restart prometheus
+```
+
+Now in the Prometheus `Service Discovery` tab, you will see the `region` label instead of the `region` label.
+
+![alt text](./images/4.png)
 
 ### **5. Keeping Only Specific Labels (Filter Out Non-Matching Labels)**
+
+Open the `prometheus.yml` file:
+```bash
+sudo vim /etc/prometheus/prometheus.yml
+```
+
+Update the `prometheus.yml` file with the following configuration to keep only the targets where the `environment` label is set to `production`.
 
 ```yaml
 scrape_configs:
@@ -282,10 +345,24 @@ scrape_configs:
         action: 'keep'
 ```
 
+Restart the Prometheus service to apply the changes:
 
-This relabeling rule keeps only the targets where the `environment` label is set to `production`. All other targets with different environment labels are excluded from scraping. This is useful for focusing on specific environments.
+```bash
+sudo systemctl restart prometheus
+```
+
+Now in the Prometheus `Service Discovery` tab, you will see the targets where the `environment` label is set to `production`.
+
+![alt text](./images/5.png)
 
 ### **6. Dropping Labels Based on a Condition**
+
+Open the `prometheus.yml` file:
+```bash
+sudo vim /etc/prometheus/prometheus.yml
+```
+
+Update the `prometheus.yml` file with the following configuration to drop the targets where the `type` label is set to `cache`.
 
 ```yaml
 scrape_configs:
@@ -300,7 +377,15 @@ scrape_configs:
         action: 'drop'
 ```
 
-This rule drops any targets where the `type` label is set to `cache`. By using the `action: 'drop'`, Prometheus will ignore these targets, effectively excluding them from scraping.
+Restart the Prometheus service to apply the changes:
+
+```bash
+sudo systemctl restart prometheus
+```
+
+Now in the Prometheus `Service Discovery` tab, you will see the targets where the `type` label is not set to `cache`.
+
+![alt text](./images/6.png)
 
 ### **Conclusion**
 
