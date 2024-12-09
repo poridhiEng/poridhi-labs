@@ -16,7 +16,7 @@ By the end of this lab, you will:
 3. Understand how to manipulate labels during metric collection using relabeling.
 4. Test different relabeling strategies with practical examples.
 
-## **What is Service Discovery and Why Do We Need It?**
+## **Service Discovery**
 
 Service discovery in Prometheus automatically identifies and scrapes metrics from dynamic sources, such as cloud services or containerized environments. Relabeling is a key feature of service discovery, enabling the transformation of target labels (e.g., renaming or adding labels) to align with specific monitoring and querying requirements.
 
