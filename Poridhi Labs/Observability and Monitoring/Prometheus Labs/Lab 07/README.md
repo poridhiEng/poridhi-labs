@@ -2,6 +2,8 @@
 
 Prometheus components don't have built-in security features like encryption or authentication. Without extra tools to secure them, all data between Prometheus and its components is sent as plain text, and anyone who knows the address can access them without restrictions. To secure the metrics endpoints, we will enable HTTPS for both Prometheus and Node Exporter using TLS. This guide walks you through configuring TLS, setting up Prometheus to scrape Node Exporter over HTTPS, and verifying that the metrics are securely transmitted.
 
+![alt text](./images/encryption-01.drawio.svg)
+
 ## **Task Overview**
 
 1. Install and configure Prometheus and Node Exporter.
@@ -9,6 +11,8 @@ Prometheus components don't have built-in security features like encryption or a
 3. Configure Node Exporter to use HTTPS.
 4. Update Prometheus to use HTTPS for scraping Node Exporter.
 5. Verify the HTTPS configuration in the Prometheus UI.
+
+  ![alt text](./images/encryption-02.drawio.svg)
 
 ## **Setup Prometheus and Node Exporter**
 
