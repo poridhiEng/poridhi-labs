@@ -201,6 +201,8 @@ Prometheus needs to be configured to scrape the metrics from Node Exporter.
 
   ![alt text](./images/image-4.png)
 
+Now, we can explore a demo of different PromQL queries and Node Exporter metrics using the Prometheus UI.
+
 ## Introduction to PromQL
 
 PromQL is the primary method for querying metrics in Prometheus. A PromQL expression is sent to the Prometheus server, which evaluates the query and returns the corresponding data. The returned data can be:
@@ -226,48 +228,74 @@ When a PromQL query is executed, the result can be one of the following data typ
   - Returns values for the specified metric across all unique label combinations.
   - All results share the same timestamp.
 
+    ![alt text](./images/image-5.png)
+
 ### 4. **Range Vector**
 - A set of time series containing multiple data points over a time range.
 - Example Query: `metric_name[3m]`
   - Returns values for the last 3 minutes, including timestamps for each scrape.
 
+    ![alt text](./images/image-6.png)
+
 ## Selectors and Matchers
 
-Selectors and matchers allow filtering specific time series from metrics.
+Selectors and matchers allow filtering specific time series from metrics. For example, we will use the `node_filesystem_avail_bytes` metric to understand how to apply selectors and matchers.
+
+![alt text](./images/image-7.png)
 
 ### Matchers
 
 1. **Equality Matcher** (`=`)
    - Matches time series with an exact label value.
-   - Example: `metric_name{instance="node1"}`
+   - Example: `node_filesystem_avail_bytes{device="tmpfs"}`
+
+        ![alt text](./images/image-8.png)
 
 2. **Negative Equality Matcher** (`!=`)
    - Excludes time series with a specific label value.
-   - Example: `metric_name{device!="tmpfs"}`
+   - Example: `node_filesystem_avail_bytes{device!="tmpfs"}`
+
+        ![alt text](./images/image-9.png)
 
 3. **Regex Matcher** (`=~`)
    - Matches time series where the label value matches a regex.
-   - Example: `metric_name{device=~"/dev/sda.*"}`
+   - Example: `node_filesystem_avail_bytes{mountpoint=~"/run.*"}`
+
+        ![alt text](./images/image-10.png)
+
+        It returns an instant vector containing the `node_filesystem_avail_bytes` metric values for all file systems whose mountpoint starts with `/run`.
 
 4. **Negative Regex Matcher** (`!~`)
    - Excludes time series where the label value matches a regex.
-   - Example: `metric_name{mountpoint!~"/boot.*"}`
+   - Example: `node_filesystem_avail_bytes{mountpoint!~"/run.*"}`
+
+        ![alt text](./images/image-11.png)
+
+        It returns an instant vector containing the `node_filesystem_avail_bytes` metric values for all file systems whose mountpoint does not start with `/run`.
 
 ### Combining Selectors
 - Use a comma to combine multiple selectors.
-- Example: `metric_name{instance="node1", device!="tmpfs"}`
+- Example: `node_filesystem_avail_bytes{job="node_exporter", mountpoint="/"}`
+
+    ![alt text](./images/image-12.png)
 
 ## Range Vector Selectors
 
 - Used to query data over a time range.
 - Syntax: `metric_name[duration]`
-  - Example: `metric_name[2m]` retrieves data from the last 2 minutes.
+
+  - Example: `node_filesystem_avail_bytes{job="node_exporter"}[2m]` retrieves data from the last 2 minutes.
+
+    ![alt text](./images/image-13.png)
 
 ## Using the Offset Modifier
 
 - Retrieves metric data from a specific offset in the past.
 - Syntax: `metric_name offset duration`
-  - Example: `metric_name offset 5m` retrieves data from 5 minutes ago.
+
+  - Example: `node_filesystem_avail_bytes{job="node_exporter"} offset 5m` retrieves data from 5 minutes ago.
+
+    ![alt text](./images/image-14.png)
 
 ### Supported Time Units
 - Milliseconds: `ms`
@@ -286,16 +314,25 @@ Example:
 
 - Fetches data for a specific UNIX timestamp.
 - Syntax: `metric_name @ <timestamp>`
-  - Example: `metric_name @ 1694781960` retrieves data for the exact time corresponding to the UNIX timestamp.
+
+  - Example: 
+    - For the timestamp `Wed Dec 11 2024 01:02:16 GMT+0600 (Bangladesh Standard Time)`, the corresponding Unix timestamp is `1733857336.077`.
+
+    - `node_filesystem_avail_bytes{job="node_exporter"} @1733857336.077` retrieves data for the exact time corresponding to the UNIX timestamp.
+
+        ![alt text](./images/image-15.png)
 
 ## Combining Offset and `@` Modifiers
 
 - These can be used together for advanced queries.
-- Example: `metric_name @ 1694781960 offset 5m`
+- Example: `node_filesystem_avail_bytes{job="node_exporter"} @1733857336.077 offset 5m`
   - Retrieves data for 5 minutes before the specified timestamp.
 
-The order of these modifiers does not matter.
+    ![alt text](./images/image-16.png)
 
-## Conclusion
+- The order of these modifiers does not matter.
 
-PromQL is a powerful tool for querying and analyzing metrics in Prometheus. By mastering its data types, selectors, matchers, and modifiers, you can extract the precise data needed for monitoring and alerting. As you explore further, PromQL’s advanced features will unlock even greater potential for observability and insights.
+
+## Conclusion  
+
+In this lab, we explored the essentials of PromQL, focusing on metrics filtering and data aggregation using selectors, matchers, and modifiers. By leveraging the `node_exporter` and the `Prometheus UI`, we successfully collected, filtered, and analyzed system metrics such as `node_filesystem_avail_bytes` to gain insights into resource availability. As you explore further, PromQL’s advanced features will unlock even greater potential for observability and insights. 
