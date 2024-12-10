@@ -2,7 +2,7 @@
 
 PromQL, short for **Prometheus Query Language**, is the powerful and flexible language used to query metrics within Prometheus. This guide covers the key concepts, syntax, and use cases for PromQL, enabling you to analyze metrics, create visualizations, and configure alerting rules effectively.
 
-![alt text](./images/promql.drawio.svg)
+![alt text](./images/promql.svg)
 
 ## Task Overview  
 
