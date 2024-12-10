@@ -2,6 +2,8 @@
 
 Prometheus components don't have built-in security features like encryption or authentication. Without extra tools to secure them, all data between Prometheus and its components is sent as plain text, and anyone who knows the address can access them without restrictions. To secure the metrics endpoints, we will enable HTTPS for both Prometheus and Node Exporter using TLS. This guide walks you through configuring TLS, setting up Prometheus to scrape Node Exporter over HTTPS, and verifying that the metrics are securely transmitted.
 
+![alt text](./images/encryption-01.drawio.svg)
+
 ## **Task Overview**
 
 1. Install and configure Prometheus and Node Exporter.
@@ -10,129 +12,131 @@ Prometheus components don't have built-in security features like encryption or a
 4. Update Prometheus to use HTTPS for scraping Node Exporter.
 5. Verify the HTTPS configuration in the Prometheus UI.
 
+  ![alt text](./images/encryption-02.drawio.svg)
+
 ## **Setup Prometheus and Node Exporter**
 
 ### **1. Setup Script for Prometheus**
 
 Create a setup script to automate the installation of Prometheus.
 
-#### **Create a Script as `prometheus.sh`**
+- #### **Create a Script as `prometheus.sh`**
 
-```bash
-#!/bin/bash
+  ```bash
+  #!/bin/bash
 
-# Variables
-PROM_VERSION="2.53.2"
-PROM_USER="prometheus"
-PROM_DIR="/etc/prometheus"
-PROM_LIB_DIR="/var/lib/prometheus"
-PROM_BINARY_URL="https://github.com/prometheus/prometheus/releases/download/v${PROM_VERSION}/prometheus-${PROM_VERSION}.linux-amd64.tar.gz"
-PROM_BIN_PATH="/usr/local/bin"
+  # Variables
+  PROM_VERSION="2.53.2"
+  PROM_USER="prometheus"
+  PROM_DIR="/etc/prometheus"
+  PROM_LIB_DIR="/var/lib/prometheus"
+  PROM_BINARY_URL="https://github.com/prometheus/prometheus/releases/download/v${PROM_VERSION}/prometheus-${PROM_VERSION}.linux-amd64.tar.gz"
+  PROM_BIN_PATH="/usr/local/bin"
 
-# Install wget and tar
-sudo apt-get update && sudo apt-get install -y wget tar
+  # Install wget and tar
+  sudo apt-get update && sudo apt-get install -y wget tar
 
-# Download and extract Prometheus
-wget $PROM_BINARY_URL && tar -xvzf prometheus-${PROM_VERSION}.linux-amd64.tar.gz
+  # Download and extract Prometheus
+  wget $PROM_BINARY_URL && tar -xvzf prometheus-${PROM_VERSION}.linux-amd64.tar.gz
 
-# Move binaries and config files
-sudo mv prometheus-${PROM_VERSION}.linux-amd64/{prometheus,promtool} $PROM_BIN_PATH/
-sudo mkdir -p $PROM_DIR $PROM_LIB_DIR && sudo mv prometheus-${PROM_VERSION}.linux-amd64/{prometheus.yml,consoles,console_libraries} $PROM_DIR/
+  # Move binaries and config files
+  sudo mv prometheus-${PROM_VERSION}.linux-amd64/{prometheus,promtool} $PROM_BIN_PATH/
+  sudo mkdir -p $PROM_DIR $PROM_LIB_DIR && sudo mv prometheus-${PROM_VERSION}.linux-amd64/{prometheus.yml,consoles,console_libraries} $PROM_DIR/
 
-# Create Prometheus user and assign permissions
-sudo useradd --no-create-home --shell /bin/false $PROM_USER
-sudo chown -R $PROM_USER:$PROM_USER $PROM_DIR $PROM_LIB_DIR
+  # Create Prometheus user and assign permissions
+  sudo useradd --no-create-home --shell /bin/false $PROM_USER
+  sudo chown -R $PROM_USER:$PROM_USER $PROM_DIR $PROM_LIB_DIR
 
-# Create systemd service file
-sudo tee /etc/systemd/system/prometheus.service > /dev/null <<EOT
-[Unit]
-Description=Prometheus Monitoring System
-Wants=network-online.target
-After=network-online.target
+  # Create systemd service file
+  sudo tee /etc/systemd/system/prometheus.service > /dev/null <<EOT
+  [Unit]
+  Description=Prometheus Monitoring System
+  Wants=network-online.target
+  After=network-online.target
 
-[Service]
-User=$PROM_USER
-ExecStart=$PROM_BIN_PATH/prometheus --config.file=$PROM_DIR/prometheus.yml --storage.tsdb.path=$PROM_LIB_DIR
+  [Service]
+  User=$PROM_USER
+  ExecStart=$PROM_BIN_PATH/prometheus --config.file=$PROM_DIR/prometheus.yml --storage.tsdb.path=$PROM_LIB_DIR
 
-[Install]
-WantedBy=multi-user.target
-EOT
+  [Install]
+  WantedBy=multi-user.target
+  EOT
 
-# Reload systemd, enable and start Prometheus
-sudo systemctl daemon-reload
-sudo systemctl enable --now prometheus
+  # Reload systemd, enable and start Prometheus
+  sudo systemctl daemon-reload
+  sudo systemctl enable --now prometheus
 
-# Check status
-sudo systemctl status prometheus
-```
+  # Check status
+  sudo systemctl status prometheus
+  ```
 
-#### **Run the Script:**
+- #### **Run the Script:**
 
-```bash
-chmod +x prometheus.sh
-sudo ./prometheus.sh
-```
+  ```bash
+  chmod +x prometheus.sh
+  sudo ./prometheus.sh
+  ```
 
 ### **2. Setup Script for Node Exporter**
 
 Similarly, create a setup script for Node Exporter.  
 
-#### **Create a Script as `exporter.sh`**
+- #### **Create a Script as `exporter.sh`**
 
-```bash
-#!/bin/bash
+  ```bash
+  #!/bin/bash
 
-# Variables
-NODE_EXPORTER_VERSION="1.8.2"
-NODE_EXPORTER_USER="node_exporter"
-NODE_EXPORTER_BINARY_URL="https://github.com/prometheus/node_exporter/releases/download/v${NODE_EXPORTER_VERSION}/node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz"
-NODE_EXPORTER_BIN_PATH="/usr/local/bin"
+  # Variables
+  NODE_EXPORTER_VERSION="1.8.2"
+  NODE_EXPORTER_USER="node_exporter"
+  NODE_EXPORTER_BINARY_URL="https://github.com/prometheus/node_exporter/releases/download/v${NODE_EXPORTER_VERSION}/node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz"
+  NODE_EXPORTER_BIN_PATH="/usr/local/bin"
 
-# Install wget and tar
-sudo apt-get update && sudo apt-get install -y wget tar
+  # Install wget and tar
+  sudo apt-get update && sudo apt-get install -y wget tar
 
-# Download and extract Node Exporter
-wget $NODE_EXPORTER_BINARY_URL && tar -xvzf node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz
+  # Download and extract Node Exporter
+  wget $NODE_EXPORTER_BINARY_URL && tar -xvzf node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz
 
-# Move Node Exporter binary
-sudo mv node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64/node_exporter $NODE_EXPORTER_BIN_PATH/
+  # Move Node Exporter binary
+  sudo mv node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64/node_exporter $NODE_EXPORTER_BIN_PATH/
 
-# Create a Node Exporter user (non-root)
-sudo useradd --no-create-home --shell /bin/false $NODE_EXPORTER_USER
+  # Create a Node Exporter user (non-root)
+  sudo useradd --no-create-home --shell /bin/false $NODE_EXPORTER_USER
 
-# Set ownership of the binary
-sudo chown $NODE_EXPORTER_USER:$NODE_EXPORTER_USER $NODE_EXPORTER_BIN_PATH/node_exporter
+  # Set ownership of the binary
+  sudo chown $NODE_EXPORTER_USER:$NODE_EXPORTER_USER $NODE_EXPORTER_BIN_PATH/node_exporter
 
-# Create a systemd service file
-sudo tee /etc/systemd/system/node_exporter.service > /dev/null <<EOT
-[Unit]
-Description=Node Exporter
-Wants=network-online.target
-After=network-online.target
+  # Create a systemd service file
+  sudo tee /etc/systemd/system/node_exporter.service > /dev/null <<EOT
+  [Unit]
+  Description=Node Exporter
+  Wants=network-online.target
+  After=network-online.target
 
-[Service]
-User=$NODE_EXPORTER_USER
-Group=$NODE_EXPORTER_USER
-ExecStart=$NODE_EXPORTER_BIN_PATH/node_exporter
+  [Service]
+  User=$NODE_EXPORTER_USER
+  Group=$NODE_EXPORTER_USER
+  ExecStart=$NODE_EXPORTER_BIN_PATH/node_exporter
 
-[Install]
-WantedBy=multi-user.target
-EOT
+  [Install]
+  WantedBy=multi-user.target
+  EOT
 
-# Reload systemd, enable and start Node Exporter
-sudo systemctl daemon-reload
-sudo systemctl enable --now node_exporter
+  # Reload systemd, enable and start Node Exporter
+  sudo systemctl daemon-reload
+  sudo systemctl enable --now node_exporter
 
-# Check status
-sudo systemctl status node_exporter
-```
+  # Check status
+  sudo systemctl status node_exporter
+  ```
 
-#### **Run the Script:**
+- #### **Run the Script:**
 
-```bash
-chmod +x exporter.sh
-sudo ./exporter.sh
-```
+  ```bash
+  chmod +x exporter.sh
+  sudo ./exporter.sh
+  ```
 
 ### **3. Expose Prometheus UI and Node Exporter Metrics**
 
@@ -148,9 +152,15 @@ sudo ./exporter.sh
 
 - Create a load balancer from `Poridhi Lab` by providing the `IP` and `port: 9090`.
 
+  ![alt text](./images/image-1.png)
+
 - Access the UI by opening the load balancer URL from browser. Go to *status > target*. We can see that prometheus has only one target and it is prometheus itself. Currently, it doesn't have `node_exporter` as its target to scrape. We have to configure the prometheus to scrape the `node_exporter`. 
 
-  ![alt text](./images/image-1.png)
+  ![alt text](./images/image-2.png)
+
+- Access the Node exporter metrics by creating another load balancer from `Poridhi Lab` using the `port: 9100`.
+
+  ![alt text](./images/image-3.png)
 
 ### **4. Configure Prometheus to Scrape Node Exporter**
 
@@ -170,8 +180,6 @@ Prometheus needs to be configured to scrape the metrics from Node Exporter.
       - targets: ['localhost:9100']
   ```
 
-  ![alt text](./images/image-2.png)
-
 - **Restart Prometheus:**
 
   ```bash
@@ -183,10 +191,9 @@ Prometheus needs to be configured to scrape the metrics from Node Exporter.
 
   Now you can see that the Prometheus is scraping the `node_exporter`. It may take a while to get the `up` state:
 
-  ![alt text](./images/image-3.png)
+  ![alt text](./images/image-4.png)
 
-
-## **1. Generate a TLS Certificate for Node Exporter**
+## **Generate a TLS Certificate for Node Exporter**
 
 Use the `openssl` command below to generate a self-signed certificate and private key for Node Exporter:
 
@@ -197,108 +204,163 @@ openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 \
 -addext "subjectAltName = DNS:localhost"
 ```
 
-This command generates a 2048-bit RSA key and a certificate valid for 365 days with `localhost` as the Common Name (CN).
+This command will generate a `node_exporter.key` file and a `node_exporter.crt` file, which will serve as our certificates. When we run `ls -l`, we should see both the certificate and key files listed.
 
-### **2. Configure Node Exporter to Use HTTPS**
+![alt text](./images/image-5.png)
 
-Move the generated certificate and key to a secure location and set appropriate permissions:
+## **Configure Node Exporter to Use HTTPS**
 
-```bash
-sudo mkdir -p /etc/node_exporter/ssl
-sudo mv node_exporter.crt node_exporter.key /etc/node_exporter/ssl/
-sudo chmod 600 /etc/node_exporter/ssl/*
-sudo chown -R node_exporter:node_exporter /etc/node_exporter/ssl
+- Create a folder named `node_exporter` in `/etc/` directory.
+
+  ```bash
+  sudo mkdir -p /etc/node_exporter
+  ```
+
+- Move the generated certificate and key to the `node_exporter` directory:
+
+  ```bash
+  sudo mv node_exporter.* /etc/node_exporter/
+  ```
+
+- Create a web configuration file for Node Exporter to enable TLS:
+
+  ```bash
+  sudo vi /etc/node_exporter/config.yml
+  ```
+
+  Add the following content:
+
+  ```yaml
+  tls_server_config:
+    cert_file: node_exporter.crt
+    key_file: node_exporter.key
+  ```
+
+- Update the permission to the folder for the user `node_exporter`:
+
+  ```bash
+  sudo chown -R node_exporter:node_exporter /etc/node_exporter
+  ```
+
+- Update the Node Exporter systemd service to use the web configuration:
+
+  ```bash
+  sudo vi /etc/systemd/system/node_exporter.service
+  ```
+
+  ![alt text](./images/image-6.png)
+
+  Modify the `ExecStart` directive:
+
+  ```ini
+  ExecStart=/usr/local/bin/node_exporter \
+    --web.config.file=/etc/node_exporter/config.yml
+  ```
+
+- Reload systemd and restart Node Exporter to apply the changes:
+
+  ```bash
+  sudo systemctl daemon-reload
+  sudo systemctl restart node_exporter
+  ```
+
+- Check the status of `node_exporter` services, and check if the TLS is enabled using:
+
+  ```bash
+  sudo systemctl status node_exporter
+  ```
+
+  ![alt text](./images/image-7.png)
+
+Here, we can see that `TLS is enabled` in the `node_exporter` service.
+
+### Verify the Metrics Locally
+
+Now, if we do a curl for the metrics path, we will specifically use `https`.
+
+```bash 
+curl https://localhost:9100/metrics
 ```
 
-Create a web configuration file for Node Exporter to enable TLS:
+![alt text](./images/image-8.png)
 
-```bash
-sudo vi /etc/node_exporter/ssl/web-config.yml
+We'll get an error for this command. This only occurs just because we use self-signed certificates, so it's not able to identify us properly. If we had used certificates from a trusted authority, like Let's Encrypt, then we wouldn't encounter this issue. 
+
+When using `curl`, we need to include the `-k` flag to allow an insecure connection.
+
+```bash 
+curl -k https://localhost:9100/metrics
 ```
 
-Add the following content:
+![alt text](./images/image-9.png)
 
-```yaml
-tls_server_config:
-  cert_file: /etc/node_exporter/ssl/node_exporter.crt
-  key_file: /etc/node_exporter/ssl/node_exporter.key
-```
+Now we have Encryption enabled at the Node exporter level.
 
-Update the Node Exporter systemd service to use the web configuration:
+## **Configure Prometheus to Use HTTPS for Scraping Node Exporter**
 
-```bash
-sudo vi /etc/systemd/system/node_exporter.service
-```
+As we have Node Metrics publishing on HTTPS, we might see an error on Prometheus with the Updated node exporter as `down`.
 
-Modify the `ExecStart` directive:
+![alt text](./images/image-10.png)
 
-```ini
-ExecStart=/usr/local/bin/node_exporter \
-  --web.config.file=/etc/node_exporter/ssl/web-config.yml
-```
+To enable HTTPS for scraping, we need to update Prometheus configuration to get metrics from nodes with HTTPS endpoints.
 
-Reload systemd and restart Node Exporter to apply the changes:
+### **(a) Copy the Certificate**
 
-```bash
-sudo systemctl daemon-reload
-sudo systemctl restart node_exporter
-sudo systemctl enable node_exporter
-```
+- Copy the `node_exporter.crt` file from the node exporter server to the Prometheus server at `/etc/prometheus`:
 
-### **3. Configure Prometheus to Use HTTPS for Scraping Node Exporter**
+  ```bash
+  sudo cp /etc/node_exporter/node_exporter.crt /etc/prometheus/
+  ```
 
-To enable HTTPS for scraping, we need to copy the Node Exporter's certificate to the Prometheus server and update the Prometheus configuration.
+- Update the permission to the CRT file using:
 
-#### **(a) Copy the Certificate**
+  ```bash
+  sudo chown -R prometheus:prometheus /etc/prometheus
+  ```
 
-Copy the certificate from Node Exporter to the Prometheus server:
+### **(b) Update the Prometheus Configuration to Use HTTPS**
 
-```bash
-sudo mkdir -p /etc/prometheus/ssl
-sudo cp /etc/node_exporter/ssl/node_exporter.crt /etc/prometheus/ssl/
-sudo chown -R prometheus:prometheus /etc/prometheus/ssl
-sudo chmod 600 /etc/prometheus/ssl/node_exporter.crt
-```
+- Edit the Prometheus configuration file:
 
-#### **(b) Update the Prometheus Configuration to Use HTTPS**
+  ```bash
+  sudo vi /etc/prometheus/prometheus.yml
+  ```
 
-Edit the Prometheus configuration file:
+- Change the following scrape configuration for Node Exporter under `scrape_configs`:
 
-```bash
-sudo vi /etc/prometheus/prometheus.yml
-```
+  ```yaml
+  scrape_configs:
+    - job_name: 'node_exporter'
+      scheme: https
+      tls_config:
+        ca_file: /etc/prometheus/node_exporter.crt
+        insecure_skip_verify: true
+      static_configs:
+        - targets: ['localhost:9100']
+  ```
 
-Add the following scrape configuration for Node Exporter under `scrape_configs`:
+  The `scheme: https` tells Prometheus to use HTTPS, and `insecure_skip_verify: true` is added because we are using a self-signed certificate.
 
-```yaml
-scrape_configs:
-  - job_name: 'node_exporter'
-    scheme: https
-    static_configs:
-      - targets: ['localhost:9100']
-    tls_config:
-      insecure_skip_verify: true
-```
+  ![alt text](./images/image-11.png)
 
-The `scheme: https` tells Prometheus to use HTTPS, and `insecure_skip_verify: true` is added because we are using a self-signed certificate.
+### **(c) Restart the Prometheus Service**
 
-#### **(c) Restart the Prometheus Service**
+- Restart Prometheus to apply the configuration changes:
 
-Restart Prometheus to apply the configuration changes:
+  ```bash
+  sudo systemctl daemon-reload
+  sudo systemctl restart prometheus
+  ```
 
-```bash
-sudo systemctl daemon-reload
-sudo systemctl restart prometheus
-sudo systemctl enable prometheus
-```
+## **Verify the HTTPS Configuration**
 
-### **4. Verify the HTTPS Configuration**
+Access the Prometheus UI using the `Poridhi's Load Balancer` you created earlier. Navigate to **Status -> Targets** to view the status of the scraped targets.
 
-Access the Prometheus UI using the Prometheus button on the top bar. Navigate to **Status -> Targets** to view the status of the scraped targets.
+  ![alt text](./images/image-12.png)
 
 - If the configuration is correct, both the Prometheus and Node Exporter targets should be listed as **UP**.
 - If the Node Exporter target is **DOWN**, you may see an error code indicating the problem (e.g., `401 Unauthorized` or `TLS handshake failure`). Double-check the certificate and configuration settings.
 
 ## **Conclusion**
 
-You've successfully configured Prometheus to scrape Node Exporter over HTTPS, ensuring secure communication. This setup enhances the monitoring environment's security by encrypting the data in transit. Now, both nodes should be displayed as being scraped over HTTPS in the Prometheus UI.
+You've successfully configured Prometheus to scrape Node Exporter over HTTPS, ensuring secure communication. This ensures that sensitive monitoring data remains protected during transit, enhancing the overall security of your environment. With this setup, you are better equipped to maintain a reliable and secure monitoring infrastructure.
