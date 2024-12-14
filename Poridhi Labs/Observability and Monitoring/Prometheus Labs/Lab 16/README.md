@@ -1,8 +1,5 @@
 # Prometheus Histograms and Summaries
 
-
-
-
 This lab provides hands-on experience with Prometheus histograms and summaries using a Node.js/Express application. 
 
 In Prometheus, **histograms** and **summaries** are two powerful types of metrics used to measure the distribution of values over time, such as the duration of requests, response sizes, or even memory usage.
@@ -211,21 +208,21 @@ This code allows us to monitor request duration patterns in Prometheus, giving i
      http_request_duration_seconds_bucket
      ```
 
-     ![alt text](./images/image-1.png)
+     ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2016/images/image-1.png?raw=true)
 
    - **Rate of Requests**: Calculates the request rate over the last 5 minutes.
      ```prometheus
      rate(http_request_duration_seconds_bucket[5m])
      ```
 
-     ![alt text](./images/image-2.png)
+     ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2016/images/image-2.png?raw=true)
 
    - **Quantile Calculation (95th Percentile)**: Visualizes the 95th percentile of request durations.
      ```prometheus
      histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))
      ```
 
-     ![alt text](./images/image-3.png)
+     ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2016/images/image-3.png?raw=true)
 
 ### 3. **Query Summary Metrics**
 
@@ -234,14 +231,14 @@ This code allows us to monitor request duration patterns in Prometheus, giving i
      http_request_duration_summary_seconds
      ```
 
-     ![alt text](./images/image-4.png)
+     ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2016/images/image-4.png?raw=true)
 
    - **Quantile (95th Percentile)**: Shows the 95th percentile of request durations as calculated in the summary.
      ```prometheus
      http_request_duration_summary_seconds{quantile="0.95"}
      ```
 
-     ![alt text](./images/image-5.png)
+     ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2016/images/image-5.png?raw=true)
 
 
 

@@ -4,7 +4,10 @@ Recording rules in Prometheus enable the periodic evaluation of PromQL expressio
 
 The architecture can be illustrated as follows:
 
-![Recording Rule Architecture](./images/record-rule.svg)
+![Recording Rule Architecture](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2017/images/record-rule.svg?raw=true)
+
+
+image.png?raw=true
 
 
 **Explanation of the Architecture:**
@@ -74,7 +77,7 @@ groups:
    - **`expr`**: PromQL expression to be evaluated.
    - **`labels`** (optional): Adds or modifies labels for the result.
 
-![](./images/rule-exec.svg)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2017/images/rule-exec.svg)
 
 **Groups** in Prometheus are evaluated in parallel to maximize efficiency, meaning multiple rule groups can be processed at the same time. However, within each **group**, the **rules** are executed sequentially, in the order they are listed. This sequential execution ensures that if one rule depends on the result of a preceding rule, the dependency is correctly handled.
 
@@ -245,14 +248,14 @@ sudo ./exporter.sh
 
   Here copy the `IP` from `eth0` interface:
 
-  ![alt text](./images/image.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2017/images/image.png?raw=true)
 
 - Create a load balancer from `Poridhi Lab` by providing the `IP` and `port: 9090`.
 
 
 - Access the UI by opening the load balancer URL from browser. Go to *status > target*. We can see that prometheus has only one target and it is prometheus itself. Currently, it doesn't have `node_exporter` as its target to scrape. We have to configure the prometheus to scrape the `node_exporter`. 
 
-  ![alt text](./images/image-1.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2017/images/image-1.png?raw=true)
 
 
 ### **4. Configure Prometheus Target**
@@ -266,7 +269,7 @@ scrape_configs:
       - targets: ['localhost:9100']
 ```
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2017/images/image-2.png?raw=true)
 
 Restart Prometheus:
 
@@ -309,7 +312,7 @@ rule_files:
   - "rules.yml"
 ```
 
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2017/images/image-3.png?raw=true)
 
 ### **8. Reload Prometheus**
 
@@ -323,14 +326,14 @@ sudo systemctl restart prometheus
 
 Access the Prometheus web interface and navigate to **Status > Target**. Verify the targets are listed and in the "UP" state.
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2017/images/image-4.png?raw=true)
 
 
 ### **10. Validate Rules**
 
 Access the Prometheus web interface and navigate to **Status > Rules**. Verify the rules are listed and in the "OK" state.
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2017/images/image-5.png?raw=true)
 
 ### **11. Query Metrics**
 
@@ -338,11 +341,11 @@ Use the Prometheus expression browser to query the recorded metrics:
 
 - Query `node_memory_free_percent` to see the memory free percentage.
 
-    ![alt text](./images/image-6.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2017/images/image-6.png?raw=true)
 
 - Query `node_filesystem_free_percent` to see the filesystem free percentage.
 
-    ![alt text](./images/image-7.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2017/images/image-7.png?raw=true)
 
 
 

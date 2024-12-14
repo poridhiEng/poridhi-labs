@@ -2,7 +2,8 @@
 
 Application instrumentation is the process of adding monitoring capabilities to your application's code to measure its performance and behavior. It's like adding sensors to your application that help you understand what's happening inside while it's running. Think of it as similar to how a car's dashboard provides critical information about speed, fuel level, and engine temperature.
 
-![](./images/app%20instrument.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2018/images/app%20instrument.svg)
+
 
 ### Why Instrument Applications?
 
@@ -223,14 +224,14 @@ docker-compose up -d
 - Send some `GET/POST/DELETE` request to the address:
 `<flask-app-lb-url>/cars`.
 
-  ![alt text](./images/image.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2018/images/image.png?raw=true)
 
-  ![alt text](./images/image-1.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2018/images/image-1.png?raw=true)
 
 - Send some `GET/POST` request to the address:
 `<flask-app-lb-url>/boats`.
 
-  ![alt text](./images/image-2.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2018/images/image-2.png?raw=true)
 
     
 
@@ -241,7 +242,7 @@ docker-compose up -d
 
 2. Check if the target is in `up` state from: *status > target health*
 
-    ![alt text](./images/image-3.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2018/images/image-3.png?raw=true)
 
 3. Query using the promQL:
 
@@ -249,7 +250,7 @@ docker-compose up -d
     http_requests_total
     ```
 
-    ![alt text](./images/image-4.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2018/images/image-4.png?raw=true)
 
 
 ## Why We Need Labels
@@ -336,7 +337,7 @@ python3 app.py
     http_requests_total
     ```
 
-    ![alt text](./images/image-5.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2018/images/image-5.png?raw=true)
 
 3. You can now use promql to query specific http requests in specific endpoinds and for specific methods as follows:
 
@@ -344,7 +345,7 @@ python3 app.py
     http_requests_total{method="POST", endpoint="/cars"}
     ```
 
-    ![alt text](./images/image-6.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2018/images/image-6.png?raw=true)
 
 
 

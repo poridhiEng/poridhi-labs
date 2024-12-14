@@ -2,7 +2,8 @@
 
 Application instrumentation is the process of adding monitoring capabilities to your application's code to measure its performance and behavior. It's like adding sensors to your application that help you understand what's happening inside while it's running. Think of it as similar to how a car's dashboard provides critical information about speed, fuel level, and engine temperature.
 
-![](./images/app%20instrument.svg)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2019/images/app%20instrument.svg?raw=true)
+
 
 This lab demonstrates how to instrument a Flask application with Histogram, Summary, and Gauge metrics:
 
@@ -256,12 +257,12 @@ docker-compose up -d
 - Send some `GET` request to the address:
 `<flask-app-lb-url>`.
 
-    ![alt text](./images/image-1.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2019/images/image-1.png?raw=true)
 
 - Send some `GET` request to the address:
 `<flask-app-lb-url>/slow`.
 
-    ![alt text](./images/image.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2019/images/image.png?raw=true)
 
 
     
@@ -273,7 +274,7 @@ docker-compose up -d
 
 2. Check if the target is in `up` state from: *status > target health*
 
-    ![alt text](./images/image-2.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2019/images/image-2.png?raw=true)
 
 
 ## Sample PromQL Queries
@@ -284,7 +285,7 @@ docker-compose up -d
     rate(http_requests_latency_seconds_bucket[1m])
     ```
 
-    ![alt text](./images/image-3.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2019/images/image-3.png?raw=true)
 
 2. Request Latency (Summary):
 
@@ -292,14 +293,14 @@ docker-compose up -d
     rate(http_requests_latency_summary_seconds_sum[1m]) / rate(http_requests_latency_summary_seconds_count[1m])
     ```
 
-    ![alt text](./images/image-4.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2019/images/image-4.png?raw=true)
 
 3. Active Requests:
     ```
     http_inprogress_requests
     ```
 
-    ![alt text](./images/image-5.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2019/images/image-5.png?raw=true)
 
 
 
