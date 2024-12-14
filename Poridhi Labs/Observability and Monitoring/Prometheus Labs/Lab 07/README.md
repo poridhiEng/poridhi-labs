@@ -2,7 +2,7 @@
 
 Prometheus components don't have built-in security features like encryption or authentication. Without extra tools to secure them, all data between Prometheus and its components is sent as plain text, and anyone who knows the address can access them without restrictions. To secure the metrics endpoints, we will enable HTTPS for both Prometheus and Node Exporter using TLS. This guide walks you through configuring TLS, setting up Prometheus to scrape Node Exporter over HTTPS, and verifying that the metrics are securely transmitted.
 
-![alt text](./images/encryption-01.drawio.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2007/images/encryption-01.drawio.svg)
 
 ## **Task Overview**
 
@@ -12,7 +12,7 @@ Prometheus components don't have built-in security features like encryption or a
 4. Update Prometheus to use HTTPS for scraping Node Exporter.
 5. Verify the HTTPS configuration in the Prometheus UI.
 
-  ![alt text](./images/encryption-02.drawio.svg)
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2007/images/encryption-02.drawio.svg)
 
 ## **Setup Prometheus and Node Exporter**
 
@@ -148,19 +148,19 @@ Similarly, create a setup script for Node Exporter.
 
   Here copy the `IP` from `eth0` interface:
 
-  ![alt text](./images/image.png)
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2007/images/image.png)
 
 - Create a load balancer from `Poridhi Lab` by providing the `IP` and `port: 9090`.
 
-  ![alt text](./images/image-1.png)
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2007/images/image-1.png)
 
 - Access the UI by opening the load balancer URL from browser. Go to *status > target*. We can see that prometheus has only one target and it is prometheus itself. Currently, it doesn't have `node_exporter` as its target to scrape. We have to configure the prometheus to scrape the `node_exporter`. 
 
-  ![alt text](./images/image-2.png)
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2007/images/image-2.png)
 
 - Access the Node exporter metrics by creating another load balancer from `Poridhi Lab` using the `port: 9100`.
 
-  ![alt text](./images/image-3.png)
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2007/images/image-3.png)
 
 ### **4. Configure Prometheus to Scrape Node Exporter**
 
@@ -191,7 +191,7 @@ Prometheus needs to be configured to scrape the metrics from Node Exporter.
 
   Now you can see that the Prometheus is scraping the `node_exporter`. It may take a while to get the `up` state:
 
-  ![alt text](./images/image-4.png)
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2007/images/image-4.png)
 
 ## **Generate a TLS Certificate for Node Exporter**
 
@@ -206,7 +206,7 @@ openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 \
 
 This command will generate a `node_exporter.key` file and a `node_exporter.crt` file, which will serve as our certificates. When we run `ls -l`, we should see both the certificate and key files listed.
 
-![alt text](./images/image-5.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2007/images/image-5.png)
 
 ## **Configure Node Exporter to Use HTTPS**
 
@@ -248,7 +248,7 @@ This command will generate a `node_exporter.key` file and a `node_exporter.crt` 
   sudo vi /etc/systemd/system/node_exporter.service
   ```
 
-  ![alt text](./images/image-6.png)
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2007/images/image-6.png)
 
   Modify the `ExecStart` directive:
 
@@ -270,7 +270,7 @@ This command will generate a `node_exporter.key` file and a `node_exporter.crt` 
   sudo systemctl status node_exporter
   ```
 
-  ![alt text](./images/image-7.png)
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2007/images/image-7.png)
 
 Here, we can see that `TLS is enabled` in the `node_exporter` service.
 
@@ -282,7 +282,7 @@ Now, if we do a curl for the metrics path, we will specifically use `https`.
 curl https://localhost:9100/metrics
 ```
 
-![alt text](./images/image-8.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2007/images/image-8.png)
 
 We'll get an error for this command. This only occurs just because we use self-signed certificates, so it's not able to identify us properly. If we had used certificates from a trusted authority, like Let's Encrypt, then we wouldn't encounter this issue. 
 
@@ -292,7 +292,7 @@ When using `curl`, we need to include the `-k` flag to allow an insecure connect
 curl -k https://localhost:9100/metrics
 ```
 
-![alt text](./images/image-9.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2007/images/image-9.png)
 
 Now we have Encryption enabled at the Node exporter level.
 
@@ -300,7 +300,7 @@ Now we have Encryption enabled at the Node exporter level.
 
 As we have Node Metrics publishing on HTTPS, we might see an error on Prometheus with the Updated node exporter as `down`.
 
-![alt text](./images/image-10.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2007/images/image-10.png)
 
 To enable HTTPS for scraping, we need to update Prometheus configuration to get metrics from nodes with HTTPS endpoints.
 
@@ -341,7 +341,7 @@ To enable HTTPS for scraping, we need to update Prometheus configuration to get 
 
   The `scheme: https` tells Prometheus to use HTTPS, and `insecure_skip_verify: true` is added because we are using a self-signed certificate.
 
-  ![alt text](./images/image-11.png)
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2007/images/image-11.png)
 
 ### **(c) Restart the Prometheus Service**
 
@@ -356,7 +356,7 @@ To enable HTTPS for scraping, we need to update Prometheus configuration to get 
 
 Access the Prometheus UI using the `Poridhi's Load Balancer` you created earlier. Navigate to **Status -> Targets** to view the status of the scraped targets.
 
-  ![alt text](./images/image-12.png)
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2007/images/image-12.png)
 
 - If the configuration is correct, both the Prometheus and Node Exporter targets should be listed as **UP**.
 - If the Node Exporter target is **DOWN**, you may see an error code indicating the problem (e.g., `401 Unauthorized` or `TLS handshake failure`). Double-check the certificate and configuration settings.

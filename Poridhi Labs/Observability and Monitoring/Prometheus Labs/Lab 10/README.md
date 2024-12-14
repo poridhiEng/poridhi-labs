@@ -2,7 +2,7 @@
 
 PromQL, short for **Prometheus Query Language**, is the powerful and flexible language used to query metrics within Prometheus. This guide covers the key concepts, syntax, and use cases for PromQL, enabling you to analyze metrics, create visualizations, and configure alerting rules effectively.
 
-![alt text](./images/promql.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2010/images/promql.svg)
 
 ## Task Overview  
 
@@ -156,19 +156,19 @@ Similarly, create a setup script for Node Exporter.
 
   Here copy the `IP` from `eth0` interface:
 
-  ![alt text](./images/image.png)
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2010/images/image.png)
 
 - Create a load balancer from `Poridhi Lab` by providing the `IP` and `port: 9090`.
 
-  ![alt text](./images/image-1.png)
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2010/images/image-1.png)
 
 - Access the UI by opening the load balancer URL from browser. Go to *status > target*. We can see that prometheus has only one target and it is prometheus itself. Currently, it doesn't have `node_exporter` as its target to scrape. We have to configure the prometheus to scrape the `node_exporter`. 
 
-  ![alt text](./images/image-2.png)
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2010/images/image-2.png)
 
 - Access the Node exporter metrics by creating another load balancer from `Poridhi Lab` using the `port: 9100`.
 
-  ![alt text](./images/image-3.png)
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2010/images/image-3.png)
 
 ### **4. Configure Prometheus to Scrape Node Exporter**
 
@@ -199,7 +199,7 @@ Prometheus needs to be configured to scrape the metrics from Node Exporter.
 
   Now you can see that the Prometheus is scraping the `node_exporter`. It may take a while to get the `up` state:
 
-  ![alt text](./images/image-4.png)
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2010/images/image-4.png)
 
 Now, we can explore a demo of different PromQL queries and Node Exporter metrics using the Prometheus UI.
 
@@ -228,20 +228,20 @@ When a PromQL query is executed, the result can be one of the following data typ
   - Returns values for the specified metric across all unique label combinations.
   - All results share the same timestamp.
 
-    ![alt text](./images/image-5.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2010/images/image-5.png)
 
 ### 4. **Range Vector**
 - A set of time series containing multiple data points over a time range.
 - Example Query: `metric_name[3m]`
   - Returns values for the last 3 minutes, including timestamps for each scrape.
 
-    ![alt text](./images/image-6.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2010/images/image-6.png)
 
 ## Selectors and Matchers
 
 Selectors and matchers allow filtering specific time series from metrics. For example, we will use the `node_filesystem_avail_bytes` metric to understand how to apply selectors and matchers.
 
-![alt text](./images/image-7.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2010/images/image-7.png)
 
 ### Matchers
 
@@ -249,19 +249,19 @@ Selectors and matchers allow filtering specific time series from metrics. For ex
    - Matches time series with an exact label value.
    - Example: `node_filesystem_avail_bytes{device="tmpfs"}`
 
-        ![alt text](./images/image-8.png)
+        ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2010/images/image-8.png)
 
 2. **Negative Equality Matcher** (`!=`)
    - Excludes time series with a specific label value.
    - Example: `node_filesystem_avail_bytes{device!="tmpfs"}`
 
-        ![alt text](./images/image-9.png)
+        ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2010/images/image-9.png)
 
 3. **Regex Matcher** (`=~`)
    - Matches time series where the label value matches a regex.
    - Example: `node_filesystem_avail_bytes{mountpoint=~"/run.*"}`
 
-        ![alt text](./images/image-10.png)
+        ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2010/images/image-10.png)
 
         It returns an instant vector containing the `node_filesystem_avail_bytes` metric values for all file systems whose mountpoint starts with `/run`.
 
@@ -269,7 +269,7 @@ Selectors and matchers allow filtering specific time series from metrics. For ex
    - Excludes time series where the label value matches a regex.
    - Example: `node_filesystem_avail_bytes{mountpoint!~"/run.*"}`
 
-        ![alt text](./images/image-11.png)
+        ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2010/images/image-11.png)
 
         It returns an instant vector containing the `node_filesystem_avail_bytes` metric values for all file systems whose mountpoint does not start with `/run`.
 
@@ -277,7 +277,7 @@ Selectors and matchers allow filtering specific time series from metrics. For ex
 - Use a comma to combine multiple selectors.
 - Example: `node_filesystem_avail_bytes{job="node_exporter", mountpoint="/"}`
 
-    ![alt text](./images/image-12.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2010/images/image-12.png)
 
 ## Range Vector Selectors
 
@@ -286,7 +286,7 @@ Selectors and matchers allow filtering specific time series from metrics. For ex
 
   - Example: `node_filesystem_avail_bytes{job="node_exporter"}[2m]` retrieves data from the last 2 minutes.
 
-    ![alt text](./images/image-13.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2010/images/image-13.png)
 
 ## Using the Offset Modifier
 
@@ -295,7 +295,7 @@ Selectors and matchers allow filtering specific time series from metrics. For ex
 
   - Example: `node_filesystem_avail_bytes{job="node_exporter"} offset 5m` retrieves data from 5 minutes ago.
 
-    ![alt text](./images/image-14.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2010/images/image-14.png)
 
 ### Supported Time Units
 - Milliseconds: `ms`
@@ -320,7 +320,7 @@ Example:
 
     - `node_filesystem_avail_bytes{job="node_exporter"} @1733857336.077` retrieves data for the exact time corresponding to the UNIX timestamp.
 
-        ![alt text](./images/image-15.png)
+        ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2010/images/image-15.png)
 
 ## Combining Offset and `@` Modifiers
 
@@ -328,7 +328,7 @@ Example:
 - Example: `node_filesystem_avail_bytes{job="node_exporter"} @1733857336.077 offset 5m`
   - Retrieves data for 5 minutes before the specified timestamp.
 
-    ![alt text](./images/image-16.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2010/images/image-16.png)
 
 - The order of these modifiers does not matter.
 

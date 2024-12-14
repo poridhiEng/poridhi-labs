@@ -2,7 +2,7 @@
 
 Imagine a scenario where your team is facing server outages from high memory usage and performance slowdowns, so your team requires a proactive monitoring solution. This documentation introduces how Prometheus can help by setting up alerts for memory utilization, analyzing metrics like average file size versus request latency, and understanding its use cases, basics, and architecture to keep your systems running smoothly and efficiently.
 
-![alt text](./images/Prom-Arch.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2002/images/Prom-Arch.svg)
 
 ## What is Prometheus?
 
@@ -18,7 +18,7 @@ Prometheus is an open-source monitoring and alerting toolkit designed to collect
 
 ### Metrics Collection
 
-![alt text](./images/metric-scrap.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2002/images/metric-scrap.svg)
 
 - **Scraping Targets:** Prometheus collects metrics by sending HTTP requests to the `/metrics` endpoint of each target. Targets are systems or services that expose metrics in a format Prometheus understands.
 - **Time Series Database:** Scraped metrics are stored in a time series database, enabling efficient querying and storage.
@@ -110,7 +110,7 @@ In a **push-based** model:
 
 ## Prometheus and Pushgateway
 
-![alt text](./images/pushgateway.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2002/images/pushgateway.svg)
 
 While Prometheus is primarily pull-based, it provides a **Pushgateway** component for specific scenarios:
 
@@ -123,7 +123,7 @@ While Prometheus is primarily pull-based, it provides a **Pushgateway** componen
 
 **Scenario:** Several outages have occurred due to high memory usage on a server hosting a MySQL database. The operations team wants to be notified via email when memory usage reaches 80% of maximum capacity to take proactive measures.
 
-![alt text](./images/usecase-01.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2002/images/usecase-01.svg)
 
 **Prometheus Solution:**
 
@@ -135,7 +135,7 @@ While Prometheus is primarily pull-based, it provides a **Pushgateway** componen
 
 **Scenario:** A new video upload feature has been added to a website. There are concerns about users uploading excessively large videos, potentially degrading application performance. The team needs a chart plotting the average file size of uploads against the average latency per request to identify performance degradation points.
 
-![alt text](./images/usecase-02.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2002/images/usecase-02.svg)
 
 **Prometheus Solution:**
 

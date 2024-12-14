@@ -1,4 +1,4 @@
-# Jenkins Installation on Ubuntu: A Step-by-Step Guide
+# Jenkins Installation on Ubuntu
 
 This guide will walk you through the process of installing Jenkins on an Ubuntu server using recommended configurations. Jenkins is an open-source automation server that is widely used for Continuous Integration (CI) and Continuous Delivery (CD) in software development. It allows developers to automate various stages of their development processes, such as building, testing, and deploying applications.
 

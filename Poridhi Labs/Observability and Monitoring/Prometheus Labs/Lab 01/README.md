@@ -2,17 +2,17 @@
 
 Imagine you're a detective solving the puzzles of a modern, complex system. In this journey, you'll learn how **Observability** becomes your magnifying glass, helping you see deep inside the system using logs, metrics, and traces. You'll understand setting **Service Level Indicators (SLIs)**, **Objectives (SLOs)**, and **Agreements (SLAs)**—tools that ensure everything runs smoothly and reliably. This guide will give you the insights and tools to quickly find and fix issues, improve system performance, and keep everything working well, even when unexpected problems arise.
 
-![alt text](images/obs.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2001/images/obs.svg)
 
 ## What is Observability?
 
 **Observability** is the ability to infer the internal states of a system solely from its external outputs. It allows teams to understand and measure the state of a system based on data such as logs, metrics, and traces. Observability is not just about knowing **what** is wrong but also understanding **why** it's happening.
 
-![alt text](./images/without-obs.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2001/images/without-obs.svg)
 
 Without observability, a complex system is like a black box—we know what goes in and what comes out, but we have no idea what's happening inside. This lack of visibility makes it hard to diagnose problems, understand performance issues, or improve the system. 
 
-![alt text](./images/with-obs.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2001/images/with-obs.svg)
 
 With observability, we open up that black box. By using logs, metrics, and traces, we can see inside the system to understand how it works. This helps us find and fix issues quickly, optimize performance, and ensure everything runs smoothly. Observability turns the unknown into the known, making it possible to solve problems that were once hidden from view.
 
@@ -43,7 +43,7 @@ To achieve observability, organizations focus on three key data types:
 - **Message**: Information about the event.
 
 
-![alt text](./images/image.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2001/images/image.png)
 
 Logs are essential for diagnosing issues and understanding system behavior. However, they can become overwhelming due to their volume and verbosity, especially in distributed systems where logs from multiple services intertwine.
 
@@ -58,7 +58,7 @@ Logs are essential for diagnosing issues and understanding system behavior. Howe
 
 Metrics are valuable for monitoring system health and performance over time. They can be aggregated and visualized to identify trends, spikes, or anomalies.
 
-![alt text](./images/metrics.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2001/images/metrics.svg)
 
 Each metric typically includes:
 
@@ -73,7 +73,7 @@ Tools like **Prometheus** are widely used to collect and aggregate metrics for a
 
 **Traces** allow teams to follow the path of a request through various services and components within a system. Tracing is crucial in microservices architectures to understand how different parts of the system interact.
 
-![alt text](./images/trace-01.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2001/images/trace-01.svg)
 
 A trace is composed of multiple **spans**, each representing a unit of work with:
 
@@ -81,7 +81,7 @@ A trace is composed of multiple **spans**, each representing a unit of work with
 - **Duration**
 - **Parent ID**: Linking spans to form a hierarchy.
 
-![alt text](./images/trace-02.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/87e2faa5791ef084229170ef8156365973343c89/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2001/images/trace-02.svg)
 
 Tracing helps in:
 
