@@ -175,20 +175,25 @@ Create a load balancer with the MasterNode IP and the Nodeport (30080). Then acc
 - Log into Grafana using the default admin credentials or a custom one you configured.
 - Add Prometheus as a data source:
     - Use the URL of the Prometheus service exposed in your cluster (default port is `9090`).
+
+    ```sh
+    http://prometheus-operated.monitoring:9090
+    ```
+
     - Test the data source to ensure it is connected correctly.
 
 
-**9. Create Dashboards in Grafana**
+**10. Create Dashboards in Grafana**
 
-   - Create a new dashboard in Grafana to visualise the metrics collected by Prometheus.
-   - Use example metrics such as:
-     - `container_cpu_usage_seconds_total` for CPU usage.
-     - `container_memory_usage_bytes` for memory usage.
-     - Apply rate or aggregation functions to make the graphs more meaningful.
-   - Customise the dashboard by adjusting legends, colours, and time intervals.
+- Create a new dashboard in Grafana to visualise the metrics collected by Prometheus.
+- Use example metrics such as:
+    - `container_cpu_usage_seconds_total` for CPU usage.
+    - `container_memory_usage_bytes` for memory usage.
+    - Apply rate or aggregation functions to make the graphs more meaningful.
+- Customise the dashboard by adjusting legends, colours, and time intervals.
 
 
-   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Prometheus%20Operator%20Kubernetes/images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Prometheus%20Operator%20Kubernetes/images/image.png)
 
 
 ## Conclusion
