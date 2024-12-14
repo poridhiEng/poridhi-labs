@@ -3,7 +3,7 @@
 
 Monitoring is a crucial aspect of managing any modern application, and Prometheus has emerged as one of the most powerful open-source monitoring systems available today. At the heart of Prometheus are **metrics**, which provide valuable insights into the state and performance of your system. By understanding how to create, collect, and query these metrics, you can effectively monitor your application's health, performance, and reliability in real-time.
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2008/images/image.png?raw=true)
 
 This lab is designed to introduce you to the core concepts of Prometheus metrics, their structure, and the various metric types available. We will explore how to use **labels** to add granularity to metrics, the importance of **time series**, and how to differentiate between key metric types like **Counters**, **Gauges**, **Histograms**, and **Summaries**. By the end of this lab, you will have hands-on experience with creating, labeling, and querying Prometheus metrics.
 
@@ -65,7 +65,7 @@ Prometheus metrics include two important attributes:
 
 ## **4. Types of Prometheus Metrics**
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2008/images/image-1.png?raw=true)
 
 Prometheus provides four main metric types. Understanding when and how to use each type is crucial for accurate monitoring.
 
@@ -167,7 +167,7 @@ This provides an understanding of performance across different percentiles.
 
 ### Histogram vs Summary
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2008/images/image-2.png?raw=true)
 
 
 ## **5. Metric Naming Rules**

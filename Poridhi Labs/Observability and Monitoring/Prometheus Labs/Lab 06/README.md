@@ -2,7 +2,8 @@
 
 Prometheus is a powerful monitoring system that scrapes and stores time-series data from various targets, including Node Exporter, which is used to monitor system metrics. However, by default, Prometheus and Node Exporter expose their metrics endpoints without any authentication, which can be a security risk. To ensure that only authorized users can access metrics, we will configure basic authentication for Node Exporter and secure it with Prometheus.
 
-![](./images/authentication.svg)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2006/images/authentication.svg?raw=true)
+
 
 This guide will take you step-by-step through the process of setting up Prometheus and Node Exporter, enabling authentication, and configuring Prometheus to scrape the Node Exporter metrics securely.
 
@@ -153,14 +154,14 @@ sudo ./exporter.sh
 
   Here copy the `IP` from `eth0` interface:
 
-  ![alt text](./images/image.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2006/images/image.png?raw=true)
 
 - Create a load balancer from `Poridhi Lab` by providing the `IP` and `port: 9090`.
 
 
 - Access the UI by opening the load balancer URL from browser. Go to *status > target*. We can see that prometheus has only one target and it is prometheus itself. Currently, it doesn't have `node_exporter` as its target to scrape. We have to configure the prometheus to scrape the `node_exporter`. 
 
-  ![alt text](./images/image-1.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2006/images/image-1.png?raw=true)
 
 
 
@@ -184,7 +185,7 @@ Prometheus needs to be configured to scrape the metrics from Node Exporter.
       - targets: ['localhost:9100']
   ```
 
-  ![alt text](./images/image-2.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2006/images/image-2.png?raw=true)
 
 - **Restart Prometheus:**
 
@@ -197,7 +198,7 @@ Prometheus needs to be configured to scrape the metrics from Node Exporter.
 
   Now you can see that the Prometheus is scraping the `node_exporter`. It may take a while to get the `up` state:
 
-  ![alt text](./images/image-3.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2006/images/image-3.png?raw=true)
 
 
 
@@ -240,7 +241,7 @@ To secure Node Exporter, we'll configure basic authentication.
   ```
 
 
-  ![alt text](./images/image-4.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2006/images/image-4.png?raw=true)
 
 - Edit the `config.yml` file:
 
@@ -306,7 +307,7 @@ curl localhost:9100/metrics
 
 Result: **Unauthorized**
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2006/images/image-5.png?raw=true)
 
 ### Test with credentials:
 
@@ -320,7 +321,7 @@ Result: **Metrics received**
 
 In the prometheus UI, we can see that the `node_exporter` in in `down` status with `401 Unauthorized` error:
 
-  ![alt text](./images/image-6.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2006/images/image-6.png?raw=true)
 
 This is because Prometheus also needs to be configured to authenticate with Node Exporter.
 
@@ -346,7 +347,7 @@ Add the following under `scrape_configs`:
     password: secret-password
 ```
 
-![alt text](./images/image-7.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2006/images/image-7.png?raw=true)
 
 ### **Restart Prometheus**
 
@@ -359,7 +360,7 @@ sudo systemctl restart prometheus
 
 In the Prometheus UI, the Node Exporter target should now be listed as **UP**, indicating authorized access. It may take some time to get the `up` status.
 
-![alt text](./images/image-8.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2006/images/image-8.png?raw=true)
 
 
 ## **Conclusion**
