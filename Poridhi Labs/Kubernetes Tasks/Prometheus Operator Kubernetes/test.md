@@ -1,223 +1,202 @@
-# Kubernetes Monitoring Project - Complete Documentation
+Here is a detailed documentation for implementing the project up to setting up the Grafana dashboard, excluding the Terraform AWS part:
 
-## Project Overview
-This project implements a comprehensive monitoring solution for a K3s Kubernetes cluster using Prometheus, Grafana, Blackbox Exporter, and a sample Go application.
+---
 
-## Prerequisites
-- K3s cluster up and running
-- kubectl configured
-- Helm v3
-- Docker for building the sample application
+# **Setting up Prometheus Operator and Grafana Dashboard**
 
-## Directory Structure
-```
-projects/
-├── blackbox-exporter/
-│   ├── 0-deployment.yaml
-│   └── 1-service.yaml
-├── grafana-values.yaml
-├── myapp/
-│   ├── deploy/
-│   │   ├── 0-namespace.yaml
-│   │   ├── 1-deployment.yaml
-│   │   ├── 2-service.yaml
-│   │   ├── 3-pod-monitor.yaml
-│   │   ├── 4-prom-service.yaml
-│   │   └── 5-service-monitor.yaml
-│   ├── Dockerfile
-│   ├── main.go
-│   ├── go.mod
-│   └── go.sum
-├── probe.yaml
-├── prometheus/
-│   ├── 0-service-account.yaml
-│   ├── 1-cluster-role.yaml
-│   ├── 2-cluster-role-binding.yaml
-│   └── 3-prometheus.yaml
-└── prometheus-operator/
-    └── deployment/
-        ├── 0-service-account.yaml
-        └── 1-cluster-role.yaml
+## **Prerequisites**
+1. **Kubernetes Cluster**: Ensure you have an operational Kubernetes cluster. You can use EKS, GKE, AKS, or Minikube.
+2. **Kubectl Installed**: Your system should have `kubectl` installed and configured to connect to your cluster.
+3. **Helm Installed**: Install Helm to manage and deploy Kubernetes applications.
+4. **Repository Access**: Clone the [GitHub repository](https://github.com/antonputra/tutorials/tree/main/lessons/154).
+
+---
+
+## **Steps to Implement the Project**
+
+### **1. Create a Monitoring Namespace**
+- Use the following YAML file to create a dedicated namespace for monitoring components:
+
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring
+  labels:
+    monitoring: prometheus
 ```
 
-## Installation Steps
-
-### 1. Create Monitoring Namespace
+Apply the namespace:
 ```bash
-kubectl create namespace monitoring
+kubectl apply -f namespace.yaml
 ```
 
-### 2. Deploy Prometheus Operator
+---
+
+### **2. Install Prometheus Operator**
+1. **Custom Resource Definitions (CRDs):**
+   - Download and apply the necessary CRDs from the Prometheus Operator repository:
+   ```bash
+   kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/main/example/prometheus-operator-crd.yml
+   ```
+
+2. **RBAC Configuration:**
+   - Define role-based access control for the Prometheus Operator:
+   ```bash
+   kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/main/example/rbac/prometheus-operator-role-binding.yml
+   ```
+
+3. **Deploy the Prometheus Operator:**
+   - Use the following YAML for deployment:
+   ```yaml
+   apiVersion: apps/v1
+   kind: Deployment
+   metadata:
+     name: prometheus-operator
+     namespace: monitoring
+   spec:
+     replicas: 1
+     selector:
+       matchLabels:
+         app: prometheus-operator
+     template:
+       metadata:
+         labels:
+           app: prometheus-operator
+       spec:
+         containers:
+         - name: prometheus-operator
+           image: quay.io/prometheus-operator/prometheus-operator:v0.63.0
+   ```
+   Apply the deployment:
+   ```bash
+   kubectl apply -f prometheus-operator-deployment.yaml
+   ```
+
+4. Verify the Deployment:
+   ```bash
+   kubectl get pods -n monitoring
+   ```
+
+---
+
+### **3. Deploy Prometheus**
+1. **Service Account and RBAC for Prometheus:**
+   - Create a service account and cluster role binding for Prometheus.
+
+2. **Deploy Prometheus:**
+   - Use a YAML file for the Prometheus custom resource:
+   ```yaml
+   apiVersion: monitoring.coreos.com/v1
+   kind: Prometheus
+   metadata:
+     name: prometheus
+     namespace: monitoring
+   spec:
+     replicas: 1
+     serviceAccountName: prometheus
+     retention: 7d
+   ```
+   Apply the configuration:
+   ```bash
+   kubectl apply -f prometheus.yaml
+   ```
+
+3. Verify the Deployment:
+   ```bash
+   kubectl get pods -n monitoring
+   ```
+
+---
+
+### **4. Deploy a Sample Application**
+- Deploy a sample Go application exposing Prometheus metrics.
 ```bash
-kubectl apply -f projects/prometheus-operator/deployment/0-service-account.yaml
-kubectl apply -f projects/prometheus-operator/deployment/1-cluster-role.yaml
+kubectl apply -f https://raw.githubusercontent.com/antonputra/tutorials/main/lessons/154/sample-app.yaml
 ```
 
-### 3. Deploy Prometheus
-```bash
-kubectl apply -f projects/prometheus/0-service-account.yaml
-kubectl apply -f projects/prometheus/1-cluster-role.yaml
-kubectl apply -f projects/prometheus/2-cluster-role-binding.yaml
-kubectl apply -f projects/prometheus/3-prometheus.yaml
-```
+---
 
-### 4. Deploy Blackbox Exporter
-```bash
-kubectl apply -f projects/blackbox-exporter/0-deployment.yaml
-kubectl apply -f projects/blackbox-exporter/1-service.yaml
-```
+### **5. Configure Monitoring for the Application**
+1. **Create a PodMonitor:**
+   - Define a `PodMonitor` resource to monitor the sample app:
+   ```yaml
+   apiVersion: monitoring.coreos.com/v1
+   kind: PodMonitor
+   metadata:
+     name: sample-app-monitor
+     namespace: monitoring
+   spec:
+     selector:
+       matchLabels:
+         app: sample-app
+     namespaceSelector:
+       matchNames:
+       - default
+     podMetricsEndpoints:
+     - port: metrics
+   ```
+   Apply the configuration:
+   ```bash
+   kubectl apply -f pod-monitor.yaml
+   ```
 
-### 5. Deploy Sample Application
-```bash
-# Build the application
-docker build -t myapp:latest projects/myapp/
-# If using a local registry or k3d registry
-docker tag myapp:latest localhost:5000/myapp:latest
-docker push localhost:5000/myapp:latest
+2. Verify the Configuration:
+   ```bash
+   kubectl get podmonitors -n monitoring
+   ```
 
-# Deploy to Kubernetes
-kubectl apply -f projects/myapp/deploy/
-```
+---
 
-### 6. Install Grafana
-```bash
-helm repo add grafana https://grafana.github.io/helm-charts
-helm repo update
-helm install grafana grafana/grafana \
-  --namespace monitoring \
-  --values projects/grafana-values.yaml
-```
+### **6. Install Grafana**
+1. **Add the Helm Repository:**
+   ```bash
+   helm repo add grafana https://grafana.github.io/helm-charts
+   helm repo update
+   ```
 
-## Accessing Services
+2. **Deploy Grafana:**
+   - Use the following command to deploy Grafana with Helm:
+   ```bash
+   helm install grafana grafana/grafana --namespace monitoring --set adminPassword=admin123
+   ```
 
-### Prometheus
-```bash
-kubectl port-forward -n monitoring svc/prometheus-operated 9090:9090
-```
-Access at: http://localhost:9090
+3. Verify the Deployment:
+   ```bash
+   kubectl get pods -n monitoring
+   ```
 
-### Grafana
-```bash
-# Get admin password
-kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+4. **Access Grafana:**
+   - Forward the Grafana service to your local machine:
+   ```bash
+   kubectl port-forward svc/grafana 3000:80 -n monitoring
+   ```
+   - Open your browser and go to `http://localhost:3000`. Use the default username `admin` and password `admin123` to log in.
 
-# Port forward
-kubectl port-forward -n monitoring svc/grafana 3000:80
-```
-Access at: http://localhost:3000
+---
 
-### Sample Application
-```bash
-kubectl port-forward -n staging svc/myapp 8080:8080
-kubectl port-forward -n staging svc/myapp-prom 8081:8081
-```
-- Application: http://localhost:8080/api/devices
-- Metrics: http://localhost:8081/metrics
+### **7. Configure Grafana Dashboard**
+1. **Add a Prometheus Data Source:**
+   - Navigate to **Configuration > Data Sources** in Grafana.
+   - Add a new Prometheus data source with the following URL:
+     ```
+     http://prometheus-operated.monitoring.svc:9090
+     ```
 
-## Verification Steps
+2. **Create a Dashboard:**
+   - Use the metrics from the sample application to create visualizations.
 
-1. Check all pods are running:
-```bash
-kubectl get pods -n monitoring
-kubectl get pods -n staging
-```
+3. **Save the Dashboard:**
+   - Customize and save the dashboard as needed.
 
-2. Verify Prometheus targets:
-```bash
-# Access Prometheus UI and check Status -> Targets
-kubectl port-forward -n monitoring svc/prometheus-operated 9090:9090
-```
+---
 
-3. Test sample application:
-```bash
-curl http://localhost:8080/api/devices
-```
+### **Next Steps**
+- The Grafana dashboard is now set up and displaying metrics. For advanced configurations, you can explore:
+  - Adding external scrape configurations.
+  - Setting up Alertmanager for alerts.
+  - Deploying additional exporters for extended monitoring.
 
-4. Check metrics:
-```bash
-curl http://localhost:8081/metrics
-```
+--- 
 
-## Monitoring Configuration
-
-### Key Metrics to Watch
-- HTTP request duration
-- Error rates
-- Resource usage (CPU/Memory)
-- Endpoint availability
-
-### Grafana Dashboards
-After logging into Grafana:
-1. Add Prometheus data source
-   - URL: http://prometheus-operated:9090
-2. Import basic dashboards:
-   - Node Exporter Dashboard (ID: 1860)
-   - Kubernetes cluster monitoring (ID: 315)
-
-## Troubleshooting
-
-### Common Issues and Solutions
-
-1. Pods not starting:
-```bash
-kubectl describe pod -n monitoring <pod-name>
-kubectl logs -n monitoring <pod-name>
-```
-
-2. Prometheus not finding targets:
-```bash
-# Check ServiceMonitor/PodMonitor
-kubectl get servicemonitor -n monitoring
-kubectl get podmonitor -n monitoring
-
-# Check labels match
-kubectl get pods -n staging --show-labels
-```
-
-3. Metrics not showing up:
-```bash
-# Check metrics endpoint directly
-kubectl port-forward -n staging <pod-name> 8081:8081
-curl localhost:8081/metrics
-```
-
-## Cleanup
-
-```bash
-# Remove sample application
-kubectl delete -f projects/myapp/deploy/
-
-# Remove monitoring components
-kubectl delete -f projects/prometheus/
-kubectl delete -f projects/blackbox-exporter/
-
-# Remove Grafana
-helm uninstall grafana -n monitoring
-
-# Remove namespaces
-kubectl delete namespace monitoring
-kubectl delete namespace staging
-```
-
-## Best Practices
-
-1. Resource Management
-   - Always set resource requests and limits
-   - Monitor resource usage and adjust as needed
-
-2. Security
-   - Use RBAC appropriately
-   - Keep monitoring components in dedicated namespace
-   - Regularly update components
-
-3. Monitoring
-   - Set up relevant alerts
-   - Keep retention period appropriate to cluster size
-   - Regular backup of Grafana dashboards
-
-4. Performance
-   - Adjust scrape intervals based on needs
-   - Use appropriate retention periods
-   - Consider using recording rules for complex queries
-
-This documentation provides a complete reference for setting up and managing the monitoring infrastructure on a K3s cluster. For additional customization or configuration options, refer to the official documentation of each component.
+This concludes the documentation for setting up the Prometheus Operator and Grafana dashboard.
