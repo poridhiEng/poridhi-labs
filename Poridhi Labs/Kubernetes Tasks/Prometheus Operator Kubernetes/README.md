@@ -50,10 +50,11 @@ First clone this repository to get all the files required for this project
 ```sh
 git clone https://github.com/Galadon123/Prometheus-Operator-.git
 ```
+1. **Deploy Prometheus Operator**
 
-## 1. Create a Monitoring Namespace
+- Create a dedicated **monitoring namespace** to house all monitoring components.
+- Label the namespace with `monitoring=prometheus`, as this is crucial for Prometheus Operator to discover related objects such as `ServiceMonitor` and `PodMonitor`.
 
-**1. Create a namespace named `monitoring` for all monitoring resources.**
 
 ```bash
 kubectl apply -f prometheus-operator/namespace.yaml
@@ -61,17 +62,36 @@ kubectl apply -f prometheus-operator/namespace.yaml
 
 **2. Apply Custom Resource Definitions (CRDs)**
 
+- Apply the necessary CRDs for Prometheus Operator. These include definitions for objects like `ServiceMonitor`, `PodMonitor`, and other custom configurations.
+- Use Kubernetes secrets for sensitive configurations, such as additional scrape configurations.
+
 ```sh
 kubectl apply -f --server-side -f prometheus-operator/crds
 ```
 
 3. **Deploy Prometheus**
 
+- Create a custom resource (CR) for Prometheus using the Prometheus Operator.
+- Configure key parameters such as:
+    - Namespace and label selectors for `ServiceMonitor` and `PodMonitor`.
+    - Retention settings (default is 7 days, but you can adjust as needed).
+    - Resource requests and limits for Prometheus pods.
+
+- Ensure the Prometheus pods are running and that the service is exposed using port forwarding or Ingress.
+
 ```sh
 kubectl apply -f prometheus-operator/deployment
 ```
 
 4. **Set Up a PodMonitor**
+
+- Deploy an application that exposes metrics, such as a sample app with Prometheus metrics endpoints.
+- Create a `PodMonitor` object:
+    - Use label selectors to target the pods you want to monitor (e.g., `app=my-app`).
+    - Specify the metrics endpoint exposed by the application.
+    - Ensure the `PodMonitor` object has the same label as the Prometheus instance (e.g., `prometheus=main`).
+
+- Verify in the Prometheus UI that the new target is discovered and metrics are being scraped.
 
 ```sh
 kubectl apply -f prometheus
@@ -82,6 +102,15 @@ kubectl apply -f myapp/deploy/4-prom-service.yaml
 ```
 
 5. **Set Up a ServiceMonitor**
+
+- Create a Kubernetes Service for the application that exposes the Prometheus metrics endpoint.
+- Create a `ServiceMonitor` object:
+    - Use label selectors to target the service you created.
+    - Specify the endpoint and port name of the metrics endpoint.
+
+- Ensure that the `ServiceMonitor` object matches the labels defined in the Prometheus custom resource for service discovery.
+
+- Check the Prometheus UI for the new target with the `ServiceMonitor` configuration.
 
 ```sh
 kubectl apply -f prometheus/3-prometheus.yaml
