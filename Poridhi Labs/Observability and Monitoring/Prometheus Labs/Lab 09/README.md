@@ -10,6 +10,15 @@ In this lab, you will:
 - Use Docker Compose to deploy Prometheus and `cAdvisor` together.
 - Query and monitor Docker container metrics using Prometheus.
 
+## Project Structure
+
+```
+project-root/
+├── prometheus/
+│   └── prometheus.yml       # Prometheus configuration file
+├── docker-compose.yml       # Docker Compose configuration file
+```
+
 ### Create a Docker Network
 First, create a Docker network to allow Prometheus and other containers to communicate.
 
@@ -46,7 +55,7 @@ global:
 scrape_configs:
   - job_name: 'cadvisor'
     static_configs:
-      - targets: ['cadvisor:9080']  # Reference to the cAdvisor container running on port 9080
+      - targets: ['cadvisor:8080']  # Reference to the cAdvisor container running on port 9080
 ```
 
 This configuration tells Prometheus to scrape metrics from `cAdvisor` running on port `9080`.
