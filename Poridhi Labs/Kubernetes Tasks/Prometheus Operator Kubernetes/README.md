@@ -112,6 +112,13 @@ kubectl apply -f prometheus
 
 **6. Deploy Grafana**
 
+Create a Kubernetes deployment for Grafana using the Prometheus Operator. Make sure you have helm installed on you machine or you can install this using the following command:
+
+```sh
+curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+```
+
+
 ```sh
 helm repo add grafana https://grafana.github.io/helm-charts
 helm repo update
