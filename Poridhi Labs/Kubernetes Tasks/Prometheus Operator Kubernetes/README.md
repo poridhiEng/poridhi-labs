@@ -49,7 +49,7 @@ First clone this repository to get all the files required for this project
 ```sh
 git clone https://github.com/Galadon123/Prometheus-Operator-.git
 ```
-**1. Deploy Prometheus Operator**
+## **1. Deploy Prometheus Operator**
 
 - Create a dedicated **monitoring namespace** to house all monitoring components.
 - Label the namespace with `monitoring=prometheus`, as this is crucial for Prometheus Operator to discover related objects such as `ServiceMonitor` and `PodMonitor`.
@@ -65,15 +65,21 @@ kubectl apply -f prometheus-operator/namespace.yaml
 - Use Kubernetes secrets for sensitive configurations, such as additional scrape configurations.
 
 ```sh
-kubectl apply -f --server-side -f prometheus-operator/crds
+kubectl apply --server-side -f prometheus-operator/crds
 ```
 
-**3. Deploy Prometheus**
+**3. Apply RBAC Policy**
+
+```sh
+kubectl apply -f prometheus-operator/rbac
+```
+
+**4. Deploy Prometheus**
 
 - Create a custom resource (CR) for Prometheus using the Prometheus Operator.
 - Configure key parameters such as:
     - Namespace and label selectors for `ServiceMonitor` and `PodMonitor`.
-    - Retention settings (default is 7 days, but you can adjust as needed).
+    - Retention settings (default is 3 days, but you can adjust as needed).
     - Resource requests and limits for Prometheus pods.
 
 - Ensure the Prometheus pods are running and that the service is exposed using port forwarding or Ingress.
@@ -82,7 +88,15 @@ kubectl apply -f --server-side -f prometheus-operator/crds
 kubectl apply -f prometheus-operator/deployment
 ```
 
-**4. Set Up a PodMonitor**
+Check if pods are running or not:
+
+```sh
+kubectl get pods -n monitoring
+```
+
+You might check the logs of the pod for any misconfiguration.
+
+**5. Set Up a PodMonitor**
 
 - Deploy an application that exposes metrics, such as a sample app with Prometheus metrics endpoints.
 - Create a `PodMonitor` object:
@@ -92,6 +106,12 @@ kubectl apply -f prometheus-operator/deployment
 
 - Verify in the Prometheus UI that the new target is discovered and metrics are being scraped.
 
+- To access the Prometheus UI you can port-forward the prometheus service and access using the the loadbalancer URL:
+
+```sh
+kubectl port-forward svc/prometheus-operated 9090 -n monitoring
+```
+
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Prometheus%20Operator%20Kubernetes/images/image-2.png)
 
@@ -99,10 +119,11 @@ kubectl apply -f prometheus-operator/deployment
 kubectl apply -f prometheus
 ```
 
-**5. Set Up a ServiceMonitor**
+**6. Set Up a ServiceMonitor**
 
 - Create a Kubernetes Service for the application that exposes the Prometheus metrics endpoint.
 - Create a `ServiceMonitor` object:
+
     - Use label selectors to target the service you created.
     - Specify the endpoint and port name of the metrics endpoint.
 
@@ -110,7 +131,13 @@ kubectl apply -f prometheus
 
 - Check the Prometheus UI for the new target with the `ServiceMonitor` configuration.
 
-**6. Deploy Grafana**
+**7. Deploy the Go application**
+
+```sh
+kubectl apply -f myapp/deploy
+```
+
+**8. Deploy Grafana**
 
 Create a Kubernetes deployment for Grafana using the Prometheus Operator. Make sure you have helm installed on you machine or you can install this using the following command:
 
@@ -125,7 +152,7 @@ helm repo update
 helm install grafana grafana/grafana -n monitoring --create-namespace
 ```
 
-**7. Configure Prometheus as a Data Source**
+**9. Configure Prometheus as a Data Source**
 
 - Log into Grafana using the default admin credentials or a custom one you configured.
 - Add Prometheus as a data source:
@@ -133,7 +160,7 @@ helm install grafana grafana/grafana -n monitoring --create-namespace
     - Test the data source to ensure it is connected correctly.
 
 
-**8. Create Dashboards in Grafana**
+**9. Create Dashboards in Grafana**
 
    - Create a new dashboard in Grafana to visualise the metrics collected by Prometheus.
    - Use example metrics such as:
