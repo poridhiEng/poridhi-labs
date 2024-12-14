@@ -1,7 +1,6 @@
 # Prometheus Operators
 
-## Project Overview
-This project implements a comprehensive monitoring solution for a K3s Kubernetes cluster using Prometheus, Grafana, Blackbox Exporter, and a sample Go application.
+This lab provides a simplified step-by-step guide for setting up Prometheus Operator in Kubernetes. It includes the setup of `ServiceMonitor` and `PodMonitor` objects for monitoring, deploying Grafana for visualisation.
 
 ![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Prometheus%20Operator%20Kubernetes/images/Prometheus-operator-2.drawio.svg)
 
@@ -100,10 +99,6 @@ kubectl apply -f prometheus-operator/deployment
 kubectl apply -f prometheus
 ```
 
-```sh
-kubectl apply -f myapp/deploy/4-prom-service.yaml
-```
-
 **5. Set Up a ServiceMonitor**
 
 - Create a Kubernetes Service for the application that exposes the Prometheus metrics endpoint.
@@ -114,10 +109,6 @@ kubectl apply -f myapp/deploy/4-prom-service.yaml
 - Ensure that the `ServiceMonitor` object matches the labels defined in the Prometheus custom resource for service discovery.
 
 - Check the Prometheus UI for the new target with the `ServiceMonitor` configuration.
-
-```sh
-kubectl apply -f prometheus/3-prometheus.yaml
-```
 
 **6. Deploy Grafana**
 
