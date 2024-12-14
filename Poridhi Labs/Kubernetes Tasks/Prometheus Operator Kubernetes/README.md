@@ -1,4 +1,4 @@
-# Kubernetes Monitoring Project - Complete Documentation
+# Prometheus Operators
 
 ## Project Overview
 This project implements a comprehensive monitoring solution for a K3s Kubernetes cluster using Prometheus, Grafana, Blackbox Exporter, and a sample Go application.
