@@ -3,7 +3,7 @@
 ## Project Overview
 This project implements a comprehensive monitoring solution for a K3s Kubernetes cluster using Prometheus, Grafana, Blackbox Exporter, and a sample Go application.
 
-![](./images/Prometheus-operator-2.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Tasks/Prometheus%20Operator%20Kubernetes/images/Prometheus-operator-2.drawio.svg)
 
 ## Prerequisites
 - kubernetes cluster up and running
@@ -12,6 +12,7 @@ This project implements a comprehensive monitoring solution for a K3s Kubernetes
 - Docker for building the sample application
 
 ## Directory Structure
+
 ```
 projects/
 ├── blackbox-exporter/
@@ -41,6 +42,7 @@ projects/
         ├── 0-service-account.yaml
         └── 1-cluster-role.yaml
 ```
+
 
 
 
