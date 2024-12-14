@@ -1,5 +1,3 @@
-
-
 # **Prometheus Operator Kubernetes**
 
 The **Prometheus Operator** is the de-facto standard for deploying and managing Prometheus instances in Kubernetes. It simplifies configurations, automates target discovery, and manages the lifecycle of Prometheus and Alertmanager. This tutorial covers:
