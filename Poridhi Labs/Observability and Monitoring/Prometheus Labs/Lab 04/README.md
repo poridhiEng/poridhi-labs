@@ -4,7 +4,9 @@
 
 Node Exporter is a key component in monitoring system-level metrics for Linux hosts, providing detailed information such as CPU usage, memory, disk I/O, and other system-level activities. It works by collecting these metrics and exposing them on an HTTP endpoint, which Prometheus can scrape and monitor. Node Exporter is highly efficient and is the go-to solution for monitoring bare-metal servers or virtual machines in production environments.
 
-![](./images/nodeexporter.svg)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2004/images/nodeexporter.svg?raw=true)
+
+
 
 ### In this lab, we will cover two ways to install `Node Exporter`:
 
@@ -66,7 +68,7 @@ SystemD installation is important because it allows Node Exporter to run as a ba
 
    You can check as follows:
 
-   ![alt text](./images/image.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2004/images/image.png?raw=true)
 
 ### **Step 2: Create a Node Exporter User**
 1. Create a system user for Node Exporter without a home directory or login:
@@ -128,7 +130,7 @@ SystemD installation is important because it allows Node Exporter to run as a ba
 
     Expected status:
 
-    ![alt text](./images/image-1.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2004/images/image-1.png?raw=true)
 
 ### **Step 6: Enable Node Exporter to Start on Boot**
 1. To enable Node Exporter on system startup:
