@@ -123,7 +123,7 @@ kubectl apply -f --server-side -f prometheus-operator/crds
 
 kubectl get crd
 
-kubectl aply -f prometheus-operator/deployment
+kubectl apply -f prometheus-operator/deployment
 
 
 kubectl get pods -n monitoring

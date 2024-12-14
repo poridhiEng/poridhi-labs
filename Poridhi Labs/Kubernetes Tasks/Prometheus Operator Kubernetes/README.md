@@ -43,6 +43,81 @@ projects/
         └── 1-cluster-role.yaml
 ```
 
+## Step-by-Step Instructions
+
+First clone this repository to get all the files required for this project
+
+```sh
+git clone https://github.com/Galadon123/Prometheus-Operator-.git
+```
+
+## 1. Create a Monitoring Namespace
+
+**1. Create a namespace named `monitoring` for all monitoring resources.**
+
+```bash
+kubectl apply -f prometheus-operator/namespace.yaml
+```
+
+**2. Apply Custom Resource Definitions (CRDs)**
+
+```sh
+kubectl apply -f --server-side -f prometheus-operator/crds
+```
+
+3. **Deploy Prometheus**
+
+```sh
+kubectl apply -f prometheus-operator/deployment
+```
+
+4. **Set Up a PodMonitor**
+
+```sh
+kubectl apply -f prometheus
+```
+
+```sh
+kubectl apply -f myapp/deploy/4-prom-service.yaml
+```
+
+5. **Set Up a ServiceMonitor**
+
+```sh
+kubectl apply -f prometheus/3-prometheus.yaml
+```
+
+6. **Deploy Grafana**
+
+```sh
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+helm install grafana grafana/grafana -n monitoring --create-namespace
+```
+
+7. **Configure Prometheus as a Data Source**
+
+- Log into Grafana using the default admin credentials or a custom one you configured.
+- Add Prometheus as a data source:
+    - Use the URL of the Prometheus service exposed in your cluster (default port is `9090`).
+    - Test the data source to ensure it is connected correctly.
+
+
+8. **Create Dashboards in Grafana**
+
+   - Create a new dashboard in Grafana to visualise the metrics collected by Prometheus.
+   - Use example metrics such as:
+     - `container_cpu_usage_seconds_total` for CPU usage.
+     - `container_memory_usage_bytes` for memory usage.
+     - Apply rate or aggregation functions to make the graphs more meaningful.
+   - Customise the dashboard by adjusting legends, colours, and time intervals.
+
+
+## Conclusion
+Following these steps will set up a fully functional monitoring stack in your Kubernetes cluster. If you encounter any issues, check the logs for the respective pods to troubleshoot.
+
+
+
 
 
 
