@@ -145,12 +145,30 @@ Create a Kubernetes deployment for Grafana using the Prometheus Operator. Make s
 curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 ```
 
+Update the Kubeconfig file permission:
+
+```sh
+kubectl config view --raw > /root/.kube/config
+chmod 600 /root/.kube/config
+```
+
 
 ```sh
 helm repo add grafana https://grafana.github.io/helm-charts
 helm repo update
 helm install grafana grafana/grafana -n monitoring --create-namespace
 ```
+
+The Grafana service type will by default ClusterIP. We will convert it into NodePort service to access through Poridhi's Loadbalancer.
+
+```sh
+helm upgrade --install grafana grafana/grafana \
+  --namespace monitoring \
+  --set service.type=NodePort \
+  --set service.nodePort=30080
+```
+
+Create a load balancer with the MasterNode IP and the Nodeport (30080). Then access the Grafana UI using the loadbalancer URL.
 
 **9. Configure Prometheus as a Data Source**
 
