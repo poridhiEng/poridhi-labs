@@ -81,55 +81,6 @@ kubectl get pods -n monitoring
 
 You may check the logs of the pod for any misconfiguration.
 
-<!-- ### **1. ServiceAccount**
-
-**Purpose**: A ServiceAccount allows the Prometheus Operator's deployment to interact with the Kubernetes API securely.
-**Key Attributes**:
-
-- **`name`**: The ServiceAccount is named `prometheus-operator`, and it is scoped to the `monitoring` namespace.
-- **`namespace`**: The namespace restricts the scope of this ServiceAccount to the monitoring namespace.
-- **`automountServiceAccountToken`**: Set to `false` for security, preventing automatic mounting of the token unless explicitly required.
-
-### **2. ClusterRole**
-
-A `ClusterRole` defines the permissions needed for the Prometheus Operator to perform its functions across the cluster.
-
-**Key Permissions**:
-- **`monitoring.coreos.com` API group**: Full access to manage Prometheus resources like `Alertmanagers`, `Prometheuses`, `ServiceMonitors`, etc.
-- **`apps` API group**: Manage StatefulSets required for Prometheus and Alertmanager.
-- **Core resources (`""`)**:
-- Manage `ConfigMaps` and `Secrets` (used for configuration storage).
-- Access and manage `Pods`, `Services`, and `Endpoints`.
-- **`nodes`**: List and watch nodes for monitoring Kubernetes system metrics.
-- **`namespaces`**: Discover resources in namespaces for multi-namespace monitoring.
-
----
-
-### **3. ClusterRoleBinding**
-
-**Purpose**: A `ClusterRoleBinding` associates the `ClusterRole` with the `ServiceAccount`, granting the Prometheus Operator the necessary permissions defined in the ClusterRole.
-**Key Attributes**:
-
-- **`roleRef`**: Links to the `prometheus-operator` ClusterRole.
-- **`subjects`**: Specifies the `prometheus-operator` ServiceAccount in the `monitoring` namespace as the entity granted the permissions.
-
----
-
-### **4. Deployment**
-
-The `Deployment` ensures the Prometheus Operator is running as a pod in the cluster.
-
-**Key Attributes**:
-- **`replicas`**: Specifies a single replica of the operator pod.
-- **`selector`**: Matches labels to identify the pod managed by this deployment.
-- **`containers`**:
-- Runs the Prometheus Operator image.
-- Uses the `prometheus-config-reloader` to apply configuration changes dynamically without restarting Prometheus.
-- **SecurityContext**:
-- Runs as a non-root user (`runAsNonRoot: true`).
-- Prevents privilege escalation and uses a read-only filesystem for enhanced security.
-- **`serviceAccountName`**: Specifies the `prometheus-operator` ServiceAccount to associate this deployment with the appropriate permissions. -->
-
 ## **Deploy Prometheus**
 
 For deploying Prometheus, create the necessary files step by step:
@@ -299,18 +250,14 @@ It deploys and configures a Prometheus instance to scrape metrics from Kubernete
 
 **Key Attributes**:
 - **`alerting`**: Configures integration with Alertmanager for sending alerts.
-- **Selectors**:
 - `ruleSelector`: Finds PrometheusRules based on labels for alerts.
 - `podMonitorSelector` & `serviceMonitorSelector`: Finds targets for scraping based on labels.
 - `probeSelector`: Configures probes for black-box monitoring.
-- **`resources`**:
-- Requests and limits define the memory and CPU allocated to Prometheus.
 - **`replicas`**: Configures a single replica of Prometheus.
 - **`storage`**: Requests 20Gi of persistent storage for metric data retention.
 - **`retention`**: Retains metrics data for 3 days.
 - **`scrapeInterval`**: Configures a 15-second interval for scraping targets.
-- **`securityContext`**:
-- Configures Prometheus to run as root (`runAsUser: 0`), which may be needed depending on the setup.
+- **`securityContext`**: Configures Prometheus to run as root (`runAsUser: 0`), which may be needed depending on the setup.
 
 **Function**: Deploys Prometheus with specific configurations for storage, alerting, monitoring, and scraping metrics.
 
@@ -565,6 +512,7 @@ spec:
 
 - **`type: ClusterIP`**: Ensures the service is accessible only within the cluster.
 - **`port: 8080`**: Service listens on port 8080.
+
 - **`targetPort: http`**: Forwards traffic to the container’s `http` port (mapped to 8080 in the Deployment).
 
 - **`app: myapp`**: Directs traffic to pods with the `app: myapp` label.
@@ -598,17 +546,15 @@ spec:
 **Purpose**: Configures Prometheus to scrape metrics from the Go application pods.
 
 **Key Attributes**:
-
-- **Metadata**:
 - **`labels: prometheus: main`**: Associates this PodMonitor with the Prometheus instance labeled `main`.
-- **Selectors**:
+
 - **Namespace Selector**:
     - **`matchNames: staging`**: Limits the scope of this PodMonitor to the `staging` namespace.
 - **Pod Selector**:
     - **`matchLabels: app: myapp`**: Targets pods with the `app: myapp` label.
 - **Endpoints**:
-- **`port: http-metrics`**: Specifies the container port (8081) that exposes metrics.
-- **`path: /metrics`**: The endpoint path to scrape metrics from the application.
+  - **`port: http-metrics`**: Specifies the container port (8081) that exposes metrics.
+  - **`path: /metrics`**: The endpoint path to scrape metrics from the application.
 
 **Function**: Enables Prometheus to dynamically discover and scrape metrics from all pods matching the specified labels and namespace.
 
@@ -864,7 +810,6 @@ In this tutorial, we have successfully created a Grafana dashboard to monitor th
 Kubernetes cluster using Prometheus as the data source. We have also customized the panel to display the
 correct data and set up alerts for high traffic levels. This dashboard will help you monitor and troubleshoot
 your application's performance in real-time.
-
 
 
 
