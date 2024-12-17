@@ -10,8 +10,26 @@ This lab provides a simplified step-by-step guide for setting up Prometheus Oper
 
 **2. Helm Installed: Install Helm to manage and deploy Kubernetes applications.**
 
-## Steps to Implement the Project
+## Overall Folder Structure
 
+```
+.
+├── alertmanager/
+├── blackbox-exporter/
+├── myapp/
+├── prometheus-operator/
+├── prometheus/
+├── terraform/
+├── README.md
+├── alert.yaml
+├── build.sh
+├── grafana-values.yaml
+├── probe.yaml
+└── scrape-config.yaml
+```
+
+
+## Steps to Implement the Project
 
 ## **Install Prometheus Operator**
 
