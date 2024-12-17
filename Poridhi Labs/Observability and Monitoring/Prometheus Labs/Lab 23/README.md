@@ -24,22 +24,22 @@ In this lab, you will:
 
 The architecture of Alertmanager can be broken down into the following components:
 
-**Alerts**  
+- **Alerts**  
    Prometheus generates alerts based on monitoring data and sends them to Alertmanager via its API. Alerts include key details like `alertname`, `severity`, and `instance`.
 
-**Dispatching**  
+- **Dispatching**  
    Alerts are grouped based on common labels (e.g., `alertname`, `instance`) as defined in the `route` section. Grouping reduces alert noise by consolidating similar alerts into a single notification.
 
-**Inhibition**  
+- **Inhibition**  
    Prevents lower-priority alerts (e.g., `warning`) from triggering when higher-priority alerts (e.g., `critical`) for the same issue are active. This focuses attention on critical issues.
 
-**Silencing**  
+- **Silencing**  
    Temporarily mutes alerts during known issues or maintenance windows. Silences can be applied manually via the Alertmanager UI or API.
 
-**Routing**  
+- **Routing**  
    Routes alerts to specific receivers (e.g., Slack, email, PagerDuty) based on conditions like `severity` or `alertname`. Routing ensures the right team or channel gets notified.
 
-**Receivers**  
+- **Receivers**  
    Final destinations where alerts are delivered, such as:  
    - **Slack**: Alerts are posted in a channel using a webhook.  
    - **Email**: Notifications are sent via an SMTP server.
