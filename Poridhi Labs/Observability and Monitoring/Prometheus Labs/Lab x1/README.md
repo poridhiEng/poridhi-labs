@@ -307,5 +307,48 @@ This flexibility ensures the deployment meets the specific needs of your applica
    - Collects node-level metrics from all cluster nodes.
 
 
+
+### Step 7: Access the Prometheus Dashboard
+
+#### Option 1: Access Using Port Forwarding
+Since the Prometheus service (`prometheus-kube-prometheus-prometheus`) is of type `ClusterIP`, it is only accessible within the Kubernetes cluster by default. To access the Prometheus dashboard on your local machine, you can forward the service port to your machine using the following command:
+
+```bash
+kubectl port-forward svc/prometheus-kube-prometheus-prometheus 9090:9090
+```
+
+This command forwards the service's port (9090) to your local machine's port 9090. Once forwarded, you can access the Prometheus dashboard at the forwarded address.
+
+#### Option 2: Change the Service Type to NodePort
+If you'd like to access Prometheus without relying on port forwarding, you can update the service type from `ClusterIP` to `NodePort`. This makes the service accessible via any node in the cluster at a specific port. 
+
+1. Edit the service configuration:
+   ```bash
+   kubectl edit svc prometheus-kube-prometheus-prometheus
+   ```
+
+2. Change the `type` field under `spec` from `ClusterIP` to `NodePort`:
+   ```yaml
+   spec:
+     type: NodePort
+   ```
+
+3. Save the changes. Kubernetes will automatically allocate a port in the range 30000–32767 for the service. To find the allocated port:
+   ```bash
+   kubectl get svc prometheus-kube-prometheus-prometheus
+   ```
+
+   Example output:
+   ```
+   NAME                                  TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+   prometheus-kube-prometheus-prometheus NodePort   10.96.232.231    <none>        9090:31234/TCP   5m
+   ```
+
+4. Create a load balancer in Pordhi using the `eth0` IP and `NodePort` for the prometheus service. Access the Prometheus dashboard by visiting the load balancer url.
+
+   ![alt text](./images/image-3.png)
+
+
+
 ## Conclusion  
 Monitoring Kubernetes clusters and applications is essential for ensuring performance, reliability, and operational efficiency. Prometheus, with its robust capabilities and native integration with Kubernetes, provides an efficient and scalable solution for metrics collection and observability. By deploying Prometheus using Helm and customizing configurations through `values.yaml`, you can tailor the monitoring setup to meet your specific needs, enabling proactive issue resolution and informed decision-making. This guide equips you with the necessary steps to set up and leverage Prometheus, empowering you to maintain a healthy, high-performing Kubernetes environment.
