@@ -272,7 +272,7 @@ It deploys and configures a Prometheus instance to scrape metrics from Kubernete
 - `podMonitorSelector` & `serviceMonitorSelector`: Finds targets for scraping based on labels.
 - `probeSelector`: Configures probes for black-box monitoring.
 - **`replicas`**: Configures a single replica of Prometheus.
-- **`storage`**: Requests 20Gi of persistent storage for metric data retention.
+- **`storage`**: Requests 500Mi of persistent storage for metric data retention.
 - **`retention`**: Retains metrics data for 3 days.
 - **`scrapeInterval`**: Configures a 15-second interval for scraping targets.
 - **`securityContext`**: Configures Prometheus to run as root (`runAsUser: 0`), which may be needed depending on the setup.
