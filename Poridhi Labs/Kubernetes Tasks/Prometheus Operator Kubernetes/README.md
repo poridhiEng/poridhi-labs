@@ -171,7 +171,7 @@ Grants Prometheus the necessary permissions to monitor Kubernetes resources and 
 
 ### **3. ClusterRoleBinding**
 
-#### **File Contents: (2-cluster-role-binding.yaml)**
+#### **File Contents: (cluster-role-binding.yaml)**
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
