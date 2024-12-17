@@ -15,7 +15,7 @@ Alertmanager is a tool in the Prometheus ecosystem that manages alerts. It route
 
 ## **Main Sections of Alertmanager Configuration**
 
-![](./images/x2.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/539f9d1e752733790fd7b1b08793843642327ea7/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2024/images/x2.svg)
 
 The configuration file has three key sections:
 
@@ -227,7 +227,7 @@ receivers:
 
 The **`title`** and **`text`** fields use **Go templating** to dynamically insert values from alert data. Here are the commonly used options:
 
-![alt text](./images/image.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/539f9d1e752733790fd7b1b08793843642327ea7/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2024/images/image.png)
 
 
 ### **Conclusion**
