@@ -96,7 +96,7 @@ The architecture of Alertmanager can be broken down into the following component
        equal: ['alertname', 'dev', 'instance']
    ```
 
-    Here we are using demo `url` for testing purpose in `webhook_configs`. Later on we will use `slack` configuration
+    Here we are using demo `url` for testing purpose in `webhook_configs`. Later on we will discuss it in lot more details.
 
 6. **Create a systemd service file**:
    ```bash
