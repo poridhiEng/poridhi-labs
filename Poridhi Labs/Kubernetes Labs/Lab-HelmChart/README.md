@@ -13,9 +13,7 @@ Helm is a package manager for Kubernetes that simplifies the deployment process 
 
 If you don't have Helm CLI installed, you can install it using the following command:
 ```bash
-curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-chmod 700 get_helm.sh
-./get_helm.sh
+curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 ```
 
 After installing Helm CLI, you can verify the installation by running:
