@@ -2,11 +2,11 @@
 
 Monitoring is a critical component in maintaining and optimizing modern applications and infrastructure. Effective monitoring ensures visibility into system performance, application behavior, and infrastructure health, making it easier to detect and resolve issues quickly. In this guide, we’ll delve into the process of using Prometheus for monitoring both Kubernetes applications and the Kubernetes cluster itself. Prometheus, a robust open-source monitoring solution, is particularly well-suited for Kubernetes environments due to its scalability and extensive metrics collection capabilities. It empowers teams to achieve deep observability, enabling proactive problem-solving and informed decision-making.
 
-![](./intro6.svg)
+![](./images/intro6.svg)
 
 ## **Why Monitor Kubernetes?**
 
-![](./intro1.svg)
+![](./images/intro1.svg)
 
 Kubernetes environments are complex, involving multiple interconnected layers, including applications, containers, nodes, and the cluster’s control plane. Monitoring Kubernetes is essential for several reasons:
 
@@ -20,7 +20,7 @@ Kubernetes environments are complex, involving multiple interconnected layers, i
 
 ### Deploying Prometheus on Kubernetes
 
-![](./intro2.svg)
+![](./images/intro2.svg)
 
 Deploying Prometheus directly within the Kubernetes cluster has distinct advantages compared to hosting it on a separate server:
 
@@ -44,13 +44,13 @@ Prometheus in a Kubernetes environment is designed to monitor two primary catego
 
 #### **Kube-State-Metrics**
 
-![](./intro7.svg)
+![](./images/intro7.svg)
 
 Kubernetes does not expose cluster-level metrics by default. Deploying the `kube-state-metrics` container is essential to fill this gap. This component makes comprehensive metrics related to deployments, pods, services, and other cluster objects accessible to Prometheus. These insights are crucial for understanding the state of the Kubernetes cluster at a granular level.
 
 #### **Node-Exporter**
 
-![](./intro3.svg)
+![](./images/intro3.svg)
 
 Every Kubernetes node is essentially a Linux-based server. Monitoring these nodes requires the installation of `node-exporter`, a Prometheus exporter designed to collect node-level metrics such as CPU utilization, memory consumption, and disk I/O. Instead of manually installing `node-exporter` on each node, Kubernetes’ DaemonSet abstraction can be used:
 
@@ -59,7 +59,7 @@ Every Kubernetes node is essentially a Linux-based server. Monitoring these node
 
 #### **Service Discovery**
 
-![](./intro4.svg)
+![](./images/intro4.svg)
 
 Prometheus leverages Kubernetes’ built-in service discovery to dynamically detect monitoring targets, including:
 
@@ -75,7 +75,7 @@ This dynamic discovery feature significantly reduces the configuration effort by
 
 Helm is a powerful package manager for Kubernetes that simplifies the deployment and management of applications. It consolidates Kubernetes configurations into reusable packages called Helm charts. 
 
-![](./intro5.svg)
+![](./images/intro5.svg)
 
 With Helm, users can:
 
@@ -179,7 +179,7 @@ This section demonstrates how to install Helm, add the Prometheus community repo
    helm list
    ```
 
-   ![alt text](image.png)
+   ![alt text](./images/image.png)
 
 
 ### **Step 4: Explore Chart Configuration**
@@ -237,7 +237,7 @@ This flexibility ensures the deployment meets the specific needs of your applica
    kubectl get pods -n default
    ```
 
-   ![alt text](image-1.png)
+   ![alt text](./images/image-1.png)
 
 2. **List Kubernetes Resources Created**  
    View the resources created by the Helm chart:
