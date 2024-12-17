@@ -1,279 +1,236 @@
 
-# **Prometheus and Alertmanager Setup with Slack Integration**
+
+# **Alertmanager Configuration**
 
 
+Alertmanager is a tool in the Prometheus ecosystem that manages alerts. It routes, silences, and groups alerts, sending notifications to receivers like **Slack**, **email**, or **webhooks**.
 
-## **Step 1: Install Prometheus**
+## **Objective**
 
-1. **Create the installation script**:
+- Understand the **main components** of the Alertmanager configuration file.
+- Learn how to:
+   - Group alerts.
+   - Route alerts based on conditions.
+   - Silence or inhibit specific alerts.
 
-   Save the following script as `install_prometheus.sh`:
+## **Main Sections of Alertmanager Configuration**
 
-   ```bash
-   #!/bin/bash
+![](./images/x2.svg)
 
-   # Variables
-   PROM_VERSION="2.53.2"
-   PROM_USER="prometheus"
-   PROM_DIR="/etc/prometheus"
-   PROM_LIB_DIR="/var/lib/prometheus"
-   PROM_BINARY_URL="https://github.com/prometheus/prometheus/releases/download/v${PROM_VERSION}/prometheus-${PROM_VERSION}.linux-amd64.tar.gz"
-   PROM_BIN_PATH="/usr/local/bin"
+The configuration file has three key sections:
 
-   # Install wget and tar
-   sudo apt-get update && sudo apt-get install -y wget tar
+1. **Global Configurations**: Defines global settings applied across all routes and receivers.  
+2. **Route Section**: Specifies how alerts are matched, grouped, and routed to receivers.  
+3. **Receivers Section**: Contains the integrations (e.g., Slack, email, webhook) where alerts are sent.
 
-   # Download and extract Prometheus
-   wget $PROM_BINARY_URL && tar -xvzf prometheus-${PROM_VERSION}.linux-amd64.tar.gz
 
-   # Move binaries and config files
-   sudo mv prometheus-${PROM_VERSION}.linux-amd64/{prometheus,promtool} $PROM_BIN_PATH/
-   sudo mkdir -p $PROM_DIR $PROM_LIB_DIR && sudo mv prometheus-${PROM_VERSION}.linux-amd64/{prometheus.yml,consoles,console_libraries} $PROM_DIR/
+### **Global Configurations**
 
-   # Create Prometheus user and assign permissions
-   sudo useradd --no-create-home --shell /bin/false $PROM_USER
-   sudo chown -R $PROM_USER:$PROM_USER $PROM_DIR $PROM_LIB_DIR
+The **Global Configurations** in Alertmanager define settings that apply across all routes and receivers. These configurations serve as defaults for **timeouts**, **notification settings**, and other parameters that can be reused globally.
 
-   # Create systemd service file
-   sudo tee /etc/systemd/system/prometheus.service > /dev/null <<EOT
-   [Unit]
-   Description=Prometheus Monitoring System
-   Wants=network-online.target
-   After=network-online.target
 
-   [Service]
-   User=$PROM_USER
-   ExecStart=$PROM_BIN_PATH/prometheus --config.file=$PROM_DIR/prometheus.yml --storage.tsdb.path=$PROM_LIB_DIR
+### **Common Global Configuration Options**
 
-   [Install]
-   WantedBy=multi-user.target
-   EOT
-
-   # Reload systemd, enable and start Prometheus
-   sudo systemctl daemon-reload
-   sudo systemctl enable --now prometheus
-
-   # Check status
-   sudo systemctl status prometheus
-   ```
-
-2. **Run the script**:
-
-   ```bash
-   chmod +x install_prometheus.sh
-   ./install_prometheus.sh
-   ```
-
-3. **Verify Prometheus**:
-
-   - Check Prometheus status:
-     ```bash
-     systemctl status prometheus
+1. **resolve_timeout**  
+   - Controls how long Alertmanager waits before marking an alert as **resolved** once it stops firing.  
+   - Alerts are considered active until they have been resolved for the specified time.  
+     ```yaml
+     global:
+       resolve_timeout: 5m
      ```
-   - Access Prometheus at:
+     - If an alert stops firing, Alertmanager will mark it as "resolved" after 5 minutes.  
+     - Used to avoid premature notifications when issues temporarily recover.
+
+2. **smtp_* (SMTP Email Settings)**  
+   - These settings configure the **SMTP server** for sending email notifications.  
+   - If any `email_configs` use email notifications, the global SMTP settings apply by default.  
+
+     ```yaml
+     global:
+       smtp_smarthost: 'smtp.example.com:587'   
+       smtp_from: 'alertmanager@example.com'    
+       smtp_auth_username: 'username'           
+       smtp_auth_password: 'password'          
+       smtp_require_tls: true                 
      ```
-     http://<server-ip>:9090
+   - **smtp_smarthost**: Specifies the SMTP server (e.g., `smtp.example.com`) and port.  
+   - **smtp_from**: Email address used as the sender for notifications.  
+   - **smtp_auth_username/password**: Credentials to authenticate with the SMTP server.  
+   - **smtp_require_tls**: Ensures emails are sent securely over TLS.  
+
+
+3. **slack_api_url**  
+   - Defines the global webhook URL for **Slack notifications**.  
+   - Instead of specifying the webhook in every receiver, you can set it globally and reference it in `slack_configs`.
+
+     ```yaml
+     global:
+       slack_api_url: 'https://hooks.slack.com/services/YOUR/WEBHOOK/URL'
      ```
 
----
+   - This saves time and reduces redundancy when configuring Slack as a receiver.
 
-## **Step 2: Install Alertmanager**
+### **Route Section**
 
-1. **Download and extract Alertmanager**:
+The **Route Section** is the **core** of the configuration file. It defines:  
+- **How alerts are grouped**.  
+- **Where alerts are routed** (to which receivers).  
+- **How frequently alerts are sent**.
 
-   ```bash
-   wget https://github.com/prometheus/alertmanager/releases/download/v0.28.0-rc.0/alertmanager-0.28.0-rc.0.linux-amd64.tar.gz
-   tar -xvzf alertmanager-0.28.0-rc.0.linux-amd64.tar.gz
-   cd alertmanager-0.28.0-rc.0.linux-amd64
-   ```
+```yaml
+route:
+  group_by: ['alertname', 'job']  
+  group_wait: 30s                 
+  group_interval: 5m              
+  repeat_interval: 1h             
+  receiver: 'slack'           
+```
 
-2. **Run Alertmanager**:
+- **group_by**:  
+   Alerts with the same labels (e.g., `alertname` and `job`) are grouped into a single notification.  
+   - Example: If multiple "High CPU Usage" alerts occur for different servers, they will be grouped into one message.
 
-   Start Alertmanager manually:
+- **group_wait**:  
+   Delay before sending the first notification. This helps batch alerts that occur close together.  
+   - Example: If multiple alerts trigger within 30 seconds, they are sent as a group.
 
-   ```bash
-   ./alertmanager --config.file=alertmanager.yml
-   ```
+- **group_interval**:  
+   Time interval between notifications for new alerts in the same group.  
+   - Example: Send additional alerts every 5 minutes for the same issue.
 
-3. **Verify Alertmanager**:
+- **repeat_interval**:  
+   If an alert is not resolved, it will resend the notification after this interval.  
+   - Example: Remind the user every 1 hour until the issue is fixed.
 
-   - Access the Alertmanager UI at:
+- **receiver**:  
+   The **default receiver** where all alerts go if no other route matches.  
+
+#### **Sub-Route**
+
+The routes section allows you to define sub-routes under the main route. Sub-routes match alerts based on conditions and send them to specific receivers. This is helpful for sending different types of alerts to different teams or channels.
+
+**How Sub-Routes Work**:  
+- Sub-routes are evaluated **in order** from top to bottom.  
+- Alerts are matched using **label conditions** (e.g., `severity`, `alertname`, `instance`).  
+- If an alert matches a condition, it is sent to the corresponding receiver.
+
+#### **Example: Using Sub-Routes**
+
+```yaml
+route:
+  group_by: ['alertname']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 1h
+  receiver: 'default'
+
+  routes:
+    - match:
+        severity: 'critical'  
+      receiver: 'slack-critical'
+
+    - match:
+        severity: 'warning'     
+      receiver: 'slack-warning'
+
+    - match_re:
+        instance: '.*prod.*'   
+      receiver: 'slack-prod-team'
+
+receivers:
+  - name: 'default'
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/WEBHOOK/DEFAULT'
+        channel: '#alerts-default'
+
+  - name: 'slack-critical'
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/WEBHOOK/CRITICAL'
+        channel: '#alerts-critical'
+
+  - name: 'slack-warning'
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/WEBHOOK/WARNING'
+        channel: '#alerts-warning'
+
+  - name: 'slack-prod-team'
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/WEBHOOK/PROD'
+        channel: '#alerts-prod-team'
+```
+
+#### **Sub-Route Options**
+
+1. **match**:  
+   - Matches alerts where specific labels have exact values.  
+   - Example:  
+     ```yaml
+     match:
+       severity: 'critical'
      ```
-     http://<server-ip>:9093
+     Alerts with `severity="critical"` will match this route.
+
+2. **match_re**:  
+   - Matches alerts using **regular expressions** (regex) on labels.  
+   - Example:  
+     ```yaml
+     match_re:
+       instance: '.*prod.*'
      ```
+     Any alert with `prod` in the `instance` label will match this route.
 
----
+3. **Fallback to Default Receiver**:  
+   - If an alert doesn't match any sub-route, it will be sent to the **default receiver** specified in the parent route.
 
-## **Step 3: Configure Alertmanager for Slack**
+#### **Adding Inhibit Rules**
 
-1. **Create `alertmanager.yml`** in the Alertmanager directory:
-
+Inhibit rules suppress alerts when higher-priority alerts are active.
    ```yaml
-   global:
-     resolve_timeout: 5m
-
-   route:
-     group_by: ['alertname']
-     group_wait: 30s
-     group_interval: 5m
-     repeat_interval: 3h
-     receiver: 'slack'
-
-   receivers:
-     - name: 'slack'
-       slack_configs:
-         - api_url: 'https://hooks.slack.com/services/YOUR/WEBHOOK/URL'
-           channel: '#devops'
-           send_resolved: true
-           title: 'Prometheus Alert: {{ .CommonLabels.alertname }}'
-           text: >-
-             *Alert:* {{ .CommonLabels.alertname }}
-             *Instance:* {{ .CommonLabels.instance }}
-             *Severity:* {{ .CommonLabels.severity }}
-             *Description:* {{ .CommonAnnotations.description }}
+   inhibit_rules:
+     - source_match:
+         severity: 'critical'
+       target_match:
+         severity: 'warning'
+       equal: ['alertname', 'job']
    ```
+- If a `critical` alert is active for the same `alertname` and `job`, `warning` alerts are suppressed.
 
-   Replace `YOUR/WEBHOOK/URL` with your actual Slack webhook URL.
+### **Receivers Section**
 
-2. **Restart Alertmanager**:
+The **Receivers Section** defines the destinations where alerts are sent.  Receivers can include integrations like **Slack**, **email**, or custom **webhooks**.  
 
-   ```bash
-   ./alertmanager --config.file=alertmanager.yml
-   ```
+```yaml
+receivers:
+  - name: 'slack'
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/YOUR/WEBHOOK/URL'
+        channel: '#alerts'
+        title: 'Prometheus Alert: {{ .CommonLabels.alertname }}'
+        text: >-
+          *Alert:* {{ .CommonLabels.alertname }}
+          *Instance:* {{ .CommonLabels.instance }}
+          *Severity:* {{ .CommonLabels.severity }}
+          *Description:* {{ .CommonAnnotations.description }}
+```
 
----
+- **name**:  
+   The name of the receiver (e.g., `slack`). This name is referenced in the **route** section.
 
-## **Step 4: Update Prometheus Configuration**
-
-1. Edit `/etc/prometheus/prometheus.yml`:
-
-   ```yaml
-   global:
-     scrape_interval: 15s
-     evaluation_interval: 15s
-
-   alerting:
-     alertmanagers:
-       - static_configs:
-           - targets:
-               - localhost:9093
-
-   rule_files:
-     - "alerts.yaml"
-
-   scrape_configs:
-     - job_name: "prometheus"
-       static_configs:
-         - targets: ["localhost:9090"]
-   ```
-
-2. **Create the Alert Rules File** `/etc/prometheus/alerts.yaml`:
-
-   ```yaml
-   groups:
-     - name: example_alert
-       rules:
-         - alert: HighCpuUsage
-           expr: up == 1
-           for: 0m
-           labels:
-             severity: critical
-           annotations:
-             summary: "Test Alert: High CPU Usage"
-             description: "This is a test alert to validate Slack integration."
-   ```
-
-3. **Verify Prometheus Configuration**:
-
-   ```bash
-   /usr/local/bin/promtool check config /etc/prometheus/prometheus.yml
-   ```
-
-4. **Restart Prometheus**:
-
-   ```bash
-   systemctl restart prometheus
-   ```
-
----
-
-## **Step 5: Test Alert Integration**
-
-1. **Access Prometheus**:
-   Go to:
-   ```
-   http://<server-ip>:9090
-   ```
-
-2. **Check Alerts**:
-   - Navigate to the **Alerts** tab.
-   - You should see the `HighCpuUsage` alert because it is designed to fire immediately (`expr: up == 1` and `for: 0m`).
-
-3. **Verify Slack Notification**:
-   - Check the Slack channel (`#devops`) for the alert message.
-
----
-
-## **Step 6: Automate Alertmanager Startup**
-
-To ensure Alertmanager starts automatically:
-
-1. **Create a systemd service for Alertmanager**:
-
-   ```bash
-   sudo tee /etc/systemd/system/alertmanager.service > /dev/null <<EOT
-   [Unit]
-   Description=Alertmanager
-   After=network.target
-
-   [Service]
-   ExecStart=/path/to/alertmanager --config.file=/path/to/alertmanager.yml
-   Restart=always
-   User=root
-
-   [Install]
-   WantedBy=multi-user.target
-   EOT
-   ```
-
-   Replace `/path/to/alertmanager` and `/path/to/alertmanager.yml` with the actual paths.
-
-2. **Reload and enable the service**:
-
-   ```bash
-   sudo systemctl daemon-reload
-   sudo systemctl enable --now alertmanager
-   ```
-
-3. **Check status**:
-
-   ```bash
-   systemctl status alertmanager
-   ```
-
----
-
-## **Final Verification**
-
-1. Prometheus:  
-   Access Prometheus at:  
-   ```
-   http://<server-ip>:9090
-   ```
-
-2. Alertmanager:  
-   Access Alertmanager at:  
-   ```
-   http://<server-ip>:9093
-   ```
-
-3. Slack:  
-   Check the configured channel (`#devops`) for the alert notification.
+- **slack_configs**:  
+   Defines the integration with **Slack**.  
+   - **api_url**: Slack webhook URL used to send notifications.  
+   - **channel**: Slack channel where alerts are posted (e.g., `#alerts`).  
+   - **title** and **text**: Customize how alerts appear in Slack messages using templates.  
 
 
-### Conclusion
+### **Template Variables**
 
-By completing this lab, you have:  
-1. Installed Prometheus and Alertmanager.  
-2. Configured Alertmanager to send Slack notifications.  
-3. Tested alert rules and validated end-to-end alert delivery.
+The **`title`** and **`text`** fields use **Go templating** to dynamically insert values from alert data. Here are the commonly used options:
+
+![alt text](./images/image.png)
+
+
+### **Conclusion**
+
+In this lab, you learned the key components of Alertmanager's configuration, including **Global Configurations**, **Route Section**, **Sub-Routes**, **Inhibit Rules**, and the **Receivers Section**. By integrating with Slack and understanding how to group, route, and suppress alerts, you now have a robust foundation to manage alerts effectively in your monitoring system. 
+
