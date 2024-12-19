@@ -2,7 +2,7 @@
 
 This project demonstrates the automated deployment of a Lambda function using Pulumi and GitHub Actions. By integrating Pulumi for infrastructure as code and GitHub Actions for continuous deployment, it ensures a smooth, repeatable process for provisioning AWS resources and deploying serverless applications. The automation setup enhances the efficiency and reliability of managing cloud infrastructure, streamlining the deployment process while maintaining high standards of observability.
 
-![](https://github.com/Galadon123/Automating-Lambda-Function-Deployment-with-Pulumi/blob/main/images/lambda-overview.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/AWS%20Lambda%20function/Automating%20lambda%20function/images/lambda-overview.png?raw=true)
 
 ## Project Directory
 
@@ -730,7 +730,7 @@ This Node.js application serves as the Lambda function's code. The Dockerfile bu
     - Navigate to `Settings` > `Access Tokens`.
     - Click `Create Token`, give it a name, and copy the token.
 
-    ![](https://github.com/Galadon123/Lambda-Function-with-Pulumi-python/blob/main/image/l-2.png)
+    ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/AWS%20Lambda%20function/Automating%20lambda%20function/images/l-2.png?raw=true)
 
 ## Create a GitHub Repo and Set Up Secrets
 
@@ -744,7 +744,7 @@ This Node.js application serves as the Lambda function's code. The Dockerfile bu
         - `AWS_SECRET_ACCESS_KEY`: Your AWS secret access key.
         - `PULUMI_ACCESS_TOKEN`: Your Pulumi access token.
 
-    ![](https://github.com/Galadon123/Lambda-Function-with-Pulumi-python/blob/main/image/l-3.png)
+    ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/AWS%20Lambda%20function/Automating%20lambda%20function/images/l-3.png?raw=true)
 
 ## Create Two Workflows
 
@@ -931,7 +931,7 @@ This GitHub Actions workflow is triggered by changes in the `Deploy-Lambda` dire
 
      Outputs:
 
-     ![](https://github.com/Galadon123/Automating-Lambda-Function-Deployment-with-Pulumi/blob/main/images/o-1.png)
+     ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/AWS%20Lambda%20function/Automating%20lambda%20function/images/o-1.png?raw=true)
 
      ```json
      {
@@ -941,7 +941,7 @@ This GitHub Actions workflow is triggered by changes in the `Deploy-Lambda` dire
      ```
      Outputs:
 
-     ![](https://github.com/Galadon123/Automating-Lambda-Function-Deployment-with-Pulumi/blob/main/images/o-2.png)
+     ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/AWS%20Lambda%20function/Automating%20lambda%20function/images/o-2.png?raw=true)
 
      ```json
      {
@@ -952,7 +952,7 @@ This GitHub Actions workflow is triggered by changes in the `Deploy-Lambda` dire
 
      Outputs:
 
-     ![](https://github.com/Galadon123/Automating-Lambda-Function-Deployment-with-Pulumi/blob/main/images/o-3.png)
+     ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/AWS%20Lambda%20function/Automating%20lambda%20function/images/o-3.png?raw=true)
 
 ### Test Each API-Gateway Endpoint
 Make sure to test each of the API-Gateway endpoints:
@@ -962,9 +962,9 @@ Make sure to test each of the API-Gateway endpoints:
 
 Each endpoint should return the respective message as defined in your Lambda function handler.
 
-![](https://github.com/Galadon123/Automating-Lambda-Function-Deployment-with-Pulumi/blob/main/images/w-3.png)
-![](https://github.com/Galadon123/Automating-Lambda-Function-Deployment-with-Pulumi/blob/main/images/w-1.png)
-![](https://github.com/Galadon123/Automating-Lambda-Function-Deployment-with-Pulumi/blob/main/images/w-2.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/AWS%20Lambda%20function/Automating%20lambda%20function/images/w-3.png?raw=true)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/AWS%20Lambda%20function/Automating%20lambda%20function/images/w-1.png?raw=true)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/AWS%20Lambda%20function/Automating%20lambda%20function/images/w-2.png?raw=true)
 
 ## Summary
 

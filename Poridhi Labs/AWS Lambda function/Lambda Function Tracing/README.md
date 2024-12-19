@@ -1,4 +1,4 @@
-# Automating Lambda Function Deployment with Pulumi, GitHub Actions, and Grafana Tempo for Tracing
+# Automating Lambda Function Tracing
 
 This project demonstrates the automated deployment of a Lambda function using Pulumi and GitHub Actions, combined with an observability stack. By integrating Pulumi for infrastructure as code and GitHub Actions for continuous deployment, it ensures a smooth, repeatable process for provisioning AWS resources and deploying serverless applications. The automation setup enhances the efficiency and reliability of managing cloud infrastructure, streamlining the deployment process while maintaining high standards of observability and traceability.
 
