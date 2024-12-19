@@ -2,11 +2,13 @@
 
 This project demonstrates the automated deployment of a Lambda function using Pulumi and GitHub Actions, combined with an observability stack. By integrating Pulumi for infrastructure as code and GitHub Actions for continuous deployment, it ensures a smooth, repeatable process for provisioning AWS resources and deploying serverless applications. The automation setup enhances the efficiency and reliability of managing cloud infrastructure, streamlining the deployment process while maintaining high standards of observability and traceability.
 
-![](https://github.com/Galadon123/-Lambda-Function-Deployment/blob/main/image/f.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/AWS%20Lambda%20function/Lambda%20Function%20Tracing/image/f.png?raw=true)
+
+
 ### Grafana and Tracing
 The observability stack, featuring Grafana, Tempo, and the OpenTelemetry Collector, is deployed on an EC2 instance. Grafana provides powerful visualization capabilities, allowing you to monitor various metrics and performance indicators. Tempo, integrated with Grafana, enables distributed tracing, helping you track the flow of requests through your system and identify performance bottlenecks. The OpenTelemetry Collector collects and exports trace data, ensuring comprehensive monitoring and insights into application behavior and performance.
 
-![](https://github.com/Galadon123/-Lambda-Function-Deployment/blob/main/image/Screenshot%202024-07-02%20174136.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/AWS%20Lambda%20function/Lambda%20Function%20Tracing/image/Screenshot%202024-07-02%20174136.png?raw=true)
 ## Project Directory
 
 ```
@@ -426,7 +428,7 @@ CMD [ "index.handler" ]
     - Navigate to `Settings` > `Access Tokens`.
     - Click `Create Token`, give it a name, and copy the token.
 
-    ![](https://github.com/Galadon123/Lambda-Function-with-Pulumi-python/blob/main/image/l-2.png)
+    ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/AWS%20Lambda%20function/Lambda%20Function%20Tracing/image/l-2.png?raw=true)
 
 ## Create a GitHub Repo and Set Up Secrets
 
@@ -440,7 +442,7 @@ CMD [ "index.handler" ]
         - `AWS_SECRET_ACCESS_KEY`: Your AWS secret access key.
         - `PULUMI_ACCESS_TOKEN`: Your Pulumi access token.
 
-    ![](https://github.com/Galadon123/Lambda-Function-with-Pulumi-python/blob/main/image/l-3.png)
+    ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/AWS%20Lambda%20function/Lambda%20Function%20Tracing/image/l-3.png?raw=true)
 
 ## Create Two Workflows
 
@@ -651,14 +653,14 @@ jobs:
 - Observe the workflows and ensure they run without errors.
 - If errors occur, click on the failed job to view the logs and debug accordingly.
 
-![](https://github.com/Galadon123/Lambda-Function-with-Pulumi-python/blob/main/image/l-w-1.png)
-![](https://github.com/Galadon123/Lambda-Function-with-Pulumi-python/blob/main/image/l-w-2.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/AWS%20Lambda%20function/Lambda%20Function%20Tracing/image/l-w-1.png?raw=true)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/AWS%20Lambda%20function/Lambda%20Function%20Tracing/image/l-w-2.png?raw=true)
 
 ## Resource Map Verification
 
 After the Pulumi infrastructure setup, you can verify the resources in the AWS Management Console to ensure everything is created correctly.
 
-![Resource Map](https://github.com/Galadon123/-Lambda-Function-Deployment/blob/main/image/o-4.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/AWS%20Lambda%20function/Lambda%20Function%20Tracing/image/o-4.png?raw=true)
 
 ## Testing Lambda Function with JSON Query
 
@@ -694,7 +696,7 @@ After the Pulumi infrastructure setup, you can verify the resources in the AWS M
    - Check the execution results, which will appear on the Lambda console.
    - Review the logs and output to verify that the Lambda function executed correctly.
 
-   ![](https://github.com/Galadon123/-Lambda-Function-Deployment/blob/main/image/o-5.png)
+   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/AWS%20Lambda%20function/Lambda%20Function%20Tracing/image/o-5.png?raw=true)
 
 This process allows you to test your Lambda function directly within the AWS Lambda console using a JSON query.
 
@@ -864,9 +866,9 @@ services:
     ```traceql
     {}
     ```
-    ![TraceQL](https://github.com/Galadon123/-Lambda-Function-Deployment/blob/main/image/o-1.png)
+    ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/AWS%20Lambda%20function/Lambda%20Function%20Tracing/image/o-1.png?raw=true)
 ## Step 6: Managing and Understanding Trace Data
-![](https://github.com/Galadon123/-Lambda-Function-Deployment/blob/main/image/o-2.png)
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/AWS%20Lambda%20function/Lambda%20Function%20Tracing/image/o-2.png?raw=true)
 
 #### Explanation of Image Observations
 
