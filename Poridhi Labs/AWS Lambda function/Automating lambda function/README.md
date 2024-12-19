@@ -1,38 +1,37 @@
-# Automating Lambda Function Deployment with Pulumi, GitHub Actions, and Grafana Tempo for Tracing
+# Automating Lambda Function Deployment
 
-This project demonstrates the automated deployment of a Lambda function using Pulumi and GitHub Actions, combined with an observability stack. By integrating Pulumi for infrastructure as code and GitHub Actions for continuous deployment, it ensures a smooth, repeatable process for provisioning AWS resources and deploying serverless applications. The automation setup enhances the efficiency and reliability of managing cloud infrastructure, streamlining the deployment process while maintaining high standards of observability and traceability.
+This project demonstrates the automated deployment of a Lambda function using Pulumi and GitHub Actions. By integrating Pulumi for infrastructure as code and GitHub Actions for continuous deployment, it ensures a smooth, repeatable process for provisioning AWS resources and deploying serverless applications. The automation setup enhances the efficiency and reliability of managing cloud infrastructure, streamlining the deployment process while maintaining high standards of observability.
 
-![](https://github.com/Galadon123/-Lambda-Function-Deployment/blob/main/image/f.png)
-### Grafana and Tracing
-The observability stack, featuring Grafana, Tempo, and the OpenTelemetry Collector, is deployed on an EC2 instance. Grafana provides powerful visualization capabilities, allowing you to monitor various metrics and performance indicators. Tempo, integrated with Grafana, enables distributed tracing, helping you track the flow of requests through your system and identify performance bottlenecks. The OpenTelemetry Collector collects and exports trace data, ensuring comprehensive monitoring and insights into application behavior and performance.
+![](https://github.com/Galadon123/Automating-Lambda-Function-Deployment-with-Pulumi/blob/main/images/lambda-overview.png)
 
-![](https://github.com/Galadon123/-Lambda-Function-Deployment/blob/main/image/Screenshot%202024-07-02%20174136.png)
 ## Project Directory
 
 ```
 project-root/
-├── infra/
-│   ├── __init__.py
-│   ├── __main__.py
-│   ├── vpc.py
-│   ├── subnet.py
-│   ├── ecr_repository.py
-│   ├── lambda_role.py
-│   ├── s3_bucket.py
-│   └── security_group.py
-├── deploy-in-lambda/
+├── Deploy-Lambda/
+│   ├── Dockerfile
 │   ├── index.js
 │   ├── package.json
-│   └── Dockerfile
-├── .github/
-│   └── workflows/
-│       ├── infra.yml
-│       └── deploy.yml       
+│   └── __main__.py
+│   └── requirements.txt
+└── infrastructure/
+     ├── __main__.py
+     ├── Dockerfile
+     ├── lambda_function.py
+     ├── network.py
+     ├── security.py
+     ├── storage.py
+     └── requirements.txt
+└── .github/
+     └── workflows/
+         ├── deploy.yml
+         └── infra.yml     
 ```
 
-### Locally Set Up Pulumi for the `infra` Directory
 
-#### Step 1: Install Pulumi
+## Locally Set Up Pulumi for the `infrastructure` Directory
+
+### Step 1: Install Pulumi
 
 ```sh
 curl -fsSL https://get.pulumi.com | sh
@@ -40,7 +39,7 @@ curl -fsSL https://get.pulumi.com | sh
 
 This command installs Pulumi on your local machine.
 
-#### Step 2: Log in to Pulumi
+### Step 2: Log in to Pulumi
 
 ```sh
 pulumi login
@@ -48,7 +47,7 @@ pulumi login
 
 This command logs you into your Pulumi account, enabling you to manage your infrastructure as code.
 
-#### Step 3: Initialize Pulumi Project
+### Step 3: Initialize Pulumi Project
 
 ```sh
 cd infra
@@ -57,372 +56,677 @@ pulumi new aws-python
 
 This command initializes a new Pulumi project using the AWS Python template in the `infra` directory.
 
-#### Step 4: Configure AWS Credentials
+## Infrastructure Code Breakdown
 
-Ensure that your AWS credentials are set up in your environment:
+### `infrastructure/__main__.py`
 
-```sh
-export AWS_ACCESS_KEY_ID=your_access_key_id
-export AWS_SECRET_ACCESS_KEY=your_secret_access_key
+```python
+import pulumi
+from network import create_network_infrastructure
+from security import create_security_groups
+from lambda_function import create_lambda_function
+from storage import create_storage_and_outputs
+
+# Create network infrastructure
+network = create_network_infrastructure()
+
+# Create security groups
+security_groups = create_security_groups(network["vpc"].id)
+
+# Create Lambda function and related resources
+lambda_resources = create_lambda_function(
+    network["vpc"].id,
+    network["private_subnet"].id,
+    security_groups["lambda_security_group"].id
+)
+
+# Create S3 bucket and prepare for output storage
+bucket, upload_exports_to_s3 = create_storage_and_outputs(network["vpc"].id)
+
+# Collect all outputs
+all_outputs = {
+    "vpc_id": network["vpc"].id,
+    "public_subnet_id": network["public_subnet"].id,
+    "private_subnet_id": network["private_subnet"].id,
+    "public_route_table_id": network["public_route_table"].id,
+    "private_route_table_id": network["private_route_table"].id,
+    "lambda_security_group_id": security_groups["lambda_security_group"].id,
+    "lambda_role_arn": lambda_resources["lambda_role"].arn,
+    "repository_url": lambda_resources["ecr_repo"].repository_url,
+    "ecr_registry_id": lambda_resources["ecr_repo"].registry_id,
+    "lambda_function_name": lambda_resources["lambda_function"].name,
+    "lambda_function_arn": lambda_resources["lambda_function"].arn,
+    "bucket_name": bucket.id,
+}
+
+# Upload outputs to S3
+pulumi.Output.all(**all_outputs).apply(lambda resolved: upload_exports_to_s3(resolved))
+
+# Export some values for easy access
+pulumi.export('vpc_id', network["vpc"].id)
+pulumi.export('lambda_function_name', lambda_resources["lambda_function"].name)
+pulumi.export('bucket_name', bucket.id)
 ```
 
-This step ensures that Pulumi can authenticate with AWS to create and manage resources.
+### Explanation
 
-#### Step 5: Install Python Dependencies
+This script is the main entry point for the Pulumi project. It orchestrates the creation of various resources such as the network infrastructure, security groups, Lambda function, and S3 bucket. It also collects the output values and exports them for easy access.
 
-```sh
-python -m venv venv
-source venv/bin/activate
-pip install pulumi pulumi-aws
+### `infrastructure/lambda_function.py`
+
+```python
+import pulumi
+import pulumi_aws as aws
+import pulumi_docker as docker
+import base64
+
+def create_lambda_function(vpc_id, private_subnet_id, lambda_security_group_id):
+    # Create IAM Role for Lambda
+    lambda_role = aws.iam.Role("lambda-role",
+                               assume_role_policy="""{
+                                   "Version": "2012-10-17",
+                                   "Statement": [
+                                       {
+                                           "Action": "sts:AssumeRole",
+                                           "Principal": {
+                                               "Service": "lambda.amazonaws.com"
+                                           },
+                                           "Effect": "Allow",
+                                           "Sid": ""
+                                       }
+                                   ]
+                               }""")
+
+    # Attach IAM Policy to Lambda Role
+    lambda_policy_attachment = aws.iam.RolePolicyAttachment("lambda-policy-attachment",
+        role=lambda_role.name,
+        policy_arn="arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+    )
+
+    # Create IAM Policy for Lambda Role to access S3
+    lambda_policy = aws.iam.Policy("lambda-policy",
+        policy="""{
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Action": [
+                        "s3:GetObject",
+                        "s3:ListBucket"
+                    ],
+                    "Resource": [
+                        "arn:aws:s3:::lambda-function-bucket-poridhi",
+                        "arn:aws:s3:::lambda-function-bucket-poridhi/*"
+                    ]
+                },
+                {
+                    "Effect": "Allow",
+                    "Action": [
+                        "ec2:CreateNetworkInterface",
+                        "ec2:DeleteNetworkInterface",
+                        "ec2:DescribeNetworkInterfaces"
+                    ],
+                    "Resource": "*"
+                }
+            ]
+        }"""
+    )
+
+    # Attach IAM Policy to Lambda Role
+    lambda_policy_attachment_2 = aws.iam.RolePolicyAttachment("lambda-policy-attachment_2",
+        role=lambda_role.name,
+        policy_arn=lambda_policy.arn
+    )
+
+    # Create ECR Repository
+    repo = aws.ecr.Repository('my-app-repo',
+        image_tag_mutability="MUTABLE",
+        image_scanning_configuration={
+            "scanOnPush": True
+        }
+    )
+
+    # Get repository credentials
+    creds = repo.registry_id.apply(
+        lambda registry_id: aws.ecr.get_credentials(registry_id=registry_id)
+    )
+
+    decoded_creds = creds.authorization_token.apply(
+        lambda token: base64.b64decode(token).decode('utf-8').split(':')
+    )
+
+    registry_server = creds.proxy_endpoint
+
+    # Define the ECR image name
+    ecr_image_name = repo.repository_url.apply(lambda url: f"{url}:latest")
+
+    # Push the Docker image to the ECR repository
+    image = docker.Image('my-node-app',
+        image_name=ecr_image_name,
+        build=docker.DockerBuildArgs(
+            context=".",
+            dockerfile="Dockerfile",
+        ),
+        registry={
+            "server": registry_server,
+            "username": decoded_creds.apply(lambda creds: creds[0]),
+            "password": decoded_creds.apply(lambda creds: creds[1]),
+        }
+    )
+
+    # Create Lambda function
+    lambda_function = aws.lambda_.Function("my-lambda-function",
+        role=lambda_role.arn,
+        image_uri=image.image_name,
+        package_type="Image",
+        timeout=400,
+        memory_size=1024,
+        vpc_config={
+            "subnet_ids": [private_subnet_id],
+            "security_group_ids": [lambda_security_group_id],
+        },
+        environment={
+            "variables": {
+                "ENV_VAR_1": "value1",
+                "ENV_VAR_2": "value2",
+            }
+        }
+    )
+
+    # Create a CloudWatch Log Group for the Lambda function
+    log_group = aws.cloudwatch.LogGroup("lambda-log-group",
+        name=lambda_function.name.apply(lambda name: f"/aws/lambda/{name}"),
+        retention_in_days=14
+    )
+
+    return {
+        "lambda_role": lambda_role,
+        "lambda_function": lambda_function,
+        "ecr_repo": repo
+    }
 ```
 
-These commands create a virtual environment, activate it, and install the necessary Pulumi packages.
+### Explanation
 
-### Infrastructure Code Breakdown
+This code snippet defines the Lambda function, including the IAM roles and policies required for it to run. It also sets up an ECR repository to store the Docker image for the Lambda function and ensures that the Lambda function can access necessary AWS resources like S3.
 
- `infra/__main__.py`
+### `infrastructure/network.py`
 
-This is the main entry point for Pulumi to execute. It imports and initializes the infrastructure components.
+```python
+# network.py
+
+import pulumi
+import pulumi_aws as aws
+
+def create_network_infrastructure():
+    # Create VPC
+    vpc = aws.ec2.Vpc("my-vpc",
+                      cidr_block="10.0.0.0/16",
+                      tags={"Name": "my-vpc"})
+
+    # Create Internet Gateway
+    igw = aws.ec2.InternetGateway("my-vpc-igw",
+                                  vpc_id=vpc.id,
+                                  opts=pulumi.ResourceOptions(depends_on=[vpc]),
+                                  tags={"Name": "my-vpc-igw"})
+
+    # Create Route Table for Public Subnet
+    public_route_table = aws.ec2.RouteTable("my-vpc-public-rt",
+                                            vpc_id=vpc.id,
+                                            routes=[{
+                                                "cidr_block": "0.0.0.0
+
+/0",
+                                                "gateway_id": igw.id,
+                                            }],
+                                            opts=pulumi.ResourceOptions(depends_on=[igw]),
+                                            tags={"Name": "my-vpc-public-rt"})
+
+    # Create Public Subnet
+    public_subnet = aws.ec2.Subnet("public-subnet",
+                                   vpc_id=vpc.id,
+                                   cidr_block="10.0.1.0/24",
+                                   availability_zone="us-east-1a",
+                                   map_public_ip_on_launch=True,
+                                   opts=pulumi.ResourceOptions(depends_on=[vpc]),
+                                   tags={"Name": "public-subnet"})
+
+    # Associate Route Table with Public Subnet
+    public_route_table_association = aws.ec2.RouteTableAssociation("public-subnet-association",
+                                                                   subnet_id=public_subnet.id,
+                                                                   route_table_id=public_route_table.id,
+                                                                   opts=pulumi.ResourceOptions(depends_on=[public_subnet, public_route_table]))
+
+    # Create Private Subnet
+    private_subnet = aws.ec2.Subnet("private-subnet",
+                                    vpc_id=vpc.id,
+                                    cidr_block="10.0.2.0/24",
+                                    availability_zone="us-east-1b",
+                                    map_public_ip_on_launch=False,
+                                    opts=pulumi.ResourceOptions(depends_on=[vpc]),
+                                    tags={"Name": "private-subnet"})
+
+    # Create NAT Gateway
+    eip = aws.ec2.Eip("my-eip")
+    nat_gateway = aws.ec2.NatGateway("my-nat-gateway",
+                                     subnet_id=public_subnet.id,
+                                     allocation_id=eip.id,
+                                     opts=pulumi.ResourceOptions(depends_on=[public_subnet, eip]),
+                                     tags={"Name": "my-nat-gateway"})
+
+    # Create Route Table for Private Subnet
+    private_route_table = aws.ec2.RouteTable("my-vpc-private-rt",
+                                             vpc_id=vpc.id,
+                                             routes=[{
+                                                 "cidr_block": "0.0.0.0/0",
+                                                 "gateway_id": nat_gateway.id,
+                                             }],
+                                             opts=pulumi.ResourceOptions(depends_on=[nat_gateway]),
+                                             tags={"Name": "my-vpc-private-rt"})
+
+    # Associate Route Table with Private Subnet
+    private_route_table_association = aws.ec2.RouteTableAssociation("private-subnet-association",
+                                                                    subnet_id=private_subnet.id,
+                                                                    route_table_id=private_route_table.id,
+                                                                    opts=pulumi.ResourceOptions(depends_on=[private_subnet, private_route_table]))
+
+    return {
+        "vpc": vpc,
+        "public_subnet": public_subnet,
+        "private_subnet": private_subnet,
+        "public_route_table": public_route_table,
+        "private_route_table": private_route_table
+    }
+```
+
+### Explanation
+
+This code defines the network infrastructure, including creating a VPC, subnets, route tables, and NAT gateway. It ensures the Lambda function can communicate within the specified network.
+
+### `infrastructure/storage.py`
 
 ```python
 import pulumi
 import pulumi_aws as aws
 import json
-# Create VPC
-vpc = aws.ec2.Vpc("my-vpc",
-                  cidr_block="10.0.0.0/16",
-                  tags={"Name": "my-vpc"})
 
-# Create Internet Gateway
-igw = aws.ec2.InternetGateway("my-vpc-igw",
-                              vpc_id=vpc.id,
-                              opts=pulumi.ResourceOptions(depends_on=[vpc]),
-                              tags={"Name": "my-vpc-igw"})
+def create_storage_and_outputs(vpc_id):
+    # Create S3 bucket
+    bucket = aws.s3.Bucket("lambda-function-bucket-poridhi",
+        bucket="lambda-function-bucket-poridhi-1213",
+        acl="private",
+        tags={"Name": "Lambda Function Bucket"}
+    )
 
-# Create Route Table for Public Subnet
-public_route_table = aws.ec2.RouteTable("my-vpc-public-rt",
-                                        vpc_id=vpc.id,
-                                        routes=[{
-                                            "cidr_block": "0.0.0.0/0",
-                                            "gateway_id": igw.id,
-                                        }],
-                                        opts=pulumi.ResourceOptions(depends_on=[igw]),
-                                        tags={"Name": "my-vpc-public-rt"})
+    def upload_exports_to_s3(outputs):
+        # Convert outputs to JSON
+        outputs_json = json.dumps(outputs, indent=2)
+        
+        # Create an S3 object with the JSON content
+        aws.s3.BucketObject("pulumi-exports",
+            bucket=bucket.id,
+            key="pulumi-exports.json",
+            content=outputs_json,
+            content_type="application/json"
+        )
 
-# Create Public Subnet within VPC c
-public_subnet = aws.ec2.Subnet("public-subnet",
-                               vpc_id=vpc.id,
-                               cidr_block="10.0.1.0/24",
-                               availability_zone="us-east-1a",
-                               map_public_ip_on_launch=True,
-                               opts=pulumi.ResourceOptions(depends_on=[vpc]),
-                               tags={"Name": "public-subnet"})
-
-# Associate Route Table with Public Subnet
-public_route_table_association = aws.ec2.RouteTableAssociation("public-subnet-association",
-                                                               subnet_id=public_subnet.id,
-                                                               route_table_id=public_route_table.id,
-                                                               opts=pulumi.ResourceOptions(depends_on=[public_route_table]))
-
-# Create Security Group for EC2 Instance
-ec2_security_group = aws.ec2.SecurityGroup("ec2-security-group",
-                                           vpc_id=vpc.id,
-                                           description="Allow SSH and HTTP traffic",
-                                           ingress=[
-                                               {
-                                                   "protocol": "tcp",
-                                                   "from_port": 22,
-                                                   "to_port": 22,
-                                                   "cidr_blocks": ["0.0.0.0/0"],
-                                               },
-                                               {
-                                                   "protocol": "tcp",
-                                                   "from_port": 80,
-                                                   "to_port": 80,
-                                                   "cidr_blocks": ["0.0.0.0/0"],
-                                               },
-                                           ],
-                                           egress=[
-                                               {
-                                                   "protocol": "-1",
-                                                   "from_port": 0,
-                                                   "to_port": 0,
-                                                   "cidr_blocks": ["0.0.0.0/0"],
-                                               },
-                                           ],
-                                           opts=pulumi.ResourceOptions(depends_on=[vpc]),
-                                           tags={"Name": "ec2-security-group"})
-
-ec2_instance = aws.ec2.Instance("my-ec2-instance",
-                                instance_type="t2.micro",
-                                vpc_security_group_ids=[ec2_security_group.id],
-                                subnet_id=public_subnet.id,
-                                ami="ami-04a81a99f5ec58529",  # Example AMI ID, replace with your desired AMIs
-                                tags={"Name": "my-ec2-instance"},
-                                opts=pulumi.ResourceOptions(depends_on=[public_subnet, ec2_security_group]))
-# Create Private Subnet within VPC
-private_subnet = aws.ec2.Subnet("private-subnet",
-                                vpc_id=vpc.id,
-                                cidr_block="10.0.2.0/24",
-                                availability_zone="us-east-1b",
-                                map_public_ip_on_launch=False,
-                                opts=pulumi.ResourceOptions(depends_on=[vpc]),
-                                tags={"Name": "private-subnet"})
-
-# Create Route Table for Private Subnet
-private_route_table = aws.ec2.RouteTable("my-vpc-private-rt",
-                                         vpc_id=vpc.id,
-                                         routes=[{
-                                             "cidr_block": "10.0.0.0/16",
-                                             "gateway_id": "local",
-                                         }],
-                                         opts=pulumi.ResourceOptions(depends_on=[igw]),
-                                         tags={"Name": "my-vpc-private-rt"})
-
-# Associate Route Table with Private Subnet
-private_route_table_association = aws.ec2.RouteTableAssociation("private-subnet-association",
-                                                                subnet_id=private_subnet.id,
-                                                                route_table_id=private_route_table.id,
-                                                                opts=pulumi.ResourceOptions(depends_on=[private_route_table]))
-
-# Create Security Group for Lambda functions
-lambda_security_group = aws.ec2.SecurityGroup("lambda-security-group",
-                                              vpc_id=vpc.id,
-                                              description="Allow all traffic",
-                                              ingress=[{
-                                                  "protocol": "-1",  # All protocols
-                                                  "from_port": 0,
-                                                  "to_port": 0,
-                                                  "cidr_blocks": ["0.0.0.0/0"],
-                                              }],
-                                              egress=[{
-                                                  "protocol": "-1",  # All protocols
-                                                  "from_port": 0,
-                                                  "to_port": 0,
-                                                  "cidr_blocks": ["0.0.0.0/0"],
-                                              }],
-                                              opts=pulumi.ResourceOptions(depends_on=[vpc]),
-                                              tags={"Name": "lambda-security-group"})
-
-# Create IAM Role for Lambda with trust policy
-lambda_role = aws.iam.Role("lambda-role",
-                           assume_role_policy="""{
-                               "Version": "2012-10-17",
-                               "Statement": [
-                                   {
-                                       "Action": "sts:AssumeRole",
-                                       "Principal": {
-                                           "Service": "lambda.amazonaws.com"
-                                       },
-                                       "Effect": "Allow",
-                                       "Sid": ""
-                                   }
-                               ]
-                           }""")
-
-# Create Inline Policy allowing GetObject on pulumi-outputs.json in the S3 bucket
-bucket_name = "lambda-function-bucket-poridhi"
-bucket = aws.s3.Bucket(bucket_name)
-
-# Get the ARN of the bucket
-bucket_arn = bucket.arn
-
-lambda_s3_policy_document = {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "AllowLambdaReadS3",
-            "Effect": "Allow",
-            "Action": [
-                "s3:GetObject"
-            ],
-            "Resource": [
-                f"arn:aws:s3:::{bucket_arn}/pulumi-outputs.json"
-            ]
-        }
-    ]
-}
-
-lambda_s3_policy = aws.iam.Policy("lambdaS3Policy", policy=json.dumps(lambda_s3_policy_document))
-
-# Attach the policy to tb he IAM Role
-lambda_role_policy_attachment = aws.iam.RolePolicyAttachment("lambdaRolePolicyAttachment",
-                                                             role=lambda_role.name,
-                                                             policy_arn=lambda_s3_policy.arn)
-
-# Create ECR Repository f
-repository = aws.ecr.Repository("my-ecr-repo",
-                                 opts=pulumi.ResourceOptions(depends_on=[lambda_role]))
-
-# Export Outputs
-pulumi.export("vpc_id", vpc.id)
-pulumi.export("public_subnet_id", public_subnet.id)
-pulumi.export("private_subnet_id", private_subnet.id)
-pulumi.export("public_route_table_id", public_route_table.id)
-pulumi.export("private_route_table_id", private_route_table.id)
-pulumi.export("ec2_security_group_id", ec2_security_group.id)
-pulumi.export("lambda_security_group_id", lambda_security_group.id)
-pulumi.export("lambda_role_arn", lambda_role.arn)
-pulumi.export("bucket_name", bucket.bucket)
-pulumi.export("ecr_repo_url", repository.repository_url)
-pulumi.export("ecr_registry", repository.registry_id)
-pulumi.export("ec2_private_ip", ec2_instance.private_ip)
+    return bucket, upload_exports_to_s3
 ```
 
-## Locally Set Up Node.js App
+### Explanation
 
-1. **Initialize Node.js Project**:
-    ```sh
-    cd deploy-in-lambda
-    npm init -y
-    ```
+This code snippet creates an S3 bucket and defines a function to upload Pulumi outputs to the bucket. This allows other parts of the infrastructure to access these outputs.
 
-2. **Create `index.js`**:
-```javascript
-const { NodeSDK } = require('@opentelemetry/sdk-node');
-const { OTLPTraceExporter } = require('@opentelemetry/exporter-otlp-grpc');
-const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');
-const { trace, context } = require('@opentelemetry/api');
-const grpc = require('@grpc/grpc-js');
-const AWS = require('aws-sdk');
-const express = require('express');
-const awsServerlessExpress = require('aws-serverless-express');
-const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware');
-
-const app = express();
-const server = awsServerlessExpress.createServer(app);
-
-app.use(express.json());
-app.use(awsServerlessExpressMiddleware.eventContext());
-
-let otelInitialized = false;
-
-async function initializeOpenTelemetry() {
-  if (!otelInitialized) {
-    console.log("Initializing OpenTelemetry...");
-    try {
-      const traceExporter = new OTLPTraceExporter({
-        url: 'http://10.0.1.183:4317',  // Replace with your otel-instance Private IP
-        credentials: grpc.credentials.createInsecure(),
-      });
-
-      const sdk = new NodeSDK({
-        traceExporter,
-        instrumentations: [getNodeAutoInstrumentations()],
-      });
-
-      await sdk.start();
-      otelInitialized = true;
-      console.log('OpenTelemetry SDK initialized');
-    } catch (error) {
-      console.error("Error initializing OpenTelemetry:", error);
-    }
-  }
-}
-
-// Initialize OpenTelemetry outside the handler to ensure it runs on cold start
-initializeOpenTelemetry();
-
-app.get('/', (req, res) => {
-  const currentSpan = trace.getTracer('default').startSpan('GET /');
-  context.with(trace.setSpan(context.active(), currentSpan), () => {
-    const traceId = currentSpan.spanContext().traceId;
-    console.log(`Trace ID for GET /: ${traceId}`);
-    res.send(`Hello, World! Trace ID: ${traceId}`);
-    currentSpan.end();
-  });
-});
-
-app.get('/trace', (req, res) => {
-  const currentSpan = trace.getTracer('default').startSpan('GET /trace');
-  context.with(trace.setSpan(context.active(), currentSpan), () => {
-    const traceId = currentSpan.spanContext().traceId;
-    console.log(`Trace ID for GET /trace: ${traceId}`);
-    res.send(`This route is traced with OpenTelemetry! Trace ID: ${traceId}`);
-    console.log('Trace route accessed');
-    currentSpan.end();
-  });
-});
-
-app.get('/slow', (req, res) => {
-  const currentSpan = trace.getTracer('default').startSpan('GET /slow');
-  context.with(trace.setSpan(context.active(), currentSpan), () => {
-    setTimeout(() => {
-      const traceId = currentSpan.spanContext().traceId;
-      console.log(`Trace ID for GET /slow: ${traceId}`);
-      res.send(`This is a slow route. Trace ID: ${traceId}`);
-      currentSpan.end();
-    }, 3000);
-  });
-});
-
-app.get('/error', (req, res) => {
-  const currentSpan = trace.getTracer('default').startSpan('GET /error');
-  context.with(trace.setSpan(context.active(), currentSpan), () => {
-    const traceId = currentSpan.spanContext().traceId;
-    console.log(`Trace ID for GET /error: ${traceId}`);
-    res.status(500).send(`This route returns an error. Trace ID: ${traceId}`);
-    currentSpan.setStatus({ code: trace.SpanStatusCode.ERROR });
-    currentSpan.end();
-  });
-});
-
-exports.handler = (event, context) => {
-  console.log("Handler invoked");
-  return awsServerlessExpress.proxy(server, event, context, 'PROMISE').promise;
-}
-```
-
-3. **Create `package.json`**:
-```json
-    {
-  "name": "lambda-function",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "dependencies": {
-    "@grpc/grpc-js": "^1.8.12",
-    "@opentelemetry/api": "^1.9.0",
-    "@opentelemetry/auto-instrumentations-node": "^0.47.1",
-    "@opentelemetry/exporter-otlp-grpc": "^0.26.0",
-    "@opentelemetry/sdk-node": "^0.52.1",
-    "aws-sdk": "^2.1000.0",
-    "aws-serverless-express": "^3.4.0",
-    "express": "^4.19.2"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC"
-  }
-```
-
-4. **Install Dependencies**:
-    ```sh
-    npm install
-    ```
-
-## Dockerfile
+### `infrastructure/Dockerfile`
 
 ```dockerfile
-# Use the official AWS Lambda node image
-FROM public.ecr.aws/lambda/nodejs:16
-
-# Copy function code
-COPY index.js package.json package-lock.json ./
-
-# Install production dependencies
-RUN npm install --only=production
-
-# Command can be overwritten by providing a different command in the template directly.
-CMD [ "index.handler" ]
+FROM nginx:latest
 ```
+
+### Explanation
+
+This is a simple Dockerfile that uses the latest Nginx image. This is used to demonstrate the deployment of a Dockerized Lambda function.
+
+### `infrastructure/requirements.txt`
+
+```
+pulumi>=3.0.0,<4.0.0
+pulumi-aws>=6.0.2,<7.0.0
+pulumi_docker>=3.0.0,<4.0.0
+```
+
+### Explanation
+
+This file lists the required Pulumi packages for the infrastructure code.
+
+## Setup Infrastructure for Build Image and Update Lambda Function
+
+### `Deploy-Lambda/__main__.py`
+
+```python
+import pulumi
+import pulumi_aws as aws
+import json
+import base64
+import pulumi_docker as docker
+import subprocess
+import time
+
+class LambdaUpdater(pulumi.dynamic.ResourceProvider):
+    def create(self, props):
+        cmd = f"aws lambda update-function-code --function-name {props['function_name']} --image-uri {props['image_uri']} --region {props['region']}"
+        result = subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
+        
+        # Generate a unique ID for this update
+        new_id = f"{props['function_name']}_{props['timestamp']}"
+        
+        return pulumi.dynamic.CreateResult(id_=new_id, outs=props)
+
+    def update(self, id, props, olds):
+        cmd = f"aws lambda update-function-code --function-name {props['function_name']} --image-uri {props['image_uri']} --region {props['region']}"
+        result = subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
+        
+        # Use the existing ID
+        props['id'] = id
+        
+        return pulumi.dynamic.UpdateResult(outs=props)
+
+class LambdaUpdate(pulumi.dynamic.Resource):
+    def __init__(self, name, props, opts = None):
+        super().__init__(LambdaUpdater(), name, props, opts)
+        self.function_name = props['function_name']
+        self.image_uri = props['image_uri']
+        self.region = props['region']
+        self.timestamp = props['timestamp']
+
+def get_exports_from_s3(bucket_name, object_key):
+    # Use the get_object function to retrieve the S3 object
+    s3_object = aws.s3.get_object(bucket=bucket_name, key=object_key)
+    
+    # Check if s3_object.body is a string or an Output
+    if isinstance(s3_object.body, str):
+        # If it's a string, parse it and wrap it in a Pulumi Output
+        return pulumi.Output.from_input(json.loads(s3_object.body))
+    else:
+        # If it's an Output, apply json.loads to it
+        return s3_object.body.apply(lambda body: json.loads(body))
+
+# Usage
+exports = get_exports_from_s3('lambda-function-bucket-poridhi-1213', 'pulumi-exports.json')
+
+# Get ECR repository details from exports
+repository_url = exports.apply(lambda exp: exp['repository_url'])
+ecr_registry_id = exports.apply(lambda exp: exp['ecr_registry_id'])
+
+# Get repository credentials
+creds = aws.ecr.get_credentials_output(registry_id=ecr_registry_id)
+
+decoded_creds = creds.authorization_token.apply(
+    lambda token: base64.b64decode(token).decode('utf-8').split(':')
+)
+
+registry_server = creds.proxy_endpoint
+
+# Define the ECR image name
+ecr_image_name = repository_url.apply(lambda url: f"{url}:latest")
+
+# Push the Docker image to the ECR repository
+image = docker.Image('my-node-app',
+    image_name=ecr_image_name,
+    build=docker.DockerBuildArgs(
+        context=".",
+        dockerfile="Dockerfile",
+    ),
+    registry={
+        "server": registry_server,
+        "username": decoded_creds.apply(lambda creds: creds[0]),
+        "password": decoded_creds.apply(lambda creds: creds[1]),
+    }
+)
+
+lambda_function_name = exports.apply(lambda exp: exp['lambda_function_name'])
+lambda_role_arn = exports.apply(lambda exp: exp['lambda_role_arn'])
+lambda_function_arn = exports.apply(lambda exp: exp['lambda_function_arn'])
+
+# Update the Lambda function using AWS CLI
+update_lambda = LambdaUpdate('update-lambda-function',
+    {
+        'function_name': lambda_function_name,
+        'image_uri': image.image_name,
+        'region': aws.config.region,
+        'timestamp': str(time.time())  # Ensure a unique ID for the update
+    },
+    opts=pulumi.ResourceOptions(depends_on=[image])
+)
+
+api = aws.apigateway.RestApi("myApi",
+    description="API Gateway for Lambda function",
+)
+default_resource = aws.apigateway.Resource("defaultResource",
+    parent_id=api.root_resource_id,
+    path_part="default",
+    rest_api=api.id,
+)
+
+# Create a resource
+lambda_resource = aws.apigateway.Resource("lambdaResource",
+    parent_id=default_resource.id,
+    path_part="my-lambda-function",
+    rest_api=api.id,
+)
+test1_resource = aws.apigateway.Resource("test1Resource",
+    parent_id=lambda_resource.id,
+    path_part="test1",
+    rest_api=api.id,
+)
+test2_resource = aws.apigateway.Resource("test2Resource",
+    parent_id=lambda_resource.id,
+    path_part="test2",
+    rest_api=api.id,
+)
+test1_method = aws.apigateway.Method("test1_Method",
+    http_method="GET",
+    authorization="NONE",
+    resource_id=test1_resource.id,
+    rest_api=api.id,
+)
+
+test2_method = aws.ap
+
+igateway.Method("test2_Method",
+    http_method="GET",
+    authorization="NONE",
+    resource_id=test2_resource.id,
+    rest_api=api.id,
+)
+
+# Create a method for the GET request
+method = aws.apigateway.Method("myMethod",
+    http_method="GET",
+    authorization="NONE",
+    resource_id=lambda_resource.id,
+    rest_api=api.id,
+)
+
+integration = aws.apigateway.Integration("myIntegration",
+    http_method=method.http_method,
+    integration_http_method="POST",
+    type="AWS_PROXY",
+    uri=lambda_function_arn.apply(lambda arn: f"arn:aws:apigateway:{aws.config.region}:lambda:path/2015-03-31/functions/{arn}/invocations"),
+    resource_id=lambda_resource.id,
+    rest_api=api.id,
+)
+test1_integration = aws.apigateway.Integration("test1Integration",
+    http_method=test1_method.http_method,
+    integration_http_method="POST",
+    type="AWS_PROXY",
+    uri=lambda_function_arn.apply(lambda arn: f"arn:aws:apigateway:{aws.config.region}:lambda:path/2015-03-31/functions/{arn}/invocations"),
+    resource_id=test1_resource.id,
+    rest_api=api.id,
+)
+test2_integration = aws.apigateway.Integration("test2Integration",
+    http_method=test2_method.http_method,
+    integration_http_method="POST",
+    type="AWS_PROXY",
+    uri=lambda_function_arn.apply(lambda arn: f"arn:aws:apigateway:{aws.config.region}:lambda:path/2015-03-31/functions/{arn}/invocations"),
+    resource_id=test2_resource.id,
+    rest_api=api.id,
+)
+
+# Grant API Gateway permission to invoke the Lambda function
+permission = aws.lambda_.Permission("lambda_Permission",
+    action="lambda:InvokeFunction",
+    function=lambda_function_arn,
+    principal="apigateway.amazonaws.com",
+    source_arn=api.execution_arn.apply(lambda arn: f"{arn}/*/*"),
+)
+
+# Deploy the API
+deployment = aws.apigateway.Deployment("myDeployment",
+    rest_api=api.id,
+    # Ensure deployment triggers on changes to the integration
+    triggers={
+        "integration": integration.id,
+        "test1_integration": test1_integration.id,
+        "test2_integration": test2_integration.id,
+    },
+    opts=pulumi.ResourceOptions(depends_on=[integration]),
+)
+
+# Create a stage
+stage = aws.apigateway.Stage("myStage",
+    deployment=deployment.id,
+    rest_api=api.id,
+    stage_name="prod",
+)
+pulumi.export('image_url', image.image_name)
+```
+
+### Explanation
+
+This script handles the process of updating the Lambda function with a new Docker image and setting up an API Gateway for the Lambda function. It uses a custom dynamic Pulumi resource to execute the AWS CLI commands needed to update the Lambda function's code.
+
+### `Deploy-Lambda/requirements.txt`
+
+```
+pulumi>=3.0.0,<4.0.0
+pulumi-aws>=6.0.2,<7.0.0
+pulumi_docker>=3.0.0,<4.0.0
+```
+
+### Explanation
+
+This file lists the required Pulumi packages for the deployment code.
+
+## Locally Set Up Node.js App in `Deploy-Lambda` Directory
+
+1. **Initialize Node.js Project**:
+
+   ```sh
+   cd deploy-in-lambda
+   npm init -y
+   ```
+
+2. **Create `Deploy-Lambda/index.js`**:
+
+   ```javascript
+   exports.handler = async (event) => {
+    try {
+      let response;
+      switch (event.httpMethod) {
+        case 'GET':
+          if (event.path === '/default/my-lambda-function') {
+            response = {
+              statusCode: 200,
+              body: JSON.stringify('Hello from Lambda Function!'),
+            };
+          } else if (event.path === '/default/my-lambda-function/test1') {
+            response = {
+              statusCode: 200,
+              body: JSON.stringify('This is test1 route!!'),
+            };
+          } else if (event.path === '/default/my-lambda-function/test2') {
+            response = {
+              statusCode: 200,
+              body: JSON.stringify('This is test2 route!'),
+            };
+          } else {
+            response = {
+              statusCode: 404,
+              body: JSON.stringify('Not Found'),
+            };
+          }
+          break;
+        default:
+          response = {
+            statusCode: 405,
+            body: JSON.stringify('Method Not Allowed'),
+          };
+      }
+  
+      return response;
+    } catch (error) {
+      console.error('Handler error:', error);
+      return {
+        statusCode: 500,
+        body: JSON.stringify('Internal Server Error'),
+      };
+    }
+  };
+   ```
+
+3. **Create `Deploy-Lambda/package.json`**:
+
+   ```json
+   {
+      "name": "lambda-function",
+      "version": "1.0.0",
+      "description": "A simple AWS Lambda function",
+      "main": "index.js",
+      "scripts": {
+        "start": "node index.js"
+      },
+      "author": "Fazlul Karim",
+      "license": "ISC"
+   }
+   ```
+
+4. **Create `Deploy-Lambda/Dockerfile`**:
+
+   ```dockerfile
+   # Stage 1: Build Stage
+   FROM node:20 as build-stage
+
+   # Set the working directory
+   WORKDIR /app
+
+   # Copy package.json and package-lock.json
+   COPY package.json package-lock.json ./
+
+   # Install dependencies
+   RUN npm install --production
+
+   # Copy source files
+   COPY index.js ./
+
+   # Stage 2: Final Stage
+   FROM public.ecr.aws/lambda/nodejs:20
+
+   # Copy necessary files from the build stage
+   COPY --from=build-stage /app /var/task/
+
+   # Set the CMD to your handler
+   CMD [ "index.handler" ]
+   ```
+
+### Explanation
+
+This Node.js application serves as the Lambda function's code. The Dockerfile builds the application and prepares it to run in an AWS Lambda environment using the provided public ECR image.
 
 ## Create a Token for Login to Pulumi
 
 1. **Create Pulumi Access Token**:
-    - Go to the Pulumi Console at https://app.pulumi.com.
+    - Go to the Pulumi Console at [https://app.pulumi.com](https://app.pulumi.com).
     - Navigate to `Settings` > `Access Tokens`.
     - Click `Create Token`, give it a name, and copy the token.
 
@@ -444,20 +748,19 @@ CMD [ "index.handler" ]
 
 ## Create Two Workflows
 
-### `infra.yml`
+### `.github/workflows/infra.yml`
 
 ```yaml
-name: Pulumi Infra Setup
-
+name: Pulumi Deploy
 on:
   push:
     branches:
       - main
     paths:
-      - 'infra/**'
+      - 'infrastructure/**'
 
 jobs:
-  setup_infra:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -471,9 +774,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install pulumi pulumi-aws
+          python -m venv infrastructure/venv
+          source infrastructure/venv/bin/activate
+          pip install --upgrade pip setuptools wheel
+          pip install pulumi pulumi-aws pulumi-docker
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -485,65 +789,68 @@ jobs:
       - name: Pulumi login
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
-        run: pulumi login
+        run: |
+          source infrastructure/venv/bin/activate
+          pulumi login
 
       - name: Pulumi stack select
-        run: pulumi stack select dev-p --cwd infra
+        run: |
+          source infrastructure/venv/bin/activate
+          pulumi stack select Galadon123/Lambda-Infrastructure --cwd infrastructure
 
       - name: Pulumi refresh
-        run: pulumi refresh --yes --cwd infra
+        run: |
+          source infrastructure/venv/bin/activate
+          pulumi refresh --yes --cwd infrastructure
 
       - name: Pulumi up
-        run: pulumi up --yes --cwd infra
-
-      - name: Get Pulumi outputs
-        run: pulumi stack output --json --cwd infra > outputs.json
-
-      - name: Extract bucket name from Pulumi outputs
-        id: get_bucket_name
-        run: echo "::set-output name=bucket_name::$(jq -r .bucket_name outputs.json)"
-
-      - name: Export Pulumi outputs to S3
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: us-east-1
-          S3_BUCKET_NAME: ${{ steps.get_bucket_name.outputs.bucket_name }}
-          S3_FILE_NAME: pulumi-outputs.json
         run: |
-          aws s3 cp outputs.json s3://$S3_BUCKET_NAME/$S3_FILE_NAME
-
-      - name: Clean up outputs.json
-        run: rm outputs.json
-
-      - name: Set output for S3 bucket name
-        id: set_s3_output
-        run: echo "bucket_name=${{ steps.get_bucket_name.outputs.bucket_name }}" >> $GITHUB_ENV
+          source infrastructure/venv/bin/activate
+          pulumi up --yes --cwd infrastructure
 ```
 
-### `deploy-lambda.yml`
+### Explanation
+
+This GitHub Actions workflow sets up the Pulumi environment, installs dependencies, configures AWS credentials, logs in to Pulumi, and deploys the infrastructure code whenever there are changes in the `infrastructure` directory.
+
+### `.github/workflows/deploy.yml`
 
 ```yaml
-name: Push Docker and Deploy Lambda
+name: Pulumi Deploy Lambda
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'deploy-in-lambda/**'
+      - 'Deploy-Lambda/**'
+  workflow_dispatch:
   workflow_run:
-    workflows: ["Pulumi Infra Setup"]
+    workflows: ["Pulumi Deploy"]
     types:
       - completed
 
 jobs:
-  push_docker_and_deploy:
+  deploy
+
+:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Create virtual environment
+        run: |
+          python -m venv Deploy-Lambda/venv
+          source Deploy-Lambda/venv/bin/activate
+          pip install --upgrade pip setuptools wheel
+          pip install pulumi pulumi-aws pulumi-docker
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -552,86 +859,37 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Download Pulumi outputs from S3
+      - name: Pulumi login
         env:
-          S3_BUCKET_NAME: ${{ github.event.workflow_run.outputs.bucket_name }}
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
         run: |
-          aws s3 cp s3://$S3_BUCKET_NAME/pulumi-outputs.json ./outputs.json
+          source Deploy-Lambda/venv/bin/activate
+          pulumi login
 
-      - name: Parse Pulumi outputs
-        id: parse_outputs
+      - name: Pulumi stack select
         run: |
-          ECR_REPO_URL=$(jq -r '.ecr_repo_url' ./outputs.json)
-          ECR_REGISTRY=$(jq -r '.ecr_registry' ./outputs.json)
-          LAMBDA_ROLE_ARN=$(jq -r '.lambda_role_arn' ./outputs.json)
-          PRIVATE_SUBNET_ID=$(jq -r '.private_subnet_id' ./outputs.json)
-          SECURITY_GROUP_ID=$(jq -r '.lambda_security_group_id' ./outputs.json)
-          GRAFANA_TEMPO_PRIVATE_IP=$(jq -r '.ec2_private_ip' ./outputs.json)
-          echo "ECR_REPO_URL=$ECR_REPO_URL" >> $GITHUB_ENV
-          echo "ECR_REGISTRY=$ECR_REGISTRY" >> $GITHUB_ENV
-          echo "LAMBDA_ROLE_ARN=$LAMBDA_ROLE_ARN" >> $GITHUB_ENV
-          echo "PRIVATE_SUBNET_ID=$PRIVATE_SUBNET_ID" >> $GITHUB_ENV
-          echo "SECURITY_GROUP_ID=$SECURITY_GROUP_ID" >> $GITHUB_ENV
-          echo "GRAFANA_TEMPO_PRIVATE_IP=$GRAFANA_TEMPO_PRIVATE_IP" >> $GITHUB_ENV
+          source Deploy-Lambda/venv/bin/activate
+          pulumi stack select Galadon123/lambda-function-deploy --cwd Deploy-Lambda
 
-      - name: Install AWS CLI
+      - name: Pulumi refresh
         run: |
-          sudo apt-get update
-          sudo apt-get install -y python3-pip
-          pip3 install awscli
+          source Deploy-Lambda/venv/bin/activate
+          pulumi refresh --yes --cwd Deploy-Lambda
 
-      - name: Login to AWS ECR
-        env:
-          AWS_REGION: us-east-1
-          ECR_REPO_URL: ${{ env.ECR_REPO_URL }}
+      - name: Pulumi up
         run: |
-          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPO_URL
-
-      - name: Build and push Docker image
-        env:
-          ECR_REPO_URL: ${{ env.ECR_REPO_URL }}
-          IMAGE_TAG: latest
-        run: |
-          cd deploy-in-lambda
-          docker build -t $ECR_REPO_URL:$IMAGE_TAG .
-          docker push $ECR_REPO_URL:$IMAGE_TAG
-
-      - name: Create or update Lambda function
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: us-east-1
-          ECR_REPO_URL: ${{ env.ECR_REPO_URL }}
-          IMAGE_TAG: latest
-          LAMBDA_ROLE_ARN: ${{ env.LAMBDA_ROLE_ARN }}
-          PRIVATE_SUBNET_ID: ${{ env.PRIVATE_SUBNET_ID }}
-          SECURITY_GROUP_ID: ${{ env.SECURITY_GROUP_ID }}
-          GRAFANA_TEMPO_PRIVATE_IP: ${{ env.GRAFANA_TEMPO_PRIVATE_IP }}
-        run: |
-          FUNCTION_NAME=my-node-app-lambda-function
-          IMAGE_URI=$ECR_REPO_URL:$IMAGE_TAG
-          EXISTING_FUNCTION=$(aws lambda get-function --function-name $FUNCTION_NAME --region $AWS_REGION 2>&1 || true)
-          if echo "$EXISTING_FUNCTION" | grep -q 'ResourceNotFoundException'; then
-            echo "Creating new Lambda function..."
-            aws lambda create-function \
-              --function-name $FUNCTION_NAME \
-              --package-type Image \
-              --code ImageUri=$IMAGE_URI \
-              --role $LAMBDA_ROLE_ARN \
-              --vpc-config SubnetIds=$PRIVATE_SUBNET_ID,SecurityGroupIds=$SECURITY_GROUP_ID \
-              --region $AWS_REGION
-          else
-            echo "Updating existing Lambda function..."
-            aws lambda update-function-code \
-              --function-name $FUNCTION_NAME \
-              --image-uri $IMAGE_URI \
-              --region $AWS_REGION
-          fi
+          source Deploy-Lambda/venv/bin/activate
+          pulumi up --yes --cwd Deploy-Lambda
 ```
+
+### Explanation
+
+This GitHub Actions workflow is triggered by changes in the `Deploy-Lambda` directory. It sets up the environment, installs dependencies, configures AWS credentials, logs in to Pulumi, and deploys the Lambda function and related resources.
 
 ## Git Push the Project
 
 1. **Initialize Git Repository**:
+
     ```sh
     git init
     git add .
@@ -640,6 +898,7 @@ jobs:
     ```
 
 2. **Add Remote and Push**:
+
     ```sh
     git remote add origin https://github.com/yourusername/your-repo.git
     git push -u origin main
@@ -651,18 +910,7 @@ jobs:
 - Observe the workflows and ensure they run without errors.
 - If errors occur, click on the failed job to view the logs and debug accordingly.
 
-![](https://github.com/Galadon123/Lambda-Function-with-Pulumi-python/blob/main/image/l-w-1.png)
-![](https://github.com/Galadon123/Lambda-Function-with-Pulumi-python/blob/main/image/l-w-2.png)
-
-## Resource Map Verification
-
-After the Pulumi infrastructure setup, you can verify the resources in the AWS Management Console to ensure everything is created correctly.
-
-![Resource Map](https://github.com/Galadon123/-Lambda-Function-Deployment/blob/main/image/o-4.png)
-
 ## Testing Lambda Function with JSON Query
-
-
 
 1. **Select Your Lambda Function**:
    - In the Lambda console, find and select your deployed Lambda function.
@@ -671,207 +919,53 @@ After the Pulumi infrastructure setup, you can verify the resources in the AWS M
    - Click on the "Test" button in the top-right corner.
    - If this is your first time, you will be prompted to configure a test event.
 
-3. **Configure the Test Event**:
+3. **Configure the Test Event and Test**:
    - Enter a name for the test event.
    - Replace the default JSON with your desired test JSON query, for example:
      ```json
      {
-       "httpMethod": "GET",
-       "path": "/",
-       "headers": {
-         "Content-Type": "application/json"
-       },
-       "body": null,
-       "isBase64Encoded": false
+      "httpMethod": "GET",
+      "path": "/default/my-lambda-function"
      }
      ```
 
-4. **Save and Test**:
-   - Save the test event configuration.
-   - Click on "Test" to execute the test event.
+     Outputs:
 
-5. **View Results**:
-   - Check the execution results, which will appear on the Lambda console.
-   - Review the logs and output to verify that the Lambda function executed correctly.
+     ![](https://github.com/Galadon123/Automating-Lambda-Function-Deployment-with-Pulumi/blob/main/images/o-1.png)
 
-   ![](https://github.com/Galadon123/-Lambda-Function-Deployment/blob/main/image/o-5.png)
+     ```json
+     {
+      "httpMethod": "GET",
+      "path": "/default/my-lambda-function/test1"
+     }
+     ```
+     Outputs:
 
-This process allows you to test your Lambda function directly within the AWS Lambda console using a JSON query.
+     ![](https://github.com/Galadon123/Automating-Lambda-Function-Deployment-with-Pulumi/blob/main/images/o-2.png)
 
-## EC2 Instance Setup for Grafana, Tempo, and OpenTelemetry Collector
+     ```json
+     {
+      "httpMethod": "GET",
+      "path": "/default/my-lambda-function/test2"
+     }
+     ```
 
-### Step 1: Install Docker
-1. Update packages and install Docker:
-    ```sh
-    sudo apt-get update -y
-    sudo apt-get install -y docker.io
-    sudo systemctl start docker
-    sudo systemctl enable docker
-    sudo usermod -aG docker ubuntu
-    ```
+     Outputs:
 
-### Step 2: Install Docker Compose
-1. Install Docker Compose:
-    ```sh
-    sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    sudo chmod +x /usr/local/bin/docker-compose
-    ```
+     ![](https://github.com/Galadon123/Automating-Lambda-Function-Deployment-with-Pulumi/blob/main/images/o-3.png)
 
-### Step 3: Set Up Directory Structure
-1. Create a directory for your setup:
-    ```sh
-    mkdir ~/grafana-tempo-otel
-    cd ~/grafana-tempo-otel
-    ```
+### Test Each API-Gateway Endpoint
+Make sure to test each of the API-Gateway endpoints:
+1. `/default/my-lambda-function`
+2. `/default/my-lambda-function/test1`
+3. `/default/my-lambda-function/test2`
 
-### Step 4: Create Configuration Files
+Each endpoint should return the respective message as defined in your Lambda function handler.
 
-#### `tempo.yaml`
-Create `tempo.yaml` with the following content:
-```yaml
-auth_enabled: false
+![](https://github.com/Galadon123/Automating-Lambda-Function-Deployment-with-Pulumi/blob/main/images/w-3.png)
+![](https://github.com/Galadon123/Automating-Lambda-Function-Deployment-with-Pulumi/blob/main/images/w-1.png)
+![](https://github.com/Galadon123/Automating-Lambda-Function-Deployment-with-Pulumi/blob/main/images/w-2.png)
 
-server:
-  http_listen_port: 3200
+## Summary
 
-ingester:
-  trace_idle_period: 30s
-  max_block_bytes: 5000000
-  max_block_duration: 5m
-
-storage:
-  trace:
-    backend: local
-    local:
-      path: /tmp/tempo/traces
-
-compactor:
-  compaction:
-    block_retention: 48h
-
-querier:
-  frontend_worker:
-    frontend_address: 127.0.0.1:9095
-```
-
-#### `otel-collector-config.yaml`
-Create `otel-collector-config.yaml` with the following content:
-```yaml
-receivers:
-  otlp:
-    protocols:
-      grpc:
-        endpoint: "0.0.0.0:4317"
-
-processors:
-  batch:
-
-exporters:
-  otlp:
-    endpoint: "tempo:4317"
-    tls:
-      insecure: true
-
-service:
-  pipelines:
-    traces:
-      receivers: [otlp]
-      processors: [batch]
-      exporters: [otlp]
-```
-
-#### `docker-compose.yml`
-Create `docker-compose.yml` with the following content:
-```yaml
-version: '3'
-
-services:
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-      - "3000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-
-  tempo:
-    image: grafana/tempo:latest
-    ports:
-      - "3200:3200"
-    command: ["tempo", "serve", "--config.file=/etc/tempo.yaml"]
-    volumes:
-      - ./tempo.yaml:/etc/tempo.yaml
-
-  otel-collector:
-    image: otel/opentelemetry-collector:latest
-    command: ["--config=/etc/otel-collector-config.yaml"]
-    volumes:
-      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
-    ports:
-      - "4317:4317"  # Expose the OTLP gRPC endpoint
-      - "4318:4318"  # Expose the OTLP HTTP endpoint
-```
-
-### Step 5: Start Services
-1. Navigate to the directory where you created the files and start the services using Docker Compose:
-    ```sh
-    cd ~/grafana-tempo-otel
-    sudo docker-compose up -d
-    ```
-
-## Example Scenario: Trace Data Flow
-
-1. **Application (Lambda Function)**:
-    - Your application generates trace data and sends it to the OpenTelemetry Collector endpoint (`http://${ec2InstancePrivateIP}:4317`).
-
-2. **OpenTelemetry Collector**:
-    - The Collector receives the traces via the OTLP receiver.
-    - The traces pass through the processing pipeline.
-    - The `logging` exporter logs the trace data for debugging.
-    - The `otlp` exporter sends the trace data to Tempo.
-
-3. **Grafana Tempo**:
-    - Tempo receives the trace data on its gRPC endpoint (`tempo:4317`).
-    - Tempo processes and stores the traces in `/tmp/tempo/traces`.
-
-4. **Grafana**:
-    - Grafana queries Tempo to retrieve the stored trace data.
-    - The traces are visualized in Grafana’s user interface, allowing you to analyze them.
-
-## Grafana Setup for Traces with Tempo
-
-### Step 1: Access Grafana
-1. Open a web browser and navigate to `http://<ec2_instance_public_ip>:3000`.
-2. Log in with the default credentials:
-    - **Username**: admin
-    - **Password**: admin
-
-### Step 2: Add Tempo Data Source
-1. In the Grafana UI, go to **Configuration** (gear icon) > **Data Sources**.
-2. Click on **Add data source**.
-3. Select **Tempo** from the list of available data sources.
-
-### Step 3: Configure Tempo Data Source
-1. Set the **HTTP URL** to `http://tempo:3200`.
-2. Click **Save & Test** to ensure the connection to Tempo is successful.
-
-### Step 4: Create a Dashboard
-1. Go to **Create** (plus icon) > **Dashboard**.
-2. Click on **Add new panel**.
-
-### Step 5: Query Traces
-1. In the query editor, select the Tempo data source.
-2. Use TraceQL to query the traces. For example:
-    ```traceql
-    {}
-    ```
-    ![TraceQL](https://github.com/Galadon123/-Lambda-Function-Deployment/blob/main/image/o-1.png)
-## Step 6: Managing and Understanding Trace Data
-![](https://github.com/Galadon123/-Lambda-Function-Deployment/blob/main/image/o-2.png)
-
-#### Explanation of Image Observations
-
-1. **Disconnected Dots in Grafana Dashboard**: The dots represent trace data points. Disconnected dots indicate that traces are not being generated continuously.
-2. **Lambda Function Invocation**: Each dot corresponds to a single invocation of the Lambda function. The intervals between dots show the time gap between successive invocations.
-
-
-By following these steps, you can set up an EC2 instance to host Grafana, Tempo, and the OpenTelemetry Collector, enabling you to visualize and analyze trace data generated by your application. This setup ensures a robust and efficient workflow for deploying serverless applications and monitoring their performance.
+By following this guide, you have set up a fully automated process for deploying an AWS Lambda function using Pulumi and GitHub Actions. This setup ensures that your cloud infrastructure and serverless applications are deployed consistently and reliably, with high standards of observability and efficiency. The integration of Pulumi and GitHub Actions provides a robust CI/CD pipeline, streamlining the management of your AWS resources.
