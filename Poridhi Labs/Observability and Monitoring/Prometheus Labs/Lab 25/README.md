@@ -231,7 +231,7 @@ This will install Prometheus on the `Poridhi's VM`. You can check the status of 
 sudo systemctl status prometheus
 ```
 
-### **2. Install Node Exporter on EC2 Instance**
+### **2. Install Node Exporter on `EC2` Instance**
 
 SSH into the EC2 instance:
 
@@ -300,17 +300,23 @@ Create a script `alertmanager.sh`:
 ```bash
 #!/bin/bash
 
-ALERTMANAGER_VERSION="0.28.0"
+# Define the correct version of Alertmanager
+ALERTMANAGER_VERSION="0.25.0"  # Use a valid version
 ALERTMANAGER_BINARY_URL="https://github.com/prometheus/alertmanager/releases/download/v${ALERTMANAGER_VERSION}/alertmanager-${ALERTMANAGER_VERSION}.linux-amd64.tar.gz"
 
-wget $ALERTMANAGER_BINARY_URL && tar -xvzf alertmanager-${ALERTMANAGER_VERSION}.linux-amd64.tar.gz
+# Download and extract Alertmanager
+wget $ALERTMANAGER_BINARY_URL || { echo "Error: Failed to download Alertmanager. Check version and URL."; exit 1; }
+tar -xvzf alertmanager-${ALERTMANAGER_VERSION}.linux-amd64.tar.gz || { echo "Error: Failed to extract the tarball."; exit 1; }
 
-sudo mv alertmanager-${ALERTMANAGER_VERSION}.linux-amd64/alertmanager /usr/local/bin/
-sudo mv alertmanager-${ALERTMANAGER_VERSION}.linux-amd64/amtool /usr/local/bin/
+# Move binaries to /usr/local/bin
+sudo mv alertmanager-${ALERTMANAGER_VERSION}.linux-amd64/alertmanager /usr/local/bin/ || { echo "Error: Failed to move alertmanager binary."; exit 1; }
+sudo mv alertmanager-${ALERTMANAGER_VERSION}.linux-amd64/amtool /usr/local/bin/ || { echo "Error: Failed to move amtool binary."; exit 1; }
 
+# Set up directories for Alertmanager configuration
 sudo mkdir -p /etc/alertmanager /var/lib/alertmanager
-sudo mv alertmanager-${ALERTMANAGER_VERSION}.linux-amd64/alertmanager.yml /etc/alertmanager/
+sudo mv alertmanager-${ALERTMANAGER_VERSION}.linux-amd64/alertmanager.yml /etc/alertmanager/ || { echo "Error: Failed to move alertmanager.yml."; exit 1; }
 
+# Create a systemd service file
 sudo tee /etc/systemd/system/alertmanager.service > /dev/null <<EOT
 [Unit]
 Description=Alertmanager
@@ -318,12 +324,14 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
-ExecStart=/usr/local/bin/alertmanager --config.file=/etc/alertmanager/alertmanager.yml
+ExecStart=/usr/local/bin/alertmanager --config.file=/etc/alertmanager/alertmanager.yml --storage.path=/var/lib/alertmanager
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
 EOT
 
+# Reload systemd and start Alertmanager
 sudo systemctl daemon-reload
 sudo systemctl enable --now alertmanager
 sudo systemctl status alertmanager
@@ -394,13 +402,13 @@ sudo vim /etc/alertmanager/alertmanager.yml
 
 ```yaml
 global:
-  resolve_timeout: 5m
+  resolve_timeout: 1m
 
 route:
   group_by: ['alertname']
-  group_wait: 30s
-  group_interval: 5m
-  repeat_interval: 3h
+  group_wait: 5s
+  group_interval: 5s
+  repeat_interval: 1m
   receiver: 'slack'
 
 receivers:
@@ -417,11 +425,13 @@ receivers:
           *Description:* {{ .CommonAnnotations.description }}
           *Status:* {{ .Status }}
 ```
+*Note : Replace `Your/Webhook/URL` with the webhook URL you copied from Slack and `Your-Channel-Name` with the channel name you copied from Slack.*
+
 In this configuration, we have 3 main sections:
 
-**Global Configuration**: This section defines the global configuration for Alertmanager. Here, we set the `resolve_timeout` to 5 minutes. This will wait for 5 minutes before considering an alert as resolved.
+**Global Configuration**: This section defines the global configuration for Alertmanager. Here, we set the `resolve_timeout` to 1 minutes. This will wait for 1 minutes before considering an alert as resolved.
 
-**Routing Rules**: This section defines the routing rules for alerts. Here, we group alerts by `alertname` and wait for 30 seconds before sending the first alert. We then wait for 5 minutes before sending any additional alerts. Finally, we wait for 1 hour before sending any additional alerts.
+**Routing Rules**: This section defines the routing rules for alerts. Here, we group alerts by `alertname` and wait for 5 seconds before sending the first alert. We then wait for 5 seconds before sending any additional alerts. Finally, we wait for 1 minute before sending the alert again.
 
 **Receivers**: This section defines the receivers for alerts. Here, we have a single receiver called `slack`. This receiver sends alerts to a Slack channel.
 
@@ -432,12 +442,6 @@ In this configuration, we have 3 main sections:
 
 ```bash
 sudo systemctl restart alertmanager
-```
-
-If there is any error in the `alertmanager.yml` file, you can check the error by running the following command:
-
-```bash
-sudo alertmanager check config /etc/alertmanager/alertmanager.yml
 ```
 
 ### **Update Prometheus Configuration**
@@ -456,14 +460,14 @@ groups:
     rules:
       - alert: HighMemoryUsage
         expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100 < 20
-        for: 1m
+        for: 5s
         labels:
           severity: critical
         annotations:
           summary: "High Memory Usage on {{ $labels.instance }}"
-          description: "Available memory is below 20% for more than 1 minute."
+          description: "Available memory is below 20% for more than 5 seconds."
 ```
-In this configuration, we have a single rule that alerts when the available memory is below 20% for more than 1 minute. `Labels` and `Annotations` are used to add additional information to the alert.
+In this configuration, we have a single rule that alerts when the available memory is below 20% for more than 5 seconds. `Labels` and `Annotations` are used to add additional information to the alert.
 
 **Update `Prometheus Configuration` file:**
 
@@ -475,8 +479,8 @@ sudo vim /etc/prometheus/prometheus.yml
 
 ```yaml
 global:
-  scrape_interval: 15s
-  evaluation_interval: 15s
+  scrape_interval: 5s
+  evaluation_interval: 5s
 
 alerting:
   alertmanagers:
@@ -518,9 +522,9 @@ scrape_configs:
   ```
   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/lab-59.png?raw=true)
 
--  Go to Poridhi's `LoadBalancer`and Create `3` `LoadBalancers` with the `eht0` IP and port `9090` for `Prometheus`, `9100` for `Node Exporter`, and `9093` for `Alertmanager`.
+-  Go to Poridhi's `LoadBalancer`and Create `2` `LoadBalancers` with the `eht0` IP and port `9090` for `Prometheus`, and `9093` for `Alertmanager`.
 
-- By using the Provided `URL` by `LoadBalancer`, you can access the `Prometheus`, `Node Exporter`, and `Alertmanager` from any browser.
+- By using the Provided `URL` by `LoadBalancer`, you can access the `Prometheus`, and `Alertmanager` from any browser.
 
 - In `Prometheus`, you can see the `Node Exporter` as a target. In `Alert` tab you will see a `HighMemoryUsage` alert in `inactive` state.
 
@@ -552,13 +556,19 @@ This will start a memory load test. The test will use 85% of the available memor
 
 When the memory usage reaches 85%, the `Stress` tool will start using swap space. This will trigger the `HighMemoryUsage` alert.
 
-In Prometheus, you will see the `HighMemoryUsage` alert in `firing` state. This alert will be sent to the Slack channel to notify the user.
+In Prometheus, you will see the `HighMemoryUsage` alert in `pending` state. After 5 seconds, the alert will be in `firing` state.
+
+![](./images/7.png)
 
 ### **Verify the Alert**
 
 To verify the alert, you can check the `Slack` channel. You will see a `HighMemoryUsage` alert in the `prometheus` channel.
 
+![](./images/9.png)
 
+Now if we terminate the `Stress` process, the alert will be in `resolved` state. A message will be sent to the Slack channel to notify the user.
+
+![](./images/10.png)
 
 ## **Summary**
 
