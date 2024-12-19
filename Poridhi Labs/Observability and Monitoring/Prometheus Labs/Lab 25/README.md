@@ -1,14 +1,13 @@
 # Monitoring EC2 Instances
 
-In this lab, you will set up Prometheus on `Poridhi's VM` to monitor an AWS EC2 instance. You will install Node Exporter on the `AWS EC2 instance` to collect system metrics like CPU and memory usage. Additionally, you will configure Alertmanager to send alerts to a Slack channel.
+In this lab, you will set up Prometheus on `Poridhi's VM` to monitor an AWS EC2 instance. You will install Node Exporter on the `AWS EC2 instance` to collect system metrics like CPU and memory usage. Additionally, you will configure Alertmanager on `Poridhi's VM` to send alerts to a Slack channel.
 
 ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/9a755a8cb2852f5956249874a075b9c59f16027f/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2025/images/logo.svg)
 
+Terraform will be used to automate creation of AWS ec2 instance with necessary security groups, key pair, and route table.
 
-Terraform will be used to automate the creation of AWS infrastructure. You will perform load testing on the EC2 instance to trigger alerts and test the monitoring setup.
 
 ## **Objective**
-
 - Set up Prometheus on `Poridhi's VM` to monitor an AWS EC2 instance.
 - Install Node Exporter on the `AWS EC2 instance` to collect system metrics like CPU and memory usage.
 - Configure Alertmanager to send alerts to a Slack channel.
