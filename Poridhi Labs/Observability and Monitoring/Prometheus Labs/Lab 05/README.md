@@ -221,10 +221,11 @@ Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table,
     ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/lab-55.png?raw=true)
 
 2. **Create `exporter.sh` to Install Node Exporter on EC2 Instance**:
-   - `ssh` into the EC2 instance.
+
+   `ssh` into the EC2 instance.
 
     ```bash
-    ssh -i "prometheus_key_pair" ubuntu@<public-ip>
+    ssh -i ~/.ssh/prometheus_key_pair ubuntu@<public-ip>
     ```
 
     You can get the public IP of the EC2 instance from the `terraform output` command.
@@ -234,7 +235,7 @@ Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table,
     ```
     ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/lab-510.png?raw=true)
 
-   - **Create `exporter.sh` script**:
+   **Create `exporter.sh` script**:
 
    ```bash
    #!/bin/bash
@@ -284,7 +285,7 @@ Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table,
    sudo systemctl status node_exporter
    ```
 
-   - Run the script:
+   Run the script:
    
    ```bash
    sudo chmod +x exporter.sh
@@ -302,7 +303,8 @@ Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table,
 ### Configure Prometheus to Monitor the Node
 
 1. **Update Prometheus Configuration File**:
-   - Edit the `prometheus.yml` file in `Poridhi's VM` to add a new job named 'node'. Replace `<PUBLIC_IP>` with the actual public IP of your EC2 instance.
+
+   Edit the `prometheus.yml` file in `Poridhi's VM` to add a new job named 'node'. Replace `<PUBLIC_IP>` with the actual public IP of your EC2 instance.
 
    ```bash
    sudo vim /etc/prometheus/prometheus.yml
@@ -322,7 +324,8 @@ Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table,
    ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/lab-56.png?raw=true)
 
 2. **Validate Prometheus Configuration**:
-   - Use Promtool to validate the Prometheus configuration file:
+
+   Use Promtool to validate the Prometheus configuration file:
    
    ```bash
    promtool check config /etc/prometheus/prometheus.yml
@@ -340,7 +343,7 @@ Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table,
 
 4. **Verify Node Exporter Metrics in Prometheus GUI**
 
-   - Find the `eth0` IP address for the `Poridhi's VM` currently you are running by using the command:
+   Find the `eth0` IP address for the `Poridhi's VM` currently you are running by using the command:
 
       ```bash
       ifconfig
@@ -360,12 +363,12 @@ Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table,
        You should see a target named `node` with the URL `http://<PUBLIC_IP>:9100/metrics`. The `UP` status indicates that Node Exporter is successfully running and scraping metrics from the EC2 instance.
 
 ## **Cleanup**
-   - To avoid incurring AWS charges, destroy the resources created by Terraform:
+   To avoid incurring AWS charges, destroy the resources created by Terraform:
    
    ```bash
    terraform destroy
    ```
-   - Confirm to destroy all infrastructure.
+   Confirm to destroy all infrastructure.
 
 ### Summary
 
