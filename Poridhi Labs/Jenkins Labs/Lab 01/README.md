@@ -11,6 +11,8 @@ This guide will walk you through the process of installing Jenkins on an Ubuntu 
 
 Jenkins is an **open-source automation server** used for **Continuous Integration (CI)** and **Continuous Delivery/Deployment (CD)**. It helps automate software development processes like building, testing, and deploying code. 
 
+![alt text](./images/Jenkins.drawio.svg)
+
 Jenkins is highly flexible and extensible through a wide range of plugins, making it suitable for various DevOps workflows.
 
 ### Key Features of Jenkins:
