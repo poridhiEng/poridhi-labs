@@ -11,7 +11,7 @@ This guide will walk you through the process of installing Jenkins on an Ubuntu 
 
 Jenkins is an **open-source automation server** used for **Continuous Integration (CI)** and **Continuous Delivery/Deployment (CD)**. It helps automate software development processes like building, testing, and deploying code. 
 
-![alt text](./images/Jenkins.drawio.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/46c35f0ce3ef47b1935fddb8b40fba84339bce9f/Poridhi%20Labs/Jenkins%20Labs/Lab%2001/images/Jenkins.drawio.svg)
 
 Jenkins is highly flexible and extensible through a wide range of plugins, making it suitable for various DevOps workflows.
 
@@ -48,7 +48,7 @@ Make sure java is installed successfully using:
 java --version
 ```
 
-![alt text](./images/image.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2001/images/image.png)
 
 ### Step 3: Add Jenkins Debian Repository
 
@@ -84,7 +84,7 @@ Start Jenkins service using the following command:
 sudo systemctl start jenkins
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2001/images/image-1.png)
 
 Oops! Looks like jenkins is having some issues to start the service. Let's check the status of the service using the following command:
 
@@ -92,7 +92,7 @@ Oops! Looks like jenkins is having some issues to start the service. Let's check
 sudo systemctl status jenkins
 ```
 
-![alt text](./images/image-2.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2001/images/image-2.png)
 
 Now, Let's try to find out the reason for the issue and fix it.
 
@@ -104,7 +104,7 @@ Jenkins generally runs on port 8080. But, it might be already in use by another 
 sudo netstat -tuln | grep 8080
 ```
 
-![alt text](./images/image-3.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2001/images/image-3.png)
 
 We can see that port 8080 is already in use. 
 
@@ -146,7 +146,7 @@ Now, Let's check the status of the jenkins service again:
 sudo systemctl status jenkins
 ```
 
-![alt text](./images/image-4.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2001/images/image-4.png)
 
 There you go! Jenkins is running successfully on port 8081.
 
@@ -160,15 +160,15 @@ ifconfig
 
 Here copy the `IP` from `eth0` interface:
 
-![alt text](./images/image-5.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2001/images/image-5.png)
 
 Now, create a load balancer from `Poridhi Lab` by providing the `IP` and `port: 8081`.
 
-![alt text](./images/image-6.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2001/images/image-6.png)
 
 Access jenkins by opening the load balancer URL in your web browser.
 
-![alt text](./images/image-7.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2001/images/image-7.png)
 
 ### Step 8: Unlock Jenkins
 
@@ -184,19 +184,19 @@ Enter the password on the Jenkins setup page to proceed.
 
 During the initial setup, choose "Install Suggested Plugins." This will install all the required plugins for building and managing Jenkins projects. The installation might take a few minutes.
 
-![alt text](./images/image-8.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2001/images/image-8.png)
 
-![alt text](./images/image-9.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2001/images/image-9.png)
 
 ### Step 10: Create Admin User
 
 After the plugins are installed, you will be prompted to create an admin user. Enter the desired username and password, then click "Save and Finish."
 
-![alt text](./images/image-10.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2001/images/image-10.png)
 
 Congratulations! You are ready to use jenkins now.
 
-![alt text](./images/image-11.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2001/images/image-11.png)
 
 ## Conclusion
 
