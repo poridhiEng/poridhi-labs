@@ -124,6 +124,11 @@ Then access the Jenkins dashboard using the Load Balancer's URL. Use the credent
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2002/images/image-21.png)
 
+
+Jenkins login page
+
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2002/images/image-22.png)
+
 ## Task 01: Create Your First Jenkins Job
 
 ### Step 2: Create a New Job
@@ -158,7 +163,7 @@ To run your job:
 
 After the build completes, you can view the output by clicking on the `Console Output` link. Here, you'll see details about the job execution, including the shell command output, the user who triggered the job, and the job’s workspace.
 
-![Console Output]https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2002/images/image-5.png)
+![Console Output](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2002/images/image-5.png)
 
 Congratulations! You’ve successfully created and built your first Jenkins job.
 
@@ -177,7 +182,7 @@ Initially, you might find the workspace empty. To create a file within the works
 
 After building the job again, navigate to the workspace. You should now see the newly created `hello.txt` file.
 
-![File in Workspace]https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2002/images/image-7.png)
+![File in Workspace](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2002/images/image-7.png)
 
 ### Command-Line Access to Workspace
 
@@ -233,7 +238,7 @@ You can then use the parameter in your shell command, like so:
 echo "The parameter value is: $(parameter_name)"
 ```
 
-![Use Parameter in Command](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2002/images/images/image-18.png)
+![Use Parameter in Command](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2002/images/image-18.png)
 
 When you build the job, you’ll be prompted to enter a value for the parameter.
 
