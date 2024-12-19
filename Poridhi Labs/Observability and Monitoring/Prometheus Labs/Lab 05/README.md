@@ -19,7 +19,8 @@ Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table,
 ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/8c32776fbb1632b6a28a9f935e66b2a5ddaad2eb/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/lab-5-infra.svg)
 
 1. **Configure AWS CLI**:
-   - Set up your AWS credentials for Terraform to use:
+
+   Set up your AWS credentials for Terraform to use:
    
    ```bash
    aws configure
@@ -31,23 +32,23 @@ Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table,
 
 2. **Create an SSH Key Pair**:
 
-   - Create a folder named `terraform-aws-prometheus`.
+   Create a folder named `terraform-aws-prometheus`.
    
    ```bash
    mkdir terraform-aws-prometheus
+   cd terraform-aws-prometheus
    ```
-   - Generate a key pair to use for accessing the EC2 instance:
+   Generate a key pair to use for accessing the EC2 instance:
    
    ```bash
-   ssh-keygen -t rsa -b 4096 -f prometheus_key_pair
+   ssh-keygen -t rsa -b 4096 -f ~/.ssh/prometheus_key_pair
    ```
-   ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/lab-52.png?raw=true)
 
-   *This command will generate `prometheus_key_pair` (private key) and `prometheus_key_pair.pub` (public key) files.*
+   *Note: This command will generate `prometheus_key_pair` (private key) and `prometheus_key_pair.pub` (public key) files. Ensure the path to the public key `~/.ssh/prometheus_key_pair.pub` is used in the Terraform script.*
 
 3. **Write the Terraform Script**:
 
-   - Create a `main.tf` file with the following content:
+   Create a `main.tf` file with the following content:
 
     ```hcl
     provider "aws" {
@@ -120,7 +121,7 @@ Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table,
 
     resource "aws_key_pair" "prometheus_key_pair" {
       key_name   = "prometheus_key_pair"
-      public_key = file("prometheus_key_pair.pub")
+      public_key = file("~/.ssh/prometheus_key_pair.pub")
     }
 
     resource "aws_instance" "prometheus_instance" {
@@ -147,7 +148,7 @@ Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table,
    terraform apply
    ```
    
-   - Review the proposed changes and confirm to deploy the infrastructure.
+   Review the proposed changes and confirm to deploy the infrastructure.
 
    ![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/lab-53.png?raw=true)
 
@@ -208,8 +209,8 @@ Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table,
    - Save this script and run it:
    
     ```bash
-    chmod +x prometheus.sh
-    ./prometheus.sh
+    sudo chmod +x prometheus.sh
+    sudo ./prometheus.sh
     ```
     This will install Prometheus on the EC2 instance.You can verify the installation by checking the status of the Prometheus service:
 
@@ -286,8 +287,8 @@ Here we are going to create a simple VPC, Subnet, Internet Gateway, Route Table,
    - Run the script:
    
    ```bash
-   chmod +x exporter.sh
-   ./exporter.sh
+   sudo chmod +x exporter.sh
+   sudo ./exporter.sh
    ```
 
    This will install Node Exporter on the EC2 instance.You can verify the installation by checking the status of the Node Exporter service:

@@ -11,6 +11,7 @@ In this lab, we will:
 - Visualize metrics using Grafana and monitor them using Prometheus.
 - Deploy the system using Docker and Docker Compose.
 - Set up Discord alerts for drift threshold.
+-
 
 ## Table of Contents
 

@@ -71,7 +71,7 @@ The architecture of Alertmanager can be broken down into the following component
 
 5. **Create `alertmanager.yml` configuration file**:  
    ```bash
-   sudo nano /etc/alertmanager/alertmanager.yml
+   sudo vim /etc/alertmanager/alertmanager.yml
    ```
 
    **Demo Configuration**:  
@@ -100,7 +100,7 @@ The architecture of Alertmanager can be broken down into the following component
 
 6. **Create a systemd service file**:
    ```bash
-   sudo nano /etc/systemd/system/alertmanager.service
+   sudo vim /etc/systemd/system/alertmanager.service
    ```
 
    Add the following content:
@@ -165,7 +165,7 @@ The architecture of Alertmanager can be broken down into the following component
    Open the `alertmanager.yml` file for editing:
 
    ```bash
-   nano ~/alertmanager/alertmanager.yml
+   vim ~/alertmanager/alertmanager.yml
    ```
 
 4. **Add the following configuration**:  
