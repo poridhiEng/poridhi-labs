@@ -43,10 +43,10 @@ sudo apt install openjdk-17-jre-headless -y
 Make sure java is installed successfully using:
 
 ```bash
-java -version
+java --version
 ```
 
-![alt text]()
+![alt text](./images/image.png)
 
 ### Step 3: Add Jenkins Debian Repository
 
@@ -82,7 +82,7 @@ Start Jenkins service using the following command:
 sudo systemctl start jenkins
 ```
 
-![alt text]()
+![alt text](./images/image-1.png)
 
 Oops! Looks like jenkins is having some issues to start the service. Let's check the status of the service using the following command:
 
@@ -90,7 +90,7 @@ Oops! Looks like jenkins is having some issues to start the service. Let's check
 sudo systemctl status jenkins
 ```
 
-![alt text]()
+![alt text](./images/image-2.png)
 
 Now, Let's try to find out the reason for the issue and fix it.
 
@@ -102,9 +102,9 @@ Jenkins generally runs on port 8080. But, it might be already in use by another 
 sudo netstat -tuln | grep 8080
 ```
 
-![alt text]()
+![alt text](./images/image-3.png)
 
-We can see that port 8080 is already in use by another application. 
+We can see that port 8080 is already in use. 
 
 So, let's change the port of jenkins to 8081. For that, we need to edit the jenkins configuration and service file.
 
@@ -125,7 +125,7 @@ Now, Let's update the systemd service file to use the new port.
 sudo vi /lib/systemd/system/jenkins.service
 ```
 
-Find the line that says `ExecStart=/usr/bin/jenkins --httpPort=8080` and change it to the following:
+Find the line that says `ExecStart=/usr/bin/jenkins` and change it to the following:
 
 ```bash
 ExecStart=/usr/bin/jenkins --httpPort=8081
@@ -138,15 +138,13 @@ sudo systemctl daemon-reload
 sudo systemctl restart jenkins
 ```
 
-![alt text]()
-
 Now, Let's check the status of the jenkins service again:
 
 ```bash
 sudo systemctl status jenkins
 ```
 
-![alt text]()
+![alt text](./images/image-4.png)
 
 There you go! Jenkins is running successfully on port 8081.
 
@@ -160,15 +158,15 @@ ifconfig
 
 Here copy the `IP` from `eth0` interface:
 
-![alt text]()
+![alt text](./images/image-5.png)
 
 Now, create a load balancer from `Poridhi Lab` by providing the `IP` and `port: 8081`.
 
-![alt text]()
+![alt text](./images/image-6.png)
 
 Access jenkins by opening the load balancer URL in your web browser.
 
-![alt text]()
+![alt text](./images/image-7.png)
 
 ### Step 8: Unlock Jenkins
 
@@ -184,15 +182,19 @@ Enter the password on the Jenkins setup page to proceed.
 
 During the initial setup, choose "Install Suggested Plugins." This will install all the required plugins for building and managing Jenkins projects. The installation might take a few minutes.
 
-![alt text]()
+![alt text](./images/image-8.png)
 
-![alt text]()
+![alt text](./images/image-9.png)
 
 ### Step 10: Create Admin User
 
 After the plugins are installed, you will be prompted to create an admin user. Enter the desired username and password, then click "Save and Finish."
 
-![alt text]()
+![alt text](./images/image-10.png)
+
+Congratulations! You are ready to use jenkins now.
+
+![alt text](./images/image-11.png)
 
 ## Conclusion
 
