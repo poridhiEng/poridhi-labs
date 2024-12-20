@@ -2,7 +2,7 @@
 
 This detailed guide provides an in-depth exploration of deploying a demo application and configuring service monitors in Kubernetes using the Prometheus operator. By following this guide, you will achieve a fully operational Prometheus setup, including a sample Node.js application integrated with Prometheus metrics and service monitors for automated metric scraping. Each step is accompanied by comprehensive YAML configurations, task descriptions, and detailed explanations to ensure clarity and successful implementation.
 
-![](./images/k8s.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/f3ae6c4eae9a4fb5c77310025477e50cfac74576/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2027/images/k8s.svg)
 
 
 ## **Introduction**
@@ -100,7 +100,7 @@ This section demonstrates how to install Helm, add the Prometheus community repo
    kubectl get crd
    ```
 
-   ![alt text](./images/image-2.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2027/images/image-2.png?raw=true)
 
    - `prometheus.monitoring.coreos.com`: Used to create prometheus instance. 
    - `servicemonitor.monitoring.coreos.com`: Add additional target for prometheus to scrape.
@@ -439,11 +439,11 @@ kubectl apply -f service-monitor.yaml
    kubectl get servicemonitors
    ```
 
-   ![alt text](./images/image-1.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2027/images/image-1.png?raw=true)
 
 2. Access the Prometheus dashboard and confirm the target is listed under the `Targets` section.
 
-   ![alt text](./images/image.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2027/images/image.png?raw=true)
 
 3. Query the `node-api` job:
 
@@ -451,7 +451,7 @@ kubectl apply -f service-monitor.yaml
    {job="node-api"}
    ```
 
-   ![alt text](./images/image-3.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2027/images/image-3.png?raw=true)
 
 
 ## **Conclusion**
