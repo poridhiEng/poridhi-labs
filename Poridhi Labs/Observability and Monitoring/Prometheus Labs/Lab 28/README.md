@@ -44,7 +44,7 @@ This section demonstrates how to install Helm, add the Prometheus community repo
 ### **Install Helm**
 
 1. **Navigate to Helm Documentation**  
-   Visit the [Helm documentation](https://helm.sh/docs/intro/install/) to view installation instructions for various operating systems.
+   Visit the [Helm documentation](./images/https://helm.sh/docs/intro/install/) to view installation instructions for various operating systems.
 
 2. **Install Helm on Linux**  
    Run the following commands to install Helm using the default script:
@@ -183,7 +183,7 @@ If you'd like to access Prometheus without relying on port forwarding, you can u
 
 The `PrometheusRule` Custom Resource Definition (CRD) serves as a powerful mechanism for dynamically registering monitoring rules with a Prometheus instance within a Kubernetes environment. 
 
-![alt text](image.png)
+![alt text](./images/image.png)
 
 This resource enables the definition of sophisticated alerting and monitoring rules directly under the `spec` field, which follows a structure akin to that of a traditional `prometheus.yml` configuration file. By leveraging this CRD, users can efficiently manage the creation, modification, and deletion of monitoring rules without requiring manual updates to the Prometheus configuration. This not only simplifies rule management but also ensures a high degree of flexibility and scalability for dynamic Kubernetes workloads.
 
@@ -228,11 +228,11 @@ Begin by creating a file named `rules.yml` with the following content:
    kubectl get prometheusrule
    ```
 
-   ![alt text](image-1.png)
+   ![alt text](./images/image-1.png)
 
 3. Open the Prometheus UI, navigate to `Status > Rules`, and locate the `API` group and `InstanceDown` rule to confirm proper deployment.
 
-    ![alt text](image-2.png)
+    ![alt text](./images/image-2.png)
 
 
 ## **Adding Alertmanager Rules**
@@ -247,7 +247,7 @@ Begin by creating a file named `rules.yml` with the following content:
 
 2. Update the `AlertmanagerConfigSelector` section in the `values.yaml` file to include the necessary labels:
 
-    ![alt text](image-3.png)
+    ![alt text](./images/image-3.png)
 
    ```yaml
    alertmanager:
@@ -264,7 +264,7 @@ Begin by creating a file named `rules.yml` with the following content:
    helm upgrade prometheus prometheus-community/kube-prometheus-stack -f values.yaml
    ```
 
-   ![alt text](image-4.png)
+   ![alt text](./images/image-4.png)
 
 4. Verify the updated configuration:
 
@@ -272,7 +272,7 @@ Begin by creating a file named `rules.yml` with the following content:
    kubectl get alertmanagers.monitoring.coreos.com -o yaml | grep -A3  alertmanagerConfigSelector
    ```
 
-   ![alt text](image-5.png)
+   ![alt text](./images/image-5.png)
 
 ### **Create an `AlertmanagerConfig` Resource**
 
@@ -342,7 +342,7 @@ Begin by creating a file named `rules.yml` with the following content:
    kubectl get alertmanagerconfig
    ```
 
-   ![alt text](image-6.png)
+   ![alt text](./images/image-6.png)
 
 ### **Verify Alertmanager Configuration**
 
@@ -371,12 +371,12 @@ If you'd like to access Alertmanager, you can update the service type from `Clus
 
 4. Create a load balancer in Pordhi using the `eth0` IP and `NodePort` for the prometheus service. Access the Prometheus dashboard by visiting the load balancer url.
 
-    ![alt text](image-7.png)
+    ![alt text](./images/image-7.png)
 
     Goto *Status* tab to see the detailed configuration where you will see the `webhook` config as well. 
 
 
-    ![alt text](image-8.png)  
+    ![alt text](./images/image-8.png)  
 
 
 
