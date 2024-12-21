@@ -2,7 +2,7 @@
 
 In this lab, we will walk through the process of setting up a CI/CD pipeline using Jenkins to build Docker images from a Node.js application and push them to Docker Hub. The pipeline will be set up on an AWS EC2 instance running Ubuntu, ensuring an automated, streamlined approach to deploying applications. By the end of this tutorial, you will have a fully functioning Jenkins server capable of building Docker images and pushing them to your Docker Hub repository upon each commit to your GitHub repository.
 
-![alt text](./images/jenkins-pipeline.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/d4982e281cbf88080b5acdf9ace83b760433f929/Poridhi%20Labs/Jenkins%20Labs/Lab%2013/images/jenkins-pipeline.svg)
 
 
 ## Prerequisites
@@ -14,7 +14,7 @@ In this lab, we will walk through the process of setting up a CI/CD pipeline usi
 
 ## Step 1: Set Up AWS EC2 Instance
 
-![alt text](https://raw.githubusercontent.com/AhnafNabil/Jenkins-Test-Demo/main/images/pulumi-diagram.png)
+![alt text](./images/pulumi-diagram.png)
 
 1. Configure AWS CLI with your credentials:
 
