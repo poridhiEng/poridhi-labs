@@ -371,7 +371,3 @@ docker push <DOCKERHUB_USERNAME>/<IMAGE_NAME>:<VERSION>
 ```
 
 > NOTE: Make sure to login to the dockerhub.
-
-
-
-
