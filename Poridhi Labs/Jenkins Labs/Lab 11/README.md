@@ -11,7 +11,7 @@ Create an installation script for Jenkins named `jenkins-install.sh` and fill it
 ```sh
 #!/bin/bash
 
-# Function to print colored output
+# Function to print colored
 print_message() {
     GREEN='\033[0;32m'
     NC='\033[0m'
