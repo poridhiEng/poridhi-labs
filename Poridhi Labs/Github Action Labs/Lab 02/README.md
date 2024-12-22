@@ -17,11 +17,10 @@ In GitHub Actions, jobs are `independent` units of work within a workflow. Each 
 
 ## Dependent Jobs
 
-A dependent job in a GitHub Actions workflow is a job that relies on the successful completion of one or more preceding jobs. The relationship between jobs is specified using the needs keyword. Dependent jobs are executed only after the jobs they depend on have completed successfully. It ensures that jobs run in a specific order based on their dependencies. If a job fails, all dependent jobs are skipped, preserving resources.
-
 A **dependent job** in a GitHub Actions workflow is a job that relies on the successful completion of one or more preceding jobs. The relationship between jobs is specified using the `needs` keyword. Dependent jobs are executed only after the jobs they depend on have completed successfully.
 
 ### Real-World Use Cases:
+
 1. **CI/CD Pipelines**:
    - **Build** → Compile the source code.
    - **Test** → Run unit and integration tests after building.
@@ -211,29 +210,22 @@ jobs:
           echo "Notification sent!"
 ```
 
-## Monitor the workflow:
+## Configure Github to Poridhi's VsCode
 
-To trigger this workflow, commit an push the changes to your repository. Navigate to your GitHub repository -> Click on the "Actions" tab. Monitor the execution of jobs in sequence.
+This lab is intended to run on Poridhi's Cloud. To setup remote repository to VsCode, follow these steps:
+
+```sh
+git config user.email "your email"
+git config user.username "your github username"
+```
+
+Then authorize the VsCode with Github with valid credentials.
+
+After configuring Github, save and commit the changes and Monitor the workflow in your repository `Action` section.
 
 ## Expected Output
 
-```
-✓ Build Application
-  ├── 🗰️ Building the application...
-  ├── Build completed successfully!
-
-✓ Run Tests
-  ├── 🧪 Running tests...
-  ├── All tests passed!
-
-✓ Deploy Application
-  ├── 🚀 Deploying application...
-  ├── Deployment successful!
-
-✓ Send Notification
-  ├── 📧 Sending deployment notification...
-  ├── Notification sent!
-```
+![alt text](image.png)
 
 ## Practice Exercises
 
