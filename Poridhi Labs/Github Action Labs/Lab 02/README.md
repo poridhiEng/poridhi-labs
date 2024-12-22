@@ -4,6 +4,8 @@
 
 GitHub Actions is a powerful CI/CD (Continuous Integration and Continuous Deployment) tool integrated into GitHub. It allows developers to automate tasks such as building, testing, and deploying code directly from their repositories. In this lab, we will learn how to create GitHub Actions workflows with multiple jobs that depend on each other. This guide demonstrates a basic CI/CD pipeline with build, test, deploy, and notify stages.
 
+![](./images/workflows.svg)
+
 ## Jobs in Github action
 
 In GitHub Actions, jobs are `independent` units of work within a workflow. Each job runs in its own environment (e.g., a virtual machine or container) and can perform specific tasks, such as building an application, running tests, or deploying code. Jobs are defined under the jobs section of a workflow file.
