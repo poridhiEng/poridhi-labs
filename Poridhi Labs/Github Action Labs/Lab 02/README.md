@@ -30,7 +30,25 @@ A **dependent job** in a GitHub Actions workflow is a job that relies on the suc
    - **Test on Ubuntu** → Run tests on an Ubuntu environment.
    - **Test on macOS** → Run tests on a macOS environment, dependent on the build.
 
-## Implementation
+## Prerequisites
+
+To complete this lab, ensure you have:
+
+- A GitHub account.
+- A GitHub repository where you have write access.
+- Basic understanding of YAML syntax.
+- Familiarity with basic command-line operations.
+
+## Task Description
+
+![](./images/lab-02.svg)
+
+In this lab, you'll:
+
+- Create a GitHub Actions workflow file.
+- Configure a workflow to trigger on code pushes to the main branch.
+- Learn how dependent or sequential jobs works.
+- Learn how to debug workflows and troubleshoot common issues.
 
 ### Folder Structure
 ```
@@ -40,11 +58,21 @@ your-repository/
         └── multiple-jobs.yml
 ```
 
+### Create Workflow Directory
+
+Start by creating a workflow file at `.github/workflows/multiple-jobs.yml`.
+
+```sh
+mkdir -p .github/workflows
+```
+
+This command creates the `.github/workflows` directory in your repository, where workflow files are stored.
+
+
 ### Create Workflow File
 
-We will create a GitHub Actions workflow with multiple jobs demonstrates how to orchestrate sequential and dependent tasks.
+We will create a GitHub Actions workflow with multiple jobs demonstrates how to orchestrate sequential and dependent tasks. Create a file named `multiple-jobs.yml` in the `.github/workflows` directory and fill the file with following content step by step:
 
-Create a workflow file at `.github/workflows/multiple-jobs.yml`.
 
 ```yaml
 name: Multiple Jobs Lab
@@ -53,18 +81,6 @@ on:
     branches:
       - main
 ```
-
-### Workflow Overview
-The workflow, will be triggered on a `push` to the `main` branch. We will define a pipeline with four distinct jobs:
-
-1. **Build Application** (`build` job)
-2. **Run Tests** (`test` job)
-3. **Deploy Application** (`deploy` job)
-4. **Send Notification** (`notify` job)
-
-Each job has dependencies and runs on an Ubuntu-based virtual environment (`ubuntu-latest`).
-
-### Explanation of Jobs
 
 #### 1. Build Job (`build`)
 **Purpose**: The `build` job is the first in the sequence and serves to simulate building the application.
@@ -210,6 +226,16 @@ jobs:
           echo "Notification sent!"
 ```
 
+### Workflow Overview
+The workflow, will be triggered on a `push` to the `main` branch. We will define a pipeline with four distinct jobs:
+
+1. **Build Application** (`build` job)
+2. **Run Tests** (`test` job)
+3. **Deploy Application** (`deploy` job)
+4. **Send Notification** (`notify` job)
+
+Each job has dependencies and runs on an Ubuntu-based virtual environment (`ubuntu-latest`).
+
 ## Configure Github to Poridhi's VsCode
 
 This lab is intended to run on Poridhi's Cloud. To setup remote repository to VsCode, follow these steps:
@@ -221,9 +247,18 @@ git config user.username "your github username"
 
 Then authorize the VsCode with Github with valid credentials.
 
-After configuring Github, save and commit the changes and Monitor the workflow in your repository `Action` section.
+After configuring Github, save and commit and push the changes.
 
-## Expected Output
+```sh
+git add .
+git commit -m "Workflow"
+git push
+```
+Once pushed, the workflow will be automatically triggered.
+
+## View Workflow Results
+
+Navigate to the Actions tab in your repository to view the workflow execution details. Each step's logs show the command output, helping you understand how the workflow executed.
 
 ![alt text](image.png)
 
