@@ -1,7 +1,5 @@
 # Self-Hosted Runner in Kubernetes
 
-## Introduction
-
 GitHub Actions is a powerful CI/CD tool that enables developers to automate workflows directly in their GitHub repositories. While GitHub provides hosted runners, these may not always suit specific needs such as cost efficiency, custom environments, or organizational compliance. Self-hosted runners allow you to control your runner environment, offering:
 
 - Customization of tools, dependencies, or configurations.
@@ -9,6 +7,8 @@ GitHub Actions is a powerful CI/CD tool that enables developers to automate work
 - Enhanced security by executing workflows within your private network.
 
 - Cost efficiency by utilizing your existing infrastructure.
+
+![](./images/github-runner.svg)
 
 ## What is Self-Hosted Runner?
 
@@ -43,6 +43,8 @@ A self-hosted GitHub Actions runner operates as a service on a machine you confi
 
 ### Example Use Case with Kubernetes
 
+![](./images/git-runner-02.svg)
+
 Imagine a GitHub repository with frequent CI/CD workflows:
 
 1. A workflow is triggered.
@@ -61,22 +63,60 @@ Before you begin, ensure you have the following:
 - A GitHub account with a repository.
 - A GitHub Personal Access Token (PAT) with the required permissions.
 
+## Project Structure
+
+```
+github-repo/
+├── github-runner-k8s/
+│   ├── Dockerfile
+│   ├── entrypoint.sh
+│   ├── kubernetes.yaml
+├── nginx-deployment/
+│   ├── namespace.yml
+│   ├── deployment.yml
+│   ├── service.yml
+├── .github/
+│   └── workflows/
+│       └── deploy.yml
+├── Dockerfile.nginx
+├── index.html
+```
+
 ## Step 1: Project Structure Setup
 
-**Create a new project directory:**
+### **Create a new repository:**
+
+- Go to [GitHub](https://github.com) and create a new repository ( e.g., `github-runner-k8s` ) with a `README.md` file.
+
+### **Clone the repository:**
+
+```bash 
+git clone <github-repository-link>
+```
+
+### Setup githubs default account:
+
+```bash
+git config user.email "<your-email>"
+git config user.name "<Your Name>"
+```
+
+Replace `<your-email>` and `<your-name>` with your github email address and username.
+
+### **Create a project directory:**
 
 ```bash
 mkdir github-runner-k8s
 cd github-runner-k8s
 ```
 
-**Create the necessary files:**
+### **Create the necessary files:**
 
 ```bash
 touch Dockerfile entrypoint.sh kubernetes.yaml
 ```
 
-## Creating the Custom runner image
+## Step 2: Creating the Custom runner image
 
 Now we will create a Dockerfile that defines the container image for the self-hosted runner, including all required dependencies and configurations.
 
@@ -258,7 +298,7 @@ ENTRYPOINT ["/actions-runner/entrypoint.sh"]
 
 The `entrypoint.sh` script handles runner registration, execution, and cleanup. Lets create this script step by step: 
 
-#### **Requesting the Runner Registration Token**
+### **Requesting the Runner Registration Token**
 ```sh
 registration_url="https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPOSITORY}/actions/runners/registration-token"
 echo "Requesting registration URL at '${registration_url}'"
@@ -273,9 +313,7 @@ export RUNNER_TOKEN=$(echo $payload | jq .token --raw-output)
   2. Sends a POST request to the API with the `GITHUB_PERSONAL_TOKEN` for authentication.
   3. Parses the response using `jq` to extract the `token` and assigns it to the environment variable `RUNNER_TOKEN`.
 
----
-
-#### **2. Configuring the Runner**
+### **Configuring the Runner**
 ```sh
 ./config.sh \
     --name $(hostname) \
@@ -298,7 +336,7 @@ export RUNNER_TOKEN=$(echo $payload | jq .token --raw-output)
   - `--unattended`: Runs without interactive prompts.
   - `--replace`: Replaces any existing runner with the same name.
 
-#### **3. Runner Cleanup on Exit**
+### **Runner Cleanup on Exit**
 ```sh
 remove() {
     ./config.sh remove --unattended --token "${RUNNER_TOKEN}"
@@ -311,7 +349,7 @@ trap 'remove; exit 143' TERM
   - Defines a cleanup function (`remove`) that deregisters the runner from the repository.
   - Sets traps to handle signals (`INT` for Ctrl+C and `TERM` for termination signals). When the container receives these signals, the `remove` function is called to cleanly unregister the runner.
 
-#### **4. Running the Runner Process**
+### **Running the Runner Process**
 ```sh
 ./run.sh "$*" &
 wait $!
@@ -358,11 +396,565 @@ chmod +x entrypoint.sh
 
 ## Step 4: Build the docker image
 
-To build the docker image run the following commands:
+To build the Docker image with the specified environment variables set in the Dockerfile, We need to create the `Github` personal access token (`PAT`).
 
-```sh
-docker build -t <DOCKERHUB_USERNAME>/<IMAGE_NAME>:<VERSION> .
-docker push <DOCKERHUB_USERNAME>/<IMAGE_NAME>:<VERSION>
+### **Generate the Personal Access Token (PAT)**
+
+#### **Log in to GitHub**:
+   - Go to [GitHub](https://github.com) and log in to your account.
+
+#### **Navigate to Developer Settings**:
+   - Click on your profile picture in the top-right corner.
+   - Go to **Settings** → **Developer Settings** (located near the bottom of the left sidebar).
+
+#### **Generate a New Token**:
+   - Click on **Personal access tokens** → **Tokens (classic)**.
+   - Select **Generate new token (classic)**.
+
+     ![](./images/1.png)
+
+#### **Set Permissions**:
+   - Provide a meaningful **note** (e.g., `Self-Hosted Runner`).
+   - Select **Expiration** (set a reasonable expiry based on your needs).
+   - Under **Scopes**, select the following permissions:
+     - `repo` (Full control of private repositories).
+     - `admin:repo_hook` (Manage webhooks and services).
+     - `workflow` (Update GitHub Actions workflows).
+
+     ![](./images/2.png)
+
+#### **Generate and Save**:
+   - Click **Generate token**.
+   - Copy the generated token **immediately** (it won't be shown again).
+
+#### **Docker Build Command**:
+
+```bash
+docker build \
+  --build-arg RUNNER_VERSION="2.302.1" \
+  --build-arg GITHUB_PERSONAL_TOKEN="<your-personal-access-token" \
+  --build-arg GITHUB_OWNER="<your-github-username>" \
+  --build-arg GITHUB_REPOSITORY="<your-github-repository-name" \
+  -t <image-name> .
 ```
 
-> NOTE: Make sure to login to the dockerhub.
+> NOTE: Make sure to replace all the environment variables with your credentials in docker build command.
+
+## Step 5: Push the Image to DockerHub
+
+### **Login to Docker**
+
+```bash
+docker login
+```
+
+- Enter your DockerHub **username** and **password** when prompted.
+- If you're using an access token instead of a password (recommended for security), enter the token in place of the password.
+
+### **Tag the Docker Image**
+
+```bash
+docker tag <image-name>:latest <dockerhub-username>/<image-name>:latest
+```
+
+### **Push the Image to DockerHub**
+
+```bash
+docker push <dockerhub-username>/<image-name>:latest
+```
+> NOTE: Replace `<dockerhub-username>`and `<image-name>` with your DockerHub username and with your image name.
+
+### **Verify the Image on DockerHub**
+- Log in to your DockerHub account at [DockerHub](https://hub.docker.com/).
+- Navigate to the **Repositories** section.
+- Ensure the `<your-image-name>` is listed under your account with the `latest` tag.
+
+
+## Step 6: Configure the self hosted runner in Kubernetes
+
+### **Create `kubernetes.yaml` with the following content:**
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: github-runner
+  labels:
+    app: github-runner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: github-runner
+  template:
+    metadata:
+      labels:
+        app: github-runner
+    spec:
+      containers:
+      - name: github-runner
+        imagePullPolicy: IfNotPresent
+        image: <dockerhub-username>/<image-name>:latest
+        env:
+        - name: GITHUB_OWNER
+          valueFrom:
+            secretKeyRef:
+              name: github-secret
+              key: GITHUB_OWNER
+        - name: GITHUB_REPOSITORY
+          valueFrom:
+            secretKeyRef:
+              name: github-secret
+              key: GITHUB_REPOSITORY
+        - name: GITHUB_PERSONAL_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: github-secret
+              key: GITHUB_PERSONAL_TOKEN
+        - name: DOCKER_HOST
+          value: tcp://localhost:2375
+        volumeMounts:
+        - name: data
+          mountPath: /work/
+      - name: dind
+        image: docker:24.0.6-dind
+        env:
+        - name: DOCKER_TLS_CERTDIR
+          value: ""
+        resources:
+          requests:
+            cpu: 20m
+            memory: 512Mi
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: docker-graph-storage
+          mountPath: /var/lib/docker
+        - name: data
+          mountPath: /work/
+      volumes:
+      - name: docker-graph-storage
+        emptyDir: {}
+      - name: data
+        emptyDir: {}
+
+```
+
+This YAML file defines a **Kubernetes Deployment** for a GitHub Actions self-hosted runner. Here's a breakdown of its components:
+
+#### **Metadata**
+- **name**: `github-runner` - The name of the deployment.
+- **labels**: `app: github-runner` - Labels used to identify resources related to this deployment.
+
+
+#### **Spec**
+- **replicas**: `1` - Specifies one instance (pod) of the runner will be created.
+- **selector**: Matches pods with the label `app: github-runner`.
+- **template**: Defines the pod specification for the runner.
+
+
+#### **Containers**
+1. **`github-runner` (Main Container)**
+   - **image**: `<dockerhub-username>/<image-name>:latest` - The Docker image for the runner.
+   - **env**:
+     - `GITHUB_OWNER`, `GITHUB_REPOSITORY`, `GITHUB_PERSONAL_TOKEN`: Environment variables retrieved from a Kubernetes secret (`github-secret`).
+     - `DOCKER_HOST`: Configures Docker-in-Docker (DinD) communication.
+   - **volumeMounts**:
+     - `/work/`: Mounts a shared volume for runner jobs and data.
+
+2. **`dind` (Docker-in-Docker Sidecar Container)**
+   - **image**: `docker:24.0.6-dind` - Runs a DinD container to enable Docker capabilities for the runner.
+   - **env**:
+     - `DOCKER_TLS_CERTDIR`: Disables TLS for easier Docker communication within the cluster.
+   - **resources**: Limits resource usage to prevent overloading the cluster.
+   - **securityContext**: `privileged: true` - Grants privileges for DinD to function.
+   - **volumeMounts**:
+     - `/var/lib/docker`: Docker data storage.
+     - `/work/`: Shared volume with the main container.
+
+
+#### **Volumes**
+- **`docker-graph-storage`**: Temporary storage for Docker images and layers.
+- **`data`**: Shared storage for job-related data between containers.
+
+
+### **Create a Kubernetes namespace:**
+```bash
+kubectl create namespace host-runner
+```
+
+### **Create secrets (replace placeholder values):**
+
+```bash
+kubectl -n host-runner create secret generic github-secret \
+  --from-literal=GITHUB_OWNER=<your-github-username> \
+  --from-literal=GITHUB_REPOSITORY=<your-repo-name> \
+  --from-literal=GITHUB_PERSONAL_TOKEN=<your-github-personal-access-token>
+```
+
+## Step 7: Deploying to Kubernetes
+
+### **Apply the Kubernetes deployment:**
+
+```bash
+kubectl apply -f kubernetes.yaml -n host-runner
+```
+
+### **Verify the deployment:**
+```yaml
+# Check pod status
+kubectl get pods -n host-runner
+
+# Check runner logs
+kubectl  logs <pod-name> -n host-runner
+```
+
+## Step 8: Testing the Runner with Nginx Deployment
+
+
+### **Create Directory Structure**
+
+Set up the necessary directory structure for your deployment files:
+
+```bash
+mkdir -p nginx-deployment
+cd nginx-deployment
+```
+### **Create Kubernetes Manifest Files**
+
+```
+touch namespace.yml deployment.yml service.yml
+```
+
+### **Kubernetes Manifest Files**
+
+1. **Namespace Manifest**   
+   Defines a namespace to isolate resources within the Kubernetes cluster.
+
+   ```yaml
+   apiVersion: v1
+   kind: Namespace
+   metadata:
+      name: ${NAMESPACE}
+   ```
+
+2. **Deployment Manifest**  
+    ```yaml
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: nginx-deployment
+      namespace: ${NAMESPACE}
+    spec:
+      replicas: ${REPLICAS}
+      selector:
+        matchLabels:
+          app: nginx
+      template:
+        metadata:
+          labels:
+            app: nginx
+        spec:
+          containers:
+          - name: nginx
+            image: ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${IMAGE_TAG}
+            ports:
+            - containerPort: 80 
+    ```
+
+3. **Service Manifest**  
+    ```yaml
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: nginx-service
+      namespace: ${NAMESPACE}
+    spec:
+      type: NodePort
+      selector:
+        app: nginx
+      ports:
+        - port: 80
+          targetPort: 80
+          nodePort: ${NODE_PORT}
+    ```
+
+### **Dockerfile and Static Content**
+Prepare a simple Dockerfile (`Dockerfile.nginx`) for Nginx, including a test `index.html` file to verify the deployment.
+
+`Dockerfile.nginx`:
+
+```dockerfile
+FROM nginx:alpine
+COPY index.html /usr/share/nginx/html/
+```
+
+`index.html`:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Page</title>
+</head>
+<body>
+    <h1>Hello from self-hosted runner!</h1>
+</body>
+</html>
+```
+
+### **GitHub Actions Workflow**
+Create a workflow file `.github/workflows/deploy.yml`  to automate the process using a self-hosted runner.
+
+```yaml
+name: Self-Hosted Runner Test v2
+on:
+  push:
+    branches:
+      - main
+env:
+  DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+  DOCKER_IMAGE: nginx-app
+  NAMESPACE: dev
+  REPLICAS: "2"
+  NODE_PORT: "30080"
+jobs:
+  docker-build:
+    runs-on: self-hosted
+    steps:
+      - name: repository checkout 
+        uses: actions/checkout@v4
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile.nginx
+          push: true
+          tags: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE }}:${{ github.sha }}
+  k8s-deploy:
+    needs: docker-build
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+    
+      - name: Configure kubectl
+        uses: azure/k8s-set-context@v3
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+      - name: Update Kubernetes Manifests
+        run: |
+          for file in nginx-deployment/*.yml; do
+            sed -i "s|\${DOCKER_REGISTRY}|$DOCKER_REGISTRY|g" $file
+            sed -i "s|\${DOCKER_IMAGE}|$DOCKER_IMAGE|g" $file
+            sed -i "s|\${IMAGE_TAG}|${{ github.sha }}|g" $file
+            sed -i "s|\${NAMESPACE}|$NAMESPACE|g" $file
+            sed -i "s|\${REPLICAS}|$REPLICAS|g" $file
+            sed -i "s|\${NODE_PORT}|$NODE_PORT|g" $file
+          done
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl apply -f nginx-deployment/namespace.yml
+          kubectl apply -f nginx-deployment/deployment.yml
+          kubectl apply -f nginx-deployment/service.yml
+```
+
+### **Workflow Details**
+
+#### **Workflow Trigger**
+- Runs on every `push` to the `main` branch.
+
+#### **Environment Variables**
+- **`DOCKER_REGISTRY`, `DOCKER_IMAGE`, `NAMESPACE`, `REPLICAS`, `NODE_PORT`**:
+  Used to dynamically configure the workflow and Kubernetes manifests. These values are stored as secrets in GitHub.
+
+#### **`docker-build` Job**
+Runs on a self-hosted runner to build and push the Docker image.
+
+1. **Checkout Repository**:
+   ```yaml
+   - name: repository checkout
+     uses: actions/checkout@v4
+   ```
+   Fetches the code from the repository.
+
+2. **Login to Docker Hub**:
+   ```yaml
+   - name: Login to Docker Hub
+     uses: docker/login-action@v3
+     with:
+       username: ${{ secrets.DOCKER_USERNAME }}
+       password: ${{ secrets.DOCKER_PASSWORD }}
+   ```
+   Logs in to Docker Hub using credentials stored as secrets.
+
+3. **Build and Push Docker Image**:
+   ```yaml
+   - name: Build and push
+     uses: docker/build-push-action@v5
+     with:
+       context: .
+       file: Dockerfile.nginx
+       push: true
+       tags: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE }}:${{ github.sha }}
+   ```
+   - Builds the Docker image from `Dockerfile.nginx`.
+   - Tags it with the GitHub commit hash.
+   - Pushes it to the Docker registry.
+
+#### **`k8s-deploy` Job**
+Deploys the application to a Kubernetes cluster after the Docker image is built.
+
+1. **Checkout Repository**:
+   ```yaml
+   - uses: actions/checkout@v4
+   ```
+   Fetches the code repository.
+
+2. **Install `kubectl`**:
+   ```yaml
+   - name: Install kubectl
+     uses: azure/setup-kubectl@v3
+     with:
+       version: 'latest'
+   ```
+   Installs the `kubectl` CLI tool to interact with the Kubernetes cluster.
+
+3. **Configure `kubectl`**:
+   ```yaml
+   - name: Configure kubectl
+     uses: azure/k8s-set-context@v3
+     with:
+       method: kubeconfig
+       kubeconfig: ${{ secrets.KUBE_CONFIG }}
+   ```
+   Configures `kubectl` with a kubeconfig file stored in GitHub secrets. 
+
+4. **Update Kubernetes Manifests**:
+   ```yaml
+   - name: Update Kubernetes Manifests
+     run: |
+       for file in nginx-deployment/*.yml; do
+         sed -i "s|\${DOCKER_REGISTRY}|$DOCKER_REGISTRY|g" $file
+         sed -i "s|\${DOCKER_IMAGE}|$DOCKER_IMAGE|g" $file
+         sed -i "s|\${IMAGE_TAG}|${{ github.sha }}|g" $file
+         sed -i "s|\${NAMESPACE}|$NAMESPACE|g" $file
+         sed -i "s|\${REPLICAS}|$REPLICAS|g" $file
+         sed -i "s|\${NODE_PORT}|$NODE_PORT|g" $file
+       done
+   ```
+   - Replaces placeholder variables (e.g., `${DOCKER_REGISTRY}`, `${NAMESPACE}`) in Kubernetes YAML files with actual values.
+
+5. **Apply Kubernetes Manifests**:
+   ```yaml
+   - name: Deploy to Kubernetes
+     run: |
+       kubectl apply -f nginx-deployment/namespace.yml
+       kubectl apply -f nginx-deployment/deployment.yml
+       kubectl apply -f nginx-deployment/service.yml
+   ```
+   Deploys the Nginx application to the Kubernetes cluster by applying the manifests.
+
+
+#### Purpose:
+- **`docker-build`**: Builds and pushes the Nginx Docker image.
+- **`k8s-deploy`**: Configures Kubernetes and deploys the application using updated manifests.
+
+### **Add GitHub Repository Secrets**
+Ensure the following secrets are added to your GitHub repository for secure handling:
+
+- **DOCKER_REGISTRY**: Docker registry name (e.g., Docker Hub username).  
+- **DOCKER_USERNAME**: Docker Hub username.  
+- **DOCKER_PASSWORD**: Docker Hub password.  
+- **KUBE_CONFIG**: Kubernetes configuration file.  
+
+### **Kubernetes Configuration File**
+
+To get the `KUBE_CONFIG` file, you can use the following command:
+
+```bash
+cat /etc/rancher/k3s/k3s.yaml
+```
+
+![](./images/5.png)
+
+Copy the contents of the file and replace the `server ip` with kubernetes `master node ip`.
+
+To get the master node ip, you can use the following command:
+
+```bash
+kubectl get nodes -o wide
+```
+![](./images/6.png)
+
+and add it as a secret in your GitHub repository as `KUBE_CONFIG`.
+
+### **Commit and Push to Repository**
+After creating the required files and configuration, commit and push all files to the main branch of your repository.
+
+
+### **Verify the Workflow**
+Monitor the **Actions** tab in your GitHub repository to ensure the workflow runs successfully. The workflow will:  
+1. Build and push the Docker image.
+
+   ![](./images/3.png)
+
+2. Update Kubernetes manifests dynamically. 
+
+3. Deploy the application to the Kubernetes cluster.
+
+    ![](./images/4.png)
+
+
+
+## Access the Application
+
+In Poridhi's Kubernetes cluster verify the deploymets and services
+
+```bash
+kubectl get namespaces
+```
+For successful deployment, you should see the `dev` namespace.
+
+```bash
+kubectl get deployments -n dev
+```
+For successful deployment, you should see the `nginx-deployment`.
+
+```bash
+kubectl get services -n dev
+```
+For successful deployment, you should see the `nginx-service` with a `NodePort` service.
+
+![](./images/7.png)
+
+Now to access the application, you should get the `etho` ip of the master node and the `nodeport` of the service.
+
+To get the `eth0` ip of the master node, you can use the following command:
+
+```bash
+ifconfig
+```
+
+![](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2005/images/lab-59.png?raw=true)
+
+### **Create a Load Balancer**
+
+Create a load balancer with eht0 ip of the master node and the nodeport of the service.
+
+![](./images/8.png)
+
+With the provided `url` by `load-balancer` you can access the application.
+
+![](./images/9.png)
+
+
