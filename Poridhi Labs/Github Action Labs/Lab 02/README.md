@@ -1,7 +1,5 @@
 # GitHub Actions Multiple Jobs with Dependencies
 
-## Overview
-
 GitHub Actions is a powerful CI/CD (Continuous Integration and Continuous Deployment) tool integrated into GitHub. It allows developers to automate tasks such as building, testing, and deploying code directly from their repositories. In this lab, we will learn how to create GitHub Actions workflows with multiple jobs that depend on each other. This guide demonstrates a basic CI/CD pipeline with build, test, deploy, and notify stages.
 
 ![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/Lab%2002/images/workflows.svg)
@@ -23,11 +21,14 @@ A **dependent job** in a GitHub Actions workflow is a job that relies on the suc
 
 ### Real-World Use Cases:
 
-1. **CI/CD Pipelines**:
+**1. CI/CD Pipelines**:
+
    - **Build** → Compile the source code.
    - **Test** → Run unit and integration tests after building.
    - **Deploy** → Deploy only if both build and test succeed.
-2. **Multi-Environment Testing**:
+   
+**2. Multi-Environment Testing**:
+
    - **Build** → Prepare the application.
    - **Test on Ubuntu** → Run tests on an Ubuntu environment.
    - **Test on macOS** → Run tests on a macOS environment, dependent on the build.
