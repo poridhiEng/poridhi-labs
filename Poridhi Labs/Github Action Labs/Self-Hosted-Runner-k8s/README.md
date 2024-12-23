@@ -837,7 +837,7 @@ Deploys the application to a Kubernetes cluster after the Docker image is built.
        method: kubeconfig
        kubeconfig: ${{ secrets.KUBE_CONFIG }}
    ```
-   Configures `kubectl` with a kubeconfig file stored in GitHub secrets. 
+   Configures `kubectl` with a kubeconfig file stored in GitHub secrets. `kubeconfig` is a Kubernetes configuration file that defines cluster settings. Which is used to authenticate with the Kubernetes cluster.
 
 4. **Update Kubernetes Manifests**:
    ```yaml
