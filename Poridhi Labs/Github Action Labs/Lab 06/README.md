@@ -170,6 +170,17 @@ Now, let's create a new Pulumi project and write the code to provision our EC2 i
 mkdir ansible-k3s && cd ansible-k3s
 ```
 
+### Install Ansible
+
+To install Ansible on an Ubuntu machine, run these commands:
+
+```bash
+sudo apt-get update -y
+sudo apt install software-properties-common -y
+sudo apt-add-repository --yes --update ppa:ansible/ansible
+sudo apt-get install -y ansible
+```
+
 ### Project Structure
 
 ```plaintext
