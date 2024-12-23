@@ -44,7 +44,7 @@ To complete this lab, ensure you have:
 
 ## Task Description
 
-![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/Lab%2002/images/lab-02.svg)
+![](./images/lab-02-new.svg)
 
 In this lab, you'll:
 
@@ -263,7 +263,7 @@ Once pushed, the workflow will be automatically triggered.
 
 Navigate to the Actions tab in your repository to view the workflow execution details. Each step's logs show the command output, helping you understand how the workflow executed.
 
-![alt text](image.png)
+![alt text](./images/image.png)
 
 ## Practice Exercises
 
