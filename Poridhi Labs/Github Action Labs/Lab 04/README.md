@@ -2,7 +2,7 @@
 
 GitHub Actions is a powerful automation platform that allows developers to automate software development workflows directly in GitHub repositories. It uses **runners** to execute workflows. By default, GitHub Actions provides **hosted runners**, but you can also set up **self-hosted runners** for more control and customisation.
 
-![](./images/Self-hosted.svg)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/Lab%2004/images/Self-hosted.svg)
 
 
 ## **Self-Hosted Runner (VM)**
@@ -56,7 +56,7 @@ The system will prompt you to:
 - Enter and confirm a password for the new user.
 - Provide additional information (full name, room number, etc.). These are optional; press `Enter` to skip.
 
-![alt text](image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/Lab%2004/images/image.png)
 
 **Verify the User Creation**
 
@@ -65,7 +65,7 @@ Check if the user was created successfully:
 cat /etc/passwd | grep <username>
 ```
 
-![alt text](image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/Lab%2004/images/image-1.png)
 
 This will display details about the new user if it exists.
 
@@ -85,7 +85,7 @@ To switch to the new user account, use:
 su - <username>
 ```
 
-![alt text](image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/Lab%2004/images/image-2.png)
 
 ### **2. Create a Self-Hosted Runner on GitHub**
 
@@ -94,7 +94,7 @@ su - <username>
 - Click **Add Runner**.
 - Select the operating system (Linux) for the runner.
 
-   ![alt text](image-11.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/Lab%2004/images/image-11.png)
 
 ### **3. Download the Runner Software**
 
@@ -120,7 +120,7 @@ su - <username>
    - You can configure the runner with a name, labels, and other settings.
    - Labels help differentiate runners for specific jobs.
 
-   ![alt text](image-4.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/Lab%2004/images/image-4.png)
 
 ### **4. Start the Runner**
 
@@ -128,7 +128,7 @@ su - <username>
    ```bash
    ./run.sh
    ```
-   ![alt text](image-5.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/Lab%2004/images/image-5.png)
 
 - Keep this terminal open to maintain the runner's activity.
 
@@ -146,7 +146,7 @@ This will allow the runner to start automatically when your system boots up.
 
 To verify the runner, go to **Settings > Actions > Runners**. You will see the Runner is in the `idle` state.
 
-![alt text](image-6.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/Lab%2004/images/image-6.png)
 
 ### Connecting the Runner to Workflows
 
@@ -179,11 +179,11 @@ To verify the job is executed in the self-hosted runner, save and commit the cha
 
 In the Actions section, we can see the workflow output:
 
-![alt text](image-8.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/Lab%2004/images/image-8.png)
 
 In the Runner VM, we can also see that our job is successfully executed.
 
-![alt text](image-9.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/Lab%2004/images/image-9.png)
 
 ### Management Commands: Explanation
 
