@@ -1,14 +1,8 @@
-# Self-Hosted Runner in Kubernetes
+# Self Hosted Runner in Kubernetes
 
-GitHub Actions is a powerful CI/CD tool that enables developers to automate workflows directly in their GitHub repositories. While GitHub provides hosted runners, these may not always suit specific needs such as cost efficiency, custom environments, or organizational compliance. Self-hosted runners allow you to control your runner environment, offering:
+In this lab, you will learn how to deploy a self-hosted GitHub Actions runner in a Kubernetes cluster to execute CI/CD workflows. The lab covers creating a custom Docker image for the runner, configuring Kubernetes deployments, and setting up GitHub Actions workflows for automated application deployment. By the end, you will deploy and verify an Nginx application in Kubernetes, leveraging the scalability, resource management, and automation capabilities of Kubernetes and GitHub Actions.
 
-- Customization of tools, dependencies, or configurations.
-
-- Enhanced security by executing workflows within your private network.
-
-- Cost efficiency by utilizing your existing infrastructure.
-
-![](./images/github-runner.svg)
+![](./images/diagram1.svg)
 
 ## What is Self-Hosted Runner?
 
@@ -16,42 +10,31 @@ A self-hosted GitHub Actions runner is a machine (virtual or physical) that you 
 
 ## How Self-Hosted GitHub Action Runners Work?
 
-A self-hosted GitHub Actions runner operates as a service on a machine you configure, acting as a bridge between GitHub and your local environment to execute workflows.
+![](./images/Self-hosted.svg)
 
-**Runner Software:**
+This diagram explains the workflow of a self-hosted runner in GitHub Actions. When a workflow is triggered, jobs are added to the **Job Queue**. The self-hosted runner, managed by the user, continuously polls the queue, retrieves jobs, and processes them.
 
-- GitHub provides runner software that can be installed on your machine.
-- The runner listens for job requests from GitHub and executes them when triggered by workflows.
+The **Runner Listener** fetches the job, and the **Job Controller** breaks it into steps. The **Worker Process** then executes each step sequentially, such as running commands, executing scripts, or interacting with tools like Docker or Kubernetes. It ensures smooth execution, manages errors, and tracks the status of each step. Finally, the runner reports the job’s completion status (success or failure) back to GitHub, enabling a flexible and controlled workflow environment.
 
-**Integration:**
+## **Why Kubernetes for Self-Hosted Runners?**
 
-- After installation, the runner connects to your GitHub repository or organization.
-- Jobs defined in workflow YAML files are dispatched to the runner when triggered.
+- **Scalability**: Automatically adjusts runner pods based on workload using Horizontal Pod Autoscaling (HPA), optimizing resource usage.
+- **High Availability**: Restarts failed pods and distributes jobs across nodes to ensure uptime and prevent bottlenecks.
+- **Resource Management**: Provides fine-grained control over CPU and memory, preventing resource overuse or underutilization.
 
-**Execution:**
+## **Task Description**
 
-- The runner downloads the workflow steps and executes them sequentially.
-- It reports logs, statuses, and results back to GitHub.
+![](./images/diagram2.svg)
 
-### Why Kubernetes for Self-Hosted Runners?
-
-**Scalability:** Kubernetes can automatically scale runners up or down based on demand using features like Horizontal Pod Autoscaling (HPA). You can increase the number of runner pods during peak activity and reduce them during low activity, saving costs and resources.
-
-**High Availability:** Kubernetes ensures high availability by automatically restarting pods if they fail. Self-healing capabilities reduce downtime for workflows. Kubernetes can distribute jobs across multiple nodes, ensuring optimal utilization and no single point of failure.
-
-**Resource Management:** Kubernetes allows fine-grained control over resource allocation using requests and limits for CPU and memory. This ensures that self-hosted runners don't overwhelm the cluster or underutilize resources.
-
-### Example Use Case with Kubernetes
-
-![](./images/git-runner-02.svg)
-
-Imagine a GitHub repository with frequent CI/CD workflows:
-
-1. A workflow is triggered.
-2. GitHub dispatches the job to a Kubernetes-hosted runner `(runs-on: self-hosted)`.
-3. Kubernetes creates a pod for the job using pre-defined configurations.
-4. The pod completes the workflow, uploads artifacts to GitHub, and is then terminated.
-5. Kubernetes reclaims resources, maintaining cluster efficiency.
+- Set up directories and initialize a GitHub repository for the project.  
+- Build and push a custom GitHub runner Docker image to Docker Hub.  
+- Create Kubernetes deployment files for the runner and configure secrets.  
+- Deploy the GitHub runner in Kubernetes and verify pod status.  
+- Write Kubernetes manifests for Nginx deployment and service.  
+- Add a GitHub Actions workflow to automate Docker build and Kubernetes deployment.  
+- Trigger the workflow and verify its successful execution.  
+- Access the deployed Nginx application using the Kubernetes NodePort.  
+- Confirm deployment by checking Kubernetes pods, deployments, and services.  
 
 ## Prerequisites
 
@@ -70,7 +53,7 @@ github-repo/
 ├── github-runner-k8s/
 │   ├── Dockerfile
 │   ├── entrypoint.sh
-│   ├── kubernetes.yaml
+│   ├── github-runner.yaml
 ├── nginx-deployment/
 │   ├── namespace.yml
 │   ├── deployment.yml
@@ -103,20 +86,24 @@ git config user.name "<Your Name>"
 
 Replace `<your-email>` and `<your-name>` with your github email address and username.
 
-### **Create a project directory:**
+### **Create Directory for github-runner:**
 
 ```bash
+cd <github-repo>
 mkdir github-runner-k8s
 cd github-runner-k8s
 ```
+> NOTE: Replace `<github-repo>` with your repository name.
 
 ### **Create the necessary files:**
 
 ```bash
-touch Dockerfile entrypoint.sh kubernetes.yaml
+touch Dockerfile entrypoint.sh github-runner.yaml
 ```
 
 ## Step 2: Creating the Custom runner image
+
+![](./images/github-runner.svg)
 
 Now we will create a Dockerfile that defines the container image for the self-hosted runner, including all required dependencies and configurations.
 
@@ -472,7 +459,7 @@ docker push <dockerhub-username>/<image-name>:latest
 
 ## Step 6: Configure the self hosted runner in Kubernetes
 
-### **Create `kubernetes.yaml` with the following content:**
+### **Update `github-runner.yaml` with the following content:**
 
 ```yaml
 apiVersion: apps/v1
@@ -539,44 +526,164 @@ spec:
         emptyDir: {}
 
 ```
+### **Manifest Details**
 
-This YAML file defines a **Kubernetes Deployment** for a GitHub Actions self-hosted runner. Here's a breakdown of its components:
+#### **apiVersion**
+```yaml
+apiVersion: apps/v1
+```
+Specifies the API version for the `Deployment` resource. Here, `apps/v1` is used for deployments in Kubernetes.
+
+#### **Kind**
+```yaml
+kind: Deployment
+```
+Defines the resource type as a `Deployment`, which ensures the desired number of pods are running and managed.
 
 #### **Metadata**
-- **name**: `github-runner` - The name of the deployment.
-- **labels**: `app: github-runner` - Labels used to identify resources related to this deployment.
-
+```yaml
+metadata:
+  name: github-runner
+  labels:
+    app: github-runner
+```
+- **name**: The name of the deployment is `github-runner`.
+- **labels**: Assigns a label `app: github-runner` to the deployment for identification and filtering.
 
 #### **Spec**
-- **replicas**: `1` - Specifies one instance (pod) of the runner will be created.
-- **selector**: Matches pods with the label `app: github-runner`.
-- **template**: Defines the pod specification for the runner.
+Defines the desired state and configuration for the deployment.
 
+#### **Replicas**
+```yaml
+replicas: 1
+```
+Specifies the number of pod replicas to run. Here, only one instance of the GitHub runner is deployed.
+
+#### **Selector**
+```yaml
+selector:
+  matchLabels:
+    app: github-runner
+```
+Defines the labels the deployment uses to identify the pods it manages. It matches pods with the label `app: github-runner`.
+
+#### **Template**
+Describes the pod specification.
+
+#### **Metadata**
+```yaml
+metadata:
+  labels:
+    app: github-runner
+```
+Assigns the label `app: github-runner` to the pod for identification.
+
+#### **Spec**
+Defines the containers and volumes for the pod.
 
 #### **Containers**
-1. **`github-runner` (Main Container)**
-   - **image**: `<dockerhub-username>/<image-name>:latest` - The Docker image for the runner.
-   - **env**:
-     - `GITHUB_OWNER`, `GITHUB_REPOSITORY`, `GITHUB_PERSONAL_TOKEN`: Environment variables retrieved from a Kubernetes secret (`github-secret`).
-     - `DOCKER_HOST`: Configures Docker-in-Docker (DinD) communication.
-   - **volumeMounts**:
-     - `/work/`: Mounts a shared volume for runner jobs and data.
+Lists the containers in the pod.
 
-2. **`dind` (Docker-in-Docker Sidecar Container)**
-   - **image**: `docker:24.0.6-dind` - Runs a DinD container to enable Docker capabilities for the runner.
-   - **env**:
-     - `DOCKER_TLS_CERTDIR`: Disables TLS for easier Docker communication within the cluster.
-   - **resources**: Limits resource usage to prevent overloading the cluster.
-   - **securityContext**: `privileged: true` - Grants privileges for DinD to function.
-   - **volumeMounts**:
-     - `/var/lib/docker`: Docker data storage.
-     - `/work/`: Shared volume with the main container.
+1. **GitHub Runner Container**
+```yaml
+- name: github-runner
+  imagePullPolicy: IfNotPresent
+  image: <dockerhub-username>/<image-name>:latest
+```
+- **name**: The container is named `github-runner`.
+- **imagePullPolicy**: Ensures the container image is pulled only if it is not already present on the node.
+- **image**: Specifies the Docker image for the GitHub Actions runner.
 
+#### **Environment Variables**
+```yaml
+env:
+  - name: GITHUB_OWNER
+    valueFrom:
+      secretKeyRef:
+        name: github-secret
+        key: GITHUB_OWNER
+  - name: GITHUB_REPOSITORY
+    valueFrom:
+      secretKeyRef:
+        name: github-secret
+        key: GITHUB_REPOSITORY
+  - name: GITHUB_PERSONAL_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: github-secret
+        key: GITHUB_PERSONAL_TOKEN
+  - name: DOCKER_HOST
+    value: tcp://localhost:2375
+```
+- **GITHUB_OWNER, GITHUB_REPOSITORY, GITHUB_PERSONAL_TOKEN**:
+  - Values are retrieved from a Kubernetes secret named `github-secret`.
+- **DOCKER_HOST**:
+  - Configures the Docker host to communicate with the Docker-in-Docker (DinD) sidecar container.
+
+#### **Volume Mounts**
+```yaml
+volumeMounts:
+  - name: data
+    mountPath: /work/
+```
+Mounts a shared volume named `data` to the `/work/` directory in the container.
+
+
+2. **Docker-in-Docker (DinD) Container**
+```yaml
+- name: dind
+  image: docker:24.0.6-dind
+```
+- **name**: The sidecar container is named `dind`.
+- **image**: Specifies the Docker-in-Docker image version.
+
+#### **Environment Variables**
+```yaml
+env:
+  - name: DOCKER_TLS_CERTDIR
+    value: ""
+```
+Disables TLS for easier Docker communication within the cluster.
+
+#### **Resource Requests**
+```yaml
+resources:
+  requests:
+    cpu: 20m
+    memory: 512Mi
+```
+Specifies minimal CPU (`20m`) and memory (`512Mi`) resources required for the container to run.
+
+#### **Security Context**
+```yaml
+securityContext:
+  privileged: true
+```
+Enables privileged mode to allow Docker-in-Docker to function correctly.
+
+#### **Volume Mounts**
+```yaml
+volumeMounts:
+  - name: docker-graph-storage
+    mountPath: /var/lib/docker
+  - name: data
+    mountPath: /work/
+```
+- **docker-graph-storage**: Stores Docker images and layers.
+- **data**: Shared with the main `github-runner` container for job-related data.
 
 #### **Volumes**
-- **`docker-graph-storage`**: Temporary storage for Docker images and layers.
-- **`data`**: Shared storage for job-related data between containers.
+Defines the volumes available to the pod.
 
+```yaml
+volumes:
+  - name: docker-graph-storage
+    emptyDir: {}
+  - name: data
+    emptyDir: {}
+```
+- **docker-graph-storage**: A temporary volume (`emptyDir`) for Docker image storage.
+- **data**: A temporary volume for sharing data between containers.
 
 ### **Create a Kubernetes namespace:**
 ```bash
@@ -597,24 +704,34 @@ kubectl -n host-runner create secret generic github-secret \
 ### **Apply the Kubernetes deployment:**
 
 ```bash
-kubectl apply -f kubernetes.yaml -n host-runner
+kubectl apply -f github-runner.yaml -n host-runner
 ```
 
 ### **Verify the deployment:**
-```yaml
-# Check pod status
-kubectl get pods -n host-runner
 
-# Check runner logs
+```yaml
+kubectl get pods -n host-runner
+```
+
+You should see the GitHub runner pod running successfully.
+
+![](./images/10.png)
+
+**Check runner logs**
+
+```yaml
 kubectl  logs <pod-name> -n host-runner
 ```
 
-## Step 8: Testing the Runner with Nginx Deployment
+Now, if the github runner is successfully deployed, you can see the runner is listed in your github repository `Self hosted runner` section.
 
+![](./images/11.png)
+
+## Step 8: Testing the Runner with Nginx Deployment
 
 ### **Create Directory Structure**
 
-Set up the necessary directory structure for your deployment files:
+Create a directory structure for the Nginx deployment files in your `repository root` directory.
 
 ```bash
 mkdir -p nginx-deployment
@@ -902,7 +1019,7 @@ and add it as a secret in your GitHub repository as `KUBE_CONFIG`.
 After creating the required files and configuration, commit and push all files to the main branch of your repository.
 
 
-### **Verify the Workflow**
+## Step 9: **Verify the Workflow**
 Monitor the **Actions** tab in your GitHub repository to ensure the workflow runs successfully. The workflow will:  
 1. Build and push the Docker image.
 
@@ -957,4 +1074,7 @@ With the provided `url` by `load-balancer` you can access the application.
 
 ![](./images/9.png)
 
+## Conclusion
+
+In this lab, you have successfully set up a self-hosted runner in Kubernetes and deployed an Nginx application using GitHub Actions. You have learned how to automate the Docker build, Kubernetes deployment, and service creation using GitHub workflows. By leveraging self-hosted runners, you can optimize resource usage and streamline CI/CD processes in Kubernetes environments.
 
