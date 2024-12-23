@@ -39,6 +39,23 @@ In this lab, you'll:
 3. Execute commands to list files, display system information, and check software versions.
 4. Learn how to debug workflows and troubleshoot common issues.
 
+
+## Create and Configure GitHub Repository
+
+1. Go to your GitHub and create a new repository called `github-actions-lab` with a `README.md` file. Now clone it in the Poridhis VM. 
+
+2. Setup githubs default account:
+
+    ```bash
+    git config user.email "<your-email>"
+    git config user.name "<Your Name>"
+    ```
+
+    Replace `<your-email>` and `<your-name>` with your github email address and username.
+
+
+
+
 ## Project Structure
 
 The lab creates the following structure within your repository:
@@ -50,7 +67,10 @@ The lab creates the following structure within your repository:
 └── README.md
 ```
 
-## Step 1: Create Workflow Directory
+
+
+
+### Create Workflow Directory
 
 Start by creating the necessary directory structure for GitHub Actions workflows.
 
@@ -62,7 +82,7 @@ This command creates the `.github/workflows` directory in your repository, where
 
 
 
-## Step 2: Create Workflow File
+## Create Workflow File
 
 Create a file named `basic-checkout.yml` in the `.github/workflows` directory with the following content:
 
@@ -112,84 +132,8 @@ jobs:
 
 
 
-## Step 3: Push Workflow File to Repository
 
-
-
-
-
-
-
-
-To push code from a remote VS Code server to a GitHub repository using SSH, follow these steps:
-
-
-
-### **1. Generate an SSH Key**
-1. Open the terminal in your remote VS Code server.
-2. Run the following command to generate a new SSH key pair:
-   ```bash
-   ssh-keygen -t ed25519 -C "your-email@example.com"
-   ```
-   - If prompted, specify a file location (default is `~/.ssh/id_ed25519`) or press Enter to accept the default.
-   - Set a passphrase (recommended) or press Enter to skip.
-
-3. Confirm the SSH key was created:
-   ```bash
-   ls ~/.ssh/
-   ```
-   You should see files like `id_ed25519` (private key) and `id_ed25519.pub` (public key).
-
-
-
-
-### **2. Add the SSH Key to Your GitHub Account**
-1. Display the public key:
-   ```bash
-   cat ~/.ssh/id_ed25519.pub
-   ```
-   Copy the output.
-
-2. Open [GitHub SSH settings](https://github.com/settings/keys).
-
-3. Click **"New SSH Key"**, provide a descriptive title (e.g., "Remote VS Code"), and paste the public key.
-
-4. Click **"Add SSH Key"**.
-
-
-
-### **3. Setup githubs default account**
-
-```
-git config --global user.email "minhaz.jisun@gmail.com"
-git config --global user.name "Your Name"
-```
-
-
-### **4. Configure the Remote Repository in Git**
-1. Navigate to your project directory in the terminal:
-   ```bash
-   cd /path/to/your/project
-   ```
-
-2. Initialize a Git repository if not already done:
-   ```bash
-   git init
-   ```
-
-3. Add the GitHub repository as a remote:
-   ```bash
-   git remote add origin git@github.com:<username>/<repository>.git
-   ```
-
-4. Verify the remote URL:
-   ```bash
-   git remote -v
-   ```
-
-
-
-### **6. Push Code to GitHub**
+### Push Code to GitHub
 1. Stage and commit your changes:
    ```bash
    git add .
@@ -198,41 +142,15 @@ git config --global user.name "Your Name"
 
 2. Push the code to the repository:
    ```bash
-   git push -u origin main
+   git push origin main
    ```
    Replace `main` with the default branch name if different.
 
-
-
-You are now set up to use SSH with GitHub from your remote VS Code server!
-
+    Once pushed, the workflow automatically runs.
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-Commit and push the `basic-checkout.yml` file to the `main` branch:
-
-```bash
-git add .github/workflows/basic-checkout.yml
-git commit -m "Add basic GitHub Actions workflow"
-git push origin main
-```
-
-Once pushed, the workflow automatically runs.
-
-
-
-## Step 4: View Workflow Results
+## View Workflow Results
 
 Navigate to the **Actions** tab in your repository to view the workflow execution details. Each step's logs show the command output, helping you understand how the workflow executed.
 
@@ -305,7 +223,7 @@ Navigate to the **Actions** tab in your repository to view the workflow executio
 
 
 
-# Practice Exercises
+## Practice Exercises
 
 ### 1. Add New Commands
 Modify the workflow to include:
@@ -367,8 +285,10 @@ Add a step that runs only if the workflow is triggered by a push event:
    - Verify syntax for multi-line commands.
    - Check environment variable usage.
 
-### Debugging Tips
+## Debugging Tips
 - Enable debug logging by setting the `ACTIONS_RUNNER_DEBUG` secret to `true`.
 - Use `echo` statements to debug variables.
 - Check workflow logs in the **Actions** tab.
 
+## Conclusion
+This lab has provided a comprehensive introduction to GitHub Actions, guiding you through creating and running a basic workflow. You have learned how to use GitHub-hosted runners, configure workflows, execute commands, and debug common issues. By practicing the exercises and exploring advanced workflow configurations, you can expand your automation capabilities and streamline your development workflows. Happy automating!
