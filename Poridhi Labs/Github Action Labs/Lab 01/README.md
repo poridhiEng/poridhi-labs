@@ -2,7 +2,7 @@
 
 GitHub Actions is a powerful tool for automating workflows directly within your GitHub repositories. This hands-on lab provides a beginner-friendly introduction to GitHub Actions, guiding you through creating a basic workflow. You'll learn how to execute commands, check out repository code, and view workflow results.
 
-![](./images/lab11.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/Lab%2001/images/lab11.svg)
 
 Imagine you want to automate routine tasks like running tests, building your code, or deploying your application whenever you push changes to your repository. GitHub Actions can simplify this by automating workflows triggered by specific events like code pushes or pull requests.
 
@@ -31,7 +31,7 @@ To complete this lab, ensure you have:
 
 ## Task Description
 
-![](./images/lab1.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/Lab%2001//images/lab1.svg)
 
 In this lab, you'll:
 1. Create a GitHub Actions workflow file.
@@ -154,19 +154,19 @@ jobs:
 
 Navigate to the **Actions** tab in your repository to view the workflow execution details. Each step's logs show the command output, helping you understand how the workflow executed.
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/Lab%2001/images/image.png)
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/Lab%2001/images/image-1.png)
 
 #### Outputs
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/Lab%2001/images/image-2.png)
 
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/Lab%2001/images/image-3.png)
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/Lab%2001/images/image-4.png)
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Github%20Action%20Labs/Lab%2001/images/image-5.png)
 
 
 ## Detailed Breakdown of Steps
