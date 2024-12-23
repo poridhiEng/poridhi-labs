@@ -129,7 +129,7 @@ Now, let's create a new Pulumi project and write the code to provision our EC2 i
     // Create K3s Instances
     const createInstance = (name) => {
         return new aws.ec2.Instance(name, {
-            instanceType: "t2.micro",
+            instanceType: "t3.small",
             vpcSecurityGroupIds: [k3sSecurityGroup.id],
             ami: amiId,
             subnetId: publicSubnet.id,
@@ -211,11 +211,11 @@ deprecation_warnings = False
 
 ```ini
 [k3s-master]
-master ansible_host=13.212.88.123 ansible_user=ubuntu ansible_ssh_private_key_file=../Infra/MyKeyPair.pem
+master ansible_host=<public-ip-of-master> ansible_user=ubuntu ansible_ssh_private_key_file=../k3s-infra/MyKeyPair.pem
 
 [k3s-workers]
-worker1 ansible_host=46.137.227.11 ansible_user=ubuntu ansible_ssh_private_key_file=../Infra/MyKeyPair.pem
-worker2 ansible_host=18.143.108.8 ansible_user=ubuntu ansible_ssh_private_key_file=../Infra/MyKeyPair.pem
+worker1 ansible_host=<public-ip-of-worker-1> ansible_user=ubuntu ansible_ssh_private_key_file=../k3s-infra/MyKeyPair.pem
+worker2 ansible_host=<public-ip-of-worker-2> ansible_user=ubuntu ansible_ssh_private_key_file=../k3s-infra/MyKeyPair.pem
 ```
 
 ### playbook.yml
