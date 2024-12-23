@@ -1,4 +1,4 @@
-# Comprehensive Guide: Self-Hosted GitHub Actions Runner in Kubernetes
+# Self-Hosted Runner in Kubernetes
 
 ## Introduction
 
@@ -35,17 +35,11 @@ A self-hosted GitHub Actions runner operates as a service on a machine you confi
 
 ### Why Kubernetes for Self-Hosted Runners?
 
-**1. Scalability**
+**Scalability:** Kubernetes can automatically scale runners up or down based on demand using features like Horizontal Pod Autoscaling (HPA). You can increase the number of runner pods during peak activity and reduce them during low activity, saving costs and resources.
 
-Dynamic Scaling: Kubernetes can automatically scale runners up or down based on demand using features like Horizontal Pod Autoscaling (HPA). You can increase the number of runner pods during peak activity and reduce them during low activity, saving costs and resources.
+**High Availability:** Kubernetes ensures high availability by automatically restarting pods if they fail. Self-healing capabilities reduce downtime for workflows. Kubernetes can distribute jobs across multiple nodes, ensuring optimal utilization and no single point of failure.
 
-**2. High Availability**
-
-Kubernetes ensures high availability by automatically restarting pods if they fail. Self-healing capabilities reduce downtime for workflows. Kubernetes can distribute jobs across multiple nodes, ensuring optimal utilization and no single point of failure.
-
-**3. Resource Management**
-
-Kubernetes allows fine-grained control over resource allocation using requests and limits for CPU and memory. This ensures that self-hosted runners don't overwhelm the cluster or underutilize resources.
+**Resource Management:** Kubernetes allows fine-grained control over resource allocation using requests and limits for CPU and memory. This ensures that self-hosted runners don't overwhelm the cluster or underutilize resources.
 
 ### Example Use Case with Kubernetes
 
@@ -69,20 +63,20 @@ Before you begin, ensure you have the following:
 
 ## Step 1: Project Structure Setup
 
-**1. Create a new project directory:**
+**Create a new project directory:**
 
 ```bash
 mkdir github-runner-k8s
 cd github-runner-k8s
 ```
 
-**2. Create the necessary files:**
+**Create the necessary files:**
 
 ```bash
 touch Dockerfile entrypoint.sh kubernetes.yaml
 ```
 
-## Step 2: Creating the Custom runner image
+## Creating the Custom runner image
 
 Now we will create a Dockerfile that defines the container image for the self-hosted runner, including all required dependencies and configurations.
 
@@ -92,7 +86,7 @@ FROM debian:bookworm-slim
 ```
 **Purpose**: Specifies the base image.  
 
-- `debian:bookworm-slim` is a lightweight version of the Debian Bookworm operating system, minimizing unnecessary components for a smaller, faster image.
+- `debian:bookworm-slim`: Used to minimizing unnecessary components for a smaller, faster image.
 
 ### **Arguments and Environment Variables**
 ```dockerfile
@@ -105,6 +99,7 @@ ENV GITHUB_REPOSITORY ""
 
 - `ARG RUNNER_VERSION`: Allows setting the Actions Runner version during the build. The default is `2.302.1`.
 - `ENV GITHUB_PERSONAL_TOKEN`, `GITHUB_OWNER`, `GITHUB_REPOSITORY`: Defines environment variables for the GitHub token, repository owner, and repository name. These are placeholders that will be configured at runtime.
+
 
 ### **Install Docker**
 ```dockerfile
@@ -263,7 +258,7 @@ ENTRYPOINT ["/actions-runner/entrypoint.sh"]
 
 The `entrypoint.sh` script handles runner registration, execution, and cleanup. Lets create this script step by step: 
 
-#### **1. Requesting the Runner Registration Token**
+#### **Requesting the Runner Registration Token**
 ```sh
 registration_url="https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPOSITORY}/actions/runners/registration-token"
 echo "Requesting registration URL at '${registration_url}'"
