@@ -422,7 +422,7 @@ jobs:
 
               tar xzf ./actions-runner-linux-x64-2.317.0.tar.gz
 
-              ./config.sh --url https://github.com/Konami33/k3s-deployment --token <GIT_RUNNER_TOKEN> --name "Git-runner"
+              ./config.sh --url https://github.com/<user_name>/<repo_name> --token <GIT_RUNNER_TOKEN> --name "Git-runner"
 
               sudo ./svc.sh install
               sudo ./svc.sh start
