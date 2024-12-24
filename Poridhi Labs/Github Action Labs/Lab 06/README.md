@@ -53,7 +53,7 @@ Before you begin, ensure you have the following:
 
 ## Step 1: Create AWS Resources with Pulumi
 
-![](./images/aws-infra.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/b83239541dd39c17d025e506e159a24eb974bfb8/Poridhi%20Labs/Github%20Action%20Labs/Lab%2006/images/aws-infra.svg)
 
 ### Configure AWS CLI
 
@@ -237,9 +237,9 @@ pulumi up
 
 ## Step 2: Install K3S using Ansible
 
-![](./images/ansible-to-infra.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/b83239541dd39c17d025e506e159a24eb974bfb8/Poridhi%20Labs/Github%20Action%20Labs/Lab%2006/images/ansible-to-infra.svg)
 
-![](./images/Ansible-k3s.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/b83239541dd39c17d025e506e159a24eb974bfb8/Poridhi%20Labs/Github%20Action%20Labs/Lab%2006/images/Ansible-k3s.svg)
 
 ### Create Project Structure
 
