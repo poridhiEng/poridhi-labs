@@ -746,10 +746,6 @@ You should see the GitHub runner pod running successfully.
 kubectl  logs <pod-name> -n host-runner
 ```
 
-Now, if the github runner is successfully deployed, you can see the runner is listed in your github repository `Self hosted runner` section.
-
-![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/6675e03153be6538a11f09778dc2ebea53803fcb/Poridhi%20Labs/Github%20Action%20Labs/Lab%2005/images/11.png)
-
 ## Step 8: Testing the Runner with Nginx Deployment
 
 ### **Create Directory Structure**
