@@ -619,7 +619,29 @@ env:
 - **GITHUB_OWNER, GITHUB_REPOSITORY, GITHUB_PERSONAL_TOKEN**:
   - Values are retrieved from a Kubernetes secret named `github-secret`.
 - **DOCKER_HOST**:
-  - Configures the Docker host to communicate with the Docker-in-Docker (DinD) sidecar container.
+
+   ![](./images/runner-dind.svg)
+
+1. **Role of `DOCKER_HOST`:**
+   - Specifies the location of the Docker daemon (`tcp://localhost:2375`).
+   - Redirects Docker CLI commands to the `dind` container.
+
+2. **Why `tcp://localhost:2375`:**
+   - The `dind` container runs a Docker daemon and exposes it on port `2375` over TCP (default non-secure port).
+   - `localhost` allows communication within the same pod.
+
+3. **Interaction Between Containers:**
+   - **GitHub Runner Container**: Executes CI/CD workflows and Docker commands.
+   - **dind Container**: Provides the Docker daemon for these commands.
+   - Communication happens via the TCP API exposed on port `2375`.
+
+4. **Reason for This Setup:**
+   - The GitHub Runner container needs access to a Docker daemon to execute tasks.
+   - Using TCP avoids sharing Unix sockets and maintains container isolation.
+
+5. **Security Note:**
+   - Port `2375` is non-secure but safe here due to pod-level isolation.
+   - For external communication, a secure setup (e.g., TLS on `2376`) is recommended.
 
 #### **Volume Mounts**
 ```yaml
