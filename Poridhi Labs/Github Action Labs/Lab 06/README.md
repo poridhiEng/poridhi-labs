@@ -4,46 +4,44 @@
 
 ### Configure AWS CLI
 
-- Configure AWS CLI with the necessary credentials. Run the following command and follow the prompts to configure it:
+1. Install and configure the AWS CLI with your credentials by running:
+   ```bash
+   aws configure
+   ```
+   Follow the prompts to input:
+   - AWS Access Key ID
+   - AWS Secret Access Key
+   - Default region
+   - Output format (e.g., `json`)
 
-    ```sh
-    aws configure
-    ```
-    
-    This command sets up your AWS CLI with the necessary credentials, region, and output format.
-
-    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2001/images/image.png)
-
-    You will find the `AWS Access key` and `AWS Seceret Access key` on Lab description page,where you generated the credentials.
-
-    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Redis%20Labs/Lab%2001/images/image-1.png)
+2. Your access keys can be found on the lab description page where the credentials were generated.
 
 ### Set Up a Pulumi Project
 
-Now, let's create a new Pulumi project and write the code to provision our EC2 instances.
+#### Create and Initialise the Pulumi Project
 
-1. Create a new directory and initialize a Pulumi project:
+1. Create a new directory for the Pulumi project:
 
    ```bash
    mkdir k3s-infra && cd k3s-infra
    pulumi new aws-javascript
    ```
+   This sets up a basic Pulumi project. Follow the prompts to provide details like project name and description.
 
-    This command creates a new directory with the basic structure for a Pulumi project. Follow the prompts to set up your project.
+#### Create a Key Pair
 
-2. Create Key Pair
+2. Create an EC2 key pair to allow SSH access to the instances:
+   ```bash
+   aws ec2 create-key-pair --key-name MyKeyPair --query 'KeyMaterial' --output text > MyKeyPair.pem
+   ```
 
-    Create a new key pair for our instances using the following command:
+3. Set file permissions for the key file:
+   ```bash
+   chmod 400 MyKeyPair.pem
+   ```
 
-    ```sh
-    aws ec2 create-key-pair --key-name MyKeyPair --query 'KeyMaterial' --output text > MyKeyPair.pem
-    ```
+#### Write Pulumi Code
 
-3. Set File Permissions of the key files
-
-    ```sh
-    chmod 400 MyKeyPair.pem
-    ```
 
 
 4. Replace the contents of `index.js` with the following code:
@@ -167,7 +165,18 @@ Now, let's create a new Pulumi project and write the code to provision our EC2 i
 ### Create Directory
 
 ```bash 
-mkdir ansible-k3s && cd ansible-k3s
+# Create the main project directory
+mkdir -p ansible-k3s/roles/k3s/tasks
+mkdir -p ansible-k3s/roles/k3s/vars
+
+# Create the necessary files
+touch ansible-k3s/ansible.cfg
+touch ansible-k3s/inventory
+touch ansible-k3s/playbook.yml
+touch ansible-k3s/roles/k3s/tasks/main.yml
+touch ansible-k3s/roles/k3s/tasks/master.yml
+touch ansible-k3s/roles/k3s/tasks/worker.yml
+touch ansible-k3s/roles/k3s/vars/main.yml
 ```
 
 ### Install Ansible
@@ -178,7 +187,7 @@ To install Ansible on an Ubuntu machine, run these commands:
 sudo apt-get update -y
 sudo apt install software-properties-common -y
 sudo apt-add-repository --yes --update ppa:ansible/ansible
-sudo apt-get install -y ansible
+sudo apt-get install -y ansible 
 ```
 
 ### Project Structure
