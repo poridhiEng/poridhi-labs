@@ -205,6 +205,7 @@ ansible-k3s/
 inventory = inventory
 roles_path = roles
 deprecation_warnings = False
+host_key_checking = False
 ```
 
 ### inventory
