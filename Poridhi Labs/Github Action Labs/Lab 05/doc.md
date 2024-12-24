@@ -132,31 +132,14 @@ exports.workerNode2Details = { id: workerNode2.id, publicIp: workerNode2.publicI
 Run the following command to provision the EC2 instances:
 
 ```bash
-pulumi up
+pulumi up --yes
 ```
 
 ## Step 2: Install K3S using Ansible
 
 ### Create Project Structure
 
-Create a directory structure for the Ansible project:
-
-```bash 
-# Create the main project directory
-mkdir -p ansible-k3s/roles/k3s/tasks
-mkdir -p ansible-k3s/roles/k3s/vars
-
-# Create the necessary files
-touch ansible-k3s/ansible.cfg
-touch ansible-k3s/inventory
-touch ansible-k3s/playbook.yml
-touch ansible-k3s/roles/k3s/tasks/main.yml
-touch ansible-k3s/roles/k3s/tasks/master.yml
-touch ansible-k3s/roles/k3s/tasks/worker.yml
-touch ansible-k3s/roles/k3s/vars/main.yml
-```
-
-### Project Structure
+This is the structure for ansible configurations we'll be creating:
 
 ```plaintext
 ansible-k3s/
@@ -173,20 +156,44 @@ ansible-k3s/
             └── main.yml
 ```
 
+
+Run the following commands to create the desired structure:
+
+```bash 
+# Create the main project directory
+mkdir -p ansible-k3s/roles/k3s/tasks
+mkdir -p ansible-k3s/roles/k3s/vars
+
+# Create the necessary files
+touch ansible-k3s/ansible.cfg
+touch ansible-k3s/inventory
+touch ansible-k3s/playbook.yml
+touch ansible-k3s/roles/k3s/tasks/main.yml
+touch ansible-k3s/roles/k3s/tasks/master.yml
+touch ansible-k3s/roles/k3s/tasks/worker.yml
+touch ansible-k3s/roles/k3s/vars/main.yml
+```
+
+
+
 ### Install Ansible
 
-To install Ansible on your machine, run these commands:
+Now navigate to the `ansible-k3s` directory. Then, install Ansible on your machine, run these commands:
 
 ```bash
 sudo apt-get update -y
 sudo apt install software-properties-common -y
 sudo apt-add-repository --yes --update ppa:ansible/ansible
 sudo apt-get install -y ansible 
+sudo ansible --version
 ```
 
 ### Configure Ansible
 
-#### ansible.cfg
+Populate the following files using the given configurations, playbook and role tasks.
+
+
+#### `ansible.cfg`
 
 ```bash
 [defaults]
@@ -196,7 +203,7 @@ deprecation_warnings = False
 host_key_checking = False
 ```
 
-#### inventory
+#### `inventory`
 
 ```ini
 [k3s-master]
@@ -207,9 +214,7 @@ worker1 ansible_host=<public-ip-of-worker-1> ansible_user=ubuntu ansible_ssh_pri
 worker2 ansible_host=<public-ip-of-worker-2> ansible_user=ubuntu ansible_ssh_private_key_file=../k3s-infra/MyKeyPair.pem
 ```
 
-### Create Playbook
-
-#### playbook.yml
+#### `playbook.yml`
 
 ```yaml
 - hosts: k3s-master
@@ -223,9 +228,8 @@ worker2 ansible_host=<public-ip-of-worker-2> ansible_user=ubuntu ansible_ssh_pri
       k3s_role: worker
 ```
 
-### Role Tasks
 
-#### roles/k3s/tasks/main.yml
+#### `roles/k3s/tasks/main.yml`
 
 ```yaml
 - name: Include tasks for K3s Master
@@ -237,7 +241,7 @@ worker2 ansible_host=<public-ip-of-worker-2> ansible_user=ubuntu ansible_ssh_pri
   when: k3s_role == "worker"
 ```
 
-#### roles/k3s/tasks/master.yml
+#### `roles/k3s/tasks/master.yml`
 
 ```yaml
 - name: Install K3s on Master
@@ -256,7 +260,7 @@ worker2 ansible_host=<public-ip-of-worker-2> ansible_user=ubuntu ansible_ssh_pri
   delegate_to: localhost
 ```
 
-#### roles/k3s/tasks/worker.yml:
+#### `roles/k3s/tasks/worker.yml`
 
 ```yaml
 - name: Create local token directory
@@ -277,23 +281,21 @@ worker2 ansible_host=<public-ip-of-worker-2> ansible_user=ubuntu ansible_ssh_pri
   become: true
 ```
 
-### roles/k3s/vars/main.yml:
+#### `roles/k3s/vars/main.yml`
 
 ```bash
 k3s_role: master
 ```
 
-### Run Playbook
-
-Now navigate to the directory where the playbook is located and run the following command: 
+### **Run Playbook**
 
 ```bash
 ansible-playbook playbook.yml
 ```
 
-### Check Installation
+### **Check Installation**
 
-SSH into instances and run:
+SSH into instances using public IP of master node and run:
 
 ```bash
 kubectl get nodes
