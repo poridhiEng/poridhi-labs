@@ -42,127 +42,104 @@
 
 #### Write Pulumi Code
 
+Replace the contents of `index.js` with the following code:
 
+```javascript
+const pulumi = require("@pulumi/pulumi");
+const aws = require("@pulumi/aws");
 
-4. Replace the contents of `index.js` with the following code:
+// Create a VPC
+const vpc = new aws.ec2.Vpc("k3s-vpc", {
+    cidrBlock: "10.0.0.0/16",
+    enableDnsHostnames: true,
+    enableDnsSupport: true,
+    tags: { Name: "k3s-vpc" },
+});
+exports.vpcId = vpc.id;
 
-    ```javascript
-    const pulumi = require("@pulumi/pulumi");
-    const aws = require("@pulumi/aws");
+// Create a public subnet
+const publicSubnet = new aws.ec2.Subnet("k3s-subnet", {
+    vpcId: vpc.id,
+    cidrBlock: "10.0.1.0/24",
+    availabilityZone: "ap-southeast-1a",
+    mapPublicIpOnLaunch: true,
+    tags: { Name: "k3s-subnet" },
+});
+exports.publicSubnetId = publicSubnet.id;
 
-    // Create a VPC
-    const vpc = new aws.ec2.Vpc("k3s-vpc", {
-        cidrBlock: "10.0.0.0/16",
-        enableDnsHostnames: true,
-        enableDnsSupport: true,
-        tags: {
-            Name: "k3s-vpc",
-        },
-    });
-    exports.vpcId = vpc.id;
+// Internet Gateway
+const internetGateway = new aws.ec2.InternetGateway("k3s-igw", {
+    vpcId: vpc.id,
+    tags: { Name: "k3s-igw" },
+});
+exports.igwId = internetGateway.id;
 
-    // Create a single public subnet
-    const publicSubnet = new aws.ec2.Subnet("k3s-subnet", {
-        vpcId: vpc.id,
-        cidrBlock: "10.0.1.0/24",
-        availabilityZone: "ap-southeast-1a",
-        mapPublicIpOnLaunch: true,
-        tags: {
-            Name: "k3s-subnet",
-        },
-    });
-    exports.publicSubnetId = publicSubnet.id;
+// Route Table
+const publicRouteTable = new aws.ec2.RouteTable("k3s-rt", {
+    vpcId: vpc.id,
+    tags: { Name: "k3s-rt" },
+});
+exports.publicRouteTableId = publicRouteTable.id;
 
-    // Create an Internet Gateway
-    const internetGateway = new aws.ec2.InternetGateway("k3s-igw", {
-        vpcId: vpc.id,
-        tags: {
-            Name: "k3s-igw",
-        },
-    });
-    exports.igwId = internetGateway.id;
+new aws.ec2.Route("igw-route", {
+    routeTableId: publicRouteTable.id,
+    destinationCidrBlock: "0.0.0.0/0",
+    gatewayId: internetGateway.id,
+});
 
-    // Create a Route Table
-    const publicRouteTable = new aws.ec2.RouteTable("k3s-rt", {
-        vpcId: vpc.id,
-        tags: {
-            Name: "k3s-rt",
-        },
-    });
-    exports.publicRouteTableId = publicRouteTable.id;
+new aws.ec2.RouteTableAssociation("rt-association", {
+    subnetId: publicSubnet.id,
+    routeTableId: publicRouteTable.id,
+});
 
-    // Create a route in the Route Table for the Internet Gateway
-    new aws.ec2.Route("igw-route", {
-        routeTableId: publicRouteTable.id,
-        destinationCidrBlock: "0.0.0.0/0",
-        gatewayId: internetGateway.id,
-    });
+// Security Group
+const k3sSecurityGroup = new aws.ec2.SecurityGroup("k3s-secgrp", {
+    vpcId: vpc.id,
+    description: "Allow SSH and K3s traffic",
+    ingress: [
+        { protocol: "tcp", fromPort: 22, toPort: 22, cidrBlocks: ["0.0.0.0/0"] },
+        { protocol: "tcp", fromPort: 6443, toPort: 6443, cidrBlocks: ["0.0.0.0/0"] },
+    ],
+    egress: [
+        { protocol: "-1", fromPort: 0, toPort: 0, cidrBlocks: ["0.0.0.0/0"] },
+    ],
+    tags: { Name: "k3s-secgrp" },
+});
+exports.k3sSecurityGroupId = k3sSecurityGroup.id;
 
-    // Associate Route Table with the public subnet
-    new aws.ec2.RouteTableAssociation("rt-association", {
-        subnetId: publicSubnet.id,
-        routeTableId: publicRouteTable.id,
-    });
+// AMI and Instances
+const amiId = "ami-01811d4912b4ccb26"; // Ubuntu 24.04 LTS
+const createInstance = (name) => new aws.ec2.Instance(name, {
+    instanceType: "t3.small",
+    vpcSecurityGroupIds: [k3sSecurityGroup.id],
+    ami: amiId,
+    subnetId: publicSubnet.id,
+    keyName: "MyKeyPair",
+    associatePublicIpAddress: true,
+    tags: { Name: name, Environment: "Development", Project: "K3sSetup" },
+});
 
-    // Create a Security Group for K3s Instances
-    const k3sSecurityGroup = new aws.ec2.SecurityGroup("k3s-secgrp", {
-        vpcId: vpc.id,
-        description: "Allow SSH and K3s traffic",
-        ingress: [
-            { protocol: "tcp", fromPort: 22, toPort: 22, cidrBlocks: ["0.0.0.0/0"] }, // SSH
-            { protocol: "tcp", fromPort: 6443, toPort: 6443, cidrBlocks: ["0.0.0.0/0"] }, // K3s API
-        ],
-        egress: [
-            { protocol: "-1", fromPort: 0, toPort: 0, cidrBlocks: ["0.0.0.0/0"] }, // Allow all outbound traffic
-        ],
-        tags: {
-            Name: "k3s-secgrp",
-        },
-    });
-    exports.k3sSecurityGroupId = k3sSecurityGroup.id;
+const masterNode = createInstance("k3s-master-node");
+const workerNode1 = createInstance("k3s-worker-node-1");
+const workerNode2 = createInstance("k3s-worker-node-2");
 
-    // Define an AMI for the EC2 instances
-    const amiId = "ami-01811d4912b4ccb26"; // Ubuntu 24.04 LTS
+exports.masterNodeDetails = { id: masterNode.id, publicIp: masterNode.publicIp };
+exports.workerNode1Details = { id: workerNode1.id, publicIp: workerNode1.publicIp };
+exports.workerNode2Details = { id: workerNode2.id, publicIp: workerNode2.publicIp };
+```
 
-    // Create K3s Instances
-    const createInstance = (name) => {
-        return new aws.ec2.Instance(name, {
-            instanceType: "t3.small",
-            vpcSecurityGroupIds: [k3sSecurityGroup.id],
-            ami: amiId,
-            subnetId: publicSubnet.id,
-            keyName: "MyKeyPair", // Update with your key pair
-            associatePublicIpAddress: true,
-            tags: {
-                Name: name,
-                Environment: "Development",
-                Project: "K3sSetup",
-            },
-        });
-    };
+#### Deploy the Infrastructure
+Run the following command to provision the EC2 instances:
 
-    // Create the master node
-    const masterNode = createInstance("k3s-master-node");
-
-    // Create the worker nodes
-    const workerNode1 = createInstance("k3s-worker-node-1");
-    const workerNode2 = createInstance("k3s-worker-node-2");
-
-    // Export the instance details
-    exports.masterNodeDetails = { id: masterNode.id, publicIp: masterNode.publicIp };
-    exports.workerNode1Details = { id: workerNode1.id, publicIp: workerNode1.publicIp };
-    exports.workerNode2Details = { id: workerNode2.id, publicIp: workerNode2.publicIp };
-    ```
-
-5. Deploy the infrastructure:
-
-   ```bash
-   pulumi up
-   ```
+```bash
+pulumi up
+```
 
 ## Step 2: Install K3S using Ansible
 
-### Create Directory
+### Create Project Structure
+
+Create a directory structure for the Ansible project:
 
 ```bash 
 # Create the main project directory
@@ -177,17 +154,6 @@ touch ansible-k3s/roles/k3s/tasks/main.yml
 touch ansible-k3s/roles/k3s/tasks/master.yml
 touch ansible-k3s/roles/k3s/tasks/worker.yml
 touch ansible-k3s/roles/k3s/vars/main.yml
-```
-
-### Install Ansible
-
-To install Ansible on an Ubuntu machine, run these commands:
-
-```bash
-sudo apt-get update -y
-sudo apt install software-properties-common -y
-sudo apt-add-repository --yes --update ppa:ansible/ansible
-sudo apt-get install -y ansible 
 ```
 
 ### Project Structure
@@ -207,7 +173,20 @@ ansible-k3s/
             └── main.yml
 ```
 
-### ansible.cfg
+### Install Ansible
+
+To install Ansible on your machine, run these commands:
+
+```bash
+sudo apt-get update -y
+sudo apt install software-properties-common -y
+sudo apt-add-repository --yes --update ppa:ansible/ansible
+sudo apt-get install -y ansible 
+```
+
+### Configure Ansible
+
+#### ansible.cfg
 
 ```bash
 [defaults]
@@ -217,7 +196,7 @@ deprecation_warnings = False
 host_key_checking = False
 ```
 
-### inventory
+#### inventory
 
 ```ini
 [k3s-master]
@@ -228,9 +207,11 @@ worker1 ansible_host=<public-ip-of-worker-1> ansible_user=ubuntu ansible_ssh_pri
 worker2 ansible_host=<public-ip-of-worker-2> ansible_user=ubuntu ansible_ssh_private_key_file=../k3s-infra/MyKeyPair.pem
 ```
 
-### playbook.yml
+### Create Playbook
 
-```bash
+#### playbook.yml
+
+```yaml
 - hosts: k3s-master
   roles:
     - role: k3s
@@ -242,9 +223,11 @@ worker2 ansible_host=<public-ip-of-worker-2> ansible_user=ubuntu ansible_ssh_pri
       k3s_role: worker
 ```
 
-### roles/k3s/tasks/main.yml
+### Role Tasks
 
-```bash
+#### roles/k3s/tasks/main.yml
+
+```yaml
 - name: Include tasks for K3s Master
   include_tasks: master.yml
   when: k3s_role == "master"
@@ -254,9 +237,9 @@ worker2 ansible_host=<public-ip-of-worker-2> ansible_user=ubuntu ansible_ssh_pri
   when: k3s_role == "worker"
 ```
 
-### roles/k3s/tasks/master.yml
+#### roles/k3s/tasks/master.yml
 
-```bash
+```yaml
 - name: Install K3s on Master
   shell: curl -sfL https://get.k3s.io | sh -s - --write-kubeconfig-mode 644
   become: true
@@ -273,9 +256,9 @@ worker2 ansible_host=<public-ip-of-worker-2> ansible_user=ubuntu ansible_ssh_pri
   delegate_to: localhost
 ```
 
-### roles/k3s/tasks/worker.yml:
+#### roles/k3s/tasks/worker.yml:
 
-```bash
+```yaml
 - name: Create local token directory
   file:
     path: "/tmp/k3s_token_workers"
