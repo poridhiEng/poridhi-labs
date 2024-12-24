@@ -112,9 +112,43 @@ sudo chmod +x jenkins-install.sh
 ./jenkins-install.sh
 ```
 
+After running the script, you will see output like this:
+
+![alt text](image.png)
+
+**2. Access the Jenkins UI**
+
+To access the Jenkins UI, we have to create a Load Balancer with the following configuration:
+
+- eth0 IP of the Poridhi's VM
+- PORT (8081)
+
+To get the `eth0` IP, run this command:
+
+```sh
+ifconfig
+```
+
+![alt text](image-1.png)
+
+Using these, create a loadbalancer.
+
+![alt text](image-2.png)
+
+Now follow the URL provided by the LoadBalancer, and access Jenkins UI.
+
+![alt text](image-3.png)
+
+To get the password, run the following command:
+
+```sh
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+```
+This will output the initial admin password. Use this password to log in to the Jenkins UI.
+
 **2. Install Required Plugins**
 
-Navigate to **Manage Jenkins** > **Manage Plugins** > **Available Plugins**.
+To complete our CI/CD pipeline, we need to install some Plugins and tools. Navigate to **Manage Jenkins** > **Manage Plugins** > **Available Plugins** and install the following plugings.
 
 - **NodeJS**:
     - Name: `Node 16`
@@ -131,8 +165,6 @@ Navigate to **Manage Jenkins** > **Manage Plugins** > **Available Plugins**.
     - Enable automatic installation.
     - Installer: Download from the official site.
 
----
-
 **3. Integrate DockerHub**
 
 1. Create a DockerHub Personal Access Token:
@@ -147,8 +179,6 @@ Navigate to **Manage Jenkins** > **Manage Plugins** > **Available Plugins**.
      - Password: The generated token.
      - ID: `dockerhub`.
      - Description: `DockerHub Credentials`.
-
----
 
 ### 5. **Create a Jenkins Pipeline to Build and Push Docker Image**
 1. In the Jenkins dashboard, create a new pipeline job:

@@ -4,8 +4,8 @@ import os
 
 
 # Configuration setup
-instance_type = 't2.micro'
-ami = "ami-060e277c0d4cce553"
+instance_type = 't3.small'
+ami = "ami-06650ca7ed78ff6fa"
 
 
 # Create a VPC
