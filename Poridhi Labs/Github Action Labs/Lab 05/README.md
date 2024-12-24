@@ -620,7 +620,7 @@ env:
   - Values are retrieved from a Kubernetes secret named `github-secret`.
 - **DOCKER_HOST**:
 
-   ![](./images/runner-dind.svg)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/4d830d4e475c3b8189f674277ca0a230311fa9d7/Poridhi%20Labs/Github%20Action%20Labs/Lab%2005/images/runner-dind.svg)
 
 1. **Role of `DOCKER_HOST`:**
    - Specifies the location of the Docker daemon (`tcp://localhost:2375`).
