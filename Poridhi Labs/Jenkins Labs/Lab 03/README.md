@@ -6,6 +6,8 @@ In this guide, we'll walk you through the process of configuring a Jenkins agent
 
 ## Prerequisites for Jenkins Agent
 
+![alt text](image.png)
+
 Before you can add a Jenkins agent node, ensure the following requirements are met on the agent machine:
 - **Agent Node**: Ensure you have an `Ubuntu Machine` as an agent server to follow this guide.
 

@@ -1,6 +1,10 @@
 # CI CD Pipeline using Jenkins
 
-In this lab, we will be setting up a CI/CD pipeline using Jenkins for a containerized application. We will be using DockerHub as our container registry and Kubernetes as our container orchestration tool. This lab is intended to be done on Poridhi's Virtual Machine.
+In this lab, we will be setting up a CI/CD pipeline using Jenkins for a containerized application. We will be using DockerHub as our container registry and Kubernetes as our container orchestration tool.
+
+## Setting up AWS Infrastructure
+
+We will setup AWS infrastructure t
 
 ## Install and Configure Jenkins
 
@@ -34,8 +38,8 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-# Set Jenkins port (default 8081 or use command line argument)
-JENKINS_PORT=${1:-8081}
+# Set Jenkins port (default 8080 or use command line argument)
+JENKINS_PORT=${1:-8080}
 
 print_message "Starting Jenkins installation..."
 print_message "Jenkins will be configured to run on port: $JENKINS_PORT"
@@ -120,8 +124,8 @@ After running the script, you will see output like this:
 
 To access the Jenkins UI, we have to create a Load Balancer with the following configuration:
 
-- eth0 IP of the Poridhi's VM
-- PORT (8081)
+- `eth0` IP of the Poridhi's VM
+- PORT (`8081`)
 
 To get the `eth0` IP, run this command:
 
