@@ -221,15 +221,19 @@ pulumi.Output.all(
 
 ```sh
 cd ~/.ssh/
-aws ec2 create-key-pair --key-name jenkins --output text --query 'KeyMaterial' > jenkins.id_rsa
-chmod 400 jenkins.id_rsa
+aws ec2 create-key-pair --key-name jenkins_k3s --output text --query 'KeyMaterial' > jenkins_k3s.id_rsa
+chmod 400 jenkins_k3s.id_rsa
 ```
+
+![alt text](image-13.png)
 
 **6. Create Infra**
 
 ```sh
 pulumi up --yes
 ```
+
+![alt text](image-14.png)
 
 ## SSH into the Jenkins Master
 
@@ -238,6 +242,8 @@ After the infrastructure is created, SSH into the Jenkins Master using the follo
 ```sh
 ssh jenkins-master
 ```
+
+![alt text](image-15.png)
 
 ## Install and Configure Jenkins in the Jenkins Master Instance
 
@@ -375,22 +381,18 @@ To complete our CI/CD pipeline, we need to install some Plugins. Navigate to **M
 - **Eclipse**:
     - Name: `Eclipse`
     - Enable automatic installation.
-    - Version: `4.26.3`.
 
 - **NodeJS**:
     - Name: `Node 16`
     - Enable automatic installation.
     - Version: `16.x`.
 
-- **JDK**:
-    - Name: `JDK 17`
-    - Enable automatic installation.
-    - Version: `17.0.8+1`.
-
 - **Docker**:
     - Name: `Docker`.
     - Enable automatic installation.
-    - Installer: Download from the official site
+    - Installer: Download from the official site # Change this to your desired version
+
+> Change the version of the tools to your desired version.
 
 **Required Tools**
 
@@ -432,7 +434,7 @@ Goto **Manage Jenkins** > **Manage Tools** > **Install Tools** and install the f
      - ID: `dockerhub`.
      - Description: `DockerHub Credentials`.
 
-     ![alt text](image-10.png)
+     ![alt text](image-16.png)
 
 ## **Jenkins Pipeline**
 
@@ -505,10 +507,15 @@ pipeline {
 
 Check the `Sample-cicd` job in the Jenkins dashboard and click on `Build Now` to trigger the pipeline.
 
-Monitor the build and check the logs to ensure the Docker image is built and pushed successfully.
+![alt text](image-17.png)
 
-**4. Add CD part in the pipeline**
+Monitor the build and check the logs to ensure the Docker image is built and pushed successfully. Check console output to ensure the Docker image is built and pushed successfully.
 
-Now, we will update the pipeline to add the CD part. We will be using Kubernetes to deploy the application.
+**Kubernetes Plugins**
+
+![alt text](image-18.png)
+
+
+
 
 
