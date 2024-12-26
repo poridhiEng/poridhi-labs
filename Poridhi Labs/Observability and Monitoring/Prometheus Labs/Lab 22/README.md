@@ -2,7 +2,7 @@
 
 Pushing metrics to a Pushgateway is a fundamental step in exporting metrics for Prometheus. This process allows ephemeral or batch jobs to expose their metrics for collection and monitoring. 
 
-![](./images/pushgateway2.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2022/images/pushgateway2.svg)
 
 There are two primary methods for pushing metrics: **HTTP Requests** and **Prometheus Client Libraries**.
 
@@ -168,14 +168,14 @@ sudo ./pushgateway.sh
 
   Here copy the `IP` from `eth0` interface:
 
-  ![alt text](./images/image.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2022/images/image.png)
 
 - Create a load balancer from `Poridhi Lab` by providing the `IP` and `port: 9090`.
 
 
 - Access the UI by opening the load balancer URL from browser. Go to *status > target*. We can see that prometheus has only one target and it is prometheus itself. 
 
-  ![alt text](./images/image-1.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2022/images/image-1.png)
 
 
 
@@ -193,7 +193,7 @@ sudo ./pushgateway.sh
 
 - Access the UI by opening the load balancer URL from browser. 
 
-    ![alt text](./images/image-2.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2022/images/image-2.png)
 
 
 
@@ -219,7 +219,7 @@ Prometheus needs to be configured to scrape the metrics from Push Gateway.
 
   We are using `localhost` as `<pushgateway-server>` as it is in the same host as prometheus.
 
-  ![alt text](./images/image-4.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2022/images/image-4.png)
 
 
 
@@ -234,7 +234,7 @@ Prometheus needs to be configured to scrape the metrics from Push Gateway.
 
   Now you can see that the Prometheus is scraping the `pushgateway`. It may take a while to get the `up` state:
 
-  ![alt text](./images/image-5.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2022/images/image-5.png)
 
 
 
@@ -267,7 +267,7 @@ Use an HTTP POST request to send a metric to Pushgateway.
 
 - You can also verify the pushgateway metrics from the Pushgateway UI sevice running using load balancer:
 
-    ![alt text](./images/image-3.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2022/images/image-3.png)
 
 
 - We can use promQL in prometheus UI to verify the pushgateway metrics:
@@ -275,7 +275,7 @@ Use an HTTP POST request to send a metric to Pushgateway.
     example_metric{job = "db_backup"}
     ```
 
-    ![alt text](./images/image-6.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2022/images/image-6.png)
 
 
 ### **2. Grouping Metrics**
@@ -342,7 +342,7 @@ Grouping metrics allow you to update & delete all metrics in a specific group wi
     {job="video_processing"}
     ```
 
-    ![alt text](./images/image-7.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2022/images/image-7.png)
 
 
 ### **3. HTTP Methods and Their Effects**
@@ -383,7 +383,7 @@ Grouping metrics allow you to update & delete all metrics in a specific group wi
     processing_time_seconds{instance="mp4_node1", quality="hd"}
     ```
 
-    ![alt text](./images/image-8.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2022/images/image-8.png)
 
 #### **PUT Request**
 
@@ -420,7 +420,7 @@ Grouping metrics allow you to update & delete all metrics in a specific group wi
 
     All the metrics are replaced with the new one.
 
-    ![alt text](./images/image-9.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2022/images/image-9.png)
 
 
 
@@ -452,7 +452,7 @@ Grouping metrics allow you to update & delete all metrics in a specific group wi
     {job="video_processing", instance="mp4_node1"}
     ```
 
-    ![alt text](./images/image-10.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2022/images/image-10.png)
 
     Use the following promql to see  all metrics under the `/job/video_processing/instance/mov_node1 group` still persist:
 
@@ -460,7 +460,7 @@ Grouping metrics allow you to update & delete all metrics in a specific group wi
     {job="video_processing", instance="mov_node1"}
     ```
 
-    ![alt text](./images/image-11.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2022/images/image-11.png)
 
 ## **Pushing Metrics to Push Gateway with Prometheus Client Library**
 
@@ -510,7 +510,7 @@ Verify the metric from the prometheus UI using the following query:
 example_metric
 ```
 
-![alt text](./images/image-12.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Observability%20and%20Monitoring/Prometheus%20Labs/Lab%2022/images/image-12.png)
 
 
 
