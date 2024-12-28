@@ -7,8 +7,6 @@ By default, Jenkins runs on port 8080 after installation. However, there are sce
 
 Both methods will be demonstrated on two separate EC2 instances, ensuring a clear and practical understanding of the setup process.
 
-
-
 ![alt text](./images/jenkins-80.svg)
 
 ## Prerequisites
@@ -17,12 +15,272 @@ Both methods will be demonstrated on two separate EC2 instances, ensuring a clea
 
 ## Create EC2 Instances
 
+### Configure AWS CLI
 
+- Configure AWS CLI with the necessary credentials. Run the following command and follow the prompts to configure it:
+
+  ```bash
+  aws configure
+  ```
+
+  This command sets up your AWS CLI with the necessary credentials, region, and output format.
+
+  ![alt text](./images/aws-cli-configure.png)
+
+- You will find the `AWS Access key` and `AWS Seceret Access key` on Lab description page,where you generated the credentials. 
+
+  ![alt text](./images/aws-access-key.png)
+
+### Setup a Pulumi Project
+
+Now, let's create a new Pulumi project and write the code to provision our EC2 instances.
+
+1. **Create a new directory and initialize a Pulumi project:**
+
+   ```bash
+   mkdir redis-cluster-pulumi && cd redis-cluster-pulumi
+   pulumi new aws-javascript
+   ```
+
+    This command creates a new directory with the basic structure for a Pulumi project. Follow the prompts to set up your project.
+
+2. **Create Key Pair:**
+
+    Create a new key pair for our instances using the following command:
+
+    ```sh
+    aws ec2 create-key-pair --key-name MyKeyPair --query 'KeyMaterial' --output text > MyKeyPair.pem
+    ```
+
+3. **Set File Permissions of the key files:**
+
+    ```sh
+    chmod 400 MyKeyPair.pem
+    ```
+
+4. **Replace the contents of `index.js` with the following code:**
+
+    ```js
+    const pulumi = require("@pulumi/pulumi");
+    const aws = require("@pulumi/aws");
+
+    // Create a VPC
+    const vpc = new aws.ec2.Vpc("lab-vpc", {
+        cidrBlock: "10.0.0.0/16",
+        enableDnsHostnames: true,
+        enableDnsSupport: true,
+        tags: {
+            Name: "lab-vpc",
+        },
+    });
+    exports.vpcId = vpc.id;
+
+    // Create a public subnet
+    const publicSubnet = new aws.ec2.Subnet("lab-subnet", {
+        vpcId: vpc.id,
+        cidrBlock: "10.0.1.0/24",
+        availabilityZone: "ap-southeast-1a",
+        mapPublicIpOnLaunch: true,
+        tags: {
+            Name: "lab-subnet",
+        },
+    });
+    exports.publicSubnetId = publicSubnet.id;
+
+    // Create an Internet Gateway
+    const internetGateway = new aws.ec2.InternetGateway("lab-igw", {
+        vpcId: vpc.id,
+        tags: {
+            Name: "lab-igw",
+        },
+    });
+    exports.igwId = internetGateway.id;
+
+    // Create a Route Table
+    const publicRouteTable = new aws.ec2.RouteTable("lab-rt", {
+        vpcId: vpc.id,
+        tags: {
+            Name: "lab-rt",
+        },
+    });
+    exports.publicRouteTableId = publicRouteTable.id;
+
+    // Create a route for the Internet Gateway
+    const route = new aws.ec2.Route("igw-route", {
+        routeTableId: publicRouteTable.id,
+        destinationCidrBlock: "0.0.0.0/0",
+        gatewayId: internetGateway.id,
+    });
+
+    // Associate the Route Table with the Subnet
+    const rtAssociation = new aws.ec2.RouteTableAssociation("rt-association", {
+        subnetId: publicSubnet.id,
+        routeTableId: publicRouteTable.id,
+    });
+
+    // Create a Security Group for the EC2 Instances
+    const labSecurityGroup = new aws.ec2.SecurityGroup("lab-secgrp", {
+        vpcId: vpc.id,
+        description: "Allow SSH and HTTP access",
+        ingress: [
+            { protocol: "tcp", fromPort: 22, toPort: 22, cidrBlocks: ["0.0.0.0/0"] }, // SSH
+            { protocol: "tcp", fromPort: 80, toPort: 80, cidrBlocks: ["0.0.0.0/0"] }, // HTTP
+            { protocol: "tcp", fromPort: 8080, toPort: 8080, cidrBlocks: ["0.0.0.0/0"] }, // Jenkins
+        ],
+        egress: [
+            { protocol: "-1", fromPort: 0, toPort: 0, cidrBlocks: ["0.0.0.0/0"] }, // Allow all outbound traffic
+        ],
+        tags: {
+            Name: "lab-secgrp",
+        },
+    });
+    exports.labSecurityGroupId = labSecurityGroup.id;
+
+    // Define an AMI for the EC2 instances
+    const amiId = "ami-01811d4912b4ccb26"; // Ubuntu 24.04 LTS
+
+    // Create EC2 Instances
+    const createInstance = (name) => {
+        return new aws.ec2.Instance(name, {
+            instanceType: "t2.micro",
+            vpcSecurityGroupIds: [labSecurityGroup.id],
+            ami: amiId,
+            subnetId: publicSubnet.id,
+            keyName: "MyKeyPair", // Update with your key pair
+            associatePublicIpAddress: true,
+            tags: {
+                Name: name,
+                Environment: "Lab",
+                Project: "JenkinsLab",
+            },
+        });
+    };
+
+    const method1Instance = createInstance("method-1-instance");
+    const method2Instance = createInstance("method-2-instance");
+
+    exports.method1InstanceId = method1Instance.id;
+    exports.method1PublicIp = method1Instance.publicIp;
+    exports.method2InstanceId = method2Instance.id;
+    exports.method2PublicIp = method2Instance.publicIp;
+    ```
+
+5. **Deploy the infrastructure:**
+
+   ```bash
+   pulumi up
+   ```
+
+   ![alt text](./images/image-2.png)
+
+This will create 2 EC2 instances, one for method 1 and one for method 2.
+
+![alt text](./images/image-6.png)
+
+## Install Jenkins on both the instances
+
+Now, ssh into both the instances and install Jenkins on both the instances using the following installation script:
+
+1. Create a file named `jenkins_install.sh` and add the following code:
+
+    ```bash
+    #!/bin/bash
+
+    # Function to print colored output
+    print_message() {
+        GREEN='\033[0;32m'
+        NC='\033[0m'
+        echo -e "${GREEN}$1${NC}"
+    }
+
+    # Function to check if command was successful
+    check_status() {
+        if [ $? -eq 0 ]; then
+            print_message "✓ Success: $1"
+        else
+            echo "✗ Error: $1"
+            exit 1
+        fi
+    }
+
+    # Check if script is run as root
+    if [ "$EUID" -ne 0 ]; then 
+        echo "Please run as root (use sudo)"
+        exit 1
+    fi
+
+    print_message "Starting Jenkins installation..."
+    print_message "Jenkins will be configured to run on its default port: 8080"
+
+    # Update system packages
+    print_message "Updating system packages..."
+    apt update
+    apt upgrade -y
+    check_status "System update completed"
+
+    # Install Java
+    print_message "Installing Java..."
+    apt install -y openjdk-17-jre-headless
+    check_status "Java installation completed"
+
+    # Verify Java installation
+    java -version
+    check_status "Java verification"
+
+    # Add Jenkins repository
+    print_message "Adding Jenkins repository..."
+    curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | tee \
+        /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+
+    echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+        https://pkg.jenkins.io/debian-stable binary/ | tee \
+        /etc/apt/sources.list.d/jenkins.list > /dev/null
+    check_status "Jenkins repository added"
+
+    # Install Jenkins
+    print_message "Installing Jenkins..."
+    apt update
+    apt install -y jenkins
+    check_status "Jenkins installation completed"
+
+    # Start and enable Jenkins service
+    print_message "Starting and enabling Jenkins service..."
+    systemctl enable jenkins
+    systemctl start jenkins
+    check_status "Jenkins service started"
+
+    # Wait for Jenkins to start
+    print_message "Waiting for Jenkins to start..."
+    sleep 30
+
+    # Get initial admin password
+    if [ -f /var/lib/jenkins/secrets/initialAdminPassword ]; then
+        ADMIN_PASSWORD=$(cat /var/lib/jenkins/secrets/initialAdminPassword)
+        print_message "Jenkins initial admin password: $ADMIN_PASSWORD"
+    else
+        echo "Warning: Could not find initial admin password"
+    fi
+
+    print_message "\nInstallation completed!"
+    print_message "Please allow a few minutes for Jenkins to fully start"
+    print_message "Access Jenkins at: http://your-server-ip:8080"
+    ```
+
+2. Execute the script:
+
+    ```bash
+    chmod +x jenkins_install.sh
+    ```
+
+3. Run the script:
+
+    ```bash
+    ./jenkins_install.sh
+    ```
 
 ## Method 1: Using IP Table Forwarding Rule
-This method involves creating an IP table forwarding rule that redirects traffic from port 80 to Jenkins's default port 8080. This is the simplest method and doesn't require additional software.
 
-### Steps:
+This method involves creating an IP table forwarding rule that redirects traffic from port 80 to Jenkins's default port 8080. This is the simplest method and doesn't require additional software.
 
 1. **Create the IP Table Forwarding Rule:**
 
@@ -59,9 +317,8 @@ Now, when you access Jenkins on port 80, the IP table rule will automatically fo
 ![alt text](https://raw.githubusercontent.com/AhnafNabil/Jenkins-Labs/main/Lab%2005/images/method-01.png)
 
 ## Method 2: Running Jenkins Behind an Nginx Reverse Proxy
-Using Nginx as a reverse proxy is a more robust solution, especially for production environments. Nginx will handle incoming traffic on port 80 and forward it to Jenkins on port 8080.
 
-### Steps:
+Using Nginx as a reverse proxy is a more robust solution, especially for production environments. Nginx will handle incoming traffic on port 80 and forward it to Jenkins on port 8080.
 
 1. **Install Nginx:**
 
@@ -156,4 +413,5 @@ Now, Nginx will forward all requests on port 80 to Jenkins on port 8080.
 ![alt text](https://raw.githubusercontent.com/AhnafNabil/Jenkins-Labs/main/Lab%2005/images/method-04.png)
 
 ## Conclusion
-You can choose any of the methods based on your environment and requirements. For a simple setup, the IP table forwarding rule is sufficient. In production environments, using Nginx as a reverse proxy offers more flexibility and scalability.
+
+This lab explored two effective methods to run Jenkins on port 80: **IP Table Forwarding** and **Nginx Reverse Proxy**. The IP table method is lightweight and quick to implement, making it ideal for test or non-critical environments. On the other hand, using Nginx provides a more robust and scalable solution, suitable for production setups where additional control and features like load balancing and SSL termination are required. Choose the method that suits your needs—simplicity for quick setups or scalability for production. Happy learning! 🚀
