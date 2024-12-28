@@ -3,7 +3,8 @@ import pulumi_aws as aws
 import os
 
 # Configuration setup
-instance_type = 't3.small' # Change this to your desired instance type
+t3_small = 't3.small' # Change this to your desired instance type
+t3_medium = 't3.medium'
 ami = "ami-06650ca7ed78ff6fa" # Change this to your desired AMI
 
 # Create a VPC
@@ -210,7 +211,7 @@ k3s_worker_sg = aws.ec2.SecurityGroup("k3s-worker-sg",
 # EC2 Jenkins Master
 jenkins_master = aws.ec2.Instance(
     'jenkins-master-instance',
-    instance_type=instance_type,
+    instance_type=t3_medium,
     ami=ami,
     subnet_id=public_subnet.id,
     vpc_security_group_ids=[jenkins_master_sg.id],
@@ -222,7 +223,7 @@ jenkins_master = aws.ec2.Instance(
 
 k3s_master = aws.ec2.Instance(
     'k3s-master-instance',
-    instance_type=instance_type,
+    instance_type=t3_medium,
     ami=ami,
     subnet_id=public_subnet.id,
     vpc_security_group_ids=[k3s_master_sg.id],
@@ -234,10 +235,10 @@ k3s_master = aws.ec2.Instance(
 
 # EC2 k3s workers
 worker_instances = []
-for i in range(1):
+for i in range(2):
     worker = aws.ec2.Instance(
         f'worker-{i+1}',
-        instance_type=instance_type,
+        instance_type=t3_small,
         ami=ami,
         subnet_id=public_subnet.id,
         vpc_security_group_ids=[k3s_worker_sg.id],

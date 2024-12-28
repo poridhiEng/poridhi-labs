@@ -8,7 +8,7 @@ In this lab, we'll walk you through creating, configuring, and running your firs
 
 To install and run Jenkins server, follow the steps below:
 
-1. Create a file named `jenkins-install.sh` and fill it with the following code:
+**1. Create a file named `jenkins-install.sh` and fill it with the following code:**
 
 ```sh
 #!/bin/bash
@@ -171,12 +171,12 @@ Congratulations! You’ve successfully created and built your first Jenkins job.
 
 Each Jenkins job has a dedicated workspace where files related to the job are stored. To explore the workspace:
 
-1. Go to the job’s dashboard and click on the `Workspace` link.
+- Go to the job’s dashboard and click on the `Workspace` link.
 
 Initially, you might find the workspace empty. To create a file within the workspace:
 
-1. Go back to the job’s configuration.
-2. Add a shell command to create a text file, such as `touch hello.txt`.
+- Go back to the job’s configuration.
+- Add a shell command to create a text file, such as `touch hello.txt`.
 
 ![Create File in Workspace](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2002/images/image-6.png)
 

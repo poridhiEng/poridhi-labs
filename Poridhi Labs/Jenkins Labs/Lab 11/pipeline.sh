@@ -1,76 +1,80 @@
 pipeline {
     agent any
     tools {
-        jdk 'jdk17'
-        nodejs 'node16'
+        jdk 'JDK-17'
+        nodejs 'NODE-18'
     }
     environment {
-        SCANNER_HOME = tool 'sonar-scanner'
+        DOCKER_IMAGE = 'konami98/simple-react'
     }
     stages {
-        stage('clean workspace') {
+        stage('Clean Workspace') {
             steps {
                 cleanWs()
             }
         }
         stage('Checkout from Git') {
             steps {
-                git branch: 'main', url: 'https://github.com/Ashfaque-9x/a-youtube-clone-app.git'
-            }
-        }
-        stage("Sonarqube Analysis") {
-            steps {
-                withSonarQubeEnv('SonarQube-Server') {
-                    sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Youtube-CICD \
-                    -Dsonar.projectKey=Youtube-CICD'''
-                }
-            }
-        }
-        stage("Quality Gate") {
-            steps {
-                script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'SonarQube-Token'
-                }
+                git branch: 'main', url: 'https://github.com/Konami33/Simple-React.git'
             }
         }
         stage('Install Dependencies') {
             steps {
-                sh "npm install"
+                dir('frontend') {
+                    sh "npm install"
+                }
             }
         }
-        stage('TRIVY FS SCAN') {
-             steps {
-                 sh "trivy fs . > trivyfs.txt"
-             }
-         }
-         stage("Docker Build & Push"){
-             steps{
-                 script{
-                   withDockerRegistry(credentialsId: 'dockerhub', toolName: 'docker'){   
-                      sh "docker build -t youtube-clone ."
-                      sh "docker tag youtube-clone ashfaque9x/youtube-clone:latest "
-                      sh "docker push ashfaque9x/youtube-clone:latest "
+        stage('Docker Build & Push') {
+            steps {
+                script {
+                    def imageTag = "${BUILD_NUMBER}"
+                    def fullImageName = "${DOCKER_IMAGE}:${imageTag}"
+                    
+                    dir('frontend') {
+                        withDockerRegistry(credentialsId: 'Dockerhub', toolName: 'Docker') {
+                            sh "docker build -t ${fullImageName} ."
+                            sh "docker push ${fullImageName}"
+                        }
                     }
                 }
             }
         }
-        stage("TRIVY Image Scan"){
-            steps{
-                sh "trivy image ashfaque9x/youtube-clone:latest > trivyimage.txt" 
-            }
-        }
-        stage('Deploy to Kubernets'){
-            steps{
-                script{
-                    dir('Kubernetes') {
-                      withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'kubernetes', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
-                      sh 'kubectl delete --all pods'
-                      sh 'kubectl apply -f deployment.yml'
-                      sh 'kubectl apply -f service.yml'
-                      }   
-                    }
+        stage('Update ConfigMap') {
+            steps {
+                script {
+                    def imageTag = "${BUILD_NUMBER}"
+                    
+                    sh """
+                    kubectl create configmap image-tag-config --from-literal=IMAGE_TAG=${imageTag} --dry-run=client -o yaml | kubectl apply -f -
+                    """
                 }
             }
+        }
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    kubernetesDeploy(
+                        kubeconfigId: 'kubernetes',
+                        configs: 'kubernetes/deployment.yaml'
+                    )
+                    kubernetesDeploy(
+                        kubeconfigId: 'kubernetes',
+                        configs: 'kubernetes/service.yaml'
+                    )
+                }
+            }
+        }
+    }
+    post {
+        always {
+            echo "Pipeline execution completed."
+        }
+        success {
+            echo "Deployment successful!"
+        }
+        failure {
+            echo "Deployment failed. Please check the logs."
         }
     }
 }
