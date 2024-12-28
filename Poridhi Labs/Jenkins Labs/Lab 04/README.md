@@ -2,7 +2,7 @@
 
 In this lab, we will walk through the steps for configuring Docker containers as build agents (slaves) for Jenkins. This setup allows Jenkins to dynamically provision build agents on Docker containers, optimizing resource usage and providing scalability.
 
-![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/arch.png)
+![alt text](./images/jenkins-agent.svg)
 
 ## Docker Containers as Build Agents/Slaves
 
