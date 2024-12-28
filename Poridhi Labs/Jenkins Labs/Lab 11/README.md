@@ -233,7 +233,7 @@ chmod 400 jenkins_k3s.id_rsa
 pulumi up --yes
 ```
 
-![alt text](image-14.png)
+![alt text](image-19.png)
 
 ## SSH into the Jenkins Master
 
@@ -495,6 +495,20 @@ pipeline {
                 }
             }
         }
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    kubernetesDeploy(
+                        kubeconfigId: 'kubernetes',
+                        configs: 'kubernetes/deployment.yaml'
+                    )
+                    kubernetesDeploy(
+                        kubeconfigId: 'kubernetes',
+                        configs: 'kubernetes/service.yaml'
+                    )
+                }
+            }
+        }
     }
 }
 ```
@@ -511,11 +525,128 @@ Check the `Sample-cicd` job in the Jenkins dashboard and click on `Build Now` to
 
 Monitor the build and check the logs to ensure the Docker image is built and pushed successfully. Check console output to ensure the Docker image is built and pushed successfully.
 
-**Kubernetes Plugins**
+### 1. Install Required Jenkins Plugins
+1. Navigate to **Manage Jenkins** > **Plugins**.
+2. Under the **Available Plugins** section, search for and install the following plugins:
+   - Kubernetes
+   - Kubernetes Credentials Provider
+   - Kubernetes CLI
+   - Pipeline: Kubernetes
 
-![alt text](image-18.png)
+   ![alt text](image-18.png)
 
+### 2. Configure Kubernetes Credentials in Jenkins
+1. Download the Kubernetes `config` file:
+   - Access the server terminal and locate the `config` file, typically found in the `.kube` directory.
+   - Save the file to your local machine.
+2. Add the Kubernetes credentials in Jenkins:
+   - Navigate to **Manage Jenkins** > **Manage Credentials**.
+   - Select a credentials store (e.g., Global).
+   - Click **Add Credentials** and set:
+     - **Kind**: Secret file
+     - **ID**: `kubernetes`
+     - Upload the downloaded `config` file.
+   - Click **OK**.
 
+   ![alt text](image-20.png)
+
+---
+
+### 3. Update Jenkins Pipeline Script
+1. Create or modify the Jenkins pipeline job.
+2. Add a new stage for deploying resources to Kubernetes:
+   ```groovy
+   stage('Deploy to Kubernetes') {
+       steps {
+           script {
+               kubernetesDeploy(
+                   kubeconfigId: 'kubernetes',
+                   configs: 'kubernetes/*.yaml',
+                   enableConfigSubstitution: true
+               )
+           }
+       }
+   }
+   ```
+3. Generate the `kubectl` command:
+   - Navigate to **Pipeline Syntax** in Jenkins.
+   - Select the **Kubernetes CLI** plugin from the dropdown.
+   - Use the `kubernetes` credential and generate the script.
+   - Copy and paste the script into your pipeline.
+
+---
+
+### 4. Set Up Webhooks in GitHub
+1. Enable webhooks in Jenkins:
+   - Navigate to the pipeline configuration.
+   - Check the **GitHub project** box and provide the repository URL.
+   - Under **Build Triggers**, select **GitHub hook trigger for GITScm polling**.
+2. Add a webhook in GitHub:
+   - Go to the repository's **Settings** > **Webhooks**.
+   - Click **Add webhook** and provide:
+     - **Payload URL**: `http://<JENKINS_PUBLIC_IP>:8080/github-webhook/`
+     - **Content type**: `application/json`
+   - Click **Add webhook**.
+
+---
+
+### 5. Push Changes to Trigger the Pipeline
+1. Make changes to your code or manifest files.
+2. Commit and push the changes:
+   ```bash
+   git add .
+   git commit -m "Updated application settings"
+   git push origin main
+   ```
+3. Provide your GitHub personal access token if prompted.
+
+---
+
+### 6. Verify Deployment
+1. Check the Jenkins job:
+   - The job should trigger automatically upon detecting changes in the GitHub repository.
+   - Verify the pipeline's success in Jenkins.
+2. Validate the DockerHub image:
+   - Ensure the new image is uploaded to your DockerHub repository.
+3. Check the application in Kubernetes:
+   - Run `kubectl get services` to retrieve the application URL.
+   - Access the application in your browser using the service URL.
+
+---
+
+### 7. Update and Verify Application Changes
+1. Modify application code, e.g., change a UI element's color:
+   ```bash
+   nano src/components/sidebar.js
+   ```
+   Change:
+   ```javascript
+   color: 'red'
+   ```
+   To:
+   ```javascript
+   color: 'blue'
+   ```
+2. Commit and push the changes to the repository.
+3. Jenkins will trigger the pipeline. Verify the changes in the deployed application.
+
+---
+
+### 8. Monitor the Pipeline
+1. Use Grafana or similar tools to monitor Kubernetes pods and services.
+2. Run commands like:
+   ```bash
+   kubectl get pods
+   kubectl get services
+   ```
+3. Confirm the changes in the application's interface.
+
+---
+
+### Conclusion
+By following these steps, you can set up an automated DevSecOps CI/CD pipeline using Jenkins and Kubernetes. The pipeline ensures seamless application updates and deployments triggered by changes in your GitHub repository.
+
+For further questions or issues, feel free to ask in the comments or contact me on LinkedIn.
 
 
 

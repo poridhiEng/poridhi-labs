@@ -2,7 +2,7 @@
 
 In this guide, we'll walk you through the process of configuring a Jenkins agent node using SSH keys. This setup allows Jenkins to securely communicate with the agent node, enabling remote job execution.
 
-![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2003/images/image-17.png)
+![](./images/ansible-jenkins.drawio.svg)
 
 ## Prerequisites for Jenkins Agent
 
