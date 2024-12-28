@@ -1,21 +1,25 @@
 # Running Jenkins on Port 80: Two Different Methods
 
-By default, Jenkins runs on port 8080 after installation. However, there are scenarios where you might want to access Jenkins on port 80 or any other port, especially in production environments where port 80 is used for HTTP traffic. This documentation will guide you through two different methods to run Jenkins on port 80.
+By default, Jenkins runs on port 8080 after installation. However, there are scenarios, especially in production environments, where you may need Jenkins to be accessible on port 80, the default port for HTTP traffic. This document outlines two effective methods to achieve this:
 
-## Methods to Run Jenkins on Port 80
-1. **Using IP Table Forwarding Rule**
-2. **Using Nginx as a Reverse Proxy**
+1. **Using IP Table Forwarding Rule**: A straightforward approach that redirects traffic from port 80 to Jenkins's default port 8080.
+2. **Using Nginx as a Reverse Proxy**: A robust and scalable solution ideal for production environments, where Nginx handles traffic on port 80 and forwards it to Jenkins on port 8080.
 
-![alt text](https://raw.githubusercontent.com/AhnafNabil/Jenkins-Labs/main/Lab%2005/images/method-diagram.png)
+Both methods will be demonstrated on two separate EC2 instances, ensuring a clear and practical understanding of the setup process.
+
+
+
+![alt text](./images/jenkins-80.svg)
 
 ## Prerequisites
 - Create two EC2 instances for checking both the methods.
+- Ensure your jenkins server is up and running in both the instances.
 
-  ![alt text](https://raw.githubusercontent.com/AhnafNabil/Jenkins-Labs/main/Lab%2005/images/method-02.png)
+## Create EC2 Instances
 
-- Ensure your jenkins server is up and running in both the instances. If you do not have one, follow this lab: [Jenkins Installation on Ubuntu](https://github.com/AhnafNabil/Jenkins-Labs/tree/main/Lab%2001)
 
-## Method 1: Running Jenkins on Port 80 Using IP Table Forwarding Rule
+
+## Method 1: Using IP Table Forwarding Rule
 This method involves creating an IP table forwarding rule that redirects traffic from port 80 to Jenkins's default port 8080. This is the simplest method and doesn't require additional software.
 
 ### Steps:
