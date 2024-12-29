@@ -1,11 +1,12 @@
 # Airflow for ETL and Data Lake Management
 
-## Introduction
+This guide explores using Apache Airflow to orchestrate ETL pipelines for data lake management, leveraging Docker for seamless deployment and scalability.
+
+## What is ETL?
 
 ETL (Extract, Transform, Load) is a crucial process in data engineering, enabling data extraction from various sources, transformation into usable formats, and loading into data warehouses or lakes for analysis and application. Managing ETL workflows with Apache Airflow provides powerful automation, scheduling, and monitoring capabilities, particularly useful in modern data lakes.
 
-This guide explores using Apache Airflow to orchestrate ETL pipelines for data lake management, leveraging Docker for seamless deployment and scalability.
-
+![alt text](./images/ETL.svg)
 
 ## Objectives
 
@@ -22,7 +23,7 @@ This guide explores using Apache Airflow to orchestrate ETL pipelines for data l
 3. Launching the project using Load Balancer
 
 
-### 1. Overview of ETL
+## Overview of ETL
 
 ETL stands for Extract, Transform, Load, a process foundational in data warehousing, analysis, and MLOps.
 
@@ -46,9 +47,9 @@ ETL stands for Extract, Transform, Load, a process foundational in data warehous
 - Supports automation and scalability.
 
 
-### 2. Implementation of Apache Airflow in ETL and Data Lake Management
+## Implementation of Apache Airflow in ETL and Data Lake Management
 
-#### Open VS Code and Create Necessary Files
+### Open VS Code and Create Necessary Files
 
 ##### Update and Upgrade System Packages
 
@@ -75,21 +76,26 @@ source etl/bin/activate
 ```bash
 AIRFLOW_VERSION=2.7.3
 PYTHON_VERSION="$(python3 --version | cut -d " " -f 2 | cut -d "." -f 1-2)"
-CONSTRAINT_URL="https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt"
+CONSTRAINT_URL="[https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt](https://raw.githubusercontent.com/apache/airflow/constraints-$%7BAIRFLOW_VERSION%7D/constraints-$%7BPYTHON_VERSION%7D.txt)"
 pip install "apache-airflow==${AIRFLOW_VERSION}" --constraint "${CONSTRAINT_URL}"
 ```
 
-#### Step 2.2: Initialise the Docker Compose YAML File
+### Initialise the Docker Compose YAML File
 
 ##### Automatically Generate Docker Compose File
 
 ```bash
-curl -LfO 'https://airflow.apache.org/docs/apache-airflow/2.10.3/docker-compose.yaml'
+curl -LfO '[https://airflow.apache.org/docs/apache-airflow/2.10.3/docker-compose.yaml](https://airflow.apache.org/docs/apache-airflow/2.10.3/docker-compose.yaml)'
 ```
+
+This will create a `docker-compose.yaml` file in the current directory.
+
+![alt text](./images/image.png)
 
 ##### Alternative Docker Compose File Example
 
 ```yaml
+# docker-compose.yml
 version: '3'
 services:
   airflow:
@@ -137,92 +143,122 @@ from airflow import DAG
 from airflow.providers.http.hooks.http import HttpHook
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 from airflow.operators.python import PythonOperator
+from airflow.decorators import task
 from airflow.utils.dates import days_ago
+import requests
+import json
 
-LATITUDE = '51.5074'
-LONGITUDE = '-0.1278'
-POSTGRES_CONN_ID = 'postgres_default'
-API_CONN_ID = 'open_meteo_api'
+#Latitude and longitude for the desired location (London in this case)
+LATITUDE= '51.5074'
+LONGITUDE= '-0.1278'
+POSTGRES_CONN_ID= 'postgres_default'
+API_CONN_ID= 'open_meteo_api'
 
-default_args = {
+default_args= {
     'owner': 'airflow',
     'start_date': days_ago(1)
 }
 
 def extract_weatherdata():
-    http_hook = HttpHook(http_conn_id=API_CONN_ID, method='GET')
-    endpoint = f'/v1/forecast?latitude={LATITUDE}&longitude={LONGITUDE}&current_weather=true'
-    response = http_hook.run(endpoint)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        raise Exception(f"Failed to fetch data: {response.status_code}")
+        """Extract weather data from Open meteo api using airflow connection"""
 
+        #Use http hook to get connection details from airflow connection
+        http_hook= HttpHook(http_conn_id=API_CONN_ID, method='GET')
+
+        ##Build api endpoint
+        ## https://api.open-meteo.com/v1/forecast?latitude=51.5074&longitude=-0.1278&current_weather=true
+        endpoint= f'/v1/forecast?latitude={LATITUDE}&longitude={LONGITUDE}&current_weather=true'
+
+        #Make the request via httphook
+        response= http_hook.run(endpoint)
+
+        if response.status_code == 200:
+            return response.json()
+        else:
+            raise Exception(f"Failed to fetch data: {response.status_code}")
+        
+
+    
 def transform_weatherdata(weather_data):
-    current_weather = weather_data['current_weather']
-    return {
-        'latitude': float(LATITUDE),
-        'longitude': float(LONGITUDE),
-        'temperature': current_weather['temperature'],
-        'windspeed': current_weather['windspeed'],
-        'winddirection': current_weather['winddirection'],
-        'weathercode': current_weather['weathercode'],
-    }
+        """Transform the extracted weather data"""
+        current_weather= weather_data['current_weather']
+        transformed_data={
+            'latitude' : float(LATITUDE),
+            'longitude': float(LONGITUDE),
+            "temperature": current_weather['temperature'],
+            'windspeed': current_weather['windspeed'],
+            'winddirection': current_weather['winddirection'],
+            'weathercode': current_weather['weathercode'],
 
+        }
+        return transformed_data
+    
+    
 def load_weatherdata(transformed_data):
-    pg_hook = PostgresHook(postgres_conn_id=POSTGRES_CONN_ID)
-    conn = pg_hook.get_conn()
-    cursor = conn.cursor()
-    cursor.execute(
-        """CREATE TABLE IF NOT EXISTS weather_data (
-        latitude FLOAT,
-        longitude FLOAT,
-        temperature INT,
-        windspeed INT,
-        winddirection INT,
-        weathercode INT,
-        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        );"""
-    )
-    cursor.execute(
-        """INSERT INTO weather_data (latitude, longitude, temperature, windspeed, winddirection, weathercode)
-        VALUES (%s, %s, %s, %s, %s, %s)
-        """,
-        (
-            transformed_data['latitude'],
-            transformed_data['longitude'],
-            transformed_data['temperature'],
-            transformed_data['windspeed'],
-            transformed_data['winddirection'],
-            transformed_data['weathercode'],
-        )
-    )
-    conn.commit()
-    cursor.close()
-    conn.close()
+        """Load transformed data to postgres"""
+        pg_hook= PostgresHook(postgres_conn_id=POSTGRES_CONN_ID)
+        conn= pg_hook.get_conn()
+        cursor= conn.cursor()
 
-with DAG(
-    dag_id='etl_weather_pipeline',
-    default_args=default_args,
-    schedule_interval='@daily',
-    catchup=False
-) as dag:
-    extract_task = PythonOperator(
-        task_id='extract_weather',
-        python_callable=extract_weatherdata
-    )
-    transform_task = PythonOperator(
-        task_id='transform_weatherdata',
-        python_callable=transform_weatherdata,
-        op_args=[extract_task.output]
-    )
-    load_task = PythonOperator(
-        task_id='load_weatherdata',
-        python_callable=load_weatherdata,
-        op_args=[transform_task.output]
-    )
-    extract_task >> transform_task >> load_task
+        #create table if it doesn't exist
+        cursor.execute(
+            """create table if not exist weather_data(
+            latitude FLOAT
+            longitude FLOAT
+            temperature INT
+            windspeed INT
+            winddirection INT
+            weathercode INT
+            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );"""
+        )
+
+        #Insert transformed data into the table
+        cursor.execute(
+            """INSERT INTO weather_data (latitude, longitude, temperature, windspeed, winddirection, weathercode)
+            VALUES (%s, %s, %s, %s, %s, %s)
+            """, (
+                transformed_data['latitude'],
+                transformed_data['longitude'],
+                transformed_data['temperature'],
+                transformed_data['windspeed'],
+                transformed_data['winddirection'],
+                transformed_data['weathercode'],
+            )
+        )
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+with DAG(dag_id='etl_weather_pipeline',
+         default_args=default_args,
+         schedule_interval='@daily',
+         catchup=False
+         ) as dag:
+        
+        extract_task= PythonOperator(
+               task_id='extract_weather',
+               python_callable=extract_weatherdata
+        )
+
+        transform_task= PythonOperator(
+               task_id='transform_weatherdata',
+               python_callable=transform_weatherdata,
+               op_args=[extract_task.output]
+        )
+
+        load_task= PythonOperator(
+               task_id='load_weatherdata',
+               python_callable=load_weatherdata,
+               op_args=[transform_task.output]
+        )
+        
+        #DAG workflow
+        
+        extract_task >> transform_task >> load_task
 ```
+
+Here we have used the weather data information for data extracting as real time data and used it for transformation and loaded it in postgres database.
 
 **Key Points**:
 
@@ -230,55 +266,93 @@ with DAG(
 - **Transform**: Cleans and normalises the data.
 - **Load**: Stores the transformed data in a PostgreSQL database.
 
-### 3. Launching the Project Using Load Balancer
+The output for the data that we used:
 
-#### Initialising Docker
+![alt text](./images/image-1.png)
+
+## Launching the Project Using Load Balancer
+
+### Initialising Docker
 
 ```bash
 docker-compose up airflow-init
 ```
 In the above command, the `airflow-init` service initialises the Airflow database.
 
+![alt text](./images/image-2.png)
 
-#### Running Docker Containers
+Here you can see we have created a default Airflow user with the role Admin.
+
+### Running Docker Containers
 
 ```bash
 docker-compose up -d
 ```
 
-#### Checking Active Containers
+![alt text](./images/image-3.png)
+
+Here, we have started the containers.
+
+### Checking Active Containers
 
 ```bash
 docker ps
 ```
 
-#### Stopping Docker Containers
+This will show you the active containers.
+
+![alt text](./images/image-4.png)
+
+### Stopping Docker Containers
 
 ```bash
 docker-compose down
 ```
 
-#### Expose Airflow UI
+![alt text](./images/image-5.png)
+
+Successfully stopped the containers.
+
+### Expose Airflow UI
 
 - Find the local IP using:
 
-```bash
-ip addr show eth0
-```
+  ```bash
+  ip addr show eth0
+  ```
+
+  ![alt text](./images/image-6.png)
+
+- Go to the load balancer icon in the `Poridhi Lab`.
+
+  ![alt text](./images/image-7.png)
 
 - Create a load balancer using the IP and port.
 
-#### Login to Apache Airflow
+  ![alt text](./images/image-8.png)
+
+### Login to Apache Airflow
 
 - Navigate to the Airflow dashboard.
 - Default credentials:
   - **Username**: admin
   - **Password**: admin
 
+  ![alt text](./images/image-9.png)
+
+### Finalising the Creation of DAG
+
+![alt text](./images/image-10.png)
+
+Here we have created a DAG and scheduled it to run daily.
+
 #### Triggering and Monitoring DAGs
 
 - Use the Airflow UI to monitor pipeline execution.
 
+![alt text](./images/image-11.png)
+
+Here we can see the DAG has been triggered and the data has been loaded in the database.
 
 ## Conclusion
 
