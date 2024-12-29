@@ -571,7 +571,7 @@ Goto **Manage Jenkins** > **Manage Tools** > **Install Tools** and install the f
 - Go to DockerHub > **Account Settings** > **Security** > **Access Tokens**.
 - Generate a new token and copy it.
 
-![alt text](image-9.png)
+    ![alt text](image-9.png)
 
 **2. Add DockerHub credentials to Jenkins:**
 
@@ -598,12 +598,12 @@ Now we will create a simple React frontend application. The application will inc
 - Make sure you have` Node.js` installed.
 - Run the following commands to create a React app:
 
-```bash
-npx create-react-app simple-react-app
-cd simple-react-app
-npm install web-vitals
-npm install --save-dev @babel/plugin-proposal-private-property-in-object
-```
+    ```bash
+    npx create-react-app simple-react-app
+    cd simple-react-app
+    npm install web-vitals
+    npm install --save-dev @babel/plugin-proposal-private-property-in-object
+    ```
 
 #### 2. Create Components
 Here’s a breakdown of the app structure:
@@ -739,21 +739,6 @@ docker build -t simple-react-app .
 docker run -p 3000:80 simple-react-app
 ```
 
-### Explanation of the Dockerfile
-
-1. **Multistage build**:
-   - The first stage uses a Node.js image to build the React application.
-   - The second stage uses an NGINX image to serve the static files.
-
-2. **Production build**:
-   - The `npm run build` command creates optimized static files in the `build` directory.
-
-3. **NGINX server**:
-   - NGINX is used to serve the static files, ensuring a lightweight and fast deployment.
-
-4. **Port 80**:
-   - The application is exposed on port 80, which is mapped to port 3000 on the host machine.
-
 This setup ensures the React app is containerized and ready for deployment in a production environment.
 
 
@@ -766,7 +751,7 @@ Now, we will create a Jenkins pipeline to deploy a simple React application to a
 - Name: `Sample-cicd`.
 - Type: `Pipeline`.
 
-![alt text](image-11.png)
+    ![alt text](image-11.png)
 
 **2. Configure the pipeline script:**
 
@@ -784,7 +769,7 @@ pipeline {
         nodejs 'NODE-18'
     }
     environment {
-        DOCKER_IMAGE = 'konami98/simple-react'
+        DOCKER_IMAGE = '<image-name>'
     }
     options {
         timeout(time: 30, unit: 'MINUTES')
@@ -859,14 +844,12 @@ This Jenkins pipeline is a scripted pipeline for automating the CI/CD process of
 ### **Pipeline Details**
 
 #### 1. **Tools**
-- Configures the tools required for the pipeline:
-  - `jdk 'JDK-17'`: Uses Java Development Kit version 17.
-  - `nodejs 'NODE-18'`: Uses Node.js version 18.
+Configures the tools required for the pipeline:
+
+- `jdk 'JDK-17'`: Uses Java Development Kit version 17.
+- `nodejs 'NODE-18'`: Uses Node.js version 18.
 
 We have already configured the tools in the Jenkins dashboard.
-
-#### 2. **Environment**
-- `DOCKER_IMAGE = 'konami98/simple-react'`: Defines an environment variable for the Docker image name to simplify reuse throughout the pipeline.
 
 ### **Stages**
 
@@ -875,41 +858,42 @@ The pipeline consists of the following stages:
 #### **Stage 1: Clean Workspace**
 - `cleanWs()`: Cleans up the Jenkins workspace to ensure no leftover files from previous builds. This is essential to avoid unexpected behavior caused by old files.
 
----
-
 #### **Stage 2: Docker System Cleanup**
-- Executes shell commands to clean up Docker resources:
-  1. `docker system prune -af --volumes`: Removes all unused Docker objects, including images, containers, networks, and volumes.
-  2. `docker rmi $(docker images ${DOCKER_IMAGE} -q)`: Removes the specific Docker image if it exists (`${DOCKER_IMAGE}` is the name from the environment variable).
+
+Executes shell commands to clean up Docker resources:
+
+1. `docker system prune -af --volumes`: Removes all unused Docker objects, including images, containers, networks, and volumes.
+2. `docker rmi $(docker images ${DOCKER_IMAGE} -q)`: Removes the specific Docker image if it exists (`${DOCKER_IMAGE}` is the name from the environment variable).
 
 The `|| true` ensures that the command does not fail if there are no matching images or unused objects to clean.
 
----
-
 #### **Stage 3: Checkout from Git**
+
 - Uses the `git` step to clone the project from the GitHub repository's `main` branch:
+
   ```groovy
   git branch: 'main', url: '<git-repo-url>'
   ```
 
----
-
 #### **Stage 4: Install Dependencies**
-- Switches to the `frontend` directory and installs the necessary dependencies for the React application:
-  1. `npm cache clean --force`: Clears the npm cache.
-  2. `rm -rf node_modules package-lock.json`: Removes any existing `node_modules` folder and `package-lock.json` file to ensure a clean installation.
-  3. `npm install`: Installs the dependencies listed in `package.json`.
+Switches to the `frontend` directory and installs the necessary dependencies for the React application:
+
+1. `npm cache clean --force`: Clears the npm cache.
+2. `rm -rf node_modules package-lock.json`: Removes any existing `node_modules` folder and `package-lock.json` file to ensure a clean installation.
+3. `npm install`: Installs the dependencies listed in `package.json`.
 
 #### **Stage 5: Docker Build & Push**
-- **Purpose**: Builds a Docker image for the application and pushes it to DockerHub.
-- **Steps**:
-  1. Defines variables:
-     - `imageTag`: Sets the image tag to the current Jenkins build number (`${BUILD_NUMBER}`).
-     - `fullImageName`: Combines the image name and tag (e.g., `konami98/simple-react:123`).
-  2. Changes to the `frontend` directory.
-  3. Executes the Docker commands inside a Docker registry context:
-     - `docker build --no-cache -t ${fullImageName} .`: Builds the Docker image with no cache.
-     - `docker push ${fullImageName}`: Pushes the image to DockerHub.
+Builds a Docker image for the application and pushes it to DockerHub.
+
+**Steps**:
+
+1. Defines variables:
+    - `imageTag`: Sets the image tag to the current Jenkins build number (`${BUILD_NUMBER}`).
+    - `fullImageName`: Combines the image name and tag.
+2. Changes to the `frontend` directory.
+3. Executes the Docker commands inside a Docker registry context:
+    - `docker build --no-cache -t ${fullImageName} .`: Builds the Docker image with no cache.
+    - `docker push ${fullImageName}`: Pushes the image to DockerHub.
 
 - **Error Handling**:
   - If the build or push fails, the pipeline logs an error message and throws an exception to stop execution.
@@ -942,31 +926,35 @@ Now, we will deploy the application to the Kubernetes cluster. To do that, we ne
    ![alt text](image-18.png)
 
 ### 2. Configure Kubernetes Credentials in Jenkins
-1. Download the Kubernetes `config` file:
-   - Access the server terminal and locate the `config` file, typically found in the `.kube` directory.
-   - Save the file to your local machine.
-2. Add the Kubernetes credentials in Jenkins:
-   - Navigate to **Manage Jenkins** > **Manage Credentials**.
-   - Select a credentials store (e.g., Global).
-   - Click **Add Credentials** and set:
-     - **Kind**: Secret file
-     - **ID**: `kubernetes`
-     - Upload the downloaded `config` file.
-   - Click **OK**.
 
-   ![alt text](image-20.png)
+**Download the Kubernetes `config` file:**
+
+- Access the server terminal and locate the `config` file, typically found in the `.kube` directory.
+- Save the file to your local machine.
+
+**Add the Kubernetes credentials in Jenkins:**
+
+- Navigate to **Manage Jenkins** > **Manage Credentials**.
+- Select a credentials store (e.g., Global).
+- Click **Add Credentials** and set:
+    - **Kind**: Secret file
+    - **ID**: `kubernetes`
+    - Upload the downloaded `config` file.
+- Click **OK**.
+
+    ![alt text](image-20.png)
 
 ### 3. Access the k3s cluster from the Jenkins instance
 
 To access the k3s cluster from the Jenkins instance, we'll need to follow these steps:
 
-1. First, get the k3s kubeconfig from the k3s master node. On the k3s master:
+**1. First, get the k3s kubeconfig from the k3s master node. On the k3s master:**
 
-    ```bash
-    sudo cat /etc/rancher/k3s/k3s.yaml
-    ```
+```bash
+sudo cat /etc/rancher/k3s/k3s.yaml
+```
 
-2. Copy this config to the Jenkins master instance and place it in `/var/lib/jenkins/.kube/config`. You can either:
+**Copy this config to the Jenkins master instance and place it in `/var/lib/jenkins/.kube/config`. You can either:**
 
    a. Manually copy and paste:
    ```bash
@@ -976,23 +964,27 @@ To access the k3s cluster from the Jenkins instance, we'll need to follow these 
    # Paste the content from k3s.yaml
    ```
 
-3. Modify the kubeconfig file on Jenkins master:
-   ```bash
-   # Update the server URL in the config to use the k3s master's private IP
-   sudo sed -i 's/127.0.0.1/<YOUR_K3S_MASTER_PRIVATE_IP>/' /var/lib/jenkins/.kube/config
-   ```
+**3. Modify the kubeconfig file on Jenkins master:**
 
-4. Set proper ownership and permissions:
-   ```bash
-   sudo chown -R jenkins:jenkins /var/lib/jenkins/.kube
-   sudo chmod 600 /var/lib/jenkins/.kube/config
-   ```
+```bash
+sudo sed -i 's/127.0.0.1/<YOUR_K3S_MASTER_PRIVATE_IP>/' /var/lib/jenkins/.kube/config
+```
 
-5. Verify the connection (as jenkins user):
-   ```bash
-   sudo -u jenkins kubectl get nodes
-   ```
----
+> Update the server URL in the config to use the k3s master's private IP
+
+**4. Set proper ownership and permissions:**
+
+```bash
+sudo chown -R jenkins:jenkins /var/lib/jenkins/.kube
+sudo chmod 600 /var/lib/jenkins/.kube/config
+```
+
+**5. Verify the connection (as jenkins user):**
+
+```bash
+sudo -u jenkins kubectl get nodes
+```
+
 
 ### 3. Update Jenkins Pipeline Script
 
@@ -1155,89 +1147,93 @@ Here's the explanation of the two pipeline stages (`Update ConfigMap` and `Deplo
 
 ### **Stage: Update ConfigMap**
 
-#### **Purpose**:
 This stage updates a Kubernetes ConfigMap to store the Docker image tag (`BUILD_NUMBER`). This can be used by other resources (e.g., deployments) to retrieve and apply the correct image version dynamically.
 
 #### **Steps**:
-1. **Retrieve Build Number**:
-   - `def imageTag = "${BUILD_NUMBER}"` stores the current Jenkins build number to be used as the image tag.
+
+**1. Retrieve Build Number**: 
+
+- `def imageTag = "${BUILD_NUMBER}"` stores the current Jenkins build number to be used as the image tag.
    
-2. **Kubernetes Context**:
-   - `withKubeConfig([credentialsId: 'kubernetes'])`: Configures access to the Kubernetes cluster using the credentials stored in Jenkins.
+**2. Kubernetes Context:**
 
-3. **Create/Update ConfigMap**:
-   - Executes a `kubectl create configmap` command to create a new ConfigMap with the key `IMAGE_TAG` and value as the current build number.
-   - The `--dry-run=client -o yaml` flag ensures the command generates a ConfigMap manifest without actually creating it. This manifest is piped to `kubectl apply` to apply the configuration.
-   - The `||` part ensures the pipeline logs a failure message and exits if the command fails.
+- `withKubeConfig([credentialsId: 'kubernetes'])`: Configures access to the Kubernetes cluster using the credentials stored in Jenkins.
 
-4. **Error Handling**:
-   - Uses a `try-catch` block to handle errors. If the ConfigMap update fails, an error message is logged, and the pipeline terminates.
+**3. Create/Update ConfigMap:**
+
+- Executes a `kubectl create configmap` command to create a new ConfigMap with the key `IMAGE_TAG` and value as the current build number.
+- The `--dry-run=client -o yaml` flag ensures the command generates a ConfigMap manifest without actually creating it. This manifest is piped to `kubectl apply` to apply the configuration.
+- The `||` part ensures the pipeline logs a failure message and exits if the command fails.
+
+**4. Error Handling:**
+
+- Uses a `try-catch` block to handle errors. If the ConfigMap update fails, an error message is logged, and the pipeline terminates.
 
 ### **Stage: Deploy to Kubernetes**
 
-#### **Purpose**:
 This stage deploys the updated application Docker image to the Kubernetes cluster by modifying the deployment manifest and applying it.
 
 #### **Steps**:
 
-1. **Retrieve Build Number**:
-   - The `imageTag` variable is set to the current Jenkins build number.
+**1. Retrieve Build Number:**
 
-2. **Verify Kubernetes Connection**:
-   - Runs `kubectl get nodes` to ensure the connection to the Kubernetes cluster is working. If this fails, the stage logs an error and exits.
+- The `imageTag` variable is set to the current Jenkins build number.
 
-3. **Update Deployment Manifest**:
-   - The `sed` command updates the image tag in the deployment YAML file (`kubernetes/deployment.yaml`) to point to the newly built Docker image (`DOCKER_IMAGE:BUILD_NUMBER`).
+**2. Verify Kubernetes Connection:**
 
-4. **Apply Kubernetes Manifests**:
-   - `kubectl apply -f kubernetes/deployment.yaml`: Deploys the updated application.
-   - `kubectl apply -f kubernetes/service.yaml`: Applies the Kubernetes service definition.
-   - Both commands include error checking (`||`) to log a failure and exit if something goes wrong.
+- Runs `kubectl get nodes` to ensure the connection to the Kubernetes cluster is working. If this fails, the stage logs an error and exits.
 
-5. **Wait for Rollout**:
-   - `kubectl rollout status deployment/simple-react`: Waits for the deployment to finish rolling out. If it times out (300 seconds), it logs a failure.
+**3. Update Deployment Manifest:**
 
-6. **Verify Deployment**:
-   - Lists all pods with `kubectl get pods | grep simple-react` to confirm the deployment succeeded.
+- The `sed` command updates the image tag in the deployment YAML file (`kubernetes/deployment.yaml`) to point to the newly built Docker image (`DOCKER_IMAGE:BUILD_NUMBER`).
 
-7. **Error Handling**:
-   - Errors in the stage are caught, logged, and the pipeline terminates.
+**4. Apply Kubernetes Manifests:**
+
+- `kubectl apply -f kubernetes/deployment.yaml`: Deploys the updated application.
+- `kubectl apply -f kubernetes/service.yaml`: Applies the Kubernetes service definition.
+- Both commands include error checking (`||`) to log a failure and exit if something goes wrong.    
 
 ### **Post Section**
 
 The `post` block contains actions to execute after the pipeline, regardless of the outcome.
 
 #### **`always`**:
-- **Logs Completion**:
-  - Outputs a message that the pipeline has completed execution.
-- **Clean Docker Resources**:
-  - Runs `docker system prune` to remove unused Docker resources and volumes to free up space.
+
+**Logs Completion:**
+- Outputs a message that the pipeline has completed execution.
+**Clean Docker Resources:**
+- Runs `docker system prune` to remove unused Docker resources and volumes to free up space.
 
 #### **`success`**:
-- **Logs Success**:
-  - Outputs a success message indicating the deployment succeeded.
-  - Provides instructions to access the application using the NodePort `30000`.
+
+**Logs Success:**
+- Outputs a success message indicating the deployment succeeded.
+- Provides instructions to access the application using the NodePort `30000`.
 
 #### **`failure`**:
-- **Logs Failure**:
-  - Outputs an error message indicating the deployment failed.
-- **Debug Information**:
-  - Retrieves debug information from the Kubernetes cluster:
-    1. `kubectl get deployments`: Lists the status of all deployments.
-    2. `kubectl get pods`: Displays the status of all pods.
-    3. `kubectl logs -l app=simple-react --tail=50`: Fetches the last 50 logs from the pods matching the label `app=simple-react`.
-  - Includes error handling in case the debug commands fail.
+
+**Logs Failure:**
+- Outputs an error message indicating the deployment failed.
+
+**Debug Information:**
+
+Retrieves debug information from the Kubernetes cluster:
+
+- `kubectl get deployments`: Lists the status of all deployments.
+- `kubectl get pods`: Displays the status of all pods.
+- `kubectl logs -l app=simple-react --tail=50`: Fetches the last 50 logs from the pods matching the label `app=simple-react`.
 
 
 ### 4. Set Up Webhooks in GitHub
 
-1. Enable webhooks in Jenkins:
-   - Navigate to the pipeline configuration.
-   - Check the **GitHub project** box and provide the repository URL.
-   - Under **Build Triggers**, select **GitHub hook trigger for GITScm polling**.
-2. Add a webhook in GitHub:
-   - Go to the repository's **Settings** > **Webhooks**.
-   - Click **Add webhook** and provide:
+**1. Enable webhooks in Jenkins:**
+- Navigate to the pipeline configuration.
+- Check the **GitHub project** box and provide the repository URL.
+- Under **Build Triggers**, select **GitHub hook trigger for GITScm polling**.
+
+**2. Add a webhook in GitHub:**
+- Go to the repository's **Settings** > **Webhooks**.
+- Click **Add webhook** and provide:
      - **Payload URL**: `http://<JENKINS_PUBLIC_IP>:8080/github-webhook/`
      - **Content type**: `application/json`
    - Click **Add webhook**.
@@ -1248,9 +1244,8 @@ The `post` block contains actions to execute after the pipeline, regardless of t
 
    ![alt text](image-26.png)
 
----
-
 ### 5. Push Changes to Trigger the Pipeline
+
 1. Make changes to your code or manifest files.
 2. Commit and push the changes:
    ```bash
@@ -1281,7 +1276,11 @@ The `post` block contains actions to execute after the pipeline, regardless of t
 
 ### 8. Monitor the Pipeline
 
+Console logs:
+
 ![alt text](image-21.png)
+
+Deployed application:
 
 ![alt text](image-24.png)
 
