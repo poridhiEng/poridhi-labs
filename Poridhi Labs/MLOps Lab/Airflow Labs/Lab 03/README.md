@@ -103,8 +103,6 @@ Follow these steps to configure the necessary tools. If already installed, you c
    - **Access Key** and **Secret Access Key**: Generate these from your AWS account or a designated lab (e.g., Poridhi Lab).  
    - **Region**: Set your preferred AWS region (e.g., `us-east-1`).
 
----
-
 ## **Step 3: Setting Up Connections in Apache Airflow**
 
 1. Launch the Airflow web interface by navigating to [http://localhost:8080](http://localhost:8080). Use your previously created username and password.
@@ -117,8 +115,6 @@ Follow these steps to configure the necessary tools. If already installed, you c
    - **Access Key** and **Secret Access Key**: Enter your AWS credentials.
 
    ![images.png](Screenshots/image-02.png)
-
----
 
 ## **Step 4: VSCode Environment Setup**
 
