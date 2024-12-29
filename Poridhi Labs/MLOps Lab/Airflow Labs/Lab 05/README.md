@@ -1,10 +1,8 @@
 # ML Pipeline Orchestration with Apache Airflow
 
-## Introduction
-
 Machine Learning (ML) pipelines play a crucial role in automating and streamlining the process of developing, deploying, and monitoring machine learning models. Apache Airflow, a popular workflow orchestration tool, enables the efficient management of these pipelines, offering powerful scheduling, monitoring, and visualisation capabilities.
 
-This guide covers the step-by-step implementation of an ML pipeline using Apache Airflow, incorporating Docker for containerised execution.
+![](./images/banner.svg)
 
 ## Objectives
 
@@ -16,73 +14,79 @@ This guide covers the step-by-step implementation of an ML pipeline using Apache
 
 ## Table of Contents
 
-1. What is an ML pipeline?
-2. Setting up the environment for Apache Airflow
-3. Creating a DAG file to schedule Python operations
-4. Creating the ML pipeline
-5. Initialising Docker to monitor DAGs in the Apache Airflow webserver
-6. Running and testing the DAGs
+- What is an ML pipeline?
+- Setting up the environment for Apache Airflow
+- Creating a DAG file to schedule Python operations
+- Creating the ML pipeline
+- Initialising Docker to monitor DAGs in the Apache Airflow webserver
+- Running and testing the DAGs
 
 
-### 1. What is an ML Pipeline?
+## What is an ML Pipeline?
 
 A Machine Learning (ML) pipeline is a structured workflow that automates and streamlines the process of developing and deploying a machine learning model. It encompasses several steps, starting from data collection and preprocessing to model training, evaluation, and deployment.
 
 
-### 2. Setting up the Environment for Apache Airflow
+## Step 1: Setting up the Environment for Apache Airflow
 
-#### Update System Packages
+### Update System Packages
 ```bash
 sudo apt update
 sudo apt upgrade -y
 ```
 
-#### Install Python Development Tools
+### Install Python Development Tools
 ```bash
 sudo apt install python3-pip python3-dev build-essential
 ```
 
-#### Create and Activate the Virtual Environment
+### Create and Activate the Virtual Environment
 ```bash
 sudo pip3 install virtualenv
 python3 -m venv newapp
 source newapp/bin/activate
 ```
 
-#### Set Airflow Home Directory
+### Set Airflow Home Directory
 ```bash
 export AIRFLOW_HOME=~/airflow
 ```
 
-#### Install Apache Airflow Using Pip
-- Install with version constraints for compatibility:
+### Installing with constrain for version compatibility.
+
 ```bash
 AIRFLOW_VERSION=2.8.1
 PYTHON_VERSION="$(python3 --version | cut -d " " -f 2 | cut -d "." -f 1-2)"
-pip install "apache-airflow==${AIRFLOW_VERSION}" \
---constraint "https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt"
 ```
 
-#### Initialise the Airflow Database
+### Install Apache Airflow Using Pip
+
+Install with version constraints for compatibility:
+```bash
+pip install "apache-airflow==${AIRFLOW_VERSION}" \
+--constraint "[https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt](https://raw.githubusercontent.com/apache/airflow/constraints-$%7BAIRFLOW_VERSION%7D/constraints-$%7BPYTHON_VERSION%7D.txt)"
+```
+
+### Initialise the Airflow Database
 ```bash
 airflow db init
 ```
 
-#### Start Airflow Webserver and Scheduler
+### Start Airflow Webserver and Scheduler
 ```bash
 airflow webserver --port 8080
 airflow scheduler
 ```
 
-### 3. Creating the DAG File to Schedule Python Operations
+## Step 2: Creating the DAG File to Schedule Python Operations
 
-#### Example DAG File
+### DAG File
 ```python
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from datetime import datetime, timedelta
 from pipeline import (ingest_data, preprocess_data, train_model,
-                      evaluate_model, deploy_model)
+                     evaluate_model, deploy_model)
 
 default_args = {
     'owner': 'your_name',
@@ -131,9 +135,9 @@ t5 = PythonOperator(
 t1 >> t2 >> t3 >> t4 >> t5
 ```
 
-### 4. Creating Python Functions for the Pipeline
+## Step 3: Creating Python Functions for the Pipeline
 
-#### Example Python Operators
+### Python Operators
 ```python
 def ingest_data(**kwargs):
     # Your data ingestion code here
@@ -156,9 +160,9 @@ def deploy_model(**kwargs):
     pass
 ```
 
-### 5. Initialising Docker for Apache Airflow
+## Step 4: Initialising Docker for Apache Airflow
 
-#### Create a Docker Compose File
+### Create a Docker Compose File
 ```yaml
 services:
   airflow-init:
@@ -216,27 +220,29 @@ volumes:
   postgres-data:
 ```
 
-#### Create Required Directories
+### Create Required Directories
 ```bash
 mkdir -p ./dags ./logs ./plugins ./config
 ```
 
-#### Set Airflow User ID
+### Set Airflow User ID
 ```bash
 echo -e "AIRFLOW_UID=$(id -u)" > .env
 ```
 
-#### Initialise the Airflow Database
+### Initialise the Airflow Database
 ```bash
 docker compose up airflow-init
 ```
 
-#### Start All Services
+### Start All Services
 ```bash
 docker compose up -d
 ```
 
-#### Monitor Running Containers
+![alt text](./images/image.png)
+
+### Monitor Running Containers
 - Check running containers:
 ```bash
 docker ps
@@ -246,16 +252,35 @@ docker ps
 docker compose down
 ```
 
-### 6. Running and Testing the Pipeline
+  ![alt text](./images/image-1.png)
 
-#### Expose the Airflow GUI Using a Load Balancer
+## Step 5: Running and Testing the Pipeline
+
+### Expose the Airflow GUI Using a Load Balancer
+
+To run and test the file, we can expose the Airflow GUI by Poridhi Load Balancer. For that,
+
+- Go to the load balancer.
+
+  ![alt text](./images/image-2.png)
+
 - Obtain the VM’s IP using `ifconfig`.
+
+  ![alt text](./images/image-3.png)
+
 - Create a load balancer with the IP and port (e.g., 8081).
 
-#### Access and Test DAGs
+   ![alt text](./images/image-4.png)
+
+### Access and Test DAGs
 - Log in to the Airflow web interface.
 - Visualise and monitor DAG execution.
 
+![alt text](./images/image-5.png)
+
+![alt text](./images/image-6.png)
+
+![alt text](./images/image-7.png)
 
 ## Conclusion
 
