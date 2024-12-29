@@ -58,6 +58,8 @@ A DAG run is a specific instance of a DAG execution triggered by a schedule or m
 
 ### Airflow Task Lifecycle  
 
+![](./7.svg)
+
 1. **None**: The initial state before a task is scheduled.  
 2. **Scheduled**: The task is queued for execution, waiting for available resources.  
 3. **Queued**: The task is ready to run and waiting for a worker to pick it up.  
@@ -72,6 +74,8 @@ A DAG run is a specific instance of a DAG execution triggered by a schedule or m
 
 This lifecycle ensures that tasks are tracked and managed effectively through their execution.
 
+
+![](./6.svg)
 
 This diagram provides a high-level overview of Apache Airflow's architecture. Here's a breakdown of its components:
 
@@ -732,7 +736,7 @@ with DAG(
 
 While scheduling tasks in airflow, sometimes there is a need of workflow to branch, or go through a certain path based on arbitrary condition. This is where the use of BranchPythonOperator comes for solution.
 
-
+![](./5.svg)
 
 ```python
 from airflow import DAG
@@ -787,7 +791,7 @@ If everything is done right it will show this as result:
 
 When adding exactly same set of tasks regularly to every DAG, or to group several tasks into a single logical unit, the use of SubDAGs arise.
 
-
+![](./image40.jpg)
 
 The creation SubDAGs are divided into three phases.
 
@@ -870,7 +874,7 @@ The output shows parent DAGs which consists the child DAGs in it.
 
 TaskGroups work similarly as SubDAGs, but with time TaskGroups has taken over SubDAGs with it’s efficiency and reliable behaviours.
 
-
+![](./image41.jpg)
 
 We have divided the TaskGroup in few steps for better understanding of it.
 
@@ -940,7 +944,9 @@ And by clicking on the A-A1 task, we get the full view of the operations that’
 
 XComs stands for cross communication and helps you to share messages and small amount of datas between tasks. An object where the value you want to exchange is stored inside the meta database of Airflow. So each time you are interacting with the XComs, you are interacting with the database of airflow. XComs mainly consists two arguments: Return_key which is the identity and Value, which holds the variable.
 
+![](./3.svg)
 
+![](./4.svg)
 
 For the purpose of learning, we can think of these DAGs where best of these three models will be chosen. When we process the values of three models and find an answer we push the value to XComs to send it to the next task.
 
