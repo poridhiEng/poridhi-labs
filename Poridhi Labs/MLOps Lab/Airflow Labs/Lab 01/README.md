@@ -26,7 +26,7 @@
 
 **Apache Airflow** is an open-source tool for orchestrating and automating workflows. It helps you define, schedule, and monitor workflows (tasks) programmatically using Python scripts. Workflows in Airflow are represented as Directed Acyclic Graphs (DAGs), which define the order and dependency of tasks.
 
-![](./1.svg)
+![](./images/1.svg)
 
 ### Directed Acyclic Graph (DAG)  
 A DAG is a workflow blueprint in Airflow that defines tasks and their dependencies. It ensures tasks execute in a directed (one-way) and acyclic (no loops) sequence, like extracting, processing, and loading data in order.
@@ -38,7 +38,7 @@ A task is a single unit of work within a DAG, such as running code, executing SQ
 An operator is a predefined template in Airflow that specifies what a task does, like running Python code (`PythonOperator`) or executing SQL queries (`PostgresOperator`). Tasks are created using operators.
 
 
-![](./2.svg)
+![](./images/2.svg)
 
 
 ### Execution Date  
@@ -58,7 +58,7 @@ A DAG run is a specific instance of a DAG execution triggered by a schedule or m
 
 ### Airflow Task Lifecycle  
 
-![](./7.svg)
+![](./images/7.svg)
 
 1. **None**: The initial state before a task is scheduled.  
 2. **Scheduled**: The task is queued for execution, waiting for available resources.  
@@ -75,7 +75,7 @@ A DAG run is a specific instance of a DAG execution triggered by a schedule or m
 This lifecycle ensures that tasks are tracked and managed effectively through their execution.
 
 
-![](./6.svg)
+![](./images/6.svg)
 
 This diagram provides a high-level overview of Apache Airflow's architecture. Here's a breakdown of its components:
 
@@ -144,7 +144,7 @@ This diagram provides a high-level overview of Apache Airflow's architecture. He
 
 7. Copying the first line and run it on terminal. Second line is for linux user, as I am currently using mac, I don’t need to run it.
 
-    ![](./image2.webp)
+    ![](./images/image2.webp)
 
 
 8. Initializing the database:
@@ -154,7 +154,7 @@ This diagram provides a high-level overview of Apache Airflow's architecture. He
 
 9. If you get this output, that means the airflow initialization is complete.
 
-    ![](./image3.webp)
+    ![](./images/image3.webp)
 
 10. Running the Airflow
 
@@ -171,15 +171,15 @@ This diagram provides a high-level overview of Apache Airflow's architecture. He
 ## Launching using Poridhi Load Balancer
 
 
-![](./image4.webp)
+![](./images/image4.webp)
 
 1. Try getting the ip of your local machine using the command.
     
-    ![](./image5.webp)
+    ![](./images/image5.webp)
 
 2. Create Load Balancer and launch it.
 
-    ![](./image6.webp)
+    ![](./images/image6.webp)
     
 
 
@@ -187,7 +187,7 @@ This diagram provides a high-level overview of Apache Airflow's architecture. He
 
 1. After logging in to the Apache Airflow using `<load-balancer-url>/home`, the dashboard is filled with example dags.
 
-    ![](./image7.webp)
+    ![](./images/image7.webp)
 
 2. To remove them following steps are needed to be taken:
     ```bash
@@ -196,15 +196,15 @@ This diagram provides a high-level overview of Apache Airflow's architecture. He
 
     Change the AIRFLOW_CORE_LOAD_EXAMPLE from “true” to “false” in the yaml file.
 
-    ![](./image8.webp)
+    ![](./images/image8.webp)
 
     Then reinitialize the database as did before. Will get output like this.
 
-    ![](./image9.webp)
+    ![](./images/image9.webp)
 
 3. Open a new file on “dag” folder.
 
-    ![](./image10.webp)
+    ![](./images/image10.webp)
 
 
 4. The code to create the first dag:
@@ -237,12 +237,12 @@ This diagram provides a high-level overview of Apache Airflow's architecture. He
 
 5. After a successful creation of DAG, it might look like this in the airflow dag dashboard.
 
-    ![](./image11.webp)
+    ![](./images/image11.webp)
 
 
     The grid view
 
-    ![](./image12.webp)
+    ![](./images/image12.webp)
 
 6. Creating the second dag will be another easy task, using the same code with some changes.
 
@@ -278,12 +278,12 @@ This diagram provides a high-level overview of Apache Airflow's architecture. He
 
 7. After running it, the airflow output will be seen like this
 
-    ![](./image13.webp)
+    ![](./images/image13.webp)
 
 
 8. In the grid view
 
-    ![](./image14.webp)
+    ![](./images/image14.webp)
    
 
 
@@ -321,7 +321,7 @@ This diagram provides a high-level overview of Apache Airflow's architecture. He
 
 2. After running the code and refreshing the DAG dashboard, our first dag with python operator is created!
 
-    ![](./image16.webp)
+    ![](./images/image16.webp)
 
     When we want to share informations between tasks, we got to use XCom. Basically we can push information in one task and push that information in other task. Here is how to do it.
 
@@ -367,7 +367,7 @@ with DAG(
 ​
 2. DAG creation done.
 
-    ![](./image15.webp)
+    ![](./images/image15.webp)
 
 ## Creating DAG with Taskflow API
 Code:
@@ -480,11 +480,11 @@ with DAG(
     )
 ```    
 
-![](./image17.webp)
+![](./images/image17.webp)
 
 The DAG has started since October 1st, 2024 and restarting once in everyday.
 
-![](./image18.webp)
+![](./images/image18.webp)
 
 
 
@@ -499,7 +499,7 @@ with DAG(
 
 You can change the catchup to False to make it backfill, update the version and run it.
 
-![](./image19.webp)
+![](./images/image19.webp)
 
 You can still run the DAG using backfill. To know how follow the following steps,
 
@@ -530,12 +530,12 @@ airflow dags backfill -s 2024-10-01 -e 2024-10-08
 
 5. exit command to exit the container. Will see dag run from the starting date to end date.
     
-    ![](./image20.webp)
+    ![](./images/image20.webp)
     
 
 The code in dag dashboard.
 
-![](./image21.webp)
+![](./images/image21.webp)
 
 
 ## ## Scheduling with Cron Expression
@@ -546,11 +546,11 @@ In Airflow, creating a DAG needs a schedule interval parameter. Which receives C
 
 A CRON expression is a string comprising five fields separated by white space that represents a set of times. Normally as a schedule to execute some routine.
 
-![](./image22.webp)
+![](./images/image22.webp)
 
 Airflow already provides some presets for CRON expression.
 
-![](./image23.webp)
+![](./images/image23.webp)
 
 But if you want to generate customised CRON expressions, you can make it in this website.
 
@@ -575,12 +575,12 @@ But if you want to generate customised CRON expressions, you can make it in this
 
 - Go to the Admin > Connection > Add connection.
     
-   ![](./image24.webp) 
+   ![](./images/image24.webp) 
     
 
 - Change the yaml file, add port.
     
-    ![](./image25.webp)
+    ![](./images/image25.webp)
 
 - Download dbeaver and install it from here.
 
@@ -594,7 +594,7 @@ docker-compose up -d —no-deps —build postgres
 
 - After completation the output would look like,
     
-    ![](./image26.webp)
+    ![](./images/image26.webp)
 
 - Open new file and run this code.
 
@@ -633,11 +633,11 @@ with DAG(
 
 - Save it and run it, it will show a new DAG in the dashboard.
 
-    ![](./image27.webp)
+    ![](./images/image27.webp)
 
 - The grid view
     
-    ![](./image28.webp)
+    ![](./images/image28.webp)
     
 
 - To insert informations to table add this bit of code and fix their task dependencies.
@@ -670,7 +670,7 @@ task3= PostgresOperator(
 
 - Open the docker project folder and open a new file “requirements.txt”.
     
-    ![](./image29.webp)
+    ![](./images/image29.webp)
 
 - Create a docker file in project root folder and give it as input
 
@@ -689,7 +689,7 @@ docker build . --tag extending_airflow:latest
 
 Issue:
 
-![](./image30.webp)
+![](./images/image30.webp)
 
 
 Solution:
@@ -736,7 +736,7 @@ with DAG(
 
 While scheduling tasks in airflow, sometimes there is a need of workflow to branch, or go through a certain path based on arbitrary condition. This is where the use of BranchPythonOperator comes for solution.
 
-![](./5.svg)
+![](./images/5.svg)
 
 ```python
 from airflow import DAG
@@ -779,19 +779,19 @@ The code snippet defines a function where a condition of accuracy is given. If t
 
 Defining a function is a must thing to do here in branching. Otherwise it will send error for python_callable.
 
-![](./image31.webp)
+![](./images/image31.webp)
 
 
 
 If everything is done right it will show this as result:
 
-![](./image32.webp)
+![](./images/image32.webp)
 
 ### SubDags:
 
 When adding exactly same set of tasks regularly to every DAG, or to group several tasks into a single logical unit, the use of SubDAGs arise.
 
-![](./image40.jpg)
+![](./images/image40.jpg)
 
 The creation SubDAGs are divided into three phases.
 
@@ -868,13 +868,13 @@ with DAG(
 
 The output shows parent DAGs which consists the child DAGs in it.
 
-![](./image33.webp)
+![](./images/image33.webp)
 
 ### TaskGroups:
 
 TaskGroups work similarly as SubDAGs, but with time TaskGroups has taken over SubDAGs with it’s efficiency and reliable behaviours.
 
-![](./image41.jpg)
+![](./images/image41.jpg)
 
 We have divided the TaskGroup in few steps for better understanding of it.
 
@@ -917,7 +917,7 @@ start >> a >> a1 >> b >> c >> d >> e >> f >> g >> end
 
 Which led us to get this output.
 
-![](./image34.webp)
+![](./images/image34.webp)
 
 Then, the Empty Operators (a, a1, b and c) are taken into a single group named gr_1. And we also have set the task dependencies for a and a1, where the other two tasks are independent.
 
@@ -934,19 +934,19 @@ start >> gr_1 >> d >> e >> f >> g >> end
 
 The output will change to this:
 
-![](./image35.webp)
+![](./images/image35.webp)
 
 And by clicking on the A-A1 task, we get the full view of the operations that’s happening within this.
 
-![](./image36.webp)
+![](./images/image36.webp)
 
 ## XComs
 
 XComs stands for cross communication and helps you to share messages and small amount of datas between tasks. An object where the value you want to exchange is stored inside the meta database of Airflow. So each time you are interacting with the XComs, you are interacting with the database of airflow. XComs mainly consists two arguments: Return_key which is the identity and Value, which holds the variable.
 
-![](./3.svg)
+![](./images/3.svg)
 
-![](./4.svg)
+![](./images/4.svg)
 
 For the purpose of learning, we can think of these DAGs where best of these three models will be chosen. When we process the values of three models and find an answer we push the value to XComs to send it to the next task.
 
@@ -998,11 +998,11 @@ with DAG(
 
 The DAGs will be created:
 
-![](./image37.webp)
+![](./images/image37.webp)
 
 We can check the XComs from the Action tab.
 
-![](./image38.webp)
+![](./images/image38.webp)
 
 You can also push the XComs with your preferred return_key. To do that some slight changes like you need to access the task instance argument, which helps you to create a XCom with parameters key and value. 
 
@@ -1013,7 +1013,7 @@ def training_model(task_instance):
     task_instance.xcom_push(key='model_accuracy', value=accuracy)
 ```
 
-![](./image39.webp)
+![](./images/image39.webp)
 
 **To call a XCom value in any function,**
 
