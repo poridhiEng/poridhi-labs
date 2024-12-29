@@ -1,6 +1,6 @@
 # CI CD Pipeline using Jenkins
 
-This lab provides a step-by-step approach to building a robust CI/CD pipeline for a simple application using Jenkins, Docker, and Kubernetes. We will automate the entire process, from building the React application to deploying it in a Kubernetes cluster. The pipeline will leverage Jenkins to build, test, and push the Docker image to DockerHub. Subsequently, Kubernetes will manage the deployment of the containerized application, ensuring scalability and reliability. By the end of this guide, you will have a fully functional CI/CD pipeline that can be triggered with every code commit, providing a seamless path from development to production.
+This lab provides a step-by-step approach to building a robust CI/CD pipeline for a application using Jenkins, Docker, and Kubernetes. We will automate the entire process, from building the application to deploying it in a **Kubernetes cluster**. The pipeline will leverage Jenkins to build, test, and push the Docker image to DockerHub. Subsequently, Kubernetes will manage the deployment of the containerized application, ensuring scalability and reliability. By the end of this guide, you will have a fully functional CI/CD pipeline that can be triggered with every code commit, providing a seamless path from development to production.
 
 ## Setting up AWS Infrastructure
 
@@ -307,7 +307,10 @@ pulumi.Output.all(
 ).apply(create_config_file)
 ```
 
-**5. Generate the key Pair**
+
+This python script will create the infrastructure and output the public IP addresses of the Jenkins Master and k3s Master. Also, it will create a config file in the `~/.ssh/config` file to access the k3s master from the Jenkins Master.
+
+**5. Generate the key Pair named `jenkins_k3s`**
 
 ```sh
 cd ~/.ssh/
@@ -478,6 +481,8 @@ docker --version
 
 **8. Create Infra**
 
+Run the following command to create the infrastructure:
+
 ```sh
 pulumi up --yes
 ```
@@ -494,6 +499,12 @@ ssh jenkins-master
 
 ![alt text](image-15.png)
 
+
+You can optionally set the hostname of the Jenkins Master to `jenkins-master` by running the following command:
+
+```sh
+sudo hostnamectl set-hostname jenkins-master
+```
 
 **2. Access the Jenkins UI**
 
@@ -553,28 +564,202 @@ Goto **Manage Jenkins** > **Manage Tools** > **Install Tools** and install the f
 
     ![alt text](image-8.png)
 
-**Integrate DockerHub**
+## Integrate DockerHub
 
-1. Create a DockerHub Personal Access Token:
-   - Go to DockerHub > **Account Settings** > **Security** > **Access Tokens**.
-   - Generate a new token and copy it.
+**1. Create a DockerHub Personal Access Token:**
 
-   ![alt text](image-9.png)
+- Go to DockerHub > **Account Settings** > **Security** > **Access Tokens**.
+- Generate a new token and copy it.
 
-2. Add DockerHub credentials to Jenkins:
-   - Navigate to **Manage Jenkins** > **Credentials** > **System** > **Global Credentials**.
-   - Add a new credential:
-     - Type: `Username with password`.
-     - Username: Your DockerHub username.
-     - Password: The generated token.
-     - ID: `dockerhub`.
-     - Description: `DockerHub Credentials`.
+![alt text](image-9.png)
+
+**2. Add DockerHub credentials to Jenkins:**
+
+- Navigate to **Manage Jenkins** > **Credentials** > **System** > **Global Credentials**.
+
+- Add a new credential:
+    - Type: `Username with password`.
+    - Username: Your DockerHub username.
+    - Password: The generated token.
+    - ID: `dockerhub`.
+    - Description: `DockerHub Credentials`.
 
      ![alt text](image-16.png)
 
+
+## Build a simple React application
+
+Now we will create a simple React frontend application. The application will include a form where users can input their name, and it will display a personalized greeting. You can build your own application or use the following steps to build a simple React application.
+
+### Steps:
+
+#### 1. Set Up the Project
+
+- Make sure you have` Node.js` installed.
+- Run the following commands to create a React app:
+
+```bash
+npx create-react-app simple-react-app
+cd simple-react-app
+npm install web-vitals
+npm install --save-dev @babel/plugin-proposal-private-property-in-object
+```
+
+#### 2. Create Components
+Here’s a breakdown of the app structure:
+- **App.js**: Main application component.
+- **Greeting.js**: A child component to display the greeting message.
+
+#### 3. Code Implementation
+
+**`src/App.js`**:
+```javascript
+import React, { useState } from 'react';
+import Greeting from './Greeting';
+import './App.css';
+
+function App() {
+  const [name, setName] = useState('');
+  const [submittedName, setSubmittedName] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmittedName(name);
+  };
+
+  return (
+    <div className="App">
+      <h1>Simple React App</h1>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Enter your name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <button type="submit">Greet Me</button>
+      </form>
+      {submittedName && <Greeting name={submittedName} />}
+    </div>
+  );
+}
+
+export default App;
+```
+
+**`src/Greeting.js`**:
+```javascript
+import React from 'react';
+
+function Greeting({ name }) {
+  return (
+    <div>
+      <h2>Hello, {name}!</h2>
+    </div>
+  );
+}
+
+export default Greeting;
+```
+
+**`src/App.css`**:
+```css
+.App {
+  text-align: center;
+  margin-top: 50px;
+}
+
+input {
+  padding: 10px;
+  font-size: 16px;
+}
+
+button {
+  margin-left: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+h2 {
+  color: #4CAF50;
+}
+```
+
+#### 4. Run the Application
+
+- Start the development server:
+
+  ```bash
+  npm start
+  ```
+- Open your browser and go to `http://localhost:3000`.
+
+
+## Dockerize the React application
+
+Here’s a `Dockerfile` to dockerize the React application:
+
+### Dockerfile
+```dockerfile
+# Step 1: Use Node.js as the base image
+FROM node:16-alpine as build
+
+# Step 2: Set the working directory in the container
+WORKDIR /app
+
+# Step 3: Copy package.json and package-lock.json to the container
+COPY package*.json ./
+
+# Step 4: Install dependencies
+RUN npm install
+
+# Step 5: Copy the entire application source code to the container
+COPY . .
+
+# Step 6: Build the React app for production
+RUN npm run build
+
+# Step 7: Use a lightweight NGINX image to serve the built files
+FROM nginx:stable-alpine
+
+# Step 8: Copy the build output from the previous stage to the NGINX directory
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Step 9: Expose port 80
+EXPOSE 80
+
+# Step 10: Start NGINX
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+You can build and test the Dockerfile by running the following command:
+
+```bash
+docker build -t simple-react-app .
+docker run -p 3000:80 simple-react-app
+```
+
+### Explanation of the Dockerfile
+
+1. **Multistage build**:
+   - The first stage uses a Node.js image to build the React application.
+   - The second stage uses an NGINX image to serve the static files.
+
+2. **Production build**:
+   - The `npm run build` command creates optimized static files in the `build` directory.
+
+3. **NGINX server**:
+   - NGINX is used to serve the static files, ensuring a lightweight and fast deployment.
+
+4. **Port 80**:
+   - The application is exposed on port 80, which is mapped to port 3000 on the host machine.
+
+This setup ensures the React app is containerized and ready for deployment in a production environment.
+
+
 ## **Jenkins Pipeline**
 
-Now, we will create a jenkins pipeline to build and push a Docker image to DockerHub.
+Now, we will create a Jenkins pipeline to deploy a simple React application to a Kubernetes cluster.
 
 **1. In the Jenkins dashboard, create a new pipeline job:**
 
@@ -622,7 +807,7 @@ pipeline {
         }
         stage('Checkout from Git') {
             steps {
-                git branch: 'main', url: 'https://github.com/Konami33/Simple-React.git'
+                git branch: 'main', url: '<git_url>'
             }
         }
         stage('Install Dependencies') {
@@ -988,8 +1173,6 @@ This stage updates a Kubernetes ConfigMap to store the Docker image tag (`BUILD_
 4. **Error Handling**:
    - Uses a `try-catch` block to handle errors. If the ConfigMap update fails, an error message is logged, and the pipeline terminates.
 
----
-
 ### **Stage: Deploy to Kubernetes**
 
 #### **Purpose**:
@@ -1020,8 +1203,6 @@ This stage deploys the updated application Docker image to the Kubernetes cluste
 7. **Error Handling**:
    - Errors in the stage are caught, logged, and the pipeline terminates.
 
----
-
 ### **Post Section**
 
 The `post` block contains actions to execute after the pipeline, regardless of the outcome.
@@ -1049,6 +1230,7 @@ The `post` block contains actions to execute after the pipeline, regardless of t
 
 
 ### 4. Set Up Webhooks in GitHub
+
 1. Enable webhooks in Jenkins:
    - Navigate to the pipeline configuration.
    - Check the **GitHub project** box and provide the repository URL.
