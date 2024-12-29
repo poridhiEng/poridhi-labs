@@ -12,7 +12,6 @@ Below is an architectural diagram showcasing S3’s interaction with Airflow.
 - To automate S3 tasks using Airflow DAGs.
 - To monitor Airflow workflows via its GUI.
 
-
 ## **Table of Contents**
 
 1. **What is S3?**  
@@ -110,7 +109,7 @@ aws configure
 
 - **Region**: Set your preferred AWS region (e.g., `ap-southeast-1`).
 
-![alt text](image.png)
+![alt text](./images/image.png)
 
 ## **Step 3: Setting Up Connections in Apache Airflow**
 
@@ -124,7 +123,7 @@ aws configure
    - **Connection Type**: `Amazon Web Services`  
    - **Access Key** and **Secret Access Key**: Enter your AWS credentials.
 
-   ![alt text](image-1.png)
+   ![alt text](./images/image-1.png)
 
 ## **Step 4: VSCode Environment Setup**
 
@@ -193,7 +192,7 @@ environment:
     AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
 ```
 
-![alt text](image-2.png)
+![alt text](./images/image-2.png)
 
 Use the credentials from the AWS account you created in the previous step.
 
@@ -265,47 +264,46 @@ This DAG creates a **bucket, uploads a file, and then deletes the bucket.**
 docker-compose up --build
 docker-compose up -d
 ```
-![alt text](image-3.png)
+![alt text](./images/image-3.png)
 
 
 ## **Step 5: Launch Airflow with a Load Balancer**
 
 **1. Configure your load balancer with `Poridhi's VM's` `eth0` IP address and `PORT`.**
 
-![alt text](image-4.png)
-![alt text](image-5.png)
-![alt text](image-6.png)
+![alt text](./images/image-4.png)
+![alt text](./images/image-5.png)
 
-**2. Access the Airflow GUI through the load balancer URL. Log in and view your DAGs.  **
+**2. Access the Airflow GUI through the load balancer URL. Log in and view your DAGs.**
 
 Example grid view:  
-![alt text](image-7.png)
+![alt text](./images/image-7.png)
 
 **3. Enable and trigger your DAG. Monitor its progress.**
 
 
 - First view the DAGs:
 
-![alt text](image-8.png)
+    ![alt text](./images/image-8.png)
 
 - To remove these example DAG files, go to the yaml file and change this from true → false.
 
-![alt text](image-9.png)
+    ![alt text](./images/image-9.png)
 
 - After refreshing the DAG dashboard will look like this.
 
-![alt text](image-10.png)
+    ![alt text](./images/image-10.png)
 
 - Enable and trigger your DAG execution from the Airflow UI and monitor it.
 
 **Possible Outputs:**
 
-![alt text](image-11.png)
-![alt text](image-12.png)
+![alt text](./images/image-11.png)
+![alt text](./images/image-12.png)
 
 **Grid view of DAG execution:**
 
-![alt text](image-13.png)
+![alt text](./images/image-13.png)
 
 
 ## **Common Issues**
@@ -320,7 +318,7 @@ Example grid view:
 
   You should see the user you created in the previous step.
 
-  ![alt text](image-14.png)
+  ![alt text](./images/image-14.png)
 
 - To synchronize the database run this command:
 
@@ -330,11 +328,11 @@ Example grid view:
 
 ### Issue 2: DAG showed up in the dashboard but can't be triggered
 
-![alt text](image-15.png)
+![alt text](./images/image-15.png)
 
 - Check if the DAG file is in the dags folder.
 
-    ![alt text](image-16.png)
+    ![alt text](./images/image-16.png)
 
 - The file name must match the dag_id on your dag file.
 - Try running this command on your terminal:
