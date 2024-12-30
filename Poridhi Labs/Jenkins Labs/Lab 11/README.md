@@ -2,7 +2,7 @@
 
 This lab provides a step-by-step approach to building a robust CI/CD pipeline for a application using Jenkins, Docker, and Kubernetes. We will automate the entire process, from building the application to deploying it in a **Kubernetes cluster**. The pipeline will leverage Jenkins to build, test, and push the Docker image to DockerHub. Subsequently, Kubernetes will manage the deployment of the containerized application, ensuring scalability and reliability. By the end of this guide, you will have a fully functional CI/CD pipeline that can be triggered with every code commit, providing a seamless path from development to production.
 
-![](./images/lab-11.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/lab-11.drawio.svg)
 
 ## Setting up AWS Infrastructure
 
@@ -320,7 +320,7 @@ aws ec2 create-key-pair --key-name jenkins_k3s --output text --query 'KeyMateria
 chmod 400 jenkins_k3s.id_rsa
 ```
 
-![alt text](./images/image-13.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/image-13.png)
 
 **6. Create a file named `jenkins_install.sh` and add the following content:**
 
@@ -489,7 +489,7 @@ Run the following command to create the infrastructure:
 pulumi up --yes
 ```
 
-![alt text](./images/image-19.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/image-19.png)
 
 ## SSH into the Jenkins Master
 
@@ -499,7 +499,7 @@ After the infrastructure is created, SSH into the Jenkins Master using the follo
 ssh jenkins-master
 ```
 
-![alt text](./images/image-15.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/image-15.png)
 
 
 You can optionally set the hostname of the Jenkins Master to `jenkins-master` by running the following command:
@@ -551,20 +551,20 @@ Goto **Manage Jenkins** > **Manage Tools** > **Install Tools** and install the f
     - Name: `NODE-18`
     - Version: `18.x`
 
-    ![alt text](./images/image-6.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/image-6.png)
 
 - **JDK**:
     - Name: `JDK-17`
     - Version: `17.0.8.1+1`
 
-    ![alt text](./images/image-7.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/image-7.png)
 
 
 - **Docker**:
     - Name: `Docker`
     - Version: `latest`
 
-    ![alt text](./images/image-8.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/image-8.png)
 
 ## Integrate DockerHub
 
@@ -573,7 +573,7 @@ Goto **Manage Jenkins** > **Manage Tools** > **Install Tools** and install the f
 - Go to DockerHub > **Account Settings** > **Security** > **Access Tokens**.
 - Generate a new token and copy it.
 
-    ![alt text](./images/image-9.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/image-9.png)
 
 **2. Add DockerHub credentials to Jenkins:**
 
@@ -586,7 +586,7 @@ Goto **Manage Jenkins** > **Manage Tools** > **Install Tools** and install the f
     - ID: `dockerhub`.
     - Description: `DockerHub Credentials`.
 
-     ![alt text](./images/image-16.png)
+     ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/image-16.png)
 
 
 ## Build a simple React application
@@ -753,13 +753,13 @@ Now, we will create a Jenkins pipeline to deploy a simple React application to a
 - Name: `Sample-cicd`.
 - Type: `Pipeline`.
 
-    ![alt text](./images/image-11.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/image-11.png)
 
 **2. Configure the pipeline script:**
 
 Check the discard old build option.
 
-![alt text](./images/image-12.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/image-12.png)
 
 Add the following script to the pipeline:
 
@@ -908,7 +908,7 @@ Builds a Docker image for the application and pushes it to DockerHub.
 
 Check the `Sample-cicd` job in the Jenkins dashboard and click on `Build Now` to trigger the pipeline.
 
-![alt text](./images/image-17.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/image-17.png)
 
 Monitor the build and check the logs to ensure the Docker image is built and pushed successfully. Check console output to ensure the Docker image is built and pushed successfully.
 
@@ -925,7 +925,7 @@ Now, we will deploy the application to the Kubernetes cluster. To do that, we ne
    - Kubernetes CLI
    - Pipeline: Kubernetes
 
-   ![alt text](./images/image-18.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/image-18.png)
 
 ### 2. Configure Kubernetes Credentials in Jenkins
 
@@ -944,7 +944,7 @@ Now, we will deploy the application to the Kubernetes cluster. To do that, we ne
     - Upload the downloaded `config` file.
 - Click **OK**.
 
-    ![alt text](./images/image-20.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/image-20.png)
 
 ### 3. Access the k3s cluster from the Jenkins instance
 
@@ -1240,11 +1240,11 @@ Retrieves debug information from the Kubernetes cluster:
      - **Content type**: `application/json`
    - Click **Add webhook**.
 
-   ![alt text](./images/image-25.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/image-25.png)
 
    - Check the webhook status
 
-   ![alt text](./images/image-26.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/image-26.png)
 
 ### 5. Push Changes to Trigger the Pipeline
 
@@ -1262,9 +1262,9 @@ Retrieves debug information from the Kubernetes cluster:
    - The job should trigger automatically upon detecting changes in the GitHub repository.
    - Verify the pipeline's success in Jenkins.
 
-   ![alt text](./images/image-22.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/image-22.png)
 
-   ![alt text](./images/image-23.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/image-23.png)
 2. Validate the DockerHub image:
    - Ensure the new image is uploaded to your DockerHub repository.
 3. Check the application in Kubernetes:
@@ -1280,11 +1280,11 @@ Retrieves debug information from the Kubernetes cluster:
 
 Console logs:
 
-![alt text](./images/image-21.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/image-21.png)
 
 Deployed application:
 
-![alt text](./images/image-24.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/image-24.png)
 
 ### Conclusion
 By following these steps, you can set up an automated DevSecOps CI/CD pipeline using Jenkins and Kubernetes. The pipeline ensures seamless application updates and deployments triggered by changes in your GitHub repository.
