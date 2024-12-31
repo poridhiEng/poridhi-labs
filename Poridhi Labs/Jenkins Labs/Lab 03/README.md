@@ -1,8 +1,33 @@
 # Setting Up a Jenkins Agent Using SSH Keys
 
-In this guide, we'll walk you through the process of configuring a Jenkins agent node using SSH keys. This setup allows Jenkins to securely communicate with the agent node, enabling remote job execution.
+In this lab, we'll walk you through the process of configuring a Jenkins agent node using SSH keys. This setup allows Jenkins to securely communicate with the agent node, enabling remote job execution.
 
-![](./images/ansible-jenkins.drawio.svg)
+![](./images/lab-3.drawio.svg)
+
+## What is Jenkins Agent?
+
+A Jenkins agent is a remote machine or environment that is configured to execute tasks for a Jenkins controller (master). Agents allow Jenkins to distribute workload across multiple systems, enhancing scalability and efficiency in a Continuous Integration/Continuous Delivery (CI/CD) pipeline.
+
+### How Jenkins Agent Works:
+
+**Master-Agent Architecture**:
+
+- Jenkins operates on a master-agent model.
+- The Jenkins controller manages the agents and coordinates the distribution of tasks.
+
+**Communication**:
+
+Agents communicate with the controller through various methods:
+
+- **SSH**
+- **Java Web Start (deprecated in newer versions)**
+- **Agents running as Windows services**
+- **Kubernetes-based or Docker-based agents**
+
+- **Execution**:
+
+Once configured, the Jenkins controller sends job instructions to the agent.
+The agent performs the job, sends the results back to the controller, and awaits further instructions.
 
 ## Prerequisites for Jenkins Agent
 
