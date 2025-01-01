@@ -1,7 +1,10 @@
 # Nginx Log Monitoring with Sidecar Container
 
 ## Overview
+
 This guide provides a step-by-step approach to implementing a real-time log monitoring solution for Nginx using the sidecar container pattern in Kubernetes. By following this pattern, you can view Nginx logs without accessing the main container directly, enhancing observability and modularity.
+
+![alt text](./images/sidecar-container.svg)
 
 ## Architecture Components
 
@@ -22,6 +25,7 @@ This guide provides a step-by-step approach to implementing a real-time log moni
 ## Implementation Steps
 
 ### Step 1: Create a Custom Nginx Configuration
+
 Define a custom Nginx configuration file to enable structured logging in JSON format.
 
 #### Content of `nginx-config.conf`:
@@ -49,6 +53,7 @@ http {
 Store the custom Nginx configuration in a Kubernetes ConfigMap for use in the Pod.
 
 #### ConfigMap Manifest (`configmap.yaml`):
+
 ```yaml
 apiVersion: v1
 kind: ConfigMap
@@ -60,10 +65,16 @@ metadata:
     team: devops
     tier: backend
     version: v1.0
-
 data:
-  nginx-config.conf: |
+  default.conf: |
+    events {
+        worker_connections 1024;
+    }
+    
     http {
+        include       /etc/nginx/mime.types;
+        default_type  application/octet-stream;
+
         log_format json_combined escape=json
             '{'
             '"time_local":"$time_local",'
@@ -79,6 +90,19 @@ data:
 
         access_log /var/log/nginx/access.log json_combined;
         error_log /var/log/nginx/error.log;
+
+        sendfile on;
+        keepalive_timeout 65;
+
+        server {
+            listen 80;
+            server_name localhost;
+
+            location / {
+                root   /usr/share/nginx/html;
+                index  index.html index.htm;
+            }
+        }
     }
 ```
 
@@ -106,10 +130,12 @@ spec:
   containers:
   - name: nginx
     image: nginx:latest
+    ports:
+    - containerPort: 80
     volumeMounts:
     - name: nginx-config
       mountPath: /etc/nginx/nginx.conf
-      subPath: nginx-config.conf
+      subPath: default.conf
     - name: log-volume
       mountPath: /var/log/nginx
 
@@ -117,7 +143,14 @@ spec:
     image: alpine:latest
     command: ["/bin/sh", "-c"]
     args:
-    - tail -f /var/log/nginx/access.log /var/log/nginx/error.log
+    - |
+      while true; do
+        if [ -f /var/log/nginx/access.log ] && [ -f /var/log/nginx/error.log ]; then
+          tail -f /var/log/nginx/access.log /var/log/nginx/error.log
+        else
+          sleep 1
+        fi
+      done
     volumeMounts:
     - name: log-volume
       mountPath: /var/log/nginx
@@ -159,8 +192,6 @@ kubectl logs nginx-with-log-viewer -c log-viewer -f
   ```bash
   kubectl logs nginx-with-log-viewer -c log-viewer | grep error.log
   ```
-
----
 
 ## Testing the Setup
 

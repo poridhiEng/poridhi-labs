@@ -3,7 +3,8 @@
 
 In this lab,  we will learn how to extract the filesystem of a Docker container image using different methods and understand their trade-offs.
 
-![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Others/Lab%2001/images/1.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Custom%20Labs/Docker/Lab%2002/images/1.svg)
+
 
 
 ## **Prerequisites**
@@ -46,7 +47,7 @@ In this lab,  we will learn how to extract the filesystem of a Docker container 
    ls -l image_layers
    ```
 
-    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Others/Lab%2001/images/image.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Custom%20Labs/Docker/Lab%2002/images/image.png)
 
 
 
@@ -73,7 +74,7 @@ In this lab,  we will learn how to extract the filesystem of a Docker container 
    ls -l nginx_rootfs
    ```
 
-    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Others/Lab%2001/images/image-1.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Custom%20Labs/Docker/Lab%2002/images/image-1.png)
 
     Tip: Stop and remove the container after this step:
 
@@ -106,7 +107,7 @@ Using `docker create` avoids starting the container, creating a lightweight plac
    ls -l nginx_rootfs
    ```
 
-    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Docker%20Labs/Others/Lab%2001/images/image-2.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Custom%20Labs/Docker/Lab%2002/images/image-2.png)
 
 5. **Cleanup:**
    ```bash
