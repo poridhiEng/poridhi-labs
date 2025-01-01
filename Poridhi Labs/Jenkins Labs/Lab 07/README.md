@@ -14,7 +14,7 @@ The example Java application used is from the GitHub repository [simple-java-mav
 
 Here is the graphical representation of what we will do in this lab.
 
-![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2007/images/image-11.png)
+![alt text](./images/lab-7-arch.drawio.svg)
 
 ## Prerequisites
 
