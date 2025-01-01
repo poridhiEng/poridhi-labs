@@ -82,9 +82,52 @@ Simply listing the pulled images can already give us some initial food for thoug
 docker images
 ```
 
-To begin with, the disparity in scale between these pictures is breathtaking. The size of the Node.js installation itself can also likely be estimated; considering the low overhead of the distroless and alpine-based images, it should be about 140MB. What constitutes the remaining bulky node:22 and bitnami/node:22 images, though, given that Node.js is only 140MB?
+![](./images/image-2.png)
 
-We will begin by examining the largest of these Node.js pictures, node:22, before moving on to more detailed ones.
+If we observe the images, we can see that the `node:22` image is the largest image with `1.2GB` in size, followed by lower size image `gcr.io/distroless/nodejs22-debian12` with `143MB` in size.
+
+## Overview of Each Images
+
+### `node:22`
+
+If we look at the `node:22` image, we can see that it is the largest image of the lot. It is 1.2GB in size. It has a full-fledged Python installation inside.
+
+If we run the following command, we can see that the Python installation is indeed present.
+
+```bash
+docker run --entrypoint bash node:22 -c 'python3 --version'
+```
+
+![](./images/image-3.png)
+
+Interesting is that Python is not the only "unexpected" package in this image - for instance, this image also includes the entire GNU Compiler Collection:
+
+```bash
+docker run --entrypoint bash node:22 -c 'gcc --version'
+```
+
+![](./images/image-4.png)
+
+If we inspect the package list, we can see that the `node:22` image includes a variety of packages
+
+```bash
+# Download latest release
+curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
+syft node:22
+```
+![alt text](./images/images-5.png)
+
+And, of course, with so many packages comes with lot of CVEs. `CVEs` are a list of security vulnerabilities that have been discovered in the software.
+
+```bash
+trivy image -q node:22
+```
+
+All the packages are not always necessary for the Node.js application to run. That is why we have the `node:22-slim` and `node:22-alpine` images.
+
+### Why `node:22` has so many bloated packages?
+
+The `node:<version>` image has so many bloated packages because it is based on `buildpack-deps`, which includes a wide range of commonly used `Debian` packages. These packages are included to support various development needs, such as `Python`, `GCC`, and other tools required for building or compiling software. While this design reduces the need to install additional packages in derived images, it significantly increases the size of the base image, making it less suitable for lightweight production environments.
 
 
 
