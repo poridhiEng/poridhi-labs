@@ -2,7 +2,7 @@
 
 Kubernetes networking is a foundational aspect of cluster functionality. It ensures seamless communication between components (pods, services, nodes) within the cluster. Let’s break this topic into its core principles, requirements, and mechanisms.
 
-![](./images/Networking-3.drawio.svg)
+![](./images/Networking.drawio.svg)
 
 
 ### **1. Key Principles of Kubernetes Networking**
@@ -27,7 +27,7 @@ Kubernetes enforces specific rules to maintain network connectivity. These princ
 5. **External Access to Pods and Services:**
    - Mechanisms like NodePort, LoadBalancer, and Ingress expose services or pods to the outside world.
 
----
+![alt text](image-1.png)
 
 ### **2. Networking Models**
 Kubernetes relies on certain assumptions about the underlying network infrastructure:
@@ -61,7 +61,7 @@ For networking to work seamlessly, Kubernetes enforces these requirements:
 - Network policies control communication between pods or from external sources.
 - They act as a firewall for Kubernetes, ensuring secure traffic flow.
 
-![](./images/Networking-1.drawio.svg)
+![](./images/Networking-3.drawio.svg)
 
 
 ## How Linux network namespaces work in a pod
