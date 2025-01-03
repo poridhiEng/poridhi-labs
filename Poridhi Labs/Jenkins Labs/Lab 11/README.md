@@ -1228,6 +1228,9 @@ Retrieves debug information from the Kubernetes cluster:
 
 ### 4. Set Up Webhooks in GitHub
 
+
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/webhook.drawio.svg)
+
 **1. Enable webhooks in Jenkins:**
 - Navigate to the pipeline configuration.
 - Check the **GitHub project** box and provide the repository URL.

@@ -1,9 +1,6 @@
 # CI/CD Pipeline using Jenkins and Monitoring Tools
 
-
-# CI CD Pipeline using Jenkins
-
-This lab provides a step-by-step approach to building a robust CI/CD pipeline for a application using Jenkins, Docker, and Kubernetes. We will automate the entire process, from building the application to deploying it in a **Kubernetes cluster**. The pipeline will leverage Jenkins to build, test, and push the Docker image to DockerHub. Subsequently, Kubernetes will manage the deployment of the containerized application, ensuring scalability and reliability. By the end of this guide, you will have a fully functional CI/CD pipeline that can be triggered with every code commit, providing a seamless path from development to production.
+This lab provides a step-by-step approach to building a robust CI/CD pipeline for a application using Jenkins, Docker, and Kubernetes. We will automate the entire process, from building the application to deploying it in a **Kubernetes cluster**. The pipeline will leverage Jenkins to build, test, and push the Docker image to DockerHub. Subsequently, Kubernetes will manage the deployment of the containerized application, ensuring scalability and reliability. After that we will setup monitoring tools to monitor the application. By the end of this guide, you will have a fully functional CI/CD pipeline that can be triggered with every code commit, providing a seamless path from development to production also with monitoring tools.
 
 ![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/lab-11.drawio.svg)
 
