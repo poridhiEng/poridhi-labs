@@ -2,7 +2,7 @@
 
 This guide provides a step-by-step approach to implementing a real-time log monitoring solution for Nginx using the sidecar container pattern in Kubernetes. By following this pattern, you can view Nginx logs without accessing the main container directly, enhancing observability and modularity.
 
-![alt text](./images/sidecar-container.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/db5d4f910186b33074c55e8568b557e8f15c5e87/Poridhi%20Labs/Custom%20Labs/Kubernetes/Lab%2002/images/sidecar-container.svg)
 
 ## Architecture Components
 
@@ -208,7 +208,7 @@ kubectl get pods nginx-with-log-viewer
 ```
 Ensure the Pod is running, and both containers (nginx and log-viewer) are healthy.
 
-![alt text](./images/image.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Custom%20Labs/Kubernetes/Lab%2002/images/image.png)
 
 ### View Real-time Logs
 
@@ -217,7 +217,7 @@ Stream logs from the sidecar container:
 kubectl logs nginx-with-log-viewer -c log-viewer -f
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Custom%20Labs/Kubernetes/Lab%2002/images/image-1.png)
 
 We can see that there is no logs in the sidecar container as we have not generated any traffic to the Nginx service yet. Let's generate some traffic to the Nginx service and see the logs in the sidecar container.
 
@@ -246,7 +246,7 @@ kubectl port-forward nginx-with-log-viewer 8000:80
 ```
 Access the service from your browser:
 
-![alt text](./images/image-2.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Custom%20Labs/Kubernetes/Lab%2002/images/image-2.png)
 
 ### Verify Logs
 
@@ -256,7 +256,7 @@ Check the sidecar container logs to confirm the traffic is recorded:
 kubectl logs nginx-with-log-viewer -c log-viewer
 ```
 
-![alt text](./images/image-3.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Custom%20Labs/Kubernetes/Lab%2002/images/image-3.png)
 
 Now, we can see that the logs are being streamed to the sidecar container. 
 
