@@ -6,7 +6,7 @@ This guide explores using Apache Airflow to orchestrate ETL pipelines for data l
 
 ETL (Extract, Transform, Load) is a crucial process in data engineering, enabling data extraction from various sources, transformation into usable formats, and loading into data warehouses or lakes for analysis and application. Managing ETL workflows with Apache Airflow provides powerful automation, scheduling, and monitoring capabilities, particularly useful in modern data lakes.
 
-![alt text](./images/ETL.svg)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/863726a851199270d7f01a0a80881e06acd628d4/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2006/images/ETL.svg)
 
 ## Objectives
 
@@ -90,7 +90,7 @@ curl -LfO '[https://airflow.apache.org/docs/apache-airflow/2.10.3/docker-compose
 
 This will create a `docker-compose.yaml` file in the current directory.
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/863726a851199270d7f01a0a80881e06acd628d4/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2006/images/image.png)
 
 ##### Alternative Docker Compose File Example
 
@@ -268,7 +268,7 @@ Here we have used the weather data information for data extracting as real time 
 
 The output for the data that we used:
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/863726a851199270d7f01a0a80881e06acd628d4/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2006/images/image-1.png)
 
 ## Launching the Project Using Load Balancer
 
@@ -279,7 +279,7 @@ docker-compose up airflow-init
 ```
 In the above command, the `airflow-init` service initialises the Airflow database.
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/863726a851199270d7f01a0a80881e06acd628d4/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2006/images/image-2.png)
 
 Here you can see we have created a default Airflow user with the role Admin.
 
@@ -289,7 +289,7 @@ Here you can see we have created a default Airflow user with the role Admin.
 docker-compose up -d
 ```
 
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/863726a851199270d7f01a0a80881e06acd628d4/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2006/images/image-3.png)
 
 Here, we have started the containers.
 
@@ -301,7 +301,7 @@ docker ps
 
 This will show you the active containers.
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/863726a851199270d7f01a0a80881e06acd628d4/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2006/images/image-4.png)
 
 ### Stopping Docker Containers
 
@@ -309,7 +309,7 @@ This will show you the active containers.
 docker-compose down
 ```
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/863726a851199270d7f01a0a80881e06acd628d4/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2006/images/image-5.png)
 
 Successfully stopped the containers.
 
@@ -321,15 +321,15 @@ Successfully stopped the containers.
   ip addr show eth0
   ```
 
-  ![alt text](./images/image-6.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/863726a851199270d7f01a0a80881e06acd628d4/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2006/images/image-6.png)
 
 - Go to the load balancer icon in the `Poridhi Lab`.
 
-  ![alt text](./images/image-7.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/863726a851199270d7f01a0a80881e06acd628d4/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2006/images/image-7.png)
 
 - Create a load balancer using the IP and port.
 
-  ![alt text](./images/image-8.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/863726a851199270d7f01a0a80881e06acd628d4/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2006/images/image-8.png)
 
 ### Login to Apache Airflow
 
@@ -338,11 +338,11 @@ Successfully stopped the containers.
   - **Username**: admin
   - **Password**: admin
 
-  ![alt text](./images/image-9.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/863726a851199270d7f01a0a80881e06acd628d4/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2006/images/image-9.png)
 
 ### Finalising the Creation of DAG
 
-![alt text](./images/image-10.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/863726a851199270d7f01a0a80881e06acd628d4/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2006/images/image-10.png)
 
 Here we have created a DAG and scheduled it to run daily.
 
@@ -350,7 +350,7 @@ Here we have created a DAG and scheduled it to run daily.
 
 - Use the Airflow UI to monitor pipeline execution.
 
-![alt text](./images/image-11.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/863726a851199270d7f01a0a80881e06acd628d4/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2006/images/image-11.png)
 
 Here we can see the DAG has been triggered and the data has been loaded in the database.
 
