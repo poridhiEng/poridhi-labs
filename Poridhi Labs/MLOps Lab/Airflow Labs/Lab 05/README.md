@@ -2,7 +2,7 @@
 
 Machine Learning (ML) pipelines play a crucial role in automating and streamlining the process of developing, deploying, and monitoring machine learning models. Apache Airflow, a popular workflow orchestration tool, enables the efficient management of these pipelines, offering powerful scheduling, monitoring, and visualisation capabilities.
 
-![](./images/banner.svg)
+![./images/banner.svg](https://github.com/poridhiEng/poridhi-labs/blob/863726a851199270d7f01a0a80881e06acd628d4/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2005/images/banner.svg)
 
 ## Objectives
 
@@ -240,7 +240,7 @@ docker compose up airflow-init
 docker compose up -d
 ```
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/863726a851199270d7f01a0a80881e06acd628d4/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2005/images/image.png)
 
 ### Monitor Running Containers
 - Check running containers:
@@ -252,7 +252,7 @@ docker ps
 docker compose down
 ```
 
-  ![alt text](./images/image-1.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/863726a851199270d7f01a0a80881e06acd628d4/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2005/images/image-1.png)
 
 ## Step 5: Running and Testing the Pipeline
 
@@ -262,25 +262,25 @@ To run and test the file, we can expose the Airflow GUI by Poridhi Load Balancer
 
 - Go to the load balancer.
 
-  ![alt text](./images/image-2.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/863726a851199270d7f01a0a80881e06acd628d4/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2005/images/image-2.png)
 
 - Obtain the VM’s IP using `ifconfig`.
 
-  ![alt text](./images/image-3.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/863726a851199270d7f01a0a80881e06acd628d4/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2005/images/image-3.png)
 
 - Create a load balancer with the IP and port (e.g., 8081).
 
-   ![alt text](./images/image-4.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/863726a851199270d7f01a0a80881e06acd628d4/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2005/images/image-4.png)
 
 ### Access and Test DAGs
 - Log in to the Airflow web interface.
 - Visualise and monitor DAG execution.
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/863726a851199270d7f01a0a80881e06acd628d4/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2005/images/image-5.png)
 
-![alt text](./images/image-6.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/863726a851199270d7f01a0a80881e06acd628d4/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2005/images/image-6.png)
 
-![alt text](./images/image-7.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/blob/863726a851199270d7f01a0a80881e06acd628d4/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2005/images/image-7.png)
 
 ## Conclusion
 
