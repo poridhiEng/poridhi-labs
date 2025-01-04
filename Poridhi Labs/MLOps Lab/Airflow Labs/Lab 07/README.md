@@ -20,7 +20,7 @@ In this lab, we will be implementing the following:
 
 Machine Learning (ML) model retraining involves updating a deployed model with new incoming data to maintain or improve its performance. Over time, live data distributions may change, leading to performance degradation. Regular retraining helps the model stay relevant and accurate.
 
-![](./images/lab-7.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/blob/efccc5ca9858021ce2ce6dc43711f19121e1dafe/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2007/images/lab-7.drawio.svg)
 
 ## Step 1: Building a Model and Retraining Process
 
@@ -60,7 +60,7 @@ Machine Learning (ML) model retraining involves updating a deployed model with n
    curl -LfO '[https://airflow.apache.org/docs/apache-airflow/2.10.3/docker-compose.yaml](https://airflow.apache.org/docs/apache-airflow/2.10.3/docker-compose.yaml)'
    ```
 
-   ![alt text](./images/image.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/efccc5ca9858021ce2ce6dc43711f19121e1dafe/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2007/images/image.png)
 
 - **or, you can use this as docker-compose file. (Optional)**
 
@@ -105,7 +105,7 @@ Machine Learning (ML) model retraining involves updating a deployed model with n
 
 -  Dockerfile 
    
-   ![alt text](./images/image-1.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/efccc5ca9858021ce2ce6dc43711f19121e1dafe/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2007/images/image-1.png)
 
 - `requirements.txt` file
 
@@ -371,13 +371,13 @@ with DAG(
    docker-compose up --build
    ```
 
-   ![alt text](./images/image-2.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/efccc5ca9858021ce2ce6dc43711f19121e1dafe/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2007/images/image-2.png)
 
 -  **Check Active Containers:**
    ```bash
    docker ps
    ```
-   ![alt text](./images/image-3.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/efccc5ca9858021ce2ce6dc43711f19121e1dafe/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2007/images/image-3.png)
 
 ## Step 5: Exposing Airflow UI Using Load Balancer
 
@@ -385,25 +385,25 @@ with DAG(
    ```bash
    ip addr show eth0
    ```
-   ![alt text](./images/image-4.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/efccc5ca9858021ce2ce6dc43711f19121e1dafe/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2007/images/image-4.png)
 
    or by using terminal
 
-   ![alt text](./images/image-7.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/efccc5ca9858021ce2ce6dc43711f19121e1dafe/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2007/images/image-7.png)
 
 
 -  **Set Up Load Balancer:**
    - Access the Load Balancer setup in Poridhi Lab.
 
-   ![alt text](./images/image-5.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/efccc5ca9858021ce2ce6dc43711f19121e1dafe/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2007/images/image-5.png)
 
    - Add the load balancer
 
-   ![alt text](./images/image-6.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/efccc5ca9858021ce2ce6dc43711f19121e1dafe/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2007/images/image-6.png)
 
    - Load Balancer will be created
 
-    ![alt text](./images/image-8.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/efccc5ca9858021ce2ce6dc43711f19121e1dafe/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2007/images/image-8.png)
 
 
 
@@ -412,11 +412,11 @@ with DAG(
 
 **Outputs:**
 - DAG Created
-  ![alt text](./images/image-9.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/efccc5ca9858021ce2ce6dc43711f19121e1dafe/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2007/images/image-9.png)
 - DAG Triggered Successfully
-  ![alt text](./images/image-10.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/efccc5ca9858021ce2ce6dc43711f19121e1dafe/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2007/images/image-10.png)
 - Scheduled Tasks
-  ![alt text](./images/image-11.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/blob/efccc5ca9858021ce2ce6dc43711f19121e1dafe/Poridhi%20Labs/MLOps%20Lab/Airflow%20Labs/Lab%2007/images/image-11.png)
 
 ## Conclusion
 
