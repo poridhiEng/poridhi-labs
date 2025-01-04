@@ -24,7 +24,7 @@ In a small office, three devices are connected to a Local Area Network (LAN):
 
 These devices communicate through a central switch using Ethernet cables, all configured within the same subnet: `192.168.1.0/24`. The following examples illustrate practical LAN communication scenarios in this setup.
 
-#### **Example 1: Computer A Communicates with the Network Printer** 
+### **Example 1: Computer A Communicates with the Network Printer** 
 
 **Task:** Computer A sends a document to the printer for printing. 
 
@@ -38,7 +38,7 @@ These devices communicate through a central switch using Ethernet cables, all co
    - The printer responds with its MAC address: `00:1B:44:11:3A:B7`.  
 3. **Data Transfer:** Computer A sends the print data to the printer, addressing it by its MAC address.  
 
-#### **Example 2: File Sharing Between Computers**  
+### **Example 2: File Sharing Between Computers**  
 
 **Task:** Computer A shares a file with Computer B.  
 
@@ -53,7 +53,7 @@ These devices communicate through a central switch using Ethernet cables, all co
    - The switch forwards the packets to Computer B based on its MAC address.  
 4. **Acknowledgment:** Computer B receives the packets and acknowledges receipt, completing the transfer.  
 
-#### **Role of the Switch in LAN Communication**  
+### **Role of the Switch in LAN Communication**  
 The switch facilitates efficient communication by:  
 - Maintaining a **MAC address table** that maps devices to specific switch ports.  
 - **Forwarding frames** only to the intended recipient’s port, reducing unnecessary traffic.  
@@ -64,7 +64,7 @@ If Computer A sends data to the printer:
 2. It checks the MAC address table to identify the port associated with the printer’s MAC address.  
 3. The frame is forwarded to the printer’s port, while other devices on the network remain unaffected.
 
-## **Understanding Network Links**
+## **Network Links**
 
 A **network link** is a fundamental component in networking that acts as the **connection** between nodes (devices) within a network. It encompasses both **physical** and **logical** aspects, ensuring data transmission between interconnected devices. Here's a breakdown of the concept:
 
@@ -121,7 +121,7 @@ A **network segment** is a **portion of a computer network** that is defined bas
 Network segments can be classified based on their function in the **OSI model** into **Layer 1 (L1)**, **Layer 2 (L2)**, and **Layer 3 (L3)** segments:
 
 
-#### **1. Layer 1 (L1) Segments: Physical Layer**
+### **1. Layer 1 (L1) Segments: Physical Layer**
 - **Definition**: L1 segments refer to the **physical connections** between devices, such as cables, switches, or wireless links.
 - **Characteristics**:
   - Include devices directly connected through **physical mediums** (e.g., Ethernet cables, fiber optics, or Wi-Fi signals).
@@ -131,7 +131,7 @@ Network segments can be classified based on their function in the **OSI model** 
 - **Limitations**:
   - Broadcasts and collisions can occur because all devices share the same physical medium.
 
-#### **2. Layer 2 (L2) Segments: Data Link Layer**
+### **2. Layer 2 (L2) Segments: Data Link Layer**
 - **Definition**: L2 segments refer to network portions where devices communicate using **MAC addresses** at the **data link layer**.
 - **Characteristics**:
   - Traffic is managed using switches, and devices in an L2 segment are part of the same **broadcast domain**.
@@ -142,7 +142,7 @@ Network segments can be classified based on their function in the **OSI model** 
   - Broadcast traffic is limited to the segment.
   - Segments can span multiple physical locations using VLAN tagging.
 
-#### **3. Layer 3 (L3) Segments: Network Layer**
+### **3. Layer 3 (L3) Segments: Network Layer**
 - **Definition**: L3 segments refer to portions of a network that communicate using **IP addresses** at the **network layer**.
 - **Characteristics**:
   - Traffic is routed between L3 segments using **routers** or **layer 3 switches**.
