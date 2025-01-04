@@ -6,7 +6,9 @@ This lab provides a step-by-step approach to building a robust CI/CD pipeline fo
 
 ## Setting up AWS Infrastructure
 
-We will create AWS infrastructure to setup a Jenkins server and k3s cluster. We will be using Pulumi to create the infrastructure.
+We will create AWS infrastructure to setup a Jenkins server and k3s cluster. We will be using Pulumi to create the infrastructure. Here is the architecture of the infrastructure.
+
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/infra.drawio.svg)
 
 **1. Create a Directory for Your Infrastructure**
 
