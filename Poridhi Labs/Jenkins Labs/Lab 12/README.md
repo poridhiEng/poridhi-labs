@@ -1228,6 +1228,9 @@ Retrieves debug information from the Kubernetes cluster:
 
 ### 4. Set Up Webhooks in GitHub
 
+
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/webhook.drawio.svg)
+
 **1. Enable webhooks in Jenkins:**
 - Navigate to the pipeline configuration.
 - Check the **GitHub project** box and provide the repository URL.
@@ -1286,66 +1289,118 @@ Deployed application:
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/image-24.png)
 
+### Monitoring the Kubernetes Cluster
 
-## Monitoring the Kubernetes Cluster
+#### Step 1: Install Helm
+Helm is a package manager for Kubernetes that simplifies application deployment. To install Helm, use the following command:
 
-1. Install helm
-
-```sh
+```bash
 curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 ```
 
 ![alt text](image.png)
 
-Configure kubectl
 
+This script downloads and installs Helm 3, the latest version, onto your system. After installation, you can verify the Helm installation by running:
 
+```bash
+helm version
 ```
-sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
-sudo chown $USER:$USER ~/.kube/config
-chmod 600 ~/.kube/config
-export KUBECONFIG=~/.kube/config
+
+#### Step 2: Configure kubectl for K3s
+To manage your K3s cluster using `kubectl`, you need to configure the `kubeconfig` file:
+
+1. Copy the K3s `kubeconfig` file to the user's home directory:
+   ```bash
+   sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+   ```
+2. Update the ownership of the file to the current user to ensure proper access:
+
+   ```bash
+   sudo chown $USER:$USER ~/.kube/config
+   ```
+3. Secure the file by restricting its permissions:
+
+   ```bash
+   chmod 600 ~/.kube/config
+   ```
+4. Set the `KUBECONFIG` environment variable to point to this configuration file:
+
+   ```bash
+   export KUBECONFIG=~/.kube/config
+   ```
+
+You can now interact with your cluster using `kubectl`. Test the connection with:
+
+```bash
+kubectl get nodes
 ```
+
+#### Step 3: Deploy Grafana with Helm
+
+Grafana is a visualization and monitoring tool. To deploy it in your Kubernetes cluster:
 
 ![alt text](image-1.png)
 
+1. Use Helm to install or upgrade Grafana:
 
-```sh
-helm upgrade --install grafana grafana/grafana \
-  --namespace monitoring \
-  --set service.type=NodePort \
-  --set service.nodePort=30080
-```
+   ```bash
+   helm upgrade --install grafana grafana/grafana \
+     --namespace monitoring \
+     --set service.type=NodePort \
+     --set service.nodePort=30080
+   ```
+   - `--namespace monitoring`: Deploy Grafana in the `monitoring` namespace.
+   - `--set service.type=NodePort`: Expose Grafana as a NodePort service.
+   - `--set service.nodePort=30080`: Use port `30080` for external access.
 
-![alt text](image-2.png)
+2. Verify the deployment by checking the status of the pods:
+   ```bash
+   kubectl get pods -n monitoring
+   ```
 
-Get the Grafana password:
+#### Step 4: Retrieve Grafana Admin Password
+To log in to the Grafana dashboard, you need the admin password:
 
-```sh
-kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
-```
+1. Run the following command to retrieve the password:
+   ```bash
+   kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+   ```
+2. Save this password securely, as you will use it to log in to the Grafana UI.
 
-![alt text](image-3.png)
+#### Step 5: Configure Prometheus as a Data Source in Grafana
+Prometheus collects metrics from Kubernetes, which Grafana uses to create dashboards.
 
-![alt text](image-4.png)
+1. Log in to the Grafana dashboard using the NodePort address:
+   - URL: `http://<Node-IP>:30080`
+   - Username: `admin`
+   - Password: Retrieved from the previous step.
 
-![alt text](image-5.png)
+2. Add Prometheus as a data source:
+   - Navigate to **Configuration** > **Data Sources** > **Add data source**.
+   - Select **Prometheus** from the list of data source types.
+   - Provide the Prometheus server URL:
+     ```text
+     http://prometheus-server.prometheus.svc.cluster.local
+     ```
+   - Click **Save & Test** to confirm the connection.
 
+   
 
-## Data source
+#### Step 6: Add a Dashboard for Visualization
+Grafana supports importing pre-configured dashboards to visualize cluster metrics.
 
-Add prometheus as a data source. Provide the prometheus service url.
-
-```
-http://prometheus-server.prometheus.svc.cluster.local
-```
+1. In the Grafana UI, go to **Dashboards** > **Import**.
+2. Use the dashboard ID `15282` (or any desired dashboard ID) to import a pre-built Kubernetes monitoring dashboard.
+3. Click **Load**, configure the Prometheus data source, and then click **Import**.
 
 ![alt text](image-6.png)
-
 ![alt text](image-7.png)
 
-## Dashboard
-
-15282
+Your dashboard is now ready, displaying key metrics for monitoring your Kubernetes cluster.
 
 ![alt text](image-9.png)
+
+## Conclusion
+
+So, we have successfully deployed a Jenkins pipeline to build and deploy a React application to a Kubernetes cluster. We have also set up Grafana to monitor the Kubernetes cluster and created a dashboard to visualize the metrics.
