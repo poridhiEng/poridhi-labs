@@ -66,7 +66,7 @@ A typical data center rack consists of:
 
 We will illustrate a **data center network hierarchy** that involves **Top of Rack (TOR) switches** and a **Distribution Layer Switch**. Here is the diagram which we will be using to explain the concept.
 
-![](./image.png)
+![alt text](image-3.png)
 
 
 ### **1. Components in the Diagram**
@@ -127,10 +127,6 @@ When a server in one rack communicates with a server in another rack, the traffi
 
 
 ![](./images/lab2-10.drawio.svg)
-
-Certainly! Let’s break this down into detailed explanations for **physical and logical design** in the context of the diagram and how it works in a typical data center network.
-
----
 
 ## **Physical and Logical Design**
 
@@ -215,4 +211,5 @@ Let’s see how these concepts interact in practice:
 
   ![alt text](image-2.png)
 
-This section emphasizes that while TOR switches act as bridges and routers, their configuration determines their function. Moreover, advanced tools like VXLAN extend the functionality beyond physical limitations, offering scalable and flexible networking solutions in modern data centers.
+
+So, We have understood the concept of Top of Rack (TOR) switch and how it works in a data center network.
