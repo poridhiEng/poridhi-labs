@@ -1,0 +1,108 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+    <!-- Cloud IPs at top -->
+    <g id="cloud-ips">
+        <!-- Left clouds -->
+        <path d="M150,50 C130,50 120,40 120,30 C120,20 130,10 150,10 C170,10 180,20 180,30 C180,40 170,50 150,50" fill="none" stroke="#ff9999" />
+        <text x="150" y="35" text-anchor="middle" font-size="12">192.168.0.1/31</text>
+        
+        <path d="M300,50 C280,50 270,40 270,30 C270,20 280,10 300,10 C320,10 330,20 330,30 C330,40 320,50 300,50" fill="none" stroke="#ff9999" />
+        <text x="300" y="35" text-anchor="middle" font-size="12">192.168.0.3/31</text>
+        
+        <!-- Right clouds -->
+        <path d="M500,50 C480,50 470,40 470,30 C470,20 480,10 500,10 C520,10 530,20 530,30 C530,40 520,50 500,50" fill="none" stroke="#ff9999" />
+        <text x="500" y="35" text-anchor="middle" font-size="12">192.168.0.5/31</text>
+        
+        <path d="M650,50 C630,50 620,40 620,30 C620,20 630,10 650,10 C670,10 680,20 680,30 C680,40 670,50 650,50" fill="none" stroke="#ff9999" />
+        <text x="650" y="35" text-anchor="middle" font-size="12">192.168.0.7/31</text>
+    </g>
+
+    <!-- Distribution Layer Switch -->
+    <g id="main-switch">
+        <rect x="300" y="100" width="200" height="60" fill="white" stroke="black" />
+        <text x="400" y="130" text-anchor="middle" font-size="14">Distribution Layer Switch</text>
+        <!-- Switch ports -->
+        <rect x="320" y="140" width="160" height="10" fill="#666" />
+    </g>
+
+    <!-- Connection lines -->
+    <g id="connections" stroke="#0066cc" stroke-width="2">
+        <line x1="150" y1="50" x2="320" y2="140" />
+        <line x1="300" y1="50" x2="360" y2="140" />
+        <line x1="500" y1="50" x2="440" y2="140" />
+        <line x1="650" y1="50" x2="480" y2="140" />
+    </g>
+
+    <!-- Server Racks -->
+    <g id="server-racks">
+        <!-- Server Rack 1 -->
+        <g transform="translate(100,300)">
+            <rect width="120" height="200" fill="white" stroke="black" />
+            <rect x="10" y="20" width="100" height="10" fill="#666" /> <!-- Network ports -->
+            <!-- Server slots -->
+            <g fill="#eee" stroke="black">
+                <rect x="10" y="40" width="100" height="20" />
+                <rect x="10" y="70" width="100" height="20" />
+                <rect x="10" y="100" width="100" height="20" />
+                <rect x="10" y="130" width="100" height="20" />
+                <rect x="10" y="160" width="100" height="20" />
+            </g>
+            <text x="60" y="230" text-anchor="middle" font-size="12">192.168.1.0/24</text>
+        </g>
+
+        <!-- Server Rack 2 -->
+        <g transform="translate(270,300)">
+            <rect width="120" height="200" fill="white" stroke="black" />
+            <rect x="10" y="20" width="100" height="10" fill="#666" />
+            <g fill="#eee" stroke="black">
+                <rect x="10" y="40" width="100" height="20" />
+                <rect x="10" y="70" width="100" height="20" />
+                <rect x="10" y="100" width="100" height="20" />
+                <rect x="10" y="130" width="100" height="20" />
+                <rect x="10" y="160" width="100" height="20" />
+            </g>
+            <text x="60" y="230" text-anchor="middle" font-size="12">192.168.2.0/24</text>
+        </g>
+
+        <!-- Server Rack 3 -->
+        <g transform="translate(440,300)">
+            <rect width="120" height="200" fill="white" stroke="black" />
+            <rect x="10" y="20" width="100" height="10" fill="#666" />
+            <g fill="#eee" stroke="black">
+                <rect x="10" y="40" width="100" height="20" />
+                <rect x="10" y="70" width="100" height="20" />
+                <rect x="10" y="100" width="100" height="20" />
+                <rect x="10" y="130" width="100" height="20" />
+                <rect x="10" y="160" width="100" height="20" />
+            </g>
+            <text x="60" y="230" text-anchor="middle" font-size="12">192.168.3.0/24</text>
+        </g>
+
+        <!-- Server Rack 4 -->
+        <g transform="translate(610,300)">
+            <rect width="120" height="200" fill="white" stroke="black" />
+            <rect x="10" y="20" width="100" height="10" fill="#666" />
+            <g fill="#eee" stroke="black">
+                <rect x="10" y="40" width="100" height="20" />
+                <rect x="10" y="70" width="100" height="20" />
+                <rect x="10" y="100" width="100" height="20" />
+                <rect x="10" y="130" width="100" height="20" />
+                <rect x="10" y="160" width="100" height="20" />
+            </g>
+            <text x="60" y="230" text-anchor="middle" font-size="12">192.168.4.0/24</text>
+        </g>
+    </g>
+
+    <!-- Lower IP addresses -->
+    <text x="160" y="290" text-anchor="middle" font-size="12">192.168.0.0/31</text>
+    <text x="330" y="290" text-anchor="middle" font-size="12">192.168.0.2/31</text>
+    <text x="500" y="290" text-anchor="middle" font-size="12">192.168.0.4/31</text>
+    <text x="670" y="290" text-anchor="middle" font-size="12">192.168.0.6/31</text>
+
+    <!-- Additional connection lines to racks -->
+    <g stroke="#0066cc" stroke-width="2">
+        <line x1="320" y1="150" x2="160" y2="320" />
+        <line x1="360" y1="150" x2="330" y2="320" />
+        <line x1="440" y1="150" x2="500" y2="320" />
+        <line x1="480" y1="150" x2="670" y2="320" />
+    </g>
+</svg>
