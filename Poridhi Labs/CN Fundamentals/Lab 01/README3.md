@@ -1,0 +1,94 @@
+# Networking Fundamentals: Collision Domain and Broadcast Domain
+
+## Collision Domain
+
+A **collision domain** in computer networks refers to a network segment where data packets can collide with one another while being sent over a shared communication medium. Collisions occur when two or more devices attempt to send data simultaneously, leading to interference and the need for retransmission.
+
+![alt text](./images/Collision-01.svg)
+
+### Key Characteristics of Collision Domains
+
+1. **Shared Medium:** Devices within the same collision domain share the same communication channel, such as in a hub-based Ethernet network.
+2. **Impact of Collisions:** When a collision occurs, the affected devices must stop transmitting, detect the collision (e.g., using the CSMA/CD protocol in Ethernet), and retransmit their data after a random backoff time.
+3. **Performance Limitation:** As the number of devices in a collision domain increases, collisions become more frequent, reducing the overall network performance.
+
+### Devices and Collision Domains
+- **Hub:** All devices connected to a hub share the same collision domain because the hub broadcasts data to all its ports.
+- **Switch:** Each port of a switch creates a separate collision domain, significantly reducing collisions in a network.
+- **Router:** Routers do not forward data within the same collision domain. Instead, they separate collision domains and broadcast domains.
+
+### Why Large Collision Domains are Problematic?
+
+1. **Increased Risk of Collisions:**
+   - In a large collision domain, more devices share the same communication medium. 
+   - As the number of devices increases, the likelihood of multiple devices attempting to transmit data simultaneously grows, leading to more frequent collisions.
+
+2. **Higher Retransmission Rates:**
+   - When collisions occur, the affected devices must retransmit their data, often after a random backoff period. 
+   - This increases network traffic and consumes bandwidth, reducing the overall efficiency of the network.
+
+3. **Decreased Network Performance:**
+   - The need for retransmissions causes delays and congestion, degrading the performance of applications, especially those requiring real-time communication like video conferencing or online gaming.
+
+4. **Challenge in Managing Collisions:**
+   - Identifying and managing the devices causing frequent collisions becomes increasingly complex as the collision domain grows.
+
+### Measuring Collision Domains
+To address these issues, it is crucial to measure and manage the size of collision domains. The size of a collision domain is determined by the number of devices whose signals can collide with one another. Larger collision domains mean a higher chance of interference and lower performance.
+
+### Examples
+
+![alt text](./images/Collision-02.svg)
+
+The diagram shows how collision domains are created in a network using a hub, a switch, and a router. There are six collision domains in total. Collision domain 1 (blue) is the largest, as it includes the hub and all four devices connected to it, along with the link to the switch. Here, signals from the switch can collide with signals from the devices on the hub.
+
+This example shows that hubs group all devices into one big collision domain, while switches and routers separate devices into smaller collision domains. This separation is why hubs are no longer commonly used in modern networks.
+
+#### **Hub-Based Networks:**
+- All devices connected to a hub share the same collision domain because the hub broadcasts all incoming signals to every connected device.
+- If multiple devices transmit data simultaneously, collisions occur, and retransmissions are required.
+- This design is highly inefficient as the number of devices increases.
+
+#### **Wi-Fi Networks:**
+- Wi-Fi networks also share a single collision domain because all devices use the same wireless spectrum.
+- Devices rely on the **CSMA/CA** protocol to reduce collisions, but this cannot eliminate them entirely.
+- In busy networks, the chance of collisions and retransmissions increases, affecting performance.
+
+#### **Switches and Routers:**
+- Switches and routers mitigate the problem of large collision domains. Each port on a switch or router represents a separate collision domain.
+- Devices connected to individual ports operate in their own collision domains, significantly reducing the chance of collisions.
+- In **full-duplex mode**, switches and routers further eliminate collisions by allowing simultaneous transmission and reception of data.
+
+### Reducing Collisions:
+- Use **switches** instead of hubs.
+- Segment large networks into smaller ones using **routers** or **layer-3 switches**.
+- Implement **full-duplex communication**, where devices can send and receive data simultaneously without collisions.
+
+### Modern Relevance
+
+In modern networks with switches and full-duplex Ethernet, collisions are rare or non-existent, making collision domains a concept mainly relevant to older network designs.
+
+## Broadcast Domain
+
+A **broadcast domain** in computer networks refers to a logical division of a network where any broadcast packet sent by a device is received by all other devices in the same domain. Broadcasts are typically used for tasks like device discovery and address resolution.
+
+### Key Characteristics of Broadcast Domains:
+1. **Broadcast Traffic:** A broadcast is a packet sent to all devices in the domain, typically using the address `255.255.255.255` in IPv4.
+2. **Scope of Broadcasts:** Broadcast packets are confined to the devices within the same broadcast domain and are not forwarded by routers to other broadcast domains.
+3. **Impact on Performance:** A large broadcast domain with many devices can lead to excessive broadcast traffic, reducing network efficiency (known as **broadcast storms**).
+
+### Devices and Broadcast Domains:
+- **Hub:** All devices connected to a hub share the same broadcast domain, as the hub broadcasts data to all ports.
+- **Switch:** All devices connected to a switch typically share the same broadcast domain unless VLANs are configured.
+- **Router:** Routers separate broadcast domains, as they do not forward broadcast traffic between different network segments.
+
+### Reducing the Size of Broadcast Domains:
+- Use **routers** to segment a network into smaller broadcast domains.
+- Implement **VLANs (Virtual Local Area Networks)** on switches to logically divide a single switch into multiple broadcast domains.
+
+### Example:
+- In a typical home network, all devices connected to the same router (e.g., via Ethernet or Wi-Fi) are in the same broadcast domain.
+- In a corporate network, VLANs are often used to create smaller broadcast domains for different departments or purposes.
+
+### Importance in Modern Networks:
+Managing broadcast domains is crucial for scalability and performance in larger networks. Proper segmentation using VLANs or routers helps control broadcast traffic and improves network efficiency.

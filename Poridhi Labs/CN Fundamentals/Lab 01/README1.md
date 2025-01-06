@@ -1,4 +1,4 @@
-# Networking Fundamentals Starting from LAN to VXLAN
+# Networking Fundamentals: LAN Communication 
 
 ## What is a LAN?
 
