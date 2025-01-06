@@ -1,5 +1,7 @@
 # Networking Fundamentals: Collision Domain and Broadcast Domain
 
+This document explains the concepts of collision domain and broadcast domain in computer networks. It also provides examples and diagrams to illustrate these concepts. We will also discuss the issues with large collision domains and broadcast domains and how to mitigate them.
+
 ## Collision Domain
 
 A **collision domain** in computer networks refers to a network segment where data packets can collide with one another while being sent over a shared communication medium. Collisions occur when two or more devices attempt to send data simultaneously, leading to interference and the need for retransmission.
@@ -13,6 +15,7 @@ A **collision domain** in computer networks refers to a network segment where da
 3. **Performance Limitation:** As the number of devices in a collision domain increases, collisions become more frequent, reducing the overall network performance.
 
 ### Devices and Collision Domains
+
 - **Hub:** All devices connected to a hub share the same collision domain because the hub broadcasts data to all its ports.
 - **Switch:** Each port of a switch creates a separate collision domain, significantly reducing collisions in a network.
 - **Router:** Routers do not forward data within the same collision domain. Instead, they separate collision domains and broadcast domains.
@@ -72,23 +75,71 @@ In modern networks with switches and full-duplex Ethernet, collisions are rare o
 
 A **broadcast domain** in computer networks refers to a logical division of a network where any broadcast packet sent by a device is received by all other devices in the same domain. Broadcasts are typically used for tasks like device discovery and address resolution.
 
-### Key Characteristics of Broadcast Domains:
+### Key Characteristics of Broadcast Domains
+
 1. **Broadcast Traffic:** A broadcast is a packet sent to all devices in the domain, typically using the address `255.255.255.255` in IPv4.
 2. **Scope of Broadcasts:** Broadcast packets are confined to the devices within the same broadcast domain and are not forwarded by routers to other broadcast domains.
 3. **Impact on Performance:** A large broadcast domain with many devices can lead to excessive broadcast traffic, reducing network efficiency (known as **broadcast storms**).
 
-### Devices and Broadcast Domains:
+### Devices and Broadcast Domains
+
 - **Hub:** All devices connected to a hub share the same broadcast domain, as the hub broadcasts data to all ports.
 - **Switch:** All devices connected to a switch typically share the same broadcast domain unless VLANs are configured.
 - **Router:** Routers separate broadcast domains, as they do not forward broadcast traffic between different network segments.
 
-### Reducing the Size of Broadcast Domains:
+### Why Large Broadcast Domains are an Issue?
+
+Large broadcast domains pose significant challenges because they amplify unnecessary network traffic, leading to congestion and reduced efficiency. Even fundamental network protocols like **ARP (Address Resolution Protocol)** rely on broadcast messages to function. When a broadcast domain is large, these frequent broadcast messages reach more devices, consuming bandwidth and processing power unnecessarily.
+
+### Key Problems with Large Broadcast Domains
+
+1. **Unnecessary Congestion:**
+   - Broadcast messages, such as ARP requests, are sent to all devices in a broadcast domain. 
+   - In a large broadcast domain, every device receives and processes these messages, even if they are irrelevant to them.
+   - This increases network congestion and reduces the bandwidth available for other types of traffic.
+
+2. **Decreased Device Performance:**
+   - Every device in the broadcast domain must process incoming broadcast packets, which adds unnecessary workload.
+   - This can slow down devices, especially in environments with high broadcast traffic.
+
+3. **Broadcast Storms:**
+   - When the volume of broadcast traffic becomes excessive, it can lead to a **broadcast storm**, overwhelming the network and disrupting communication.
+
+4. **Security Risks:**
+   - A large broadcast domain makes it easier for malicious actors to exploit vulnerabilities, as all devices receive broadcast messages.
+   - Attackers can potentially flood the domain with broadcast traffic to cause disruptions.
+
+### Measuring Broadcast Domains
+
+The size of a broadcast domain is determined by the number of devices that can receive broadcast messages from a single device in the network. Understanding and managing the size of broadcast domains is essential to reduce congestion and optimize performance.
+
+### Examples of Broadcast Domains
+
+![alt text](./images/Collision-03.svg)
+
+The above diagram shows the broadcast domains in the same network where we previously explained collision domains. Here, there are three broadcast domains in total. Broadcast domain 1 (blue) is the largest, covering six devices, including the connection to the router's interface. The router interface is part of this domain because it can send and receive broadcast messages, like ARP requests.
+
+This example highlights how broadcast domains work, with routers separating them to prevent unnecessary traffic between different parts of the network.
+
+1. **Hub or Switch Networks:**
+   - By default, all ports on a hub or switch are part of the same broadcast domain.
+   - When a device connected to the hub or switch sends a broadcast message, it is forwarded to all other devices in the domain.
+   - This design can lead to excessive broadcast traffic in large networks.
+
+2. **Router Networks:**
+   - Routers separate networks into different broadcast domains.
+   - Each port on a router belongs to a distinct broadcast domain, and broadcast messages are not forwarded between domains.
+   - This segmentation limits the scope of broadcast traffic, reducing congestion and improving performance.
+
+### Reducing the Size of Broadcast Domains
+
 - Use **routers** to segment a network into smaller broadcast domains.
 - Implement **VLANs (Virtual Local Area Networks)** on switches to logically divide a single switch into multiple broadcast domains.
 
-### Example:
-- In a typical home network, all devices connected to the same router (e.g., via Ethernet or Wi-Fi) are in the same broadcast domain.
-- In a corporate network, VLANs are often used to create smaller broadcast domains for different departments or purposes.
+### Importance in Modern Networks
 
-### Importance in Modern Networks:
 Managing broadcast domains is crucial for scalability and performance in larger networks. Proper segmentation using VLANs or routers helps control broadcast traffic and improves network efficiency.
+
+## Conclusion
+
+This document provides a comprehensive overview of collision domains and broadcast domains in computer networks. It explains the key characteristics, devices, and issues associated with these concepts. By understanding these concepts, you can design and manage networks more effectively, ensuring optimal performance and scalability.
