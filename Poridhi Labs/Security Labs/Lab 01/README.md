@@ -1,44 +1,92 @@
-### Ethical Login Testing
+# Ethical Login Testing with Python and CSRF Handling
+
+This guide demonstrates how to ethically test login functionality in a controlled environment using Python. The project involves a web application hosted in a Docker container and accessed via Poridhi's load balancer. The Python script automates credential testing, dynamically retrieves CSRF tokens, and highlights the importance of robust security mechanisms in web applications.
+
+![](./images/logo.drawio.svg)
 
 
-This document provides a guide to ethically automate login testing using Python, targeting a web application hosted via Poridhi's load balancer. The script tests username-password combinations dynamically while handling CSRF tokens to ensure compliance with server-side protections. The setup involves using a Docker container to simulate the target environment and securely testing login credentials.
+## **Objective**
+
+1. **Test Login Functionality**: Validate credentials against a web application's login form.
+2. **Handle CSRF Protection**: Dynamically extract and use CSRF tokens to comply with security mechanisms.
+3. **Automate Testing**: Implement ethical brute-forcing to identify valid credentials.
+4. **Understand Security Mechanisms**: Demonstrate the importance of CSRF handling and error detection.
 
 
-### **Objective**
+## **Project Structure**
 
-1. **Test login functionality**: Validate credentials against a web application's login form.
-2. **Handle CSRF Protection**: Dynamically extract and use CSRF tokens to bypass security mechanisms.
-3. **Simulate ethical brute-forcing**: Automate username-password testing in a controlled environment.
-4. **Demonstrate security insights**: Highlight the importance of robust error handling and CSRF implementation.
+Here’s the folder structure for the project:
 
-### **Create the Docker Container and Run it via Poridhi's Load Balancer**
+```
+ethical-login-testing/
+├── test.py                # The Python script for login testing
+├── usernames.txt          # File containing test usernames
+├── passwords.txt          # File containing test passwords
+```
 
-1. **Pull the DVWA Docker Image**:
+## **Set Up the Docker Environment**
+
+For this lab, we will be using the DVWA (Damn Vulnerable Web Application) Docker image. This is a simple web application that is used to test the security of web applications. It is designed to be used in a controlled environment for testing purposes.
+
+![](./images/logo1.drawio.svg)
+
+1. **Pull the Docker Image**:
+   Download the DVWA image from Docker Hub:
    ```bash
    docker pull vulnerables/web-dvwa
    ```
 
-2. **Run the DVWA Container**:
+2. **Run the Docker Container**:
+   Start the container on port 80:
    ```bash
    docker run -d -p 80:80 vulnerables/web-dvwa
    ```
 
-3. **Access the Application via Poridhi's Load Balancer**:
-   - The load balancer is configured at `https://66dbf2e46722fdb9097e9eb5-lb-427.bm-north.lab.poridhi.io/`.
-   - Ensure the container is reachable through the load balancer URL.
+3. **Verify Access via Poridhi's Load Balancer**:
 
-4. **Set the DVWA Security Level**:
-   - Open the load balancer URL in a browser.
-   - Log in using the default credentials:
+   Find the `eth0` IP address of the `Poridhi's` VM.
+   ```bash
+   ifconfig
+   ```
+
+   Create a Loadbalancer in Poridhi's Cloud Portal with the `eth0` IP and port `80`.
+
+   Poridhi’s load balancer routes traffic to the Docker container. Access the application with the URL.
+
+
+4. **Set DVWA Security Level**:
+   - Log in with the default credentials:
      - **Username**: `admin`
      - **Password**: `password`
    - Navigate to the **DVWA Security** tab and set the security level to **Low**.
 
+## **Prepare Input Files**
 
+1. **`usernames.txt`**:
+   Add potential usernames, one per line:
+   ```
+   admin
+   user
+   test
+   guest
+   ```
 
-### **Script**
+2. **`passwords.txt`**:
+   Add potential passwords, one per line:
+   ```
+   password
+   admin
+   guest
+   test123
+   ```
 
-Here’s the Python script to automate login testing:
+## **Python Script To Attack DVWA**
+
+Now, we will create the script to test the login functionality of the DVWA application. This script will attempt to login to the application with each username and password combination in the `usernames.txt` and `passwords.txt` files. Before that it will extract the CSRF token from the login page. Then it will attempt to login to the application with the extracted CSRF token, username and password combination. If the login is successful, the script will print the username and password combination. If the login is unsuccessful, the script will print the username and password combination and continue to the next combination.
+
+![](./images/logo2.drawio.svg)
+
+Save the following Python script as `test.py` in the project folder:
 
 ```python
 import requests
@@ -101,69 +149,66 @@ for username in usernames:
             break
 ```
 
+## **CSRF Token Protection**
 
+Cross-Site Request Forgery (CSRF) tokens are security measures used to prevent unauthorised actions on behalf of authenticated users. The script dynamically retrieves and includes this token in each login attempt to comply with server-side validation.
 
-### **Explanation of the Script**
+![](./images/logo3.drawio.svg)
 
-1. **Initial Setup**:
-   - **URLs**: Define the base URL and login endpoint for Poridhi's load balancer.
-   - **File Paths**: Specify file paths for `usernames.txt` and `passwords.txt`.
+### **Code for Token Handling**
 
-2. **Retrieve CSRF Token**:
-   - **Function**: `get_csrf_token`
-   - Sends a GET request to the login page.
-   - Extracts the CSRF token (`user_token`) using a regular expression.
+```python
+def get_csrf_token(session):
+    response = session.get(url_login)
+    if response.status_code == 200:
+        # Extract the CSRF token from the response HTML
+        match = re.search(r"name='user_token' value='(.*?)'", response.text)
+        if match:
+            return match.group(1)  # Return the extracted token
+    print("Failed to retrieve CSRF token.")  # Print an error if token is not found
+    return None
+```
 
-3. **Attempt Login**:
-   - **Function**: `attempt_login`
-   - Sends a POST request with the username, password, CSRF token, and form data.
-   - Validates login success by checking the absence of `"Login failed"` in the server response.
+**How it Works**:
+1. **GET Request**:
+   - Sends a request to the login page to fetch its HTML content.
+2. **Token Extraction**:
+   - Uses a regular expression to extract the CSRF token (`user_token`) from the hidden input field in the HTML.
+3. **Return Token**:
+   - Returns the token for inclusion in the POST request.
 
-4. **File Handling**:
-   - Reads usernames and passwords from `usernames.txt` and `passwords.txt`.
+## **Run the Script**
 
-5. **Main Logic**:
-   - Loops through each username-password combination.
-   - Refreshes the CSRF token for every login attempt.
-   - Prints successful credentials and exits upon success.
+1. **Place Input Files**:
+   Ensure `usernames.txt` and `passwords.txt` are in the same directory as `test.py`.
 
-
-
-### **Run the Script**
-
-1. **Prepare Input Files**:
-   - **`usernames.txt`**:
-     ```
-     admin
-     user
-     test
-     guest
-     ```
-   - **`passwords.txt`**:
-     ```
-     password
-     admin
-     guest
-     test123
-     ```
-
-2. **Save the Script**:
-   - Save the script as `test.py` in the same directory as the input files.
-
-3. **Run the Script**:
+2. **Execute the Script**:
+   Run the script using:
    ```bash
    python3 test.py
    ```
 
-### **Expected Output**
+3. **Expected Output**:
+   If valid credentials are found:
+   ```
+   Success! Username: admin, Password: password
+   ```
 
-If the script identifies valid credentials, it will print:
-```
-Success! Username: admin, Password: password
-```
+If no valid credentials are found, the script terminates without any output.
 
-If no valid credentials are found, the script will terminate without any output.
+---
 
-### **Conclusion**
+## **Ethics**
 
-This guide demonstrates how to set up a controlled environment using Poridhi's load balancer and Docker for testing login credentials with a Python script. The script highlights the importance of CSRF protection and error handling in web applications. Use this script responsibly and only in environments where you have explicit permission for ethical testing.
+1. **Authorisation**:
+   - Ensure you have explicit permission to test the application.
+2. **Controlled Environment**:
+   - The setup involves a Docker container and load balancer, ensuring no harm to production systems.
+3. **Educational Purpose**:
+   - This guide is for learning and ethical testing only.
+
+---
+
+## **Conclusion**
+
+This guide outlines the steps to set up a controlled environment for ethical login testing. By dynamically handling CSRF tokens and automating credential testing, the script highlights the importance of secure login mechanisms in web applications. Always conduct testing responsibly and within authorised boundaries.
