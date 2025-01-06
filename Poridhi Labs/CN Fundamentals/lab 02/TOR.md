@@ -2,7 +2,7 @@
 
 A **Top-of-Rack (TOR) switch** is a key networking device in modern data centers. It’s located physically at the top of a server rack (hence the name) and serves as the primary point of connection for all servers in that rack. Its design simplifies cabling, optimizes performance, and integrates seamlessly into the broader data center network.
 
-![alt text](image-1.png)
+![alt text](image-4.png)
 
 ### **What Roles Does a TOR Switch Serve?**
 
@@ -61,6 +61,81 @@ A typical data center rack consists of:
   - Provide redundancy and scalability by connecting to multiple TOR switches.
 
 ---
+
+## **Physical and Logical Design**
+
+#### **1. Physical Connections**
+
+**a) Physical Connection Between TOR and Distribution Switches:**
+- Each **Top of Rack (TOR)** switch in the racks connects to the **distribution layer switch**.
+- In real-world setups, these connections are:
+  - **Redundant:** At least two physical connections from each TOR switch to two distribution switches for failover and high availability. This ensures that if one link or distribution switch fails, the other link keeps the communication going.
+  - **High Bandwidth:** Using technologies like **10G, 25G, or even 40G Ethernet** for high-speed connectivity between the TOR switches and the distribution layer.
+
+**b) Server Connections to the TOR Switch:**
+- Each server within a rack is physically connected to the TOR switch using Ethernet cables.
+- These connections are typically **1G or 10G Ethernet** for data traffic.
+- All servers in a rack communicate with each other locally via the TOR switch, reducing the load on higher-level switches.
+
+---
+
+#### **2. Logical Configuration**
+
+The **logical configuration** refers to how the devices (like TOR and distribution switches) operate and handle data traffic. Here’s the breakdown:
+
+**a) Top of Rack (TOR) Switches:**
+
+TOR switches are hybrid devices capable of both:
+
+**1. Bridging (Layer 2):**
+- Within each rack, the TOR switch acts as a **bridge** to connect servers in the same subnet.
+- For example:
+  - Servers in Rack 1 (192.168.1.0/24) communicate directly through the TOR switch at Layer 2.
+  - TOR switches use **MAC addresses** to forward packets within the rack.
+
+**2. Routing (Layer 3):**
+- TOR switches also act as **routers** to connect to the distribution layer for inter-rack communication.
+- For example:
+  - Traffic from a server in Rack 1 (192.168.1.10) to a server in Rack 2 (192.168.2.15) will be routed via the TOR switch and passed up to the distribution switch.
+
+**b) Distribution Layer Switch:**
+- The distribution layer switch is responsible for **interconnecting all TOR switches** and managing traffic between racks.
+- Key roles:
+  - **Layer 3 Routing:**
+    - Handles routing between the TOR switches (inter-rack communication).
+    - Uses IP subnets to determine which TOR switch to forward traffic to.
+  - **Route Summarization:**
+    - The distribution layer aggregates routes from multiple TOR switches to simplify routing tables and optimize network performance.
+    - Example:
+      - Instead of managing individual IPs like `192.168.1.10` or `192.168.2.15`, the distribution switch may summarize these into larger blocks (`192.168.1.0/24`, `192.168.2.0/24`).
+
+**c) Logical Connections Between TOR and Distribution Layer:**
+- The connections between TOR switches and the distribution switch use **/31 subnets**, which are point-to-point links.
+- Example:
+  - TOR switch in Rack 1 has an IP of `192.168.0.0/31`, and the distribution switch has `192.168.0.1/31`.
+- Why /31 Subnets?
+  - Efficient IP usage: Only two IP addresses are needed (one for each endpoint of the link).
+  - Simplifies routing for point-to-point connections.
+
+## **How Physical and Logical Designs Work Together**
+
+Let’s see how these concepts interact in practice:
+
+1. **Server Communication Within the Same Rack (Intra-Rack):**
+   - Servers in Rack 1 communicate directly through the TOR switch at Layer 2 (bridging).
+   - The TOR switch forwards frames based on MAC addresses, and there’s no need for IP routing.
+
+2. **Server Communication Across Racks (Inter-Rack):**
+   - Traffic between servers in different racks passes through:
+     1. TOR switch in the source rack (Layer 3 routing).
+     2. Distribution switch, which routes it to the destination TOR switch (Layer 3 routing).
+     3. TOR switch in the destination rack forwards the traffic to the target server.
+
+3. **Redundant and High-Performance Links:**
+   - If one physical connection between a TOR switch and the distribution layer fails, traffic seamlessly switches to the redundant link.
+   - Bundled links ensure that even high-bandwidth traffic can flow smoothly between layers.
+---
+
 
 ## A simple hierarchical networking example
 
@@ -127,89 +202,5 @@ When a server in one rack communicates with a server in another rack, the traffi
 
 
 ![](./images/lab2-10.drawio.svg)
-
-## **Physical and Logical Design**
-
-#### **1. Physical Connections**
-
-**a) Physical Connection Between TOR and Distribution Switches:**
-- Each **Top of Rack (TOR)** switch in the racks connects to the **distribution layer switch**.
-- In real-world setups, these connections are:
-  - **Redundant:** At least two physical connections from each TOR switch to two distribution switches for failover and high availability. This ensures that if one link or distribution switch fails, the other link keeps the communication going.
-  - **High Bandwidth:** Using technologies like **10G, 25G, or even 40G Ethernet** for high-speed connectivity between the TOR switches and the distribution layer.
-
-**b) Server Connections to the TOR Switch:**
-- Each server within a rack is physically connected to the TOR switch using Ethernet cables.
-- These connections are typically **1G or 10G Ethernet** for data traffic.
-- All servers in a rack communicate with each other locally via the TOR switch, reducing the load on higher-level switches.
-
----
-
-#### **2. Logical Configuration**
-
-The **logical configuration** refers to how the devices (like TOR and distribution switches) operate and handle data traffic. Here’s the breakdown:
-
-**a) Top of Rack (TOR) Switches:**
-- TOR switches are hybrid devices capable of both:
-  1. **Bridging (Layer 2):**
-     - Within each rack, the TOR switch acts as a **bridge** to connect servers in the same subnet.
-     - For example:
-       - Servers in Rack 1 (192.168.1.0/24) communicate directly through the TOR switch at Layer 2.
-       - TOR switches use **MAC addresses** to forward packets within the rack.
-  2. **Routing (Layer 3):**
-     - TOR switches also act as **routers** to connect to the distribution layer for inter-rack communication.
-     - For example:
-       - Traffic from a server in Rack 1 (192.168.1.10) to a server in Rack 2 (192.168.2.15) will be routed via the TOR switch and passed up to the distribution switch.
-
-**b) Distribution Layer Switch:**
-- The distribution layer switch is responsible for **interconnecting all TOR switches** and managing traffic between racks.
-- Key roles:
-  - **Layer 3 Routing:**
-    - Handles routing between the TOR switches (inter-rack communication).
-    - Uses IP subnets to determine which TOR switch to forward traffic to.
-  - **Route Summarization:**
-    - The distribution layer aggregates routes from multiple TOR switches to simplify routing tables and optimize network performance.
-    - Example:
-      - Instead of managing individual IPs like `192.168.1.10` or `192.168.2.15`, the distribution switch may summarize these into larger blocks (`192.168.1.0/24`, `192.168.2.0/24`).
-
-**c) Logical Connections Between TOR and Distribution Layer:**
-- The connections between TOR switches and the distribution switch use **/31 subnets**, which are point-to-point links.
-- Example:
-  - TOR switch in Rack 1 has an IP of `192.168.0.0/31`, and the distribution switch has `192.168.0.1/31`.
-- Why /31 Subnets?
-  - Efficient IP usage: Only two IP addresses are needed (one for each endpoint of the link).
-  - Simplifies routing for point-to-point connections.
-
-## **How Physical and Logical Designs Work Together**
-
-Let’s see how these concepts interact in practice:
-
-1. **Server Communication Within the Same Rack (Intra-Rack):**
-   - Servers in Rack 1 communicate directly through the TOR switch at Layer 2 (bridging).
-   - The TOR switch forwards frames based on MAC addresses, and there’s no need for IP routing.
-
-2. **Server Communication Across Racks (Inter-Rack):**
-   - Traffic between servers in different racks passes through:
-     1. TOR switch in the source rack (Layer 3 routing).
-     2. Distribution switch, which routes it to the destination TOR switch (Layer 3 routing).
-     3. TOR switch in the destination rack forwards the traffic to the target server.
-
-3. **Redundant and High-Performance Links:**
-   - If one physical connection between a TOR switch and the distribution layer fails, traffic seamlessly switches to the redundant link.
-   - Bundled links ensure that even high-bandwidth traffic can flow smoothly between layers.
----
-
-### **Management and Configuration**
-- **Out-of-Band Ports:**
-  - Switches include dedicated out-of-band management ports (always in L3 mode) shown in the [diagram](https://lenovopress.lenovo.com/lp1061-ce0128tb-gigabit-ethernet-campus-switch).
-  - These ports allow administrators to log in remotely (e.g., via SSH) and manage the switch, even if other ports are misconfigured.
-- **Switch OS:**
-  - Internally, many modern switches run Linux, FreeBSD, or Unix-like operating systems.
-  - Administrators can manage them using familiar tools (e.g., `ip`, `bridge`) to configure routing tables, assign IPs, or enslave ports to virtual bridges.
-- **Perspective:**  
-  - A managed switch is essentially a highly optimized Linux server with multiple network interfaces.
-
-  ![alt text](image-2.png)
-
 
 So, We have understood the concept of Top of Rack (TOR) switch and how it works in a data center network.
