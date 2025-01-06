@@ -49,16 +49,31 @@ For this lab, we will be using the DVWA (Damn Vulnerable Web Application) Docker
    ifconfig
    ```
 
+   ![](./images/1.png)
+
    Create a Loadbalancer in Poridhi's Cloud Portal with the `eth0` IP and port `80`.
 
+   ![](./images/2.png)
+
    Poridhi’s load balancer routes traffic to the Docker container. Access the application with the URL.
+
+   ![](./images/3.png)
 
 
 4. **Set DVWA Security Level**:
    - Log in with the default credentials:
      - **Username**: `admin`
      - **Password**: `password`
-   - Navigate to the **DVWA Security** tab and set the security level to **Low**.
+
+   - Navigate the `Setup DVWA` page. And click on `Create / Reset Database` to create a new database.
+
+   ![](./images/4.png)
+
+   Now `logout` from the application, and login again with the default credentials as `admin` and `password`.
+
+   - Navigate to the **DVWA Security** tab and set the security level to **Low**. Then logout from the application.
+
+   ![](./images/5.png)
 
 ## **Prepare Input Files**
 
@@ -93,7 +108,7 @@ import requests
 import re
 
 # Base URL and login endpoint
-url_base = "https://66dbf2e46722fdb9097e9eb5-lb-427.bm-north.lab.poridhi.io/"
+url_base = "https://<poridhi-load-balancer-url>/"
 url_login = url_base + "login.php"
 
 # File paths for usernames and passwords
@@ -148,6 +163,13 @@ for username in usernames:
             print(f"Success! Username: {username}, Password: {password}")
             break
 ```
+> Note: Replace `<poridhi-load-balancer-url>` with the URL of the Poridhi's load balancer as 
+
+```bash
+https://<poridhi-load-balancer-url>/
+```
+![](./images/6.png)
+
 
 ## **CSRF Token Protection**
 
@@ -194,9 +216,10 @@ def get_csrf_token(session):
    Success! Username: admin, Password: password
    ```
 
+   ![](./images/7.png)
+
 If no valid credentials are found, the script terminates without any output.
 
----
 
 ## **Ethics**
 
@@ -206,8 +229,6 @@ If no valid credentials are found, the script terminates without any output.
    - The setup involves a Docker container and load balancer, ensuring no harm to production systems.
 3. **Educational Purpose**:
    - This guide is for learning and ethical testing only.
-
----
 
 ## **Conclusion**
 
