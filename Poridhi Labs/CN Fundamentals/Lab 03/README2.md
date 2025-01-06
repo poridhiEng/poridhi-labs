@@ -210,64 +210,90 @@ To clean things up, just remove the created network namespaces:
 ## **Scenario 2: Hierarchical Internetworking**
 
 ### **Objective**
-Show how multi-level interconnection of switches also forms a single broadcast domain.
+Show how multi-level interconnection of switches also forms a single broadcast domain. In large setups, connecting switches in a flat structure can cause a lot of transit traffic. To improve performance, a hierarchical arrangement of switches is used.
+
+This example will demonstrate that a multi-level switch interconnection still operates as a single broadcast domain.
 
 ### **Steps**
 
-1. **Create Three Bridges**:
+### 1. **Create two disjoint network segments**
 
    ```bash
-   create_bridge bridgeA brA
-   create_bridge bridgeB brB
-   create_bridge bridgeC brC
+   # 1st Lower-layer segment
+   create_bridge bridge10 br10
+   create_end_host host10 eth10 bridge10 br10
+   create_end_host host11 eth11 bridge10 br10
    ```
 
-2. **Connect Bridges in a Hierarchical Structure**:
-
    ```bash
-   connect_bridges bridgeA brA bridgeB brB
-   connect_bridges bridgeB brB bridgeC brC
+   # 2nd Lower-layer segment
+   create_bridge bridge20 br20
+   create_end_host host20 eth20 bridge20 br20
+   create_end_host host21 eth21 bridge20 br20
    ```
 
-3. **Add End Hosts**:
+
+### 2. **Create a higher-layer switch and connect the lower-layer switches to it**
 
    ```bash
-   create_end_host hostA ethA bridgeA brA
-   create_end_host hostB ethB bridgeB brB
-   create_end_host hostC ethC bridgeC brC
+   # Higher-layer switch
+   create_bridge bridge30 br30
    ```
 
-4. **Test the Broadcast Domain**:
-   - Monitor traffic on hosts connected to different bridges:
+   ```bash
+   # Connect both lower-layer switches to higher layer switch
+   connect_bridges bridge10 br10 bridge30 br30
+   connect_bridges bridge20 br20 bridge30 br30
+   ```
 
-     ```bash
-     # On hostB
-     nsenter --net=/var/run/netns/hostB tcpdump -i ethB ether proto 0x7a05
+### 3. **Test the Broadcast Domain**
 
-     # On hostC
-     nsenter --net=/var/run/netns/hostC tcpdump -i ethC ether proto 0x7a05
-     ```
+To show that all hosts are part of a single broadcast domain, begin by monitoring traffic on all hosts except the first one connected to the first lower-layer switch.
 
-   - Send a broadcast message from hostA:
+First lower-layer switch, second host (in a separate terminal):
 
-     ```bash
-     # On hostA
-     nsenter --net=/var/run/netns/hostA ethsend ethA ff:ff:ff:ff:ff:ff 'Broadcast Test!'
-     ```
+```bash
+# from host11
+nsenter --net=/var/run/netns/host11 \
+  tcpdump -i eth11 ether proto 0x7a05
+```
+Second lower-layer switch, first host (in a separate terminal):
 
-   - Verify that hosts B and C receive the broadcast.
+```bash
+# from host20
+nsenter --net=/var/run/netns/host20 \
+  tcpdump -i eth20 ether proto 0x7a05
+```
 
-5. **Clean Up**:
+Second lower-layer switch, second host (in a separate terminal):
+
+```bash
+# from host21
+nsenter --net=/var/run/netns/host21 \
+  tcpdump -i eth21 ether proto 0x7a05
+``` 
+
+Finally, using one more terminal, send a broadcast message from the first host of the first lower-layer switch:
+
+```bash
+nsenter --net=/var/run/netns/host10 \
+  ethsend eth10 ff:ff:ff:ff:ff:ff 'Hello all!'
+```  
+
+### 4. **Clean Up**
+
+Let's remove the created network namespaces:
 
    ```bash
-   ip netns delete bridgeA
-   ip netns delete hostA
+   ip netns delete bridge10
+   ip netns delete host10
+   ip netns delete host11
 
-   ip netns delete bridgeB
-   ip netns delete hostB
+   ip netns delete bridge20
+   ip netns delete host20
+   ip netns delete host21
 
-   ip netns delete bridgeC
-   ip netns delete hostC
+   ip netns delete bridge30
    ```
 
 
