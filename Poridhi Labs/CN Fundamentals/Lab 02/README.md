@@ -23,7 +23,7 @@ A **switch** is the physical implementation of the bridge function. It connects 
 
 The main point is that a **bridge** and a **switch** essentially perform the same function at the **data link layer (Layer 2)** of the OSI model. However, the terms differ in their usage and context:
 
-![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/lab%2002/images/lab2-2.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2002/images/lab2-2.drawio.svg)
 
 **1. Bridge as a Logical Function:**
 
@@ -43,11 +43,11 @@ The main point is that a **bridge** and a **switch** essentially perform the sam
 - Within this domain:
   - Devices can communicate with each other using **unicast** (specific MAC address)
 
-    ![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/lab%2002/images/lab2-3.drawio.svg)
+    ![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2002/images/lab2-3.drawio.svg)
 
   - Devices can communicate with each other using **broadcast** (all devices in the domain).
 
-    ![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/lab%2002/images/lab2-4.drawio.svg)
+    ![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2002/images/lab2-4.drawio.svg)
 
 ### **2. Transparent Operation:**
 
@@ -72,7 +72,7 @@ Transparent operation refers to the way certain networking devices, like bridges
 
 In networking, **extending network segments** means increasing the size or reach of a local network at the **Data Link Layer (Layer 2)**. Bridges achieve this by connecting separate parts of the network (end-nodes or sub-segments) into a single cohesive broadcast domain.
 
-![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/lab%2002/images/lab2-5.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2002/images/lab2-5.drawio.svg)
 
 ### **1. Connecting End-Nodes**  
 Bridges can connect individual devices, such as:  

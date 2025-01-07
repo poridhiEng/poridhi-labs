@@ -2,7 +2,7 @@
 
 A **Top-of-Rack (TOR) switch** is a key networking device in modern data centers. It’s located physically at the top of a server rack (hence the name) and serves as the primary point of connection for all servers in that rack. Its design simplifies cabling, optimizes performance, and integrates seamlessly into the broader data center network.
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/lab%2002/images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2002/images/image-4.png)
 
 ### **What Roles Does a TOR Switch Serve?**
 
@@ -17,7 +17,7 @@ The TOR switch is multifunctional, fulfilling roles in both Layer 2 (L2) and Lay
     - **MAC Learning:** Dynamically learns which MAC address resides on which port.
     - **Frame Forwarding:** Directs traffic between servers in the rack based on MAC tables.
 
-    ![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/lab%2002/images/lab2-6.drawio.svg)
+    ![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2002/images/lab2-6.drawio.svg)
 
 **2. Layer 3 (L3) Router Role:**
 
@@ -25,7 +25,7 @@ The TOR switch is multifunctional, fulfilling roles in both Layer 2 (L2) and Lay
 - Operates based on IP routing, directing packets between different subnets using routing tables.
 - Acts as the **default gateway** for all servers in the rack, meaning all traffic destined for external networks flows through it.
 
-    ![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/lab%2002/images/lab2-7.drawio.svg)
+    ![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2002/images/lab2-7.drawio.svg)
 
 ### **Why is it Called a TOR Switch?**
 
@@ -141,7 +141,7 @@ Let’s see how these concepts interact in practice:
 
 We will illustrate a **data center network hierarchy** that involves **Top of Rack (TOR) switches** and a **Distribution Layer Switch**. Here is the diagram which we will be using to explain the concept.
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/lab%2002/images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2002/images/image-3.png)
 
 
 ### **1. Components in the Diagram**
@@ -187,7 +187,7 @@ When a server in a rack communicates with another server in the **same rack**, t
 - Example: Server `192.168.1.10` in Rack 1 can directly communicate with Server `192.168.1.20` in Rack 1 without involving the distribution switch.
 
 
-![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/lab%2002/images/lab2-9.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2002/images/lab2-9.drawio.svg)
 
 
 #### **b) Inter-Rack Communication (L3):**
@@ -201,6 +201,6 @@ When a server in one rack communicates with a server in another rack, the traffi
 4. Rack 4’s TOR switch forwards the traffic to Server `192.168.4.15`.
 
 
-![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/lab%2002/images/lab2-10.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2002/images/lab2-10.drawio.svg)
 
 So, We have understood the concept of Top of Rack (TOR) switch and how it works in a data center network.
