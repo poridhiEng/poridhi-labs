@@ -1,4 +1,4 @@
-# **Setting Up a VLAN Using a Linux Bridge**
+# **Setting Up a VLAN Using Linux Virtualization Tools**
 
 In this hands-on lab, we will learn how to use the native VLAN capabilities of a Linux bridge to split a single broadcast domain into multiple smaller domains. These VLANs will allow us to configure isolated IP subnets, enhancing network security and efficiency. We will emulate network components using Linux namespaces, virtual Ethernet (veth) devices, and Linux bridge devices.
 
