@@ -194,33 +194,33 @@ Run the following three commands in three different terminals.
 
 1. **Start Monitoring on `host11`:**
 
-  ```bash
-  # On host11
-  nsenter --net=/var/run/netns/host11 tcpdump -i eth11 ether proto 0x7a05
-  ```
+    ```bash
+    # On host11
+    nsenter --net=/var/run/netns/host11 tcpdump -i eth11 ether proto 0x7a05
+    ```
 
-  This monitors traffic on `eth11` for a specific protocol.
+    This monitors traffic on `eth11` for a specific protocol.
 
 
 2. **Start Monitoring on `host20`:**
 
-  ```bash
-  # On host20
-  nsenter --net=/var/run/netns/host20 tcpdump -i eth20 ether proto 0x7a05
-  ```
+    ```bash
+    # On host20
+    nsenter --net=/var/run/netns/host20 tcpdump -i eth20 ether proto 0x7a05
+    ```
 
-  This monitors traffic on `eth20` for a specific protocol.
+    This monitors traffic on `eth20` for a specific protocol.
 
 2. **Start Monitoring on `host21`:**
 
-  ```bash
-  # On host21
-  nsenter --net=/var/run/netns/host21 tcpdump -i eth21 ether proto 0x7a05
-  ```
+    ```bash
+    # On host21
+    nsenter --net=/var/run/netns/host21 tcpdump -i eth21 ether proto 0x7a05
+    ```
 
-  This monitors traffic on `eth21` for a specific protocol.
+    This monitors traffic on `eth21` for a specific protocol.
 
-- #### **Send a broadcast message**
+#### **Send a broadcast message**
 
 1. **Broadcast a Message from `host10`:**
 
@@ -235,11 +235,11 @@ Run the following three commands in three different terminals.
 
     From the perspective of the nodes (logically), there is no distinction between being connected to a single switch (bridge) or multiple interconnected switches. Together, they still constitute one unified Layer 2 (L2) segment and a single broadcast domain.
 
-    ![alt text](image.png)
+    ![alt text](./images1/image.png)
 
-    ![alt text](image-1.png)
+    ![alt text](./images1/image-1.png)
 
-    ![alt text](image-2.png)
+    ![alt text](./images1/image-2.png)
 
 ### 4. **Clean Up**
 
@@ -283,7 +283,7 @@ This example will demonstrate that a multi-level switch interconnection still op
    ```
    These commands add two end hosts, `host100` and `host101`, with interfaces `eth100` and `eth101` respectively, to `bridge100`.
 
-### Lower-layer Segment II
+#### Lower-layer Segment II
 - **Create a Bridge for Segment II:**
 
    ```bash
@@ -361,11 +361,11 @@ Run the following command to monitor traffic in separate terminals.
 #### **Verify Broadcast Reception**
 All monitored terminals (`host101`, `host200`, `host201`) should display the broadcast message, confirming a single broadcast domain.
 
-  ![alt text](image-3.png)
+  ![alt text](./images1/image-3.png)
 
-  ![alt text](image-4.png)
+  ![alt text](./images1/image-4.png)
 
-  ![alt text](image-5.png)
+  ![alt text](./images1/image-5.png)
 
 
 ### **5. Clean Up the Setup**
