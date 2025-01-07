@@ -2,7 +2,7 @@
 
 This lab outlines the steps to create an isolated network topology using Linux network namespaces, bridges, and veth pairs. The setup includes two racks `(TOR1 and TOR2)` connected to a distribution layer `(BR-DIST)`. Each rack contains two servers.
 
-![alt text](./images/image-27.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/lab%2002/images/image-27.png)
 
 ## **Prerequisites**
 - **Operating System**: Linux with root or sudo access.
@@ -40,7 +40,7 @@ Verify the namespaces are created:
 sudo ip netns
 ```
 
-![alt text](./images/image-17.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/lab%2002/images/image-17.png)
 
 
 ### **2. Create Bridge Interfaces**
@@ -59,7 +59,7 @@ Bridges simulate switches (e.g., ToR1, ToR2, distribution layer) in a real-world
     ```bash
     sudo ip link show
     ```
-    ![alt text](./images/image-18.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/lab%2002/images/image-18.png)
 
 2. **Activate the bridges**:
 
@@ -86,7 +86,7 @@ Bridges simulate switches (e.g., ToR1, ToR2, distribution layer) in a real-world
    ```bash
    sudo ip addr show
    ```
-   ![alt text](./images/image-19.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/lab%2002/images/image-19.png)
 
 ### **3. Create Server Connections**
 
@@ -104,7 +104,7 @@ Veth pairs act like virtual Ethernet cables that connect namespaces to bridges. 
    ```bash
    sudo ip link show
    ```
-    ![alt text](./images/image-20.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/lab%2002/images/image-20.png)
 
 2. **Assign to namespaces**:
 
@@ -141,7 +141,7 @@ Veth pairs act like virtual Ethernet cables that connect namespaces to bridges. 
    ```bash
    sudo ip link show
    ```
-   ![alt text](./images/image-21.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/lab%2002/images/image-21.png)
 
    This setup connects the isolated namespaces to their respective ToR switches, enabling them to communicate with other namespaces and the outside network.
 
@@ -170,7 +170,7 @@ Each server (namespace) needs its own IP address and active interfaces for commu
    sudo ip netns exec server1 ip link show
    sudo ip netns exec server2 ip link show
    ```
-   ![alt text](./images/image-22.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/lab%2002/images/image-22.png)
 
 2. **Rack 2 (TOR2)**:
 
@@ -284,7 +284,7 @@ sudo ip netns exec server3 ip route show
 sudo ip netns exec server4 ip route show
 ```
 
-![alt text](./images/image-23.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/lab%2002/images/image-23.png)
 
 ### **8. Configure Forwarding Rules**
 
@@ -338,18 +338,18 @@ Test intra-rack and inter-rack connectivity.
 sudo ip netns exec server1 ping 192.168.1.3
 ```
 
-![](./images/lab2-14.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/lab%2002/images/lab2-14.drawio.svg)
 
-![alt text](./images/image-24.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/lab%2002/images/image-24.png)
 
 ```bash
 # Test inter-rack connectivity
 sudo ip netns exec server1 ping 192.168.2.2
 ```
 
-![](./images/lab2-13.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/lab%2002/images/lab2-13.drawio.svg)
 
-![alt text](./images/image-25.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/lab%2002/images/image-25.png)
 
 
 ## **Conclusion**
