@@ -1,6 +1,6 @@
 
 
-# **Ethernet Broadcast Domains**
+# **Understanding Ethernet Broadcast Domains**
 
 In Ethernet, a Layer 2 (L2) segment is where all connected devices can communicate directly using their MAC addresses or by sending broadcast frames. These connected devices form what is known as a "broadcast domain." Within this domain, any broadcast traffic sent by one device is received by all others, enabling seamless communication among all devices in the network.
 

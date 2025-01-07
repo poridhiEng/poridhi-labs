@@ -141,6 +141,8 @@ sudo apt-get install tcpdump -y
 
 ## **Scenario 1: Interconnecting Network Switches**
 
+![](./images1/1.svg)
+
 ### **Objective**
 Demonstrate how multiple interconnected network switches form a single broadcast domain.
 
@@ -258,6 +260,8 @@ To clean things up, just remove the created network namespaces:
 
 
 ## **Scenario 2: Hierarchical Internetworking**
+
+![](./images1/2.svg)
 
 ### **Objective**
 Show how multi-level interconnection of switches also forms a single broadcast domain. In large setups, connecting switches in a flat structure can cause a lot of transit traffic. To improve performance, a hierarchical arrangement of switches is used.
