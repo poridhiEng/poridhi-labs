@@ -397,3 +397,8 @@ All monitored terminals (`host101`, `host200`, `host201`) should display the bro
 
 These experiments demonstrate how Linux virtualization tools can emulate Ethernet broadcast domains and the effects of interconnecting network switches. They highlight the principles of broadcast communication, scalability, and hierarchical networking, providing a practical foundation for understanding real-world networking environments.
 
+#### References
+
+- ["Fun with veth-devices" series (I II III IV V VI VII VIII) by Dr. Ralph Mönchmeyer](https://linux-blog.anracom.com/2017/10/30/fun-with-veth-devices-linux-bridges-and-vlans-in-unnamed-linux-network-namespaces-i/)
+
+- [Computer Networking Fundamentals](https://labs.iximiuz.com/courses/computer-networking-fundamentals)
