@@ -1,4 +1,4 @@
-# Networking Fundamentals: Collision Domain and Broadcast Domain
+# Collision Domain and Broadcast Domain
 
 This document explains the concepts of collision domain and broadcast domain in computer networks. It also provides examples and diagrams to illustrate these concepts. We will also discuss the issues with large collision domains and broadcast domains and how to mitigate them.
 

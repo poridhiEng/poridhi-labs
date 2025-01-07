@@ -1,4 +1,4 @@
-# Networking Fundamentals: Address Resolution Protocol (ARP)
+# Address Resolution Protocol (ARP)
 
 The **Address Resolution Protocol (ARP)** is a network protocol used to map a device's logical address (IP address) to its physical address (MAC address) within a local area network (LAN). It operates between the **network layer (Layer 3)** and the **data link layer (Layer 2)** of the OSI model.
 

@@ -1,4 +1,4 @@
-# Networking Fundamentals: LAN Communication 
+# LAN Communication 
 
 ## What is a LAN?
 
