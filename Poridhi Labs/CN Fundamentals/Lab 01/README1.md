@@ -1,4 +1,4 @@
-# Networking Fundamentals: LAN Communication 
+# LAN Communication 
 
 ## What is a LAN?
 
@@ -83,6 +83,9 @@ A **network link** is a fundamental component in networking that acts as the **c
    - Nodes, such as computers, printers, or smartphones, are connected via the link to form a network. The link facilitates data exchange between these devices.
 
 ### **Examples of Network Links**
+
+![alt text](./images/Network-Link.svg)
+
 1. **Wired Network Link (Ethernet)**:
    - Imagine a group of computers connected to a **network switch** using Ethernet cables.
    - All computers use the **Ethernet protocol** for communication.

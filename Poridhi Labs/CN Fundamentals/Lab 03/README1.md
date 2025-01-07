@@ -1,6 +1,6 @@
 
 
-# **Ethernet Broadcast Domains**
+# **Understanding Ethernet Broadcast Domains**
 
 In Ethernet, a Layer 2 (L2) segment is where all connected devices can communicate directly using their MAC addresses or by sending broadcast frames. These connected devices form what is known as a "broadcast domain." Within this domain, any broadcast traffic sent by one device is received by all others, enabling seamless communication among all devices in the network.
 
@@ -452,3 +452,10 @@ ip netns delete host3
 
 ## **Conclusion**
 This lab demonstrates the concept of broadcast and unicast communication within a single broadcast domain. It shows how Ethernet frames are transmitted and received, emphasizing the importance of MAC addresses in Layer 2 communication. By using Linux namespaces and virtual Ethernet interfaces, we effectively simulate and test real-world networking concepts in a controlled environment.
+
+#### References
+
+- ["Fun with veth-devices" series (I II III IV V VI VII VIII) by Dr. Ralph Mönchmeyer](https://linux-blog.anracom.com/2017/10/30/fun-with-veth-devices-linux-bridges-and-vlans-in-unnamed-linux-network-namespaces-i/)
+
+
+- [Computer Networking Fundamentals](https://labs.iximiuz.com/courses/computer-networking-fundamentals)

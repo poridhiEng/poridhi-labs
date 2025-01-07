@@ -128,7 +128,20 @@ if __name__ == "__main__":
     main()
 ```
 
+### **Install `tcpdump`**
+
+`tcpdump` is a powerful command-line packet analyzer. It allows you to capture and display packets being transmitted or received over a network interface (e.g., eth1, eth2).
+
+Before moving on to the next steps check if tcpdump is installed on the host system:
+
+```bash
+sudo apt update
+sudo apt-get install tcpdump -y
+```
+
 ## **Scenario 1: Interconnecting Network Switches**
+
+![](./images1/1.svg)
 
 ### **Objective**
 Demonstrate how multiple interconnected network switches form a single broadcast domain.
@@ -137,19 +150,37 @@ Demonstrate how multiple interconnected network switches form a single broadcast
 
 ### 1. **Create Two Disjoint Network Segments**
 
+#### **Segment I**
+
+- **Create a Bridge for Segment I:**
+
    ```bash
    create_bridge bridge10 br10
+   ```
+- **Add Hosts to Segment I:**
+
+   ```bash
    create_end_host host10 eth10 bridge10 br10
    create_end_host host11 eth11 bridge10 br10
    ```
 
+
+#### **Segment II**   
+
+- **Create a Bridge for Segment II:**
    ```bash
    create_bridge bridge20 br20
+   ```
+
+- **Add Hosts to Segment II:**
+   ```bash
    create_end_host host20 eth20 bridge20 br20
    create_end_host host21 eth21 bridge20 br20
    ```
 
 ### 2. **Connect the Two Bridges**
+
+- **Connect `bridge10` to `bridge20`:**
 
    ```bash
    connect_bridges bridge10 br10 bridge20 br20
@@ -157,39 +188,60 @@ Demonstrate how multiple interconnected network switches form a single broadcast
 
 ### 3. **Test the Broadcast Domain**
 
-- ### Monitor traffic on all hosts except the first host of the first switch. 
+To demonstrate that all hosts form a single broadcast domain, monitor traffic on specific hosts and send a broadcast message.
 
-    Run the following three commands in three different terminals: 
+#### **Monitor traffic**
+
+Run the following three commands in three different terminals.
+
+1. **Start Monitoring on `host11`:**
 
     ```bash
     # On host11
     nsenter --net=/var/run/netns/host11 tcpdump -i eth11 ether proto 0x7a05
     ```
+
+    This monitors traffic on `eth11` for a specific protocol.
+
+
+2. **Start Monitoring on `host20`:**
+
     ```bash
     # On host20
     nsenter --net=/var/run/netns/host20 tcpdump -i eth20 ether proto 0x7a05
     ```
+
+    This monitors traffic on `eth20` for a specific protocol.
+
+2. **Start Monitoring on `host21`:**
+
     ```bash
     # On host21
     nsenter --net=/var/run/netns/host21 tcpdump -i eth21 ether proto 0x7a05
     ```
 
-- #### Send a broadcast message from the first host:
+    This monitors traffic on `eth21` for a specific protocol.
+
+#### **Send a broadcast message**
+
+1. **Broadcast a Message from `host10`:**
 
     ```bash
     # On host10
-    nsenter --net=/var/run/netns/host10 python3 ethsend.py eth10 ff:ff:ff:ff:ff:ff 'Hello all!'
+    nsenter --net=/var/run/netns/host10 \
+      python3 ethsend.py eth10 ff:ff:ff:ff:ff:ff 'Hello all!'
     ```
+    This sends a broadcast message, `Hello all!`, from `eth10` to all hosts in the network.
 
 - #### Observe that all hosts receive the broadcast message
 
     From the perspective of the nodes (logically), there is no distinction between being connected to a single switch (bridge) or multiple interconnected switches. Together, they still constitute one unified Layer 2 (L2) segment and a single broadcast domain.
 
-    ![alt text](image.png)
+    ![alt text](./images1/image.png)
 
-    ![alt text](image-1.png)
+    ![alt text](./images1/image-1.png)
 
-    ![alt text](image-2.png)
+    ![alt text](./images1/image-2.png)
 
 ### 4. **Clean Up**
 
@@ -209,6 +261,8 @@ To clean things up, just remove the created network namespaces:
 
 ## **Scenario 2: Hierarchical Internetworking**
 
+![](./images1/2.svg)
+
 ### **Objective**
 Show how multi-level interconnection of switches also forms a single broadcast domain. In large setups, connecting switches in a flat structure can cause a lot of transit traffic. To improve performance, a hierarchical arrangement of switches is used.
 
@@ -216,89 +270,135 @@ This example will demonstrate that a multi-level switch interconnection still op
 
 ### **Steps**
 
-### 1. **Create two disjoint network segments**
+### **1. Create Two Disjoint Network Segments**
+
+#### Lower-layer Segment I
+- **Create a Bridge for Segment I:**
 
    ```bash
-   # 1st Lower-layer segment
-   create_bridge bridge10 br10
-   create_end_host host10 eth10 bridge10 br10
-   create_end_host host11 eth11 bridge10 br10
+   create_bridge bridge100 br100
    ```
+   This command creates a bridge named `bridge100` with the interface `br100`, forming the backbone for Segment I.
+
+- **Add Hosts to Segment I:**
+   ```bash
+   create_end_host host100 eth100 bridge100 br100
+   create_end_host host101 eth101 bridge100 br100
+   ```
+   These commands add two end hosts, `host100` and `host101`, with interfaces `eth100` and `eth101` respectively, to `bridge100`.
+
+#### Lower-layer Segment II
+- **Create a Bridge for Segment II:**
 
    ```bash
-   # 2nd Lower-layer segment
-   create_bridge bridge20 br20
-   create_end_host host20 eth20 bridge20 br20
-   create_end_host host21 eth21 bridge20 br20
+   create_bridge bridge200 br200
    ```
+   This creates a bridge named `bridge200` with the interface `br200`, forming the backbone for Segment II.
 
-
-### 2. **Create a higher-layer switch and connect the lower-layer switches to it**
+- **Add Hosts to Segment II:**
 
    ```bash
-   # Higher-layer switch
-   create_bridge bridge30 br30
+   create_end_host host200 eth200 bridge200 br200
+   create_end_host host201 eth201 bridge200 br200
    ```
+   These commands add two end hosts, `host200` and `host201`, with interfaces `eth200` and `eth201` respectively, to `bridge200`.
+
+### **2. Create a Higher-layer Switch**
+- **Create the Higher-layer Bridge:**
 
    ```bash
-   # Connect both lower-layer switches to higher layer switch
-   connect_bridges bridge10 br10 bridge30 br30
-   connect_bridges bridge20 br20 bridge30 br30
+   create_bridge bridge300 br300
    ```
+   This command creates a higher-layer bridge named `bridge300` with the interface `br300`, acting as a switch to interconnect the lower-layer segments.
 
-### 3. **Test the Broadcast Domain**
-
-To show that all hosts are part of a single broadcast domain, begin by monitoring traffic on all hosts except the first one connected to the first lower-layer switch.
-
-First lower-layer switch, second host (in a separate terminal):
-
-```bash
-# from host11
-nsenter --net=/var/run/netns/host11 \
-  tcpdump -i eth11 ether proto 0x7a05
-```
-Second lower-layer switch, first host (in a separate terminal):
-
-```bash
-# from host20
-nsenter --net=/var/run/netns/host20 \
-  tcpdump -i eth20 ether proto 0x7a05
-```
-
-Second lower-layer switch, second host (in a separate terminal):
-
-```bash
-# from host21
-nsenter --net=/var/run/netns/host21 \
-  tcpdump -i eth21 ether proto 0x7a05
-``` 
-
-Finally, using one more terminal, send a broadcast message from the first host of the first lower-layer switch:
-
-```bash
-nsenter --net=/var/run/netns/host10 \
-  ethsend eth10 ff:ff:ff:ff:ff:ff 'Hello all!'
-```  
-
-### 4. **Clean Up**
-
-Let's remove the created network namespaces:
+### **3. Connect Lower-layer Switches to the Higher-layer Switch**
+- **Connect `bridge100` to `bridge300`:**
 
    ```bash
-   ip netns delete bridge10
-   ip netns delete host10
-   ip netns delete host11
+   connect_bridges bridge100 br100 bridge300 br300
+   ```
+   This connects the lower-layer switch `bridge100` to the higher-layer switch `bridge300`.
 
-   ip netns delete bridge20
-   ip netns delete host20
-   ip netns delete host21
+- **Connect `bridge200` to `bridge300`:**
 
-   ip netns delete bridge30
+   ```bash
+   connect_bridges bridge200 br200 bridge300 br300
+   ```
+   This connects the lower-layer switch `bridge200` to the higher-layer switch `bridge300`.
+
+### **4. Verify the Broadcast Domain**
+To demonstrate that all hosts form a single broadcast domain, monitor traffic on specific hosts and send a broadcast message.
+
+#### **Monitor Traffic**
+
+Run the following command to monitor traffic in separate terminals.
+
+1. **Start Monitoring on `host101` (Segment I):**
+   ```bash
+   nsenter --net=/var/run/netns/host101 \
+     tcpdump -i eth101 ether proto 0x7a05
+   ```
+   This monitors traffic on `eth101` for a specific protocol.
+
+2. **Start Monitoring on `host200` (Segment II):**
+   ```bash
+   nsenter --net=/var/run/netns/host200 \
+     tcpdump -i eth200 ether proto 0x7a05
+   ```
+   This monitors traffic on `eth200` for the same protocol.
+
+3. **Start Monitoring on `host201` (Segment II):**
+   ```bash
+   nsenter --net=/var/run/netns/host201 \
+     tcpdump -i eth201 ether proto 0x7a05
+   ```
+   This monitors traffic on `eth201` for the same protocol.
+
+#### **Send a Broadcast Message**
+1. **Broadcast a Message from `host100` (Segment I):**
+   ```bash
+   nsenter --net=/var/run/netns/host100 \
+     python3 ethsend.py eth100 ff:ff:ff:ff:ff:ff 'Hello all!'
+   ```
+   This sends a broadcast message, `Hello all!`, from `eth100` to all hosts in the network.
+
+#### **Verify Broadcast Reception**
+All monitored terminals (`host101`, `host200`, `host201`) should display the broadcast message, confirming a single broadcast domain.
+
+  ![alt text](./images1/image-3.png)
+
+  ![alt text](./images1/image-4.png)
+
+  ![alt text](./images1/image-5.png)
+
+
+### **5. Clean Up the Setup**
+
+1. **Remove Namespaces for Segment I:**
+   ```bash
+   ip netns delete bridge100
+   ip netns delete host100
+   ip netns delete host101
    ```
 
+2. **Remove Namespaces for Segment II:**
+   ```bash
+   ip netns delete bridge200
+   ip netns delete host200
+   ip netns delete host201
+   ```
 
+3. **Remove Namespace for the Higher-layer Switch:**
+   ```bash
+   ip netns delete bridge300
+   ```
 
 ## **Conclusion**
 
 These experiments demonstrate how Linux virtualization tools can emulate Ethernet broadcast domains and the effects of interconnecting network switches. They highlight the principles of broadcast communication, scalability, and hierarchical networking, providing a practical foundation for understanding real-world networking environments.
 
+#### References
+
+- ["Fun with veth-devices" series (I II III IV V VI VII VIII) by Dr. Ralph Mönchmeyer](https://linux-blog.anracom.com/2017/10/30/fun-with-veth-devices-linux-bridges-and-vlans-in-unnamed-linux-network-namespaces-i/)
+
+- [Computer Networking Fundamentals](https://labs.iximiuz.com/courses/computer-networking-fundamentals)
