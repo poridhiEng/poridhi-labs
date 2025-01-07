@@ -79,19 +79,27 @@ For this lab, we will be using the DVWA (Damn Vulnerable Web Application) Docker
 1. **`usernames.txt`**:
    Add potential usernames, one per line:
    ```
-   admin
    user
    test
    guest
+   admin
+   admin123
+   admin1234
+   root
+   root123
    ```
 
 2. **`passwords.txt`**:
    Add potential passwords, one per line:
    ```
-   password
    admin
    guest
    test123
+   test1234
+   password
+   alex
+   alex123
+   alex1234
    ```
 
 ## **Python Script To Attack DVWA**
@@ -172,7 +180,7 @@ https://<poridhi-load-balancer-url>/
 
 ## **CSRF Token Protection**
 
-Cross-Site Request Forgery (CSRF) tokens are security measures used to prevent unauthorised actions on behalf of authenticated users. The script dynamically retrieves and includes this token in each login attempt to comply with server-side validation.
+Cross-Site Request Forgery (CSRF) tokens are security measures used to prevent unauthorised actions on behalf of authenticated users. The script dynamically retrieves and includes this token in each login attempt to comply with server-side validation. In each login attemps, the application generates a new CSRF token. So each login attempt is a new request.
 
 ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/22714674d1ddbf000554adc16fd9d31e247878a7/Poridhi%20Labs/Security%20Labs/Lab%2001/images/logo3.drawio.svg)
 
