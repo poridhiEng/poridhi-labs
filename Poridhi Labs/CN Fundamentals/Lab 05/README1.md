@@ -2,7 +2,7 @@
 
 In this hands-on lab, we will learn how to use the native VLAN capabilities of a Linux bridge to split a single broadcast domain into multiple smaller domains. These VLANs will allow us to configure isolated IP subnets, enhancing network security and efficiency. We will emulate network components using Linux namespaces, virtual Ethernet (veth) devices, and Linux bridge devices.
 
-
+![](./images/1.svg)
 
 ## **Prerequisites**
 
@@ -110,10 +110,22 @@ In this hands-on lab, we will learn how to use the native VLAN capabilities of a
 
 ## **How VLAN Is Implemented**
 
-To split a single L2 network segment into multiple non-intersecting sub-segments without any rewiring a technique called frame tagging is used. The Ethernet frame format is altered and an extra 4-bytes-long field is added. Among other things, it carries a VLAN ID. Frames with different VLAN IDs logically belong to different L2 broadcast domains.
+To split a single L2 network segment into multiple non-intersecting sub-segments without any rewiring a technique called frame tagging is used. 
 
-Layer 2 Ethernet Frame VLAN tagging.
-There is more than one way to tag frames. In this lab, the tagging is transparent to the end nodes and fully implemented by the bridge.
+![](./images/2.svg)
+
+In standard Ethernet frames, VLAN tagging adds an extra 4-byte field to identify VLAN membership. This field is inserted between the Source MAC and EtherType fields. The 4 bytes include a reserved value (`0x8100`) to mark the frame as VLAN-tagged and a 12-bit VLAN ID to specify the VLAN.
+
+![](./images/3.svg)
+
+The VLAN tag slightly modifies the Ethernet frame structure. While the payload's minimum size is reduced by 4 bytes, the maximum frame size increases by 4 bytes. This tagging allows switches to logically segment traffic by VLAN and ensure proper data routing across access and trunk links.
+
+Tagging occurs on trunk links to carry multiple VLANs, while switches remove tags when frames are forwarded to devices connected to access ports. This mechanism enables logical network separation over the same physical infrastructure.
+
+
+
+There is more than one way to tag frames.
+ In this lab, the tagging is transparent to the end nodes and fully implemented by the bridge.
 
 
 ## **Step-by-Step Process**
