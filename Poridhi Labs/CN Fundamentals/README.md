@@ -12,6 +12,12 @@
 
 ### Part 2
 
+- [Bridge vs Switch: A deeper dive](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2002/README.md)
+
+- [Top-of-Rack (TOR) Switch](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2002/README2.md)
+
+- [A network topology using Linux network namespaces, bridges, and veth pairs](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2002/README3.md)
+
 ---
 
 ### Part 3

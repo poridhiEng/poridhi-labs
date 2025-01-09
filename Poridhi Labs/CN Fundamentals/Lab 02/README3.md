@@ -1,4 +1,4 @@
-# **Network Setup Guide**
+# **A network topology using Linux network namespaces, bridges, and veth pairs**
 
 This lab outlines the steps to create an isolated network topology using Linux network namespaces, bridges, and veth pairs. The setup includes two racks `(TOR1 and TOR2)` connected to a distribution layer `(BR-DIST)`. Each rack contains two servers.
 
