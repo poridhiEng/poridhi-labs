@@ -1,4 +1,4 @@
-### Hosting Jenkins on Kubernetes: A Comprehensive Guide
+# Hosting Jenkins on Kubernetes: A Comprehensive Guide
 
 Hosting Jenkins on a Kubernetes cluster provides an efficient way to manage deployments and leverage the dynamic scalability of Kubernetes. By running Jenkins in such an environment, you can easily integrate with Kubernetes-based workloads and dynamically scale Jenkins agents based on demand.
 
@@ -303,8 +303,6 @@ kubectl logs <jenkins-pod-name> -n devops-tools
 ```bash
 kubectl exec -it <jenkins-pod-name> -n devops-tools -- cat /var/jenkins_home/secrets/initialAdminPassword
 ```
-
----
 
 ### Conclusion
 

@@ -10,52 +10,52 @@ The lab covers the following tasks:
 4. Configure the job to deploy the JAR file locally.
 5. Visualize the build results graphically.
 
-The example Java application used is from the GitHub repository [simple-java-maven-app](https://github.com/Konami33/simple-java-maven-app). It outputs "Hello world!" and includes unit tests. The test results are saved in a **JUnit XML report**, which will be used for visualization.
+The example Java application is a simple Java application that outputs "Hello world!" and includes unit tests. The test results are saved in a **JUnit XML report**, which will be used for visualization.
 
 Here is the graphical representation of what we will do in this lab.
 
-![alt text](./images/lab-7-arch.drawio.svg)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/lab-7-arch.drawio.svg)
 
 ## Prerequisites
 
 1. Ensure your Jenkins server is up and running.
 2. Ensure Jenkins agent node connected to the controller and online.
-![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2007/images/image-10.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-10.png)
 3. Java is installed in the Agent node. Check it by running `java --version`. Make sure to have the same version of java both in Jenkins controller node and agent node.
-![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2007/images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image.png)
 
 
 ## Step-by-Step Guide
 
 ### Step 1: Install Necessary Plugins and Tools
 
-1. **Install the Maven Integration Plugin:**
-   - Go to **Manage Jenkins** -> **Manage Plugins**.
-   - In the **Available** tab, search for `Maven Integration (Build Tools)`.
-   - Install this plugin.
+**1. Install the Maven Integration Plugin:**
+- Go to **Manage Jenkins** -> **Manage Plugins**.
+- In the **Available** tab, search for `Maven Integration (Build Tools)`.
+- Install this plugin.
 
    ![Install Maven Integration Plugin](https://github.com/Konami33/Jenkins-Labs/blob/main/Lab%2006/images/image-4.png?raw=true)
 
-2. **Configure Maven Installation:**
-   - Go to **Manage Jenkins** -> **Global Tool Configuration**.
-   - Scroll down to the **Maven** section.
-   - Add a new Maven installation:
-     - Give it a name, e.g., `Maven-jenkins`.
-     - Select the required version and save.
+**2. Configure Maven Installation:**
+- Go to **Manage Jenkins** -> **Global Tool Configuration**.
+- Scroll down to the **Maven** section.
+- Add a new Maven installation:
+   - Give it a name, e.g., `Maven-jenkins`.
+   - Select the required version and save.
 
    ![Configure Maven Installation](https://github.com/Konami33/Jenkins-Labs/blob/main/Lab%2006/images/image-5.png?raw=true)
 
 ### Step 2: Create a Jenkins Job
 
 1. Log in to your Jenkins server and click on **New Item**.
-2. Enter a name for your job, e.g., "Simple Java Maven App", and select **Freestyle project**.
+2. Enter a name for your job, e.g., "**Simple Java Maven App**", and select **Freestyle project**.
 3. Click **OK** to create the job.
 
-![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2007/images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-1.png)
 
 4. Mark `Restrict where this project can be run` and add the Label of your agent node.
 
-![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2007/images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-2.png)
 
 5. In the **Source Code Management** section, select **Git** and enter the URL of the GitHub repository:
 
@@ -63,11 +63,11 @@ Here is the graphical representation of what we will do in this lab.
    https://github.com/Konami33/simple-java-maven-app
    ```
 
-![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2007/images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-3.png)
 
 5. Save the configuration and build the job. This will clone the repository from GitHub.
 
-![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2007/images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-4.png)
 
 ### Step 3: Configure the Build Step
 
@@ -112,20 +112,22 @@ Here is the graphical representation of what we will do in this lab.
 
    Replace `<path_to_your_jar_file>` with the path to your JAR file, typically found in `/var/jenkins_home/workspace/your_job_name/target/`.
 
-   ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2007/images/image-5.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-5.png)
 
 ### Step 6: Build the job
 
-1. Build the job and check the output console for any error.
+Build the job and check the output console for any error.
 
-- build step:
-![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2007/images/image-6.png)
-- test step:
-![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2007/images/image-7.png)
-- deploy step:
-![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2007/images/image-8.png)
+**build step:**
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-6.png)
 
-### Step 6: Visualize the Build Results
+**test step:**
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-7.png)
+
+**deploy step:**
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-8.png)
+
+### Step 7: Visualize the Build Results
 
 1. In the **Workspace** directory of the job, navigate to:
 
@@ -145,10 +147,8 @@ Here is the graphical representation of what we will do in this lab.
 
 4. Save the configuration and build the job. This will publish the test results on the Jenkins dashboard with graphical representations such as graphs and charts.
 
-   ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2007/images/image-9.png)
-
----
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-9.png)
 
 ## Conclusion
 
-You have successfully set up Jenkins to build, test, deploy, and visualize the results of a Java application using Maven. 
+You have successfully set up Jenkins to build, test, deploy, and visualize the results of a Java application using Maven.  
