@@ -2,7 +2,7 @@
 
 This lab outlines the steps to create an isolated network topology using Linux network namespaces, bridges, and veth pairs. The setup includes two racks `(TOR1 and TOR2)` connected to a distribution layer `(BR-DIST)`. Each rack contains two servers.
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2002/images/image-27.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2002/images/arch.png)
 
 ## **Prerequisites**
 - **Operating System**: Linux with root or sudo access.
