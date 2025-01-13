@@ -21,7 +21,7 @@ To emulate and explore Ethernet broadcast domains, we will utilize Linux network
 
 We will use the following helper scripts to streamline the setup process:  
 
-1. **`create_bridge`**: This script creates a new network namespace containing a Linux bridge device, which acts as a virtual switch.  
+1. **`create_new_bridge`**: This script creates a new network namespace containing a Linux bridge device, which acts as a virtual switch.  
 2. **`create_end_host`**: This script creates an isolated network namespace for a host, connecting it to a specified bridge via a veth device.  
 3. **`connect_bridges`**: This script connects two Linux bridges (potentially in different namespaces) using an auxiliary veth pair.  
 
@@ -35,7 +35,7 @@ Paste the following Bash functions into the terminal:
 ### **1. Create a Bridge Namespace**
 
 ```bash
-create_bridge() {
+create_new_bridge() {
   local nsname="$1"
   local ifname="$2"
 
@@ -223,7 +223,7 @@ if __name__ == "__main__":
 1. Create a namespace (`nsname`) and a bridge (`ifname`) to act as a virtual switch.
 
     ```bash
-    create_bridge <namespace_name> <bridge_name>
+    create_new_bridge <namespace_name> <bridge_name>
     ```
 
 2. Create a namespace (`host_nsname`) for an end host and connects it to a bridge using a veth pair. Use the command:
@@ -272,10 +272,10 @@ We simulate a network topology consisting of:
 ### **1. Create a New Network Namespace for the Bridge**
 This step creates the virtual switch (`br1`) within a new network namespace (`bridge1`).
 ```bash
-create_bridge bridge1 br1
+create_new_bridge bridge1 br1
 ```
 
-`create_bridge`: A helper command to create a network namespace (`bridge1`) and a bridge device (`br1`) inside it.
+`create_new_bridge`: A helper command to create a network namespace (`bridge1`) and a bridge device (`br1`) inside it.
 
 
 

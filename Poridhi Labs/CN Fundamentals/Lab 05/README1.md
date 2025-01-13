@@ -134,6 +134,8 @@ There is more than one way to tag frames.
 
 The first step is to create a new network namespace containing a Linux bridge (`br1`). This bridge will handle VLAN tagging and filtering.
 
+![](./images/4.svg)
+
 ```bash
 create_new_bridge bridge1 br1
 ```
@@ -147,6 +149,8 @@ create_new_bridge bridge1 br1
 ### **2. Create End Hosts for VLAN 10**
 
 Next, create end hosts connected to the bridge and assign them to VLAN 10.
+
+![](./images/5.svg)
 
 ```bash
 create_new_node host10 eth10 10 bridge1 br1
@@ -163,6 +167,8 @@ create_new_node host12 eth12 10 bridge1 br1
 ### **3. Create End Hosts for VLAN 20**
 
 Similarly, create another set of end hosts connected to the bridge but assign them to VLAN 20.
+
+![](./images/6.svg)
 
 ```bash
 create_new_node host20 eth20 20 bridge1 br1
@@ -212,30 +218,53 @@ nsenter --net=/var/run/netns/host22 tcpdump -i eth22 ether proto 0x7a05
 
 Use the `ethsend` tool to send broadcast frames from the first host of each VLAN.
 
+![](./images/7.svg)
+
 **For VLAN 10:**
 
 ```bash
 # From host10
-nsenter --net=/var/run/netns/host10 ethsend eth10 ff:ff:ff:ff:ff:ff 'Hello VLAN 10!'
+nsenter --net=/var/run/netns/host10 python3 ethsend.py eth10 ff:ff:ff:ff:ff:ff 'Hello hosts with VLAN 10!'
 ```
 
 **For VLAN 20:**
 
 ```bash
 # From host20
-nsenter --net=/var/run/netns/host20 ethsend eth20 ff:ff:ff:ff:ff:ff 'Hello VLAN 20!'
+nsenter --net=/var/run/netns/host20 python3 ethsend.py eth20 ff:ff:ff:ff:ff:ff 'Hello hosts with VLAN 20!'
 ```
 
-- Sends a broadcast message (`Hello VLAN 10!` or `Hello VLAN 20!`) to all hosts in the respective VLAN.
+- Sends a broadcast message (`Hello hosts with VLAN 10!` or `Hello hosts with VLAN 20!`) to all hosts in the respective VLAN.
 - Hosts in different VLANs will not receive each other’s messages.
 
+    
+
+         
 
 
 ### **6. Validate VLAN Isolation**
 
 Inspect the output of `tcpdump` in each terminal. Ensure that:
 - Frames sent from VLAN 10 hosts are only received by other VLAN 10 hosts.
+
+    - On host11 VLAN 10:
+
+        ![alt text](./images/image.png)
+
+
+    - On host12 VLAN 10:
+
+        ![alt text](./images/image-1.png)
+
 - Frames sent from VLAN 20 hosts are only received by other VLAN 20 hosts.
+
+    - On host21 VLAN 20:
+
+        ![alt text](./images/image-2.png)        
+
+    - On host22 VLAN 20:
+
+        ![alt text](./images/image-3.png)
 
 This confirms that VLANs provide effective traffic isolation.
 
