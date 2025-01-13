@@ -72,6 +72,8 @@ The application layer consists of various network applications that interact wit
 
 The control layer is the centralized brain of the SDN architecture, embodied by the **SDN controller**. It handles decision-making for data traffic, network configuration, and routing across the infrastructure.
 
+![alt text](image-3.png)
+
 **Key Functions:**  
 - Maintains a global view of the network state.  
 - Sends flow rules to switches based on application demands and network conditions.  
@@ -126,4 +128,6 @@ When a packet enters a switch, the switch matches the packet against the flow ta
 - If the packet does not match any flow entry, the switch queries the SDN controller.  
 - The controller analyzes the packet, decides the appropriate action, and sends a new flow entry to the switch.  
 - The packet is then forwarded or dropped based on the newly installed flow entry.
+
+
 
