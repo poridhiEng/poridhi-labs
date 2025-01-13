@@ -18,10 +18,15 @@ Offensive security involves actively testing systems, networks, and applications
 
 
 ## What is Gobuster?
+
+![](./images/banner2.svg)
+
 Gobuster is a command-line tool written in Go, used for brute-forcing:
 - Directories and files on a web server.
 - DNS subdomains.
 - Virtual hostnames on servers.
+
+
 
 ### Features of Gobuster
 1. **Directory and File Brute-Forcing:** Discover hidden paths and files on web servers.
