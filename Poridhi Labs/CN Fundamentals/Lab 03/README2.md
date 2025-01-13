@@ -141,7 +141,8 @@ sudo apt-get install tcpdump -y
 
 ## **Scenario 1: Interconnecting Network Switches**
 
-![](./images1/1.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2003/images1/1.svg)
+
 
 ### **Objective**
 Demonstrate how multiple interconnected network switches form a single broadcast domain.
@@ -237,11 +238,11 @@ Run the following three commands in three different terminals.
 
     From the perspective of the nodes (logically), there is no distinction between being connected to a single switch (bridge) or multiple interconnected switches. Together, they still constitute one unified Layer 2 (L2) segment and a single broadcast domain.
 
-    ![alt text](./images1/image.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2003/images1/image.png)
 
-    ![alt text](./images1/image-1.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2003/images1/image-1.png)
 
-    ![alt text](./images1/image-2.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2003/images1/image-2.png)
 
 ### 4. **Clean Up**
 
@@ -261,7 +262,7 @@ To clean things up, just remove the created network namespaces:
 
 ## **Scenario 2: Hierarchical Internetworking**
 
-![](./images1/2.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2003/images1/2.svg)
 
 ### **Objective**
 Show how multi-level interconnection of switches also forms a single broadcast domain. In large setups, connecting switches in a flat structure can cause a lot of transit traffic. To improve performance, a hierarchical arrangement of switches is used.
@@ -365,11 +366,11 @@ Run the following command to monitor traffic in separate terminals.
 #### **Verify Broadcast Reception**
 All monitored terminals (`host101`, `host200`, `host201`) should display the broadcast message, confirming a single broadcast domain.
 
-  ![alt text](./images1/image-3.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2003/images1/image-3.png)
 
-  ![alt text](./images1/image-4.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2003/images1/image-4.png)
 
-  ![alt text](./images1/image-5.png)
+  ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2003/images1/image-5.png)
 
 
 ### **5. Clean Up the Setup**

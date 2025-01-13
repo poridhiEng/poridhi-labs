@@ -2,8 +2,7 @@
 
 In networking, a subnet is a logical subdivision of an IP network, and it plays a critical role in routing and traffic management. Most network setups map a single IP subnet to an L2 (Layer 2) broadcast domain, where devices can directly communicate using MAC addresses. However, it's also possible to configure multiple IP subnets over the same L2 segment. This lab demonstrates how to achieve such a configuration and explores its security implications. 
 
-![](./images/1.svg)
-
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2004/images/1.svg)
 
 
 ## **Prerequisites**
@@ -75,7 +74,7 @@ create_end_host() {
 ### **Objective**
 Configure an IP subnet `192.168.0.0/24` over a single L2 broadcast domain.
 
-![](./images/2.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2004/images/2.svg)
 
 ### **Steps**
 
@@ -105,11 +104,11 @@ Configure an IP subnet `192.168.0.0/24` over a single L2 broadcast domain.
 
     - Host 1:
 
-        ![alt text](./images/image-1.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2004/images/image-1.png)
 
     - Host 2:
 
-        ![alt text](./images/image.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2004/images/image.png)
 
 4. **Clean Up**:
    ```bash
@@ -126,7 +125,7 @@ Configure an IP subnet `192.168.0.0/24` over a single L2 broadcast domain.
 ### **Objective**
 Configure two separate IP subnets (`192.168.0.0/24` and `192.168.1.0/24`) over a single L2 broadcast domain.
 
-![](./images/3.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2004/images/3.svg)
 
 ### **Steps**
 
@@ -170,7 +169,7 @@ Configure two separate IP subnets (`192.168.0.0/24` and `192.168.1.0/24`) over a
 5. **Observe Results**:
    Notice how traffic from one subnet is visible to nodes in the other subnet due to the shared L2 domain.
 
-    ![alt text](./images/image-2.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2004/images/image-2.png)
 
 6. **Clean Up**:
    ```bash

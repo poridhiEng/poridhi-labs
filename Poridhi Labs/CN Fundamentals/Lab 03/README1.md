@@ -251,7 +251,8 @@ This setup will prepare your environment for experimenting with Ethernet broadca
 
 ## **Scenario: Multiple Hosts, One Network Switch**
 
-![](./images/1.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2003/images/1.svg)
+
 
 This lab demonstrates the simplest possible broadcast domain scenario where multiple network hosts are connected to a single virtual network switch (bridge). It provides an overview of how Ethernet broadcast frames propagate within a shared Layer 2 (L2) domain and how hosts can communicate directly using MAC addresses. This exercise uses Linux network namespaces to simulate the setup.
 
@@ -265,7 +266,7 @@ We simulate a network topology consisting of:
 
 2. Three hosts (`host1`, `host2`, and `host3`) connected to the bridge via virtual Ethernet interfaces.
 
-![](./images/2.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2003/images/2.svg)
 
 
 
@@ -349,7 +350,7 @@ sudo apt-get install tcpdump -y
 
 ### **5. Monitor Traffic on Host2**
 
-![](./images/5.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2003/images/5.svg)
 
 Open a terminal to monitor traffic on `host2`'s `eth2` interface:
 ```bash
@@ -365,7 +366,7 @@ nsenter --net=/var/run/netns/host2 \
 
 ### **6. Monitor Traffic on Host3**
 
-![](./images/6.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2003/images/6.svg)
 
 Open another terminal to monitor traffic on `host3`'s `eth3` interface:
 ```bash
@@ -377,7 +378,7 @@ nsenter --net=/var/run/netns/host3 \
 
 ### **7. Send a Broadcast Frame from Host1**
 
-![](./images/3.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2003/images/3.svg)
 
 Open a new terminal and use a broadcast MAC address (`FF:FF:FF:FF:FF:FF`) to send a frame from `host1` to all hosts in the same broadcast domain:
 ```bash
@@ -393,14 +394,14 @@ nsenter --net=/var/run/netns/host1 \
 ### **8. Verify Broadcast on Host2 and Host3**
 Check the `tcpdump` output in the `host2` and `host3` terminals to confirm the broadcast message (`Hello all!`) is received.
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2003/images/image.png)
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2003/images/image-2.png)
 
 
 ### **9. Send Unicast Frames**
 
-![](./images/4.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2003/images/4.svg)
 
 To demonstrate direct communication between hosts, send Ethernet frames from `host1` to `host2` and `host3` individually:
 
@@ -419,7 +420,7 @@ To demonstrate direct communication between hosts, send Ethernet frames from `ho
 
 3. Verify on Host2:
 
-    ![alt text](./images/image-3.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2003/images/image-3.png)
 
 #### host1 to host3:
 
@@ -436,7 +437,7 @@ To demonstrate direct communication between hosts, send Ethernet frames from `ho
 
 3. Verify on Host3:
 
-    ![alt text](./images/image-4.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2003/images/image-4.png)
 
 
 ### **Cleanup**

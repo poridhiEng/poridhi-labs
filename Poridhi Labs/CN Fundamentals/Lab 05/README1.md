@@ -2,7 +2,8 @@
 
 In this hands-on lab, we will learn how to use the native VLAN capabilities of a Linux bridge to split a single broadcast domain into multiple smaller domains. These VLANs will allow us to configure isolated IP subnets, enhancing network security and efficiency. We will emulate network components using Linux namespaces, virtual Ethernet (veth) devices, and Linux bridge devices.
 
-![](./images/1.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2005/images/1.svg)
+
 
 ## **Prerequisites**
 
@@ -112,11 +113,11 @@ In this hands-on lab, we will learn how to use the native VLAN capabilities of a
 
 To split a single L2 network segment into multiple non-intersecting sub-segments without any rewiring a technique called frame tagging is used. 
 
-![](./images/2.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2005/images/2.svg)
 
 In standard Ethernet frames, VLAN tagging adds an extra 4-byte field to identify VLAN membership. This field is inserted between the Source MAC and EtherType fields. The 4 bytes include a reserved value (`0x8100`) to mark the frame as VLAN-tagged and a 12-bit VLAN ID to specify the VLAN.
 
-![](./images/3.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2005/images/3.svg)
 
 The VLAN tag slightly modifies the Ethernet frame structure. While the payload's minimum size is reduced by 4 bytes, the maximum frame size increases by 4 bytes. This tagging allows switches to logically segment traffic by VLAN and ensure proper data routing across access and trunk links.
 
@@ -134,7 +135,7 @@ There is more than one way to tag frames.
 
 The first step is to create a new network namespace containing a Linux bridge (`br1`). This bridge will handle VLAN tagging and filtering.
 
-![](./images/4.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2005/images/4.svg)
 
 ```bash
 create_new_bridge bridge1 br1
@@ -150,7 +151,7 @@ create_new_bridge bridge1 br1
 
 Next, create end hosts connected to the bridge and assign them to VLAN 10.
 
-![](./images/5.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2005/images/5.svg)
 
 ```bash
 create_new_node host10 eth10 10 bridge1 br1
@@ -168,7 +169,7 @@ create_new_node host12 eth12 10 bridge1 br1
 
 Similarly, create another set of end hosts connected to the bridge but assign them to VLAN 20.
 
-![](./images/6.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2005/images/6.svg)
 
 ```bash
 create_new_node host20 eth20 20 bridge1 br1
@@ -218,7 +219,7 @@ nsenter --net=/var/run/netns/host22 tcpdump -i eth22 ether proto 0x7a05
 
 Use the `ethsend` tool to send broadcast frames from the first host of each VLAN.
 
-![](./images/7.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2005/images/7.svg)
 
 **For VLAN 10:**
 
@@ -249,22 +250,22 @@ Inspect the output of `tcpdump` in each terminal. Ensure that:
 
     - On host11 VLAN 10:
 
-        ![alt text](./images/image.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2005/images/image.png)
 
 
     - On host12 VLAN 10:
 
-        ![alt text](./images/image-1.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2005/images/image-1.png)
 
 - Frames sent from VLAN 20 hosts are only received by other VLAN 20 hosts.
 
     - On host21 VLAN 20:
 
-        ![alt text](./images/image-2.png)        
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2005/images/image-2.png)        
 
     - On host22 VLAN 20:
 
-        ![alt text](./images/image-3.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2005/images/image-3.png)
 
 This confirms that VLANs provide effective traffic isolation.
 
