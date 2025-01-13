@@ -17,6 +17,8 @@ Before starting this lab, ensure that you have the following:
 
 ## Task Overview
 
+![alt text](./images/Mininet-lab-02.svg)
+
 We will create a simple network topology consisting of:
 
 - Two hosts (`h1` and `h2`)
