@@ -99,7 +99,9 @@ ifconfig
 In this page, you can see the payment status of the user. Which is currently in `Pending` state. Suppoose this application has a `Admin Portal` where the admin can change the payment status of the user which is only accessible to the admin. But if we find the hidden path to the `Admin Portal`, we can access it and change the payment status of the user. Hackers use various tools to find this kind of hidden paths. One of the most common tools is `Gobuster`. In this lab, we will use `Gobuster` to find the hidden path to the `Admin Portal` and change the payment status of the user with the predefine wordlist.
 
 ### Step 4: Create a Wordlist
-Create a file named `wordlist.txt` with the following contents:
+
+In some third party websites, you will find various wordlists that were already created by different communities. Hackers use those wordlists or create their own wordlists to find the hidden paths. Create a file named `wordlist.txt` with the following contents:
+
 ```plaintext
 admin-portal
 styles.css
