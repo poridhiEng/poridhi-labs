@@ -62,13 +62,13 @@ Discover hidden directories and files on a web server.
 #### Example:
 
 ```bash
-gobuster dir -u http://example.com -w wordlist.txt
+gobuster -u http://example.com -w wordlist.txt dir
 ```
 ```bash
-gobuster dir -u http://example.com -w wordlist.txt -x php,html,txt
+gobuster -u http://example.com -w wordlist.txt -x php,html,txt dir
 ```
 ```bash
-gobuster dir -u http://example.com -w wordlist.txt -s 200,301,302,307
+gobuster -u http://example.com -w wordlist.txt -s 200,301,302,307 dir
 ```
 
 
@@ -86,16 +86,16 @@ Identify all the subdomains for a given domain.
 #### Example:
 
 ```bash
-gobuster dns -d example.com -w subdomains.txt
+gobuster -d example.com -w subdomains.txt dns
 ```
 ```bash
-gobuster dns -d example.com -w subdomains.txt -r 8.8.8.8
+gobuster -d example.com -w subdomains.txt -r 8.8.8.8 dns
 ```
 ```bash
-gobuster dns -d example.com -w subdomains.txt -z
+gobuster -d example.com -w subdomains.txt -z dns
 ```
 ```bash
-gobuster dns -d example.com -w subdomains.txt -i
+gobuster -d example.com -w subdomains.txt -i dns
 ```
 
 ### 3. Virtual Host Discovery
@@ -112,13 +112,13 @@ Find virtual hosts configured on a server. Virtual hosts are the subdomains that
 #### Example:
 
 ```bash
-gobuster vhost -u http://example.com -w vhosts.txt
+gobuster -u http://example.com -w vhosts.txt vhost
 ```
 ```bash
-gobuster vhost -u http://example.com -w vhosts.txt -k
+gobuster -u http://example.com -w vhosts.txt -k vhost
 ```
 ```bash
-gobuster vhost -u http://example.com -w vhosts.txt -o vhosts.txt
+gobuster -u http://example.com -w vhosts.txt -o vhosts.txt vhost
 ```
 
 ### 4. S3 Bucket Enumeration
@@ -134,13 +134,13 @@ Enumerate AWS S3 buckets. Buckets are the containers that are used to store the 
 #### Example:
 
 ```bash
-gobuster s3 -w bucket-names.txt
+gobuster -w bucket-names.txt s3
 ```
 ```bash
-gobuster s3 -w bucket-names.txt -v
+gobuster -w bucket-names.txt -v s3
 ```
 ```bash
-gobuster s3 -w bucket-names.txt -t 10
+gobuster -w bucket-names.txt -t 10 s3
 ```
 
 

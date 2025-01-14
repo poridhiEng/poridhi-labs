@@ -46,7 +46,7 @@ Gobuster iterates through a wordlist containing potential directory and file nam
 
 #### Example Command
 ```bash
-gobuster dir -u http://example.com -w wordlist.txt -x php,html -t 50 -o results.txt
+gobuster  -u http://example.com -w wordlist.txt -x php,html -t 50 -o results.txt dir
 ```
 This command brute-forces directories on `http://example.com`, appends `.php` and `.html` to entries, uses 50 threads, and saves the output to `results.txt`.
 
@@ -67,38 +67,19 @@ Use the following commands to install Gobuster on your system:
    gobuster -h
    ```
 
-### Step 2: Clone the Application
-Clone the payment application from GitHub:
-```bash
-git clone https://github.com/Galadon123/Offensive-Security-Testing.git
-cd project
+### Step 2: Run the Application
+
+Open the `url` from any browser.
+
+```url
+https://resilient-melba-c53f69.netlify.app/
 ```
-
-### Step 3: Run the Application
-
-Start a Python HTTP server to host the application:
-
-```bash
-python3 -m http.server 8000
-```
-
-- Create a loadbalancer in Poridi's cloud with the `eth0` ip and port `8000`.
-
-- To find the `eth0` ip, run the following command:
-
-```bash
-ifconfig
-```
-
-   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/22714674d1ddbf000554adc16fd9d31e247878a7/Poridhi%20Labs/Security%20Labs/Lab%2001/images/1.png)
-
-- With the Loadbalancer `URL` access the application from any browser.
 
    ![](./images/2.png)
 
 In this page, you can see the payment status of the user. Which is currently in `Pending` state. Suppoose this application has a `Admin Portal` where the admin can change the payment status of the user which is only accessible to the admin. But if we find the hidden path to the `Admin Portal`, we can access it and change the payment status of the user. Hackers use various tools to find this kind of hidden paths. One of the most common tools is `Gobuster`. In this lab, we will use `Gobuster` to find the hidden path to the `Admin Portal` and change the payment status of the user with the predefine wordlist.
 
-### Step 4: Create a Wordlist
+### Step 3: Create a Wordlist
 
 In some third party websites, you will find various wordlists that were already created by different communities. Hackers use those wordlists or create their own wordlists to find the hidden paths. Create a file named `wordlist.txt` with the following contents:
 
@@ -109,19 +90,19 @@ script.js
 favicon.ico
 ```
 
-### Step 5: Run Gobuster
+### Step 4: Run Gobuster
 Run Gobuster with the wordlist to discover open pages:
 ```bash
-gobuster dir -u http://localhost:8000 -w wordlist.txt -v
+gobuster -u https://resilient-melba-c53f69.netlify.app/ -w wordlist.txt dir
 ```
-In this command, `gobuster dir` is used to brute-force directories, `-u http://localhost:8000` specifies the target URL, `-w wordlist.txt` provides the wordlist, and `-v` enables verbose output.
+In this command, `gobuster dir` is used to brute-force directories, `-u https://resilient-melba-c53f69.netlify.app` specifies the target URL, `-w wordlist.txt` provides the wordlist, and `-v` enables verbose output.
 
 ![](./images/1.png)
 
 In output, you can see the hidden path to the `Admin Portal` which is `/admin-portal`.
 
-### Step 6: Exploit the Admin Portal
-1. Open `http://localhost:8000/admin-portal` in a browser.
+### Step 5: Exploit the Admin Portal
+1. Open `https://resilient-melba-c53f69.netlify.app/admin-portal` in a browser.
 
    ![](./images/3.png)
 
@@ -129,8 +110,8 @@ In output, you can see the hidden path to the `Admin Portal` which is `/admin-po
 
    ![](./images/4.png)
 
-### Step 7: Verify the Exploit
-1. Navigate to the dashboard `http://localhost:8000` and confirm that the payment status reflects the changes made in the admin portal.
+### Step 6: Verify the Exploit
+1. Navigate to the dashboard `https://resilient-melba-c53f69.netlify.app/` and confirm that the payment status reflects the changes made in the admin portal.
 
    ![](./images/5.png)
 2. Verify the status persistence by refreshing the page.
