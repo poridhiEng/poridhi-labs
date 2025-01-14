@@ -50,7 +50,7 @@ gobuster dir -u http://example.com -w wordlist.txt -x php,html -t 50 -o results.
 ```
 This command brute-forces directories on `http://example.com`, appends `.php` and `.html` to entries, uses 50 threads, and saves the output to `results.txt`.
 
-## Step-by-Step Lab Instructions
+## Lab Instructions
 
 ### Step 1: Install Gobuster
 Use the following commands to install Gobuster on your system:
@@ -70,10 +70,9 @@ Use the following commands to install Gobuster on your system:
 ### Step 2: Clone the Application
 Clone the payment application from GitHub:
 ```bash
-git clone <repository_url>
+git clone https://github.com/Galadon123/Offensive-Security-Testing.git
 cd project
 ```
-Replace `<repository_url>` with the URL of the GitHub repository.
 
 ### Step 3: Run the Application
 
@@ -97,9 +96,11 @@ ifconfig
 
    ![](./images/2.png)
 
+In this page, you can see the payment status of the user. Which is currently in `Pending` state. Suppoose this application has a `Admin Portal` where the admin can change the payment status of the user which is only accessible to the admin. But if we find the hidden path to the `Admin Portal`, we can access it and change the payment status of the user. Hackers use various tools to find this kind of hidden paths. One of the most common tools is `Gobuster`. In this lab, we will use `Gobuster` to find the hidden path to the `Admin Portal` and change the payment status of the user with the predefine wordlist.
+
 ### Step 4: Create a Wordlist
 Create a file named `wordlist.txt` with the following contents:
-```
+```plaintext
 admin-portal
 styles.css
 script.js
@@ -111,22 +112,25 @@ Run Gobuster with the wordlist to discover open pages:
 ```bash
 gobuster dir -u http://localhost:8000 -w wordlist.txt -v
 ```
+In this command, `gobuster dir` is used to brute-force directories, `-u http://localhost:8000` specifies the target URL, `-w wordlist.txt` provides the wordlist, and `-v` enables verbose output.
+
 ![](./images/1.png)
+
+In output, you can see the hidden path to the `Admin Portal` which is `/admin-portal`.
 
 ### Step 6: Exploit the Admin Portal
 1. Open `http://localhost:8000/admin-portal` in a browser.
-![](./images/3.png)
+
+   ![](./images/3.png)
 
 2. Modify the payment status using the admin controls.
 
    ![](./images/4.png)
 
-3. Update the status and verify it on the dashboard (`http://localhost:8000`).
+### Step 7: Verify the Exploit
+1. Navigate to the dashboard `http://localhost:8000` and confirm that the payment status reflects the changes made in the admin portal.
 
    ![](./images/5.png)
-
-### Step 7: Verify the Exploit
-1. Navigate to the dashboard and confirm that the payment status reflects the changes made in the admin portal.
 2. Verify the status persistence by refreshing the page.
 
 ## Conclusion
