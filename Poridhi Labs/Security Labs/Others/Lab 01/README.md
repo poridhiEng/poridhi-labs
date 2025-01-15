@@ -2,7 +2,7 @@
 
 This guide demonstrates how to ethically test login functionality in a controlled environment using Python. The project involves a web application hosted in a Docker container and accessed via Poridhi's load balancer. The Python script automates credential testing, dynamically retrieves CSRF tokens, and highlights the importance of robust security mechanisms in web applications.
 
-![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/22714674d1ddbf000554adc16fd9d31e247878a7/Poridhi%20Labs/Security%20Labs/Lab%2001/images/logo.drawio.svg)
+![](./images/logo.drawio.svg)
 
 ## **Objective**
 
@@ -27,7 +27,7 @@ ethical-login-testing/
 
 For this lab, we will be using the DVWA (Damn Vulnerable Web Application) Docker image. This is a simple web application that is used to test the security of web applications. It is designed to be used in a controlled environment for testing purposes.
 
-![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/22714674d1ddbf000554adc16fd9d31e247878a7/Poridhi%20Labs/Security%20Labs/Lab%2001/images/logo1.drawio.svg)
+![](./images/logo1.drawio.svg)
 
 1. **Pull the Docker Image**:
    Download the DVWA image from Docker Hub:
@@ -48,15 +48,15 @@ For this lab, we will be using the DVWA (Damn Vulnerable Web Application) Docker
    ifconfig
    ```
 
-   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/22714674d1ddbf000554adc16fd9d31e247878a7/Poridhi%20Labs/Security%20Labs/Lab%2001/images/1.png)
+   ![](./images/1.png)
 
    Create a Loadbalancer in Poridhi's Cloud Portal with the `eth0` IP and port `80`.
 
-   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/22714674d1ddbf000554adc16fd9d31e247878a7/Poridhi%20Labs/Security%20Labs/Lab%2001/images/2.png)
+   ![](./images/2.png)
 
    Poridhi’s load balancer routes traffic to the Docker container. Access the application with the URL.
 
-   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/22714674d1ddbf000554adc16fd9d31e247878a7/Poridhi%20Labs/Security%20Labs/Lab%2001/images/3.png)
+   ![](./images/3.png)
 
 
 4. **Set DVWA Security Level**:
@@ -66,13 +66,13 @@ For this lab, we will be using the DVWA (Damn Vulnerable Web Application) Docker
 
    - Navigate the `Setup DVWA` page. And click on `Create / Reset Database` to create a new database.
 
-   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/22714674d1ddbf000554adc16fd9d31e247878a7/Poridhi%20Labs/Security%20Labs/Lab%2001/images/4.png)
+   ![](./images/4.png)
 
    Now `logout` from the application, and login again with the default credentials as `admin` and `password`.
 
    - Navigate to the **DVWA Security** tab and set the security level to **Low**. Then logout from the application.
 
-   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/22714674d1ddbf000554adc16fd9d31e247878a7/Poridhi%20Labs/Security%20Labs/Lab%2001/images/5.png)
+   ![](./images/5.png)
 
 ## **Prepare Input Files**
 
@@ -106,7 +106,7 @@ For this lab, we will be using the DVWA (Damn Vulnerable Web Application) Docker
 
 Now, we will create the script to test the login functionality of the DVWA application. This script will attempt to login to the application with each username and password combination in the `usernames.txt` and `passwords.txt` files. Before that it will extract the CSRF token from the login page. Then it will attempt to login to the application with the extracted CSRF token, username and password combination. If the login is successful, the script will print the username and password combination. If the login is unsuccessful, the script will print the username and password combination and continue to the next combination.
 
-![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/22714674d1ddbf000554adc16fd9d31e247878a7/Poridhi%20Labs/Security%20Labs/Lab%2001/images/logo2.drawio.svg)
+![](./images/logo2.drawio.svg)
 
 Save the following Python script as `test.py` in the project folder:
 
@@ -175,14 +175,14 @@ for username in usernames:
 ```bash
 https://<poridhi-load-balancer-url>/
 ```
-![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/22714674d1ddbf000554adc16fd9d31e247878a7/Poridhi%20Labs/Security%20Labs/Lab%2001/images/6.png)
+![](./images/6.png)
 
 
 ## **CSRF Token Protection**
 
 Cross-Site Request Forgery (CSRF) tokens are security measures used to prevent unauthorised actions on behalf of authenticated users. The script dynamically retrieves and includes this token in each login attempt to comply with server-side validation. In each login attemps, the application generates a new CSRF token. So each login attempt is a new request.
 
-![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/22714674d1ddbf000554adc16fd9d31e247878a7/Poridhi%20Labs/Security%20Labs/Lab%2001/images/logo3.drawio.svg)
+![](./images/logo3.drawio.svg)
 
 ### **Code for Token Handling**
 
@@ -223,7 +223,7 @@ def get_csrf_token(session):
    Success! Username: admin, Password: password
    ```
 
-   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/22714674d1ddbf000554adc16fd9d31e247878a7/Poridhi%20Labs/Security%20Labs/Lab%2001/images/7.png)
+   ![](./images/7.png)
 
 If no valid credentials are found, the script terminates without any output.
 
