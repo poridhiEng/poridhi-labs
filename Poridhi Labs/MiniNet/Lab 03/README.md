@@ -3,7 +3,7 @@
 
 This lab focuses on Software-Defined Networking (SDN) concepts and practices using Mininet and Open vSwitch (OVS). The primary goal is to manually configure and manage network flows at different layers (L1 to L4) of the network stack without using a centralized controller.
 
-![alt text](image-8.png)
+![alt text](./images/image-8.png)
 
 ### **Purpose of the Lab**
 - **Explore SDN principles:** Understand how to programmatically control network behavior by manually managing flow rules.
@@ -25,6 +25,8 @@ Create a network topology using:
 $ sudo mn --topo=single,3 --controller=none --mac
 ```
 
+![alt text](./images/image-9.png)
+
 #### **Command Breakdown:**
 - `--topo=single,3`: Creates a single switch topology connecting three hosts (`h1`, `h2`, `h3`).
 - `--controller=none`: No SDN controller is connected. Flow rules must be manually added.
@@ -38,16 +40,11 @@ mininet> dump
 mininet> net
 ```
 
+![alt text](./images/image-10.png)
+
 ### **Understanding the Output**
 
 #### **1. `dump` Command Output**
-```plaintext
-<Host h1: h1-eth0:10.0.0.1 pid=2667> 
-<Host h2: h2-eth0:10.0.0.2 pid=2671> 
-<Host h3: h3-eth0:10.0.0.3 pid=2675> 
-<OVSSwitch s1: lo:127.0.0.1,s1-eth1:None,s1-eth2:None,s1-eth3:None pid=2682> 
-```
-
 The `dump` command provides a **detailed status of network elements** in the Mininet topology. Here’s a breakdown:
 
 - **Hosts (`h1`, `h2`, `h3`)**:
@@ -63,12 +60,6 @@ The `dump` command provides a **detailed status of network elements** in the Min
 ---
 
 #### **2. `net` Command Output**
-```plaintext
-h1 h1-eth0:s1-eth1
-h2 h2-eth0:s1-eth2
-h3 h3-eth0:s1-eth3
-s1 lo:  s1-eth1:h1-eth0 s1-eth2:h2-eth0 s1-eth3:h3-eth0
-```
 
 The `net` command displays the **network connectivity in the topology**:
 
@@ -213,7 +204,7 @@ mininet> pingall
 
 **Expected Result:** All hosts should communicate successfully.
 
-![alt text](image.png)
+![alt text](./images/image.png)
 
 ### **Dumping and Deleting Flows**
 List current flows on the switch:
@@ -222,7 +213,7 @@ List current flows on the switch:
 mininet> sh ovs-ofctl dump-flows s1
 ```
 
-![alt text](image-1.png)
+![alt text](./images/image-1.png)
 
 This command lists all the flow rules currently installed on the switch `s1`. It provides a detailed view of the flow table, including the rules' priority, match criteria, and actions.
 
@@ -241,7 +232,7 @@ mininet> sh ovs-ofctl dump-flows s1
 **Result:** No flows should remain.  
 Run `pingall` again — communication will fail because no flow rules are defined.
 
-![alt text](image-2.png)
+![alt text](./images/image-2.png)
 
 ### **Programming Flows Using Physical Ports**
 Direct traffic between specific ports:
@@ -275,7 +266,7 @@ These commands effectively create a direct connection between port 1 and port 2:
 h1 ping -c2 h2
 ```
 
-![alt text](image-3.png)
+![alt text](./images/image-3.png)
 
 - **Successful Ping**: 
   - Two ICMP packets are sent from `h1` to `h2` and successfully reach their destination.
@@ -296,7 +287,7 @@ If you try to ping from `h3` to `h2`, you will get the following output:
 h3 ping -c2 h2
 ```
 
-![alt text](image-4.png)
+![alt text](./images/image-4.png)
 
 - **Ping Failure**:
   - Since no flow rule exists for packets entering from port 3 (connected to h3), the switch drops the packets.
@@ -348,7 +339,7 @@ These rules establish `bi-directional` communication between all ports, ensuring
 sh ovs-ofctl dump-flows s1
 ```
 
-![alt text](image-6.png)
+![alt text](./images/image-6.png)
   
 - **`actions=output:"s1-eth1",output:"s1-eth2"`**: Packets are forwarded to `s1-eth1` and `s1-eth2`.
 
@@ -364,7 +355,7 @@ Run the following command to test the connectivity between all hosts in the netw
 mininet> pingall
 ```
 
-![alt text](image-7.png)
+![alt text](./images/image-7.png)
 
 ## Conclusion
 
