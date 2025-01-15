@@ -69,13 +69,37 @@ Use the following commands to install Gobuster on your system:
 
 ### Step 2: Run the Application
 
-Open the `url` from any browser.
+#### Pull the docker image from the docker hub
 
-```url
-https://resilient-melba-c53f69.netlify.app/
+```
+docker pull fazlulkarim105925/fakepaymentapplication:latest
 ```
 
-   ![](./images/2.png)
+#### Run the docker image
+
+```
+docker run -d -p 8000:8000 fazlulkarim105925/fakepaymentapplication:latest
+```
+
+#### Create a Loadbalancer in Poridhi's Cloud
+
+Find the `eth0` ip with
+
+```
+ifconfig
+```
+
+![](./images/6.png)
+
+Create a Loadbalancer with the `eth0` ip and the port `8000`.
+
+![](./images/7.png)
+
+
+With the loadbalancer `url` you can access the application form any browser.
+
+![](./images/2.png)
+
 
 In this page, you can see the payment status of the user. Which is currently in `Pending` state. Suppoose this application has a `Admin Portal` where the admin can change the payment status of the user which is only accessible to the admin. But if we find the hidden path to the `Admin Portal`, we can access it and change the payment status of the user. Hackers use various tools to find this kind of hidden paths. One of the most common tools is `Gobuster`. In this lab, we will use `Gobuster` to find the hidden path to the `Admin Portal` and change the payment status of the user with the predefine wordlist.
 
@@ -93,16 +117,16 @@ favicon.ico
 ### Step 4: Run Gobuster
 Run Gobuster with the wordlist to discover open pages:
 ```bash
-gobuster -u https://resilient-melba-c53f69.netlify.app/ -w wordlist.txt dir
+gobuster -u http://localhost:8000 -w wordlist.txt dir
 ```
-In this command, `gobuster dir` is used to brute-force directories, `-u https://resilient-melba-c53f69.netlify.app` specifies the target URL, `-w wordlist.txt` provides the wordlist, and `-v` enables verbose output.
+In this command, `gobuster dir` is used to brute-force directories, `-u http://localhost:8000` specifies the target URL, `-w wordlist.txt` provides the wordlist, and `-v` enables verbose output.
 
 ![](./images/1.png)
 
 In output, you can see the hidden path to the `Admin Portal` which is `/admin-portal`.
 
 ### Step 5: Exploit the Admin Portal
-1. Open `https://resilient-melba-c53f69.netlify.app/admin-portal` in a browser.
+1. Open `<poridhi-loadbalancer-url>/admin-portal` in a browser.
 
    ![](./images/3.png)
 
@@ -111,7 +135,7 @@ In output, you can see the hidden path to the `Admin Portal` which is `/admin-po
    ![](./images/4.png)
 
 ### Step 6: Verify the Exploit
-1. Navigate to the dashboard `https://resilient-melba-c53f69.netlify.app/` and confirm that the payment status reflects the changes made in the admin portal.
+1. Navigate to the dashboard `<poridhi-loadbalancer-url>` and confirm that the payment status reflects the changes made in the admin portal.
 
    ![](./images/5.png)
 2. Verify the status persistence by refreshing the page.
