@@ -3,6 +3,8 @@
 
 This lab focuses on Software-Defined Networking (SDN) concepts and practices using Mininet and Open vSwitch (OVS). The primary goal is to manually configure and manage network flows at different layers (L1 to L4) of the network stack without using a centralized controller.
 
+![alt text](image-8.png)
+
 ### **Purpose of the Lab**
 - **Explore SDN principles:** Understand how to programmatically control network behavior by manually managing flow rules.
 - **Learn flow management:** Create, modify, and delete flow entries to direct traffic through an SDN-enabled switch.
@@ -251,6 +253,8 @@ sh ovs-ofctl add-flow s1 priority=500,in_port=1,actions=output:2
 - **`priority=500`**: Specifies the priority of the flow rule. Higher priorities are matched first.
 - **`in_port=1`**: The rule applies to packets arriving at port 1.
 - **`actions=output:2`**: Packets that match this rule are forwarded to port 2.
+
+![](./images/lab3-3.drawio.svg)
   
 
 ```bash
@@ -298,6 +302,8 @@ h3 ping -c2 h2
   - Since no flow rule exists for packets entering from port 3 (connected to h3), the switch drops the packets.
   - Therefore, h3 cannot reach h2.
 
+![](./images/lab3-4.drawio.svg)
+
 **Output Breakdown:**
 - **`Destination Host Unreachable`**: Indicates that the packets could not be routed to h2.
 - **`100% packet loss`**: All packets from h3 to h2 were lost due to the lack of a flow rule for port 3.
@@ -314,6 +320,8 @@ sh ovs-ofctl add-flow s1 priority=500,in_port=3,actions=output:1,2
 - **`in_port=3`**: Applies to packets arriving at port 3 (`s1-eth3`).
 - **`actions=output:1,2`**: Packets received on port 3 are forwarded to ports 1 and 2 (`s1-eth1` and `s1-eth2`).
 
+![](./images/lab3.drawio.svg)
+
 **Command 2:**
 
 ```bash
@@ -321,12 +329,16 @@ sh ovs-ofctl add-flow s1 priority=500,in_port=1,actions=output:2,3
 ```
 - Packets entering through port 1 are forwarded to ports 2 and 3.
 
+![](./images/lab3-1.drawio.svg)
+
 **Command 3:**
 
 ```bash
 sh ovs-ofctl add-flow s1 priority=500,in_port=2,actions=output:1,3
 ```
 - Packets entering through port 2 are forwarded to ports 1 and 3.
+
+![](./images/lab3-2.drawio.svg)
 
 These rules establish `bi-directional` communication between all ports, ensuring that any packet arriving at a port is forwarded to the remaining two ports.
 
