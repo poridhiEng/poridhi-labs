@@ -1,8 +1,6 @@
 # Understanding ARP: A Hands-on Tutorial with Network Namespaces
 
-This tutorial will help you understand the Address Resolution Protocol (ARP) through practical experimentation using Linux network namespaces. By the end, you'll have hands-on experience with how ARP operates in real networks.
-
----
+This lab will help you understand the Address Resolution Protocol (ARP) through practical experimentation using Linux network namespaces. By the end, you'll have hands-on experience with how ARP operates in real networks.
 
 ## Prerequisites
 
@@ -11,9 +9,7 @@ This tutorial will help you understand the Address Resolution Protocol (ARP) thr
 - `iproute2` tools installed (usually included in Linux distributions)
 - `tcpdump` for packet capture
 
----
-
-## Tutorial Overview
+## Task Overview
 
 In this lab, we will:
 1. Create two isolated network namespaces connected by a virtual ethernet link.
@@ -22,9 +18,7 @@ In this lab, we will:
 
 This setup mimics two computers connected on a local network.
 
----
-
-## Part 1: Setting Up the Environment
+## Setting Up the Environment
 
 ### Step 1: Create Network Namespaces
 
@@ -58,31 +52,54 @@ sudo ip link set veth1 netns ns1
 sudo ip link set veth2 netns ns2
 ```
 
+#### Why is this step important?
+
+Network namespaces are isolated networking environments. Each namespace has its own network interfaces, routing tables, and ARP tables. By moving the veth interfaces into specific namespaces, we connect these isolated environments, enabling communication between them.
+
+In this setup:
+- `ns1` has `veth1`, which will serve as its network interface.
+- `ns2` has `veth2`, which will serve as its network interface.
+- Communication between `ns1` and `ns2` will happen via this veth pair.
+
+
 ### Step 3: Configure IP Addresses
 
 Assign IP addresses to the virtual interfaces and bring them up.
 
-```bash
-# Configure IP for ns1
-sudo ip netns exec ns1 ip addr add 192.168.1.1/24 dev veth1
+1. Configure IP addresses for `ns1` and `ns2`
 
-# Configure IP for ns2
-sudo ip netns exec ns2 ip addr add 192.168.1.2/24 dev veth2
+    ```bash
+    # Configure IP for ns1
+    sudo ip netns exec ns1 ip addr add 192.168.1.1/24 dev veth1
 
-# Bring up the interfaces
-sudo ip netns exec ns1 ip link set dev veth1 up
-sudo ip netns exec ns2 ip link set dev veth2 up
+    # Configure IP for ns2
+    sudo ip netns exec ns2 ip addr add 192.168.1.2/24 dev veth2
+    ```
 
-# Enable loopback interfaces
-sudo ip netns exec ns1 ip link set dev lo up
-sudo ip netns exec ns2 ip link set dev lo up
-```
+    These commands assign IP addresses (`192.168.1.1/24` and `192.168.1.2/24`) to the virtual Ethernet interfaces (`veth1` and `veth2`) inside the network namespaces `ns1` and `ns2`, respectively.
 
----
+2. Bring up the interfaces  
 
-## Part 2: Observing ARP in Action
+    ```bash
+    sudo ip netns exec ns1 ip link set dev veth1 up
+    sudo ip netns exec ns2 ip link set dev veth2 up
+    ```
 
-### Step 4: Clear ARP Caches
+    By default, network interfaces are created in a down state (inactive). These commands bring up the `veth1` and `veth2` interfaces, making them active and ready to send/receive packets.
+
+
+3. Enable loopback interfaces
+
+    ```bash
+    sudo ip netns exec ns1 ip link set dev lo up
+    sudo ip netns exec ns2 ip link set dev lo up
+    ```
+
+    The loopback interface (`lo`) is a virtual network interface present in all Linux systems, used for internal communication within a namespace or system, such as accessing services on `127.0.0.1`. These commands activate the loopback interface in the `ns1` and `ns2` network namespaces, enabling internal communication within each namespace.
+
+## Observing ARP in Action
+
+### Step 1: Clear ARP Caches
 
 Clear the ARP caches in both namespaces to ensure we start with a clean state.
 
@@ -92,7 +109,7 @@ sudo ip netns exec ns1 ip neigh flush all
 sudo ip netns exec ns2 ip neigh flush all
 ```
 
-### Step 5: Set Up Packet Capture
+### Step 2: Set Up Packet Capture
 
 Open a new terminal window to capture ARP packets in `ns2`.
 
@@ -100,48 +117,53 @@ Open a new terminal window to capture ARP packets in `ns2`.
 sudo ip netns exec ns2 tcpdump -i veth2 arp
 ```
 
-### Step 6: Trigger ARP Process
+### Step 3: Trigger ARP Process
 
 In your original terminal, trigger the ARP process by pinging `192.168.1.2` from `ns1`.
 
-```bash
-# Check initial ARP cache
-sudo ip netns exec ns1 ip neigh show
+1. Check initial ARP cache
 
-# Ping from ns1 to ns2
-sudo ip netns exec ns1 ping -c 1 192.168.1.2
+    ```bash
+    sudo ip netns exec ns1 ip neigh show
+    ```
 
-# Check ARP cache again
-sudo ip netns exec ns1 ip neigh show
-```
+    This should show an empty ARP cache because we cleared it earlier.
 
----
+2. Ping from ns1 to ns2
 
-## Understanding What's Happening
+    ```bash
+    sudo ip netns exec ns1 ping -c 1 192.168.1.2
+    ```
 
-### Initial State
-- When you first checked the ARP cache, it was empty because we cleared it.
+    This sends an ARP request to `ns2` to find the MAC address for `192.168.1.2`.
 
-### ARP Request
-- When `ns1` needed to communicate with `192.168.1.2`, it sent an ARP request:
-  - **"Who has 192.168.1.2?"**
+3. Check ARP cache again
 
-### ARP Reply
-- `ns2` responded with its MAC address.
+    ```bash
+    sudo ip netns exec ns1 ip neigh show
+    ```
 
-### Cache Update
-- The MAC-to-IP mapping was stored in `ns1`'s ARP cache.
+    This should now show the ARP entry for `192.168.1.2` with the corresponding MAC address sent by `ns2`.
 
 ### Example tcpdump Output
+
 In the `tcpdump` window, you should see something like:
+
 ```
 12:00:00.123456 ARP, Request who-has 192.168.1.2 tell 192.168.1.1, length 28
 12:00:00.123457 ARP, Reply 192.168.1.2 is-at aa:bb:cc:dd:ee:ff, length 28
 ```
 
----
+### Understand What's Happening?
 
-## Part 3: Advanced Experiments
+This output shows ARP communication on `veth2` in `ns2`.  
+
+- `192.168.1.1` sends a broadcast request asking for the MAC address of `192.168.1.2`, which replies with its MAC (`f2:07:c7:c9:f7:f4`).  
+- Similarly, `192.168.1.2` requests the MAC of `192.168.1.1`, which replies with its MAC (`82:c7:2f:8d:8d:c1`).  
+
+This exchange allows both IPs to resolve each other's MAC addresses for communication.
+
+## Advanced Experiments
 
 ### Experiment 1: Watch ARP Cache Timing
 
@@ -167,8 +189,6 @@ sudo ip netns exec ns1 ip neigh del 192.168.1.2 dev veth1
 sudo ip netns exec ns1 ip neigh add 192.168.1.2 lladdr aa:bb:cc:dd:ee:ff dev veth1
 ```
 
----
-
 ## Cleanup
 
 When you are done experimenting, clean up the environment to avoid leaving unused namespaces or interfaces.
@@ -178,8 +198,6 @@ When you are done experimenting, clean up the environment to avoid leaving unuse
 sudo ip netns del ns1
 sudo ip netns del ns2
 ```
-
----
 
 ## Conclusion
 
