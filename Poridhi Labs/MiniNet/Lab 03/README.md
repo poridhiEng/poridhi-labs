@@ -1,6 +1,5 @@
 # **Configure and manage network flows at different layers**
 
-
 This lab focuses on Software-Defined Networking (SDN) concepts and practices using Mininet and Open vSwitch (OVS). The primary goal is to manually configure and manage network flows at different layers (L1 to L4) of the network stack without using a centralized controller.
 
 ![alt text](./images/image-8.png)
@@ -15,8 +14,18 @@ This lab focuses on Software-Defined Networking (SDN) concepts and practices usi
   - **Layer 3:** IP addresses
   - **Layer 4:** Application-layer protocols like TCP
 
-### **Basic Operations**
-Flow entries in an OpenFlow-compatible switch determine how packets are handled. Usually, these flows are dynamically managed by an SDN controller. In this exercise, you'll provide flow commands manually.
+
+### **Prerequisites**
+
+Install Mininet on your system.
+
+```bash
+sudo apt-get update
+sudo apt-get install mininet
+```
+
+## **Basic Operations**
+Flow entries in an **OpenFlow-compatible** switch determine how packets are handled. Usually, these flows are dynamically managed by an SDN controller. In this exercise, you'll provide flow commands manually.
 
 ### **Network Setup**
 Create a network topology using:
@@ -27,7 +36,7 @@ $ sudo mn --topo=single,3 --controller=none --mac
 
 ![alt text](./images/image-9.png)
 
-#### **Command Breakdown:**
+### **Command Breakdown:**
 - `--topo=single,3`: Creates a single switch topology connecting three hosts (`h1`, `h2`, `h3`).
 - `--controller=none`: No SDN controller is connected. Flow rules must be manually added.
 - `--mac`: Assigns simplified MAC addresses to hosts for easier identification.
@@ -41,6 +50,7 @@ mininet> net
 ```
 
 ![alt text](./images/image-10.png)
+
 
 ### **Understanding the Output**
 
@@ -56,8 +66,6 @@ The `dump` command provides a **detailed status of network elements** in the Min
   - The switch `s1` has multiple ports (`lo`, `s1-eth1`, `s1-eth2`, `s1-eth3`).
   - `lo:127.0.0.1` represents the local loopback interface.
   - The switch interfaces `s1-eth1`, `s1-eth2`, and `s1-eth3` currently show `None`, indicating they have not yet been configured or mapped to specific addresses in the dump output.
-
----
 
 #### **2. `net` Command Output**
 
@@ -93,14 +101,9 @@ The `net` command displays the **network connectivity in the topology**:
 mininet> sh ovs-ofctl show s1
 ```
 
-### **Explanation of the Command**
-```bash
-mininet> sh ovs-ofctl show s1
-```
+![alt text](./images/image-12.png)
 
 This command uses **Open vSwitch (OVS) utilities** to inspect the **features and status** of the OpenFlow switch `s1` in a Mininet topology. It provides information on the switch's datapath, ports, capabilities, and other properties.
-
----
 
 ### **Command Output Breakdown**
 
@@ -258,7 +261,7 @@ These commands effectively create a direct connection between port 1 and port 2:
 - Packets from **h1 (port 1)** are forwarded to **h2 (port 2)**.
 - Packets from **h2 (port 2)** are forwarded to **h1 (port 1)**.
 
----
+
 
 ### **Ping Tests and Outputs**
 #### **Command:**
@@ -277,7 +280,7 @@ h1 ping -c2 h2
 - **`time=0.375 ms`**: Round-trip time for the packet.
 - **`0% packet loss`**: All packets were successfully transmitted and received.
 
----
+
 
 #### **Command:**
 

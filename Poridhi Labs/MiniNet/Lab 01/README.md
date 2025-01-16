@@ -130,4 +130,8 @@ When a packet enters a switch, the switch matches the packet against the flow ta
 - The packet is then forwarded or dropped based on the newly installed flow entry.
 
 
+## Conclusion
+
+In this lab, we have explored the basic concepts of Software-Defined Networking (SDN) and its architecture. We have learned how SDN separates the control plane from the data plane, allowing for centralized network management and dynamic traffic control. We have also seen how SDN enables programmable network configurations and supports advanced network functionalities such as traffic engineering, security policies, and network virtualization.
+
 
