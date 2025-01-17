@@ -1,10 +1,33 @@
 # Layer 3 Flow Rules
 
-In this section, we will create **OpenFlow** rules using **Layer 3 (IP)** information and implement **QoS (Quality of Service)** with Differentiated Services Code Point (**DSCP**). Let's break it down step by step.
+In this lab, we will create **OpenFlow** rules using **Layer 3 (IP)** information and implement **QoS (Quality of Service)** with Differentiated Services Code Point (**DSCP**). Let's break it down step by step.
 
 ![alt text](image-8.png)
 
+## Network Topology
+
+The network topology consists of:
+- A single OpenFlow switch (`s1`).
+- Three hosts:
+  - `h1` (IP: `10.0.0.1`, Port: `s1-eth1`)
+  - `h2` (IP: `10.0.0.2`, Port: `s1-eth2`)
+  - `h3` (IP: `10.0.0.3`, Port: `s1-eth3`)
+
+All hosts are connected to the same switch (`s1`).
+
+## Start Mininet
+
+Launch Mininet with the default topology:
+
+```bash
+sudo mn --topo=single,3 --controller=none --mac
+```
+
+This creates a network with one switch and three hosts.
+
 ## General IP Traffic Handling
+
+We will add a flow rule to handle general IP traffic within the subnet.
 
 ```bash
 mininet> sh ovs-ofctl add-flow s1 priority=500,dl_type=0x800,nw_src=10.0.0.0/24,nw_dst=10.0.0.0/24,actions=normal
@@ -20,6 +43,8 @@ This rule ensures that **all IP packets** between hosts in the `10.0.0.0/24` sub
 
 
 ## Prioritizing Traffic from `h3`
+
+We will add a flow rule to prioritize traffic from `h3` to the subnet.
 
 ```bash
 mininet> sh ovs-ofctl add-flow s1 priority=800,dl_type=0x800,nw_src=10.0.0.3,nw_dst=10.0.0.0/24,actions=mod_nw_tos:184,normal

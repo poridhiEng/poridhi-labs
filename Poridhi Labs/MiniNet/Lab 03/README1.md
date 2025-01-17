@@ -1,8 +1,31 @@
 # **Using MAC Addresses (Layer 2 Data)**
 
+In this lab, we will use **MAC addresses** to create flow rules for traffic between hosts. We will create rules based on the source and destination MAC addresses of the packets.
+
 ![alt text](image-3.png)
 
-First Find the MAC Addresses of the hosts:
+## Network Topology
+
+The network topology consists of:
+- A single OpenFlow switch (`s1`).
+- Three hosts:
+  - `h1` (IP: `10.0.0.1`, Port: `s1-eth1`)
+  - `h2` (IP: `10.0.0.2`, Port: `s1-eth2`)
+  - `h3` (IP: `10.0.0.3`, Port: `s1-eth3`)
+
+All hosts are connected to the same switch (`s1`).
+
+## Start Mininet
+
+Launch Mininet with the default topology:
+
+```bash
+sudo mn --topo=single,3 --controller=none --mac
+```
+
+This creates a network with one switch and three hosts.
+
+### Find the MAC Addresses of the hosts:
 
 ```bash
 mininet> h1 ifconfig
@@ -12,14 +35,18 @@ mininet> h3 ifconfig
 
 ![alt text](image.png)
 
-Add flow rules based on source and destination MAC addresses:
+### Add flow rules based on source and destination MAC addresses:
+
+We will create flow rules to forward traffic from `h1` to `h2` and from `h2` to `h1`.
 
 ```bash
 mininet> sh ovs-ofctl add-flow s1 dl_src=00:00:00:00:00:01,dl_dst=00:00:00:00:00:02,actions=output:2
 mininet> sh ovs-ofctl add-flow s1 dl_src=00:00:00:00:00:02,dl_dst=00:00:00:00:00:01,actions=output:1
 ```
 
-Now try to ping the hosts:
+### Try to ping the hosts:
+
+Send ping requests to each host:
 
 ```bash
 mininet> pingall
@@ -76,25 +103,7 @@ When you run `pingall`, the ARP requests are broadcasted to all hosts, enabling 
 
 > `h3` is not able to communicate with h1 and h2 as we have not added any flow rules for h3. You can try adding flow rules for h3 and see if it works.
 
-## **Using Layer 4 (Transport Layer) Data**
-Start a simple Python web server on host `h3`:
+## Conclusion
 
-```bash
-mininet> h3 python -m SimpleHTTPServer 80 &
-```
+In this lab, we learned how to use MAC addresses to create flow rules for traffic between hosts. We created rules based on the source and destination MAC addresses of the packets. We also learned how to add flow rules to handle ARP packets and how to test the setup.
 
-Add a rule for TCP traffic to port 80:
-
-```bash
-mininet> sh ovs-ofctl add-flow s1 priority=500,dl_type=0x800,nw_proto=6,tp_dst=80,actions=output:3
-```
-
-## **Explanation:**  
-- **nw_proto=6:** Matches TCP traffic.
-- **tp_dst=80:** Matches traffic destined for port 80.
-  
-Check connectivity:
-
-```bash
-mininet> h1 curl h3
-```

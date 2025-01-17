@@ -14,7 +14,6 @@ This lab focuses on Software-Defined Networking (SDN) concepts and practices usi
   - **Layer 3:** IP addresses
   - **Layer 4:** Application-layer protocols like TCP
 
-
 ### **Prerequisites**
 
 Install Mininet on your system.
