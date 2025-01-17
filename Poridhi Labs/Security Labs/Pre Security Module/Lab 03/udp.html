@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UDP Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .game-title {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(255, 136, 0, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px rgba(255, 136, 0, 0.5);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(255, 136, 0, 0.8),
+                             0 0 30px rgba(255, 136, 0, 0.6);
+            }
+        }
+
+        .network-container {
+            position: relative;
+            width: 90%;
+            max-width: 800px;
+            height: 400px;
+            border: 2px solid rgba(255, 136, 0, 0.3);
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 30px rgba(255, 136, 0, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .network-container::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255, 136, 0, 0.5) 50%, 
+                transparent 100%);
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        }
+
+        .endpoint {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(145deg, #243b55, #141e30);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            border: 2px solid rgba(255, 136, 0, 0.3);
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .endpoint:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 136, 0, 0.4);
+        }
+
+        .endpoint.active {
+            background: linear-gradient(145deg, #ff8800, #ff7300);
+            box-shadow: 0 0 30px rgba(255, 136, 0, 0.6);
+        }
+
+        .message-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .datagram {
+            position: absolute;
+            width: 80px;
+            padding: 12px;
+            background: linear-gradient(145deg, #ff8800, #ff7300);
+            color: white;
+            text-align: center;
+            border-radius: 10px;
+            font-size: 0.9em;
+            opacity: 0;
+            transition: all 0.5s ease;
+            box-shadow: 0 0 15px rgba(255, 136, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateX(0);
+            pointer-events: none;
+        }
+
+        .datagram.active {
+            opacity: 1;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 15px rgba(255, 136, 0, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 25px rgba(255, 136, 0, 0.5);
+            }
+            100% {
+                box-shadow: 0 0 15px rgba(255, 136, 0, 0.3);
+            }
+        }
+
+        .datagram.in-transit {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .datagram:nth-child(1) { top: 20%; }
+        .datagram:nth-child(2) { top: 40%; }
+        .datagram:nth-child(3) { top: 60%; }
+        .datagram:nth-child(4) { top: 80%; }
+
+        .client-datagram {
+            left: 120px;
+            transform: translateX(0);
+        }
+
+        .client-datagram.in-transit {
+            transform: translateX(calc(100% + 200px));
+            opacity: 0;
+        }
+
+        .instructions {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .game-btn {
+            padding: 12px 30px;
+            font-size: 1em;
+            background: linear-gradient(145deg, #ff8800, #ff7300);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .game-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 136, 0, 0.4);
+        }
+
+        .game-btn:active {
+            transform: scale(0.95);
+        }
+
+        .packet-count {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 136, 0, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            background: rgba(255, 136, 0, 0.6);
+            border-radius: 50%;
+            animation: particleAnim 1s ease-out forwards;
+        }
+
+        @keyframes particleAnim {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 class="game-title">UDP Game</h1>
+    <div class="instructions">
+        <p>Click the client repeatedly to send UDP datagrams</p>
+    </div>
+    <div class="network-container">
+        <div class="endpoint" id="client">Client</div>
+        <div class="endpoint" id="server">Server</div>
+        <div class="message-container" id="datagram-container"></div>
+        <div class="packet-count">Packets sent: <span id="packetCount">0</span></div>
+    </div>
+    <div class="button-container">
+        <button class="game-btn" id="resetGame">Reset Game</button>
+    </div>
+
+    <script>
+        const client = document.getElementById('client');
+        const server = document.getElementById('server');
+        const container = document.getElementById('datagram-container');
+        const resetBtn = document.getElementById('resetGame');
+        const packetCountElement = document.getElementById('packetCount');
+        
+        let packetCount = 0;
+
+        function createDatagram() {
+            const datagram = document.createElement('div');
+            datagram.className = 'datagram client-datagram';
+            datagram.textContent = 'UDP';
+            container.appendChild(datagram);
+
+            // Random vertical position
+            datagram.style.top = Math.random() * 60 + 20 + '%';
+
+            // Animate
+            setTimeout(() => {
+                datagram.classList.add('active');
+                setTimeout(() => {
+                    datagram.classList.add('in-transit');
+                    setTimeout(() => {
+                        datagram.remove();
+                    }, 1500);
+                }, 500);
+            }, 0);
+
+            packetCount++;
+            packetCountElement.textContent = packetCount;
+        }
+
+        function createParticles(x, y) {
+            for (let i = 0; i < 8; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.width = Math.random() * 10 + 5 + 'px';
+                particle.style.height = particle.style.width;
+                document.body.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 1000);
+            }
+        }
+
+        function resetGame() {
+            container.innerHTML = '';
+            packetCount = 0;
+            packetCountElement.textContent = packetCount;
+        }
+
+        client.addEventListener('click', (e) => {
+            createParticles(e.pageX, e.pageY);
+            client.classList.add('active');
+            createDatagram();
+            setTimeout(() => client.classList.remove('active'), 200);
+        });
+
+        resetBtn.addEventListener('click', resetGame);
+
+    </script>
+</body>
+</html>

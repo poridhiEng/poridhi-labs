@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firewall Types</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .game-title {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(0, 195, 255, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+            text-align: center;
+        }
+
+        .firewall-controls {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .firewall-btn {
+            padding: 12px 24px;
+            font-size: 1em;
+            background: rgba(0, 195, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(0, 195, 255, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .firewall-btn.active {
+            background: rgba(0, 195, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 195, 255, 0.4);
+        }
+
+        .network-container {
+            position: relative;
+            width: 95%;
+            max-width: 1000px;
+            height: 500px;
+            border: 2px solid rgba(0, 195, 255, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .firewall {
+            width: 20px;
+            height: 300px;
+            background: rgba(255, 136, 0, 0.3);
+            border: 2px solid rgba(255, 136, 0, 0.5);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            border-radius: 4px;
+        }
+
+        .firewall.stateful {
+            background: rgba(0, 255, 0, 0.2);
+            border-color: rgba(0, 255, 0, 0.5);
+        }
+
+        .firewall.stateless {
+            background: rgba(255, 255, 0, 0.2);
+            border-color: rgba(255, 255, 0, 0.5);
+        }
+
+        .connection-table {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 195, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            min-width: 200px;
+            display: none;
+        }
+
+        .connection-table.visible {
+            display: block;
+        }
+
+        .connection-table h3 {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .connection {
+            margin-bottom: 5px;
+            padding: 5px;
+            background: rgba(0, 195, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .network {
+            width: 40%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .computer {
+            width: 120px;
+            height: 100px;
+            background: linear-gradient(145deg, #243b55, #141e30);
+            border: 2px solid rgba(0, 195, 255, 0.3);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .computer:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 195, 255, 0.4);
+        }
+
+        .packet {
+            position: absolute;
+            width: 120px;
+            padding: 10px;
+            background: linear-gradient(145deg, #0a4d68, #088395);
+            color: white;
+            text-align: center;
+            border-radius: 8px;
+            font-size: 0.8em;
+            opacity: 0;
+            transition: all 1s ease;
+            pointer-events: none;
+        }
+
+        .packet.active {
+            opacity: 1;
+        }
+
+        .packet.blocked {
+            background: linear-gradient(145deg, #ff4444, #cc0000);
+        }
+
+        .status {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 195, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            text-align: center;
+            min-width: 300px;
+        }
+
+        .info-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 195, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="game-title">Firewall Types</h1>
+    
+    <div class="firewall-controls">
+        <button class="firewall-btn active" data-type="none">No Firewall</button>
+        <button class="firewall-btn" data-type="stateless">Stateless</button>
+        <button class="firewall-btn" data-type="stateful">Stateful</button>
+    </div>
+
+    <div class="network-container">
+        <div class="status">Click computers to initiate connections</div>
+        
+        <div class="firewall"></div>
+        
+        <div class="connection-table">
+            <h3>Connection State Table</h3>
+            <div class="connections"></div>
+        </div>
+
+        <div class="network internal">
+            <div class="computer" data-type="internal">Internal</div>
+            <div class="computer" data-type="internal">Internal</div>
+        </div>
+
+        <div class="network external">
+            <div class="computer" data-type="external">External</div>
+            <div class="computer" data-type="external">External</div>
+        </div>
+
+        <div class="info-panel"></div>
+    </div>
+
+    <script>
+        const firewallBtns = document.querySelectorAll('.firewall-btn');
+        const firewall = document.querySelector('.firewall');
+        const connectionTable = document.querySelector('.connection-table');
+        const connections = document.querySelector('.connections');
+        const status = document.querySelector('.status');
+        const infoPanel = document.querySelector('.info-panel');
+        const container = document.querySelector('.network-container');
+
+        let currentMode = 'none';
+        let activeConnections = new Set();
+
+        const INFO_TEXTS = {
+            none: "No firewall - All traffic flows freely between networks",
+            stateless: "Stateless firewall - Checks each packet individually against rules",
+            stateful: "Stateful firewall - Tracks connection state and allows established connections"
+        };
+
+        function updateFirewallMode(mode) {
+            currentMode = mode;
+            firewall.className = 'firewall ' + mode;
+            connectionTable.classList.toggle('visible', mode === 'stateful');
+            infoPanel.textContent = INFO_TEXTS[mode];
+            activeConnections.clear();
+            connections.innerHTML = '';
+        }
+
+        function createPacket(sourceX, sourceY, isResponse = false) {
+            const packet = document.createElement('div');
+            packet.className = 'packet';
+            packet.style.left = sourceX + 'px';
+            packet.style.top = sourceY + 'px';
+            container.appendChild(packet);
+            return packet;
+        }
+
+        function checkFirewallRules(sourceType, isResponse) {
+            switch(currentMode) {
+                case 'none':
+                    return true;
+                case 'stateless':
+                    return sourceType === 'internal' || isResponse;
+                case 'stateful':
+                    if (sourceType === 'internal') {
+                        activeConnections.add(Math.random().toString(36).substr(2, 9));
+                        updateConnectionTable();
+                        return true;
+                    }
+                    return activeConnections.size > 0;
+                default:
+                    return true;
+            }
+        }
+
+        function updateConnectionTable() {
+            connections.innerHTML = Array.from(activeConnections).map(conn => 
+                `<div class="connection">Connection ID: ${conn}</div>`
+            ).join('');
+        }
+
+        async function animatePacket(source, target, isResponse = false) {
+            const sourceRect = source.getBoundingClientRect();
+            const targetRect = target.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
+
+            const sourceX = sourceRect.left - containerRect.left;
+            const sourceY = sourceRect.top - containerRect.top;
+            const targetX = targetRect.left - containerRect.left;
+            const targetY = targetRect.top - containerRect.top;
+
+            const sourceType = source.dataset.type;
+            const allowed = checkFirewallRules(sourceType, isResponse);
+
+            const packet = createPacket(sourceX, sourceY, isResponse);
+            packet.textContent = isResponse ? "Response" : "Request";
+            
+            if (!allowed) {
+                packet.classList.add('blocked');
+                status.textContent = `Packet blocked by ${currentMode} firewall`;
+            }
+
+            setTimeout(() => {
+                packet.classList.add('active');
+                packet.style.transform = `translate(${targetX - sourceX}px, ${targetY - sourceY}px)`;
+                
+                if (allowed) {
+                    status.textContent = isResponse ? 
+                        "Response packet allowed" : 
+                        `Request allowed by ${currentMode} firewall`;
+                        
+                    // Send response packet if request was allowed
+                    if (!isResponse) {
+                        setTimeout(() => {
+                            animatePacket(target, source, true);
+                        }, 1500);
+                    }
+                }
+
+                setTimeout(() => packet.remove(), 1000);
+            }, 100);
+        }
+
+        // Event Listeners
+        firewallBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                firewallBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                updateFirewallMode(btn.dataset.type);
+            });
+        });
+
+        const computers = document.querySelectorAll('.computer');
+        computers.forEach(computer => {
+            computer.addEventListener('click', () => {
+                const targets = Array.from(computers).filter(c => 
+                    c.dataset.type !== computer.dataset.type
+                );
+                targets.forEach(target => {
+                    animatePacket(computer, target);
+                });
+            });
+        });
+
+        // Initial setup
+        updateFirewallMode('none');
+    </script>
+</body>
+</html>
