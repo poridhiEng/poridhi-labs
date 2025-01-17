@@ -1,4 +1,4 @@
-# Understanding ARP: A Hands-on Tutorial with Network Namespaces
+# Observing Address Resolution Protocol (ARP) in Action
 
 This lab will help you understand the Address Resolution Protocol (ARP) through practical experimentation using Linux network namespaces. By the end, you'll have hands-on experience with how ARP operates in real networks.
 
