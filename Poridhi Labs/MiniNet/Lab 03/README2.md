@@ -2,6 +2,10 @@
 
 In this section, we will create **OpenFlow** rules using **Layer 3 (IP)** information and implement **QoS (Quality of Service)** with Differentiated Services Code Point (**DSCP**). Let's break it down step by step.
 
+
+![alt text](image-8.png)
+
+
 ## General IP Traffic Handling
 
 ```bash
@@ -75,9 +79,10 @@ DSCP values are often mapped to well-known QoS classes:
 | 48            | `110000`    | CS6 (Class Selector)          | Critical network traffic            |
 
 **Why `184`?**
-- To set DSCP = `46` in the TOS field:
-  - `46` in binary: `101110`.
-  - Shift it 2 bits to the left: `10111000` = `184` in decimal.
+
+To set DSCP = `46` in the TOS field:
+- `46` in binary: `101110`.
+- Shift it 2 bits to the left: `10111000` = `184` in decimal.
 
 #### **DSCP in QoS**
 
@@ -103,8 +108,7 @@ mininet> sh ovs-ofctl add-flow s1 arp,nw_dst=10.0.0.3,actions=output:3
 
 #### **Why Not Flood ARP?**
 
-- Flooding ARP requests sends them to all ports, which can be inefficient in large networks (e.g., a 24-port switch).
-- These specific rules direct ARP traffic to the correct port, reducing unnecessary network congestion.
+Flooding ARP requests sends them to all ports, which can be inefficient in large networks (e.g., a 24-port switch). These specific rules direct ARP traffic to the correct port, reducing unnecessary network congestion.
 
 ## Testing the Flow Rules
 
@@ -114,6 +118,8 @@ Start the pinging from `h3` to `h1` and `h2` and observe the traffic on the swit
 mininet> h3 ping h1
 mininet> h3 ping h2
 ```
+
+![](./images/lab3-6.drawio.svg)
 
 ![alt text](image-7.png)
 
