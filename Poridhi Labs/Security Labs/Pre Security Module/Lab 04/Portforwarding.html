@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Port Forwarding Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .game-title {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(0, 195, 255, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+            text-align: center;
+        }
+
+        .network-container {
+            position: relative;
+            width: 95%;
+            max-width: 1200px;
+            height: 500px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .network {
+            width: 300px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(0, 195, 255, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .network.network1 {
+            background: rgba(128, 128, 128, 0.1);
+        }
+
+        .network.network2 {
+            background: rgba(0, 195, 255, 0.1);
+        }
+
+        .router {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(145deg, #243b55, #141e30);
+            border: 2px solid rgba(0, 195, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .router::after {
+            content: attr(data-ip);
+            position: absolute;
+            bottom: -30px;
+            font-size: 0.9em;
+            color: #00c3ff;
+        }
+
+        .computer {
+            width: 120px;
+            height: 100px;
+            background: linear-gradient(145deg, #243b55, #141e30);
+            border: 2px solid rgba(0, 195, 255, 0.3);
+            border-radius: 10px;
+            margin: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .computer:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 195, 255, 0.4);
+        }
+
+        .computer::after {
+            content: attr(data-ip);
+            position: absolute;
+            bottom: -25px;
+            font-size: 0.9em;
+            color: #00c3ff;
+        }
+
+        .internet {
+            width: 150px;
+            height: 100px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2300c3ff"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>') center/contain no-repeat;
+            position: relative;
+        }
+
+        .internet::after {
+            content: "The Internet";
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9em;
+            color: #00c3ff;
+        }
+
+        .packet {
+            position: absolute;
+            width: 120px;
+            padding: 10px;
+            background: linear-gradient(145deg, #0a4d68, #088395);
+            color: white;
+            text-align: center;
+            border-radius: 8px;
+            font-size: 0.8em;
+            opacity: 0;
+            transition: all 1.5s ease;
+            pointer-events: none;
+        }
+
+        .packet.active {
+            opacity: 1;
+        }
+
+        .instructions {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            max-width: 800px;
+            width: 90%;
+        }
+
+        .status {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 195, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            min-width: 300px;
+            text-align: center;
+        }
+
+        .port-label {
+            position: absolute;
+            color: #00ff00;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="game-title">Port Forwarding</h1>
+    <div class="instructions">
+        Click on computers in Network #1 to send packets through port forwarding
+    </div>
+    <div class="network-container">
+        <div class="status">Click a computer in Network #1 to start</div>
+        
+        <!-- Network 1 -->
+        <div class="network network1">
+            <h2>Network #1</h2>
+            <div class="computer" data-ip="192.168.1.10"></div>
+            <div class="computer" data-ip="192.168.1.11"></div>
+            <div class="port-label" style="bottom: 20px; left: 50%; transform: translateX(-50%)">Port 80</div>
+        </div>
+
+        <!-- Router 1 -->
+        <div class="router" data-ip="82.62.51.70"></div>
+
+        <!-- Internet -->
+        <div class="internet"></div>
+
+        <!-- Router 2 -->
+        <div class="router" data-ip="172.68.43.21"></div>
+
+        <!-- Network 2 -->
+        <div class="network network2">
+            <h2>Network #2</h2>
+            <div class="computer" data-ip="10.0.0.2"></div>
+            <div class="port-label" style="bottom: 20px; left: 50%; transform: translateX(-50%)">Port 80</div>
+        </div>
+    </div>
+
+    <script>
+        const computers = document.querySelectorAll('.network1 .computer');
+        const status = document.querySelector('.status');
+        const container = document.querySelector('.network-container');
+        const targetComputer = document.querySelector('.network2 .computer');
+
+        function createPacket(text, startX, startY) {
+            const packet = document.createElement('div');
+            packet.className = 'packet';
+            packet.textContent = text;
+            packet.style.left = startX + 'px';
+            packet.style.top = startY + 'px';
+            container.appendChild(packet);
+            return packet;
+        }
+
+        async function animatePacket(sourceIP) {
+            const positions = [
+                { x: 250, y: 200 },  // Router 1
+                { x: 500, y: 200 },  // Internet
+                { x: 750, y: 200 },  // Router 2
+                { x: 1000, y: 200 }  // Destination
+            ];
+
+            // Initial packet
+            const packet1 = createPacket(`${sourceIP}:random → 82.62.51.70:80`, 100, 200);
+            
+            // Animate through each position
+            setTimeout(() => {
+                packet1.classList.add('active');
+                packet1.style.transform = 'translateX(150px)';
+                
+                // Router 1 to Internet
+                setTimeout(() => {
+                    packet1.textContent = `82.62.51.70:80 → 172.68.43.21:80`;
+                    packet1.style.transform = 'translateX(400px)';
+                    
+                    // Internet to Router 2
+                    setTimeout(() => {
+                        packet1.textContent = `172.68.43.21:80 → 10.0.0.2:80`;
+                        packet1.style.transform = 'translateX(650px)';
+                        
+                        // Final destination
+                        setTimeout(() => {
+                            packet1.style.transform = 'translateX(900px)';
+                            setTimeout(() => packet1.remove(), 1500);
+                        }, 1500);
+                    }, 1500);
+                }, 1500);
+            }, 100);
+        }
+
+        computers.forEach(computer => {
+            computer.addEventListener('click', () => {
+                const sourceIP = computer.getAttribute('data-ip');
+                status.textContent = `Forwarding packet from ${sourceIP} through port 80`;
+                animatePacket(sourceIP);
+            });
+        });
+    </script>
+</body>
+</html>
