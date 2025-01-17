@@ -1,4 +1,4 @@
-# Layer 3 Flow Rules
+# Layer 3 Traffic Forwarding Setup in Mininet with OpenFlow
 
 In this lab, we will create **OpenFlow** rules using **Layer 3 (IP)** information and implement **QoS (Quality of Service)** with Differentiated Services Code Point (**DSCP**). Let's break it down step by step.
 

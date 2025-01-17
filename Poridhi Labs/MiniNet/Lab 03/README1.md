@@ -1,4 +1,4 @@
-# **Using MAC Addresses (Layer 2 Data)**
+# Layer 2 Traffic Forwarding Setup in Mininet with OpenFlow
 
 In this lab, we will use **MAC addresses** to create flow rules for traffic between hosts. We will create rules based on the source and destination MAC addresses of the packets.
 

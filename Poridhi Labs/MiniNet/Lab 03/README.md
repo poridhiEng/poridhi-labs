@@ -96,6 +96,7 @@ The `net` command displays the **network connectivity in the topology**:
 - Useful for understanding the physical or logical connectivity in your virtual network.
 
 ### **Map Switch Ports to OpenFlow Port Numbers**
+
 ```bash
 mininet> sh ovs-ofctl show s1
 ```
@@ -107,6 +108,7 @@ This command uses **Open vSwitch (OVS) utilities** to inspect the **features and
 ### **Command Output Breakdown**
 
 #### **1. Switch Information**
+
 ```plaintext
 OFPT_FEATURES_REPLY (xid=0x2): dpid:0000000000000001
 ```

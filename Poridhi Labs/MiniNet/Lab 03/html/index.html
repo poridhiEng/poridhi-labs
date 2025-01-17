@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARP Process Simulation</title>
+    <style>
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        
+        .network-diagram {
+            position: relative;
+            height: 600px;
+            background: #f0f4f8;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #d0d5dd;
+        }
+        
+        .device {
+            position: absolute;
+            width: 140px;
+            padding: 15px;
+            background: white;
+            border: 2px solid #94a3b8;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .computer {
+            background: #fff;
+        }
+        
+        .switch {
+            background: #e2e8f0;
+            width: 160px;
+            height: 50px;
+            line-height: 50px;
+            font-weight: bold;
+        }
+        
+        .connection-line {
+            position: absolute;
+            background: #94a3b8;
+            height: 2px;
+            transform-origin: 0 0;
+        }
+        
+        .packet {
+            position: absolute;
+            width: 40px;
+            height: 20px;
+            background: #4CAF50;  /* Green color for ARP */
+            color: white;
+            display: none;
+            text-align: center;
+            line-height: 20px;
+            border-radius: 4px;  /* Slightly rounded corners */
+            font-weight: bold;
+        }
+        
+        
+        .port-label {
+            position: absolute;
+            font-size: 12px;
+            background: #f8fafc;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid #cbd5e1;
+        }
+        
+        button {
+            padding: 8px 16px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background: #2563eb;
+        }
+        
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8fafc;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+        }
+        
+        .arp-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .arp-table th, .arp-table td {
+            border: 1px solid #cbd5e1;
+            padding: 8px;
+            text-align: left;
+            background: white;
+        }
+        
+        .arp-table th {
+            background: #f1f5f9;
+        }
+        
+        .cmd-window {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 280px;
+            background: #1e293b;
+            color: #a5f3fc;
+            padding: 12px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="network-diagram" id="networkDiagram"></div>
+        
+        <div>
+            <button onclick="startSimulation()">Start ARP Process</button>
+            <button onclick="resetSimulation()">Reset</button>
+        </div>
+        
+        <div class="status" id="status">
+            Click 'Start ARP Process' to begin the simulation
+        </div>
+        
+        <table class="arp-table">
+            <thead>
+                <tr>
+                    <th>IP Address</th>
+                    <th>MAC Address</th>
+                    <th>Port</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="arpTableBody"></tbody>
+        </table>
+    </div>
+
+    <script>
+        const network = {
+            computers: [
+                { id: 'pc1', x: 550, y: 50, ip: '10.1.1.1', mac: '00:A1', label: 'PC1', port: 'Fa0/1' },
+                { id: 'pc2', x: 150, y: 400, ip: '10.1.1.2', mac: '00:A2', label: 'PC2', port: 'Fa0/2' },
+                { id: 'pc3', x: 550, y: 400, ip: '10.1.1.3', mac: '00:A3', label: 'PC3', port: 'Fa0/3' },
+                { id: 'pc4', x: 950, y: 400, ip: '10.1.1.4', mac: '00:A4', label: 'PC4', port: 'Fa0/4' }
+            ],
+            switch: { id: 'switch1', x: 550, y: 225, label: 'Switch' }
+        };
+
+        function createDevice(device, isSwitch = false) {
+            const div = document.createElement('div');
+            div.className = `device ${isSwitch ? 'switch' : 'computer'}`;
+            div.id = device.id;
+            div.style.left = `${device.x}px`;
+            div.style.top = `${device.y}px`;
+            
+            if (isSwitch) {
+                div.textContent = device.label;
+            } else {
+                div.innerHTML = ` 
+                    <strong>${device.label}</strong><br>
+                    IP: ${device.ip}<br>
+                    MAC: ${device.mac}<br>
+                    Port: ${device.port}
+                `;
+            }
+            
+            return div;
+        }
+
+        function createConnection(start, end) {
+            const dx = end.x - start.x;
+            const dy = end.y - start.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const angle = Math.atan2(dy, dx);
+            
+            const line = document.createElement('div');
+            line.className = 'connection-line';
+            line.style.width = `${distance}px`;
+            line.style.left = `${start.x + 70}px`;
+            line.style.top = `${start.y + 25}px`;
+            line.style.transform = `rotate(${angle}rad)`;
+            
+            return line;
+        }
+
+        function createPortLabel(x, y, label) {
+            const div = document.createElement('div');
+            div.className = 'port-label';
+            div.textContent = label;
+            div.style.left = `${x}px`;
+            div.style.top = `${y}px`;
+            return div;
+        }
+
+        function initializeNetwork() {
+            const diagram = document.getElementById('networkDiagram');
+            
+            // Add command window
+            const cmdWindow = document.createElement('div');
+            cmdWindow.className = 'cmd-window';
+            cmdWindow.innerHTML = 'C:\\> ping 10.1.1.3\nPinging 10.1.1.3 with 32 bytes of data...';
+            diagram.appendChild(cmdWindow);
+            
+            // Add switch
+            diagram.appendChild(createDevice(network.switch, true));
+            
+            // Add computers and connections
+            network.computers.forEach(pc => {
+                diagram.appendChild(createDevice(pc));
+                diagram.appendChild(createConnection(pc, network.switch));
+                
+                // Add port labels
+                const portX = (pc.x + network.switch.x) / 2;
+                const portY = (pc.y + network.switch.y) / 2;
+                diagram.appendChild(createPortLabel(portX, portY, pc.port));
+            });
+            
+            updateArpTable();
+        }
+
+        function updateArpTable() {
+            const tbody = document.getElementById('arpTableBody');
+            tbody.innerHTML = '';
+            
+            network.computers.forEach(pc => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${pc.ip}</td>
+                    <td>${pc.mac}</td>
+                    <td>${pc.port}</td>
+                    <td id="status-${pc.id}">-</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function animatePacket(start, end, color, duration) {
+            const packet = document.createElement('div');
+            packet.className = 'packet';
+            packet.style.background = color;
+            packet.style.left = `${start.x + 70}px`;
+            packet.style.top = `${start.y + 25}px`;
+            packet.style.display = 'block';
+            packet.textContent = 'ARP';
+            
+            document.getElementById('networkDiagram').appendChild(packet);
+            
+            setTimeout(() => {
+                packet.style.transition = `all ${duration}ms ease-in-out`;
+                packet.style.left = `${end.x + 80}px`;
+                packet.style.top = `${end.y + 25}px`;
+                
+                setTimeout(() => packet.remove(), duration);
+            }, 50);
+        }
+
+        let currentStep = 0;
+        const steps = [
+            "PC1 needs to find MAC address for 10.1.1.3",
+            "Sending ARP request broadcast",
+            "Switch forwards ARP request to all ports",
+            "PC3 recognizes its IP and responds",
+            "PC1 receives ARP reply and updates table"
+        ];
+
+        function startSimulation() {
+            currentStep = 0;
+            simulateNextStep();
+        }
+
+        function simulateNextStep() {
+            if (currentStep >= steps.length) {
+                document.getElementById('status').textContent = 'Simulation complete';
+                return;
+            }
+
+            document.getElementById('status').textContent = steps[currentStep];
+
+            switch(currentStep) {
+                case 1:
+                    // PC1 to switch
+                    animatePacket(network.computers[0], network.switch, '#ff4444', 1000);
+                    break;
+                case 2:
+                    // Switch to all PCs
+                    network.computers.slice(1).forEach((pc, i) => {
+                        setTimeout(() => {
+                            animatePacket(network.switch, pc, '#ff4444', 1000);
+                        }, i * 200);
+                    });
+                    break;
+                case 3:
+                    // PC3 to switch
+                    animatePacket(network.computers[2], network.switch, '#4CAF50', 1000);
+                    break;
+                case 4:
+                    // Switch to PC1
+                    animatePacket(network.switch, network.computers[0], '#4CAF50', 1000);
+                    document.getElementById('status-pc3').textContent = 'Resolved';
+                    break;
+            }
+
+            currentStep++;
+            setTimeout(simulateNextStep, 1500);
+        }
+
+        function resetSimulation() {
+            currentStep = 0;
+            document.getElementById('status').textContent = 'Reset complete. Click Start to begin.';
+            updateArpTable();
+        }
+
+        window.onload = initializeNetwork;
+    </script>
+</body>
+</html>
