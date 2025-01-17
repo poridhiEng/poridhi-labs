@@ -2,9 +2,7 @@
 
 In this section, we will create **OpenFlow** rules using **Layer 3 (IP)** information and implement **QoS (Quality of Service)** with Differentiated Services Code Point (**DSCP**). Let's break it down step by step.
 
-
 ![alt text](image-8.png)
-
 
 ## General IP Traffic Handling
 
@@ -45,7 +43,7 @@ This rule gives traffic from `h3` higher priority, ensuring low latency and fast
 
 The **DSCP (Differentiated Services Code Point)** and **TOS (Type of Service)** field are components of the IP header used to indicate and manage the priority or quality of service (QoS) for IP packets in a network.
 
-![alt text](image-4.png)
+![alt text](image-9.png)
 
 
 ### **1. TOS (Type of Service) Field**
