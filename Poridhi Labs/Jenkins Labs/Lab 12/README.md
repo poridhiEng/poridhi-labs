@@ -1,8 +1,10 @@
 # CI/CD Pipeline using Jenkins and Monitoring Tools
 
-This lab provides a step-by-step approach to building a robust CI/CD pipeline for a application using Jenkins, Docker, and Kubernetes. We will automate the entire process, from building the application to deploying it in a **Kubernetes cluster**. The pipeline will leverage Jenkins to build, test, and push the Docker image to DockerHub. Subsequently, Kubernetes will manage the deployment of the containerized application, ensuring scalability and reliability. After that we will setup monitoring tools to monitor the application. By the end of this guide, you will have a fully functional CI/CD pipeline that can be triggered with every code commit, providing a seamless path from development to production also with monitoring tools.
+This lab provides a step-by-step approach to building a robust CI/CD pipeline for a application using Jenkins, Docker, and Kubernetes. We will automate the entire process, from building the application to deploying it in a **Kubernetes cluster**. The pipeline will leverage Jenkins to build, test, and push the Docker image to DockerHub.
 
 ![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/lab-11.drawio.svg)
+
+Subsequently, **Kubernetes** will manage the deployment of the containerized application, ensuring scalability and reliability. After that we will setup monitoring tools to monitor the application. By the end of this guide, you will have a fully functional CI/CD pipeline that can be triggered with every code commit, providing a seamless path from development to production also with **monitoring** tools.
 
 ## Setting up AWS Infrastructure
 
@@ -1230,6 +1232,8 @@ Retrieves debug information from the Kubernetes cluster:
 
 ### 4. Set Up Webhooks in GitHub
 
+We will setup a webhook in GitHub to trigger the Jenkins pipeline when there are changes in the GitHub repository.
+
 
 ![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2011/images/webhook.drawio.svg)
 
@@ -1294,13 +1298,14 @@ Deployed application:
 ### Monitoring the Kubernetes Cluster
 
 #### Step 1: Install Helm
+
 Helm is a package manager for Kubernetes that simplifies application deployment. To install Helm, use the following command:
 
 ```bash
 curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 ```
 
-![alt text](image.png)
+![alt text](./images/image.png)
 
 
 This script downloads and installs Helm 3, the latest version, onto your system. After installation, you can verify the Helm installation by running:
@@ -1310,6 +1315,7 @@ helm version
 ```
 
 #### Step 2: Configure kubectl for K3s
+
 To manage your K3s cluster using `kubectl`, you need to configure the `kubeconfig` file:
 
 1. Copy the K3s `kubeconfig` file to the user's home directory:
@@ -1342,7 +1348,7 @@ kubectl get nodes
 
 Grafana is a visualization and monitoring tool. To deploy it in your Kubernetes cluster:
 
-![alt text](image-1.png)
+![alt text](./images/image-1.png)
 
 1. Use Helm to install or upgrade Grafana:
 
@@ -1396,12 +1402,12 @@ Grafana supports importing pre-configured dashboards to visualize cluster metric
 2. Use the dashboard ID `15282` (or any desired dashboard ID) to import a pre-built Kubernetes monitoring dashboard.
 3. Click **Load**, configure the Prometheus data source, and then click **Import**.
 
-![alt text](image-6.png)
-![alt text](image-7.png)
+    ![alt text](./images/image-6.png)
+    ![alt text](./images/image-7.png)
 
 Your dashboard is now ready, displaying key metrics for monitoring your Kubernetes cluster.
 
-![alt text](image-9.png)
+![alt text](./images/image-9.png)
 
 ## Conclusion
 

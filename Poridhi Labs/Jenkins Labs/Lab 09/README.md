@@ -6,8 +6,6 @@ Hosting Jenkins on a Kubernetes cluster provides an efficient way to manage depl
 
 This guide provides a step-by-step walkthrough to set up Jenkins on a Kubernetes cluster. 
 
----
-
 ### Overview of Jenkins Setup on Kubernetes
 
 To deploy Jenkins on Kubernetes, we will cover the following steps:

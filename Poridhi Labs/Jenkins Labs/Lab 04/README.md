@@ -24,50 +24,54 @@ Docker containers can serve as build agents for Jenkins, allowing for isolated a
 
 To use Docker containers as build agents, you need to set up a Docker host that Jenkins can connect to. Follow these steps:
 
-1. **Spin Up a VM and Install Docker**
-   - Spin up a virtual machine (VM) or use an existing server. Here we using a aws ec2 instance.
-   - Install Docker based on your operating system. Refer to the [official Docker documentation](https://docs.docker.com/get-docker/) for installation instructions.
-   - Ensure the Docker service is running.
+**1. Spin Up a VM and Install Docker**
+- Spin up a virtual machine (VM) or use an existing server. Here we using a aws ec2 instance.
+- Install Docker based on your operating system. Refer to the [official Docker documentation](https://docs.docker.com/get-docker/) for installation instructions.
+- Ensure the Docker service is running.
 
-   ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-1.png)
+![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-1.png)
 
-2. **Enable Docker Remote API**
-   - Log in to the server and open the Docker service file located at `/lib/systemd/system/docker.service`.
+**2. Enable Docker Remote API**
+- Log in to the server and open the Docker service file located at `/lib/systemd/system/docker.service`.
 
-   ```sh
-   vim /lib/systemd/system/docker.service
-   ```
+    ```sh
+    vim /lib/systemd/system/docker.service
+    ```
 
-   - Search for the `ExecStart` line and replace it with:
-     ```bash
-     ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:4243 -H unix:///var/run/docker.sock
-     ```
+- Search for the `ExecStart` line and replace it with:
+    ```bash
+    ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:4243 -H unix:///var/run/docker.sock
+    ```
     ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-2.png)
 
-   - Save and close the file.
+- Save and close the file.
 
-   - Reload and restart the Docker service:
-     ```bash
-     sudo systemctl daemon-reload
-     sudo service docker restart
-     ```
+- Reload and restart the Docker service:
 
-3. **Validate the Remote API**
-   - Use the following `curl` commands to validate that the Docker Remote API is accessible. Replace `54.221.134.7` with your Docker host IP address:
-     ```bash
-     curl http://localhost:4243/version
-     curl http://54.221.134.7:4243/version
-     ```
-   - Ensure the Docker Remote API is working by referring to the [Docker API documentation](https://docs.docker.com/engine/api/v1.41/).
+    ```bash
+    sudo systemctl daemon-reload
+    sudo service docker restart
+    ```
 
-   ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-3.png)
+**3. Validate the Remote API**
+- Use the following `curl` commands to validate that the Docker Remote API is accessible. Replace `54.221.134.7` with your Docker host IP address:
+
+    ```bash
+    curl http://localhost:4243/version
+    curl http://54.221.134.7:4243/version
+    ```
+- Ensure the Docker Remote API is working by referring to the [Docker API documentation](https://docs.docker.com/engine/api/v1.41/).
+
+    ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-3.png)
 
 ## Step 02: Create a Jenkins Agent Docker Image
 
 To configure a Docker container as a Jenkins build agent, create a Docker image with the following requirements:
 
-1. **Dockerfile Example**
-   - Create a Dockerfile that sets up the Jenkins agent environment. Below is a sample Dockerfile for a Maven-based Jenkins agent:
+**1. Dockerfile Example**
+
+- Create a Dockerfile that sets up the Jenkins agent environment. Below is a sample Dockerfile for a `Maven-based` Jenkins agent:
+
     ```Dockerfile
     # Use an official Ubuntu base image
     FROM ubuntu:18.04
@@ -106,30 +110,32 @@ To configure a Docker container as a Jenkins build agent, create a Docker image 
     # Start SSH service
     CMD ["/usr/sbin/sshd", "-D"]
     ```
-   - Now build the image and push it to dockerhub.
+- Now build the image and push it to dockerhub.
 
-2. You can also use this image, without building your own image.
+**2. You can also use this image, without building your own image.**
 
-    ```sh
-    konami98/jenkins-agent:latest
-    ```
+```sh
+konami98/jenkins-agent:latest
+```
 
 ## Step 03: Install Docker Plugin
+
+To use docker as a build agent, we need to install the docker plugin in jenkins. Follow these steps:
 
 - Navigate to **Jenkins Dashboard** → **Manage Jenkins** → **Manage Plugins**.
 - Search for the **Docker** plugin under the **Available** tab, install it, and restart Jenkins.
 
-![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-4.png)
+    ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-4.png)
 
 ## Step 04: Create and configure the docker cloude agent
 
 1. Go to **Jenkins Dashboard** → **Manage Jenkins** → **Configure System** and Scroll to the **Cloud** section.
 
-![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-5.png)
+    ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-5.png)
 
 2. Create new cloud and give a name for example `Docker-slave`
 
-![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-6.png)
+    ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-6.png)
 
 3. **Configure Docker Cloud Details**:
 
@@ -158,7 +164,7 @@ To configure a Docker container as a Jenkins build agent, create a Docker image 
 
 5. After configuring the agent, create or save the confugaration details.
 
-![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-10.png)
+    ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-10.png)
 
 
 ## Test Jenkins Build Inside a Docker Container
@@ -173,15 +179,17 @@ To configure a Docker container as a Jenkins build agent, create a Docker image 
    ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-12.png)
 
 2. **Add Build Steps**
-   - Add a build step to execute a shell command. For example,
 
-     ```bash
-     echo "Hello from docker agent"
-     ```
+    Add a build step to execute a shell command. For example,
 
-   ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-13.png)
+    ```sh
+    echo "Hello from docker agent"
+    ```
+
+    ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-13.png)
 
 3. **Run and Verify**
+
    - Save and run the job. Jenkins will deploy a Docker container as the build agent, execute the build steps, and then clean up the container.
    - Check the build logs in the console output to ensure that the build was executed correctly inside the Docker container.
 
@@ -194,6 +202,4 @@ To configure a Docker container as a Jenkins build agent, create a Docker image 
 ## Conclusion
 
 By configuring Docker containers as Jenkins build agents, you can leverage isolated and scalable build environments. This setup allows Jenkins to dynamically allocate resources and execute builds efficiently. By following the steps outlined in this guide to configure Docker containers as build agents, you can optimize your Jenkins CI/CD pipeline.
-
----
 

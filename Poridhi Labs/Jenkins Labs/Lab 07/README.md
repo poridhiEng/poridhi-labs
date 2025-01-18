@@ -25,6 +25,132 @@ Here is the graphical representation of what we will do in this lab.
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image.png)
 
 
+### Install and Run Jenkins Server
+
+To install and run Jenkins server, follow the steps below:
+
+**1. Create a file named `jenkins-install.sh` and fill it with the following code:**
+
+```sh
+#!/bin/bash
+
+# Function to print colored output
+print_message() {
+    GREEN='\033[0;32m'
+    NC='\033[0m'
+    echo -e "${GREEN}$1${NC}"
+}
+
+# Function to check if command was successful
+check_status() {
+    if [ $? -eq 0 ]; then
+        print_message "✓ Success: $1"
+    else
+        echo "✗ Error: $1"
+        exit 1
+    fi
+}
+
+# Check if script is run as root
+if [ "$EUID" -ne 0 ]; then 
+    echo "Please run as root (use sudo)"
+    exit 1
+fi
+
+# Set Jenkins port (default 8081 or use command line argument)
+JENKINS_PORT=${1:-8081}
+
+print_message "Starting Jenkins installation..."
+print_message "Jenkins will be configured to run on port: $JENKINS_PORT"
+
+# Update system packages
+print_message "Updating system packages..."
+apt update
+apt upgrade -y
+check_status "System update completed"
+
+# Install Java
+print_message "Installing Java..."
+apt install -y openjdk-17-jre-headless
+check_status "Java installation completed"
+
+# Verify Java installation
+java -version
+check_status "Java verification"
+
+# Add Jenkins repository
+print_message "Adding Jenkins repository..."
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | tee \
+    /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+    https://pkg.jenkins.io/debian-stable binary/ | tee \
+    /etc/apt/sources.list.d/jenkins.list > /dev/null
+check_status "Jenkins repository added"
+
+# Install Jenkins
+print_message "Installing Jenkins..."
+apt update
+apt install -y jenkins
+check_status "Jenkins installation completed"
+
+# Configure Jenkins port
+print_message "Configuring Jenkins port..."
+sed -i "s/HTTP_PORT=.*/HTTP_PORT=$JENKINS_PORT/" /etc/default/jenkins
+sed -i "s/--httpPort=[0-9]*/--httpPort=$JENKINS_PORT/" /etc/default/jenkins
+check_status "Port configuration completed"
+
+# Update systemd service file
+print_message "Updating systemd service..."
+sed -i "s|^ExecStart=.*|ExecStart=/usr/bin/jenkins --httpPort=$JENKINS_PORT|" /lib/systemd/system/jenkins.service
+check_status "Systemd service updated"
+
+# Reload systemd and restart Jenkins
+print_message "Restarting Jenkins..."
+systemctl daemon-reload
+systemctl restart jenkins
+check_status "Jenkins restart completed"
+
+# Wait for Jenkins to start
+print_message "Waiting for Jenkins to start..."
+sleep 30
+
+# Get initial admin password
+if [ -f /var/lib/jenkins/secrets/initialAdminPassword ]; then
+    ADMIN_PASSWORD=$(cat /var/lib/jenkins/secrets/initialAdminPassword)
+    print_message "Jenkins initial admin password: $ADMIN_PASSWORD"
+else
+    echo "Warning: Could not find initial admin password"
+fi
+
+print_message "\nInstallation completed!"
+print_message "Please allow a few minutes for Jenkins to fully start"
+print_message "Access Jenkins at: http://your-server-ip:$JENKINS_PORT"
+```
+
+Run the script by executing the following command:
+
+```sh
+sudo chmod +x jenkins-install.sh
+./jenkins-install.sh
+```
+
+### Access Jenkins Dashboard
+
+This lab is intended to be run on a `Poridhi's VM`. To access the Jenkins dashboard, We need to create a Load Balancer. First Go to the `Load Balancer` section and create a Load Balancer using the VM's private IP and port `8081`.
+
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2002/images/image-20.png)
+
+Then access the Jenkins dashboard using the Load Balancer's URL. Use the credentials `admin` and the password you received from the Jenkins installation script.
+
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2002/images/image-21.png)
+
+
+#### Jenkins login page
+
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2002/images/image-22.png)
+
+
 ## Step-by-Step Guide
 
 ### Step 1: Install Necessary Plugins and Tools
@@ -51,11 +177,11 @@ Here is the graphical representation of what we will do in this lab.
 2. Enter a name for your job, e.g., "**Simple Java Maven App**", and select **Freestyle project**.
 3. Click **OK** to create the job.
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-1.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-1.png)
 
 4. Mark `Restrict where this project can be run` and add the Label of your agent node.
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-2.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-2.png)
 
 5. In the **Source Code Management** section, select **Git** and enter the URL of the GitHub repository:
 
@@ -63,11 +189,11 @@ Here is the graphical representation of what we will do in this lab.
    https://github.com/Konami33/simple-java-maven-app
    ```
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-3.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-3.png)
 
 5. Save the configuration and build the job. This will clone the repository from GitHub.
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-4.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-4.png)
 
 ### Step 3: Configure the Build Step
 
@@ -119,12 +245,15 @@ Here is the graphical representation of what we will do in this lab.
 Build the job and check the output console for any error.
 
 **build step:**
+
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-6.png)
 
 **test step:**
+
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-7.png)
 
 **deploy step:**
+
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-8.png)
 
 ### Step 7: Visualize the Build Results

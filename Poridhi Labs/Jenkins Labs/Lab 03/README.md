@@ -261,7 +261,7 @@ aws ec2 create-key-pair --key-name jenkins_cluster --output text --query 'KeyMat
 chmod 400 jenkins_cluster.id_rsa
 ```
 
-![alt text](image-1.png)
+![alt text](./images-1/image-1.png)
 
 **6. Create a file named `jenkins_install.sh` and add the following content:**
 
@@ -370,7 +370,7 @@ Run the following command to create the infrastructure:
 pulumi up --yes
 ```
 
-![alt text](image-2.png)
+![alt text](./images-1/image-2.png)
 
 
 ## SSH into the Jenkins Master
@@ -388,7 +388,7 @@ You can optionally set the hostname of the Jenkins Master to `jenkins-master` by
 sudo hostnamectl set-hostname jenkins-master
 ```
 
-![alt text](image-3.png)
+![alt text](./images-1/image-3.png)
 
 **2. Access the Jenkins UI**
 
@@ -405,7 +405,7 @@ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 ```
 This will output the initial admin password. Use this password to log in to the Jenkins UI.
 
-![alt text](image-4.png)
+![alt text](./images-1/image-4.png)
 
 ### Create a New Node in Jenkins
 
@@ -438,7 +438,7 @@ Access the agent server via SSH. Run the following command:
 ssh agent-1
 ```
 
-![alt text](image-5.png)
+![alt text](./images-1/image-5.png)
 
 **2. Create SSH Key Pair**:
 
@@ -448,7 +448,7 @@ ssh agent-1
    ```
 - Press **Enter** to accept default file locations and settings when prompted.
 
-   ![alt text](image-6.png)
+   ![alt text](./images-1/image-6.png)
 
 **3. Add Public Key to `authorized_keys`**:
 
@@ -482,7 +482,7 @@ Go to **Jenkins Dashboard** > **Manage Jenkins** > **Manage Credentials**.
      - **Username**: Enter the username of the agent machine.
      - **Private Key**: Select **Enter directly** and paste the contents of the private key (`id_rsa`) you copied earlier.
 
-     ![alt text](image-7.png)
+     ![alt text](./images-1/image-7.png)
 
    - Click **OK** to save the credentials.
 
@@ -496,7 +496,7 @@ Go to **Jenkins Dashboard** > **Manage Jenkins** > **Manage Credentials**.
      - **Number of executors**: Specify the number of executors. Enter the number of    executors you want for this node. For example, setting this to 2 means the node can handle two concurrent builds.
      - **Remote Root Directory**: Specify the directory on the agent machine where Jenkins will run commands (e.g., `/opt/jenkins`).
 
-     ![alt text](image-8.png)
+     ![alt text](./images-1/image-8.png)
 
      - **Labels**: Give it a label to use it in the job. (e.g, `agent1`).
      - **Launch Method**: Choose **Launch agents via SSH**.
@@ -554,3 +554,7 @@ Go to **Jenkins Dashboard** > **Manage Jenkins** > **Manage Credentials**.
     ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2003/images/image-15.png)
 
 By following these steps, you should have a fully configured Jenkins agent node using SSH keys, ready for executing Jenkins jobs remotely.
+
+## Conclusion
+
+In this lab, we have learned how to create a Jenkins agent node using SSH keys. We have also learned how to configure the Jenkins agent node and how to test the Jenkins agent node.
