@@ -25,11 +25,11 @@ Both methods will be demonstrated on two separate EC2 instances, ensuring a clea
 
   This command sets up your AWS CLI with the necessary credentials, region, and output format.
 
-  ![alt text](./images/aws-cli-configure.png)
+  ![alt text](./images/image.png)
 
 - You will find the `AWS Access key` and `AWS Seceret Access key` on Lab description page,where you generated the credentials. 
 
-  ![alt text](./images/aws-access-key.png)
+  ![alt text](./images/image-1.png)
 
 ### Setup a Pulumi Project
 
@@ -38,7 +38,7 @@ Now, let's create a new Pulumi project and write the code to provision our EC2 i
 1. **Create a new directory and initialize a Pulumi project:**
 
    ```bash
-   mkdir redis-cluster-pulumi && cd redis-cluster-pulumi
+   mkdir jenkins-pulumi && cd jenkins-pulumi
    pulumi new aws-javascript
    ```
 
@@ -175,7 +175,7 @@ Now, let's create a new Pulumi project and write the code to provision our EC2 i
 
 This will create 2 EC2 instances, one for method 1 and one for method 2.
 
-![alt text](./images/image-6.png)
+![alt text](./images/image-3.png)
 
 ## Install Jenkins on both the instances
 
@@ -290,7 +290,7 @@ This method involves creating an IP table forwarding rule that redirects traffic
     ip a
     ```
 
-    ![alt text](https://raw.githubusercontent.com/AhnafNabil/Jenkins-Labs/main/Lab%2005/images/method-03.png)
+    ![alt text](./images/image-4.png)
 
     Now, add the correct rule using the correct interface name (`enX0`):
 
@@ -300,21 +300,15 @@ This method involves creating an IP table forwarding rule that redirects traffic
 
 2. **Save the IP Table Rules:**
 
-    - For RedHat-based systems:
-
-      ```bash
-      sudo iptables-save > /etc/sysconfig/iptables
-      ```
-
     - For Ubuntu-based systems:
 
       ```bash
       sudo sh -c "iptables-save > /etc/iptables.rules"
       ```
 
-Now, when you access Jenkins on port 80, the IP table rule will automatically forward the requests to port 8080.
+Now, when you access Jenkins on port 80, the IP table rule will automatically forward the requests to port 8080. Find the public ip of the instance and access the jenkins on `http://<public-ip>:80`.
 
-![alt text](https://raw.githubusercontent.com/AhnafNabil/Jenkins-Labs/main/Lab%2005/images/method-01.png)
+![alt text](./images/image-5.png)
 
 ## Method 2: Running Jenkins Behind an Nginx Reverse Proxy
 
@@ -385,7 +379,7 @@ Using Nginx as a reverse proxy is a more robust solution, especially for product
       }
       ```
 
-      Replace `your_domain_or_ip` with your server's domain name or IP address.
+      Replace `your_domain_or_ip` with your server's domain name or public IP address of the instance.
 
     - **Enable the configuration** by creating a symbolic link to the `sites-enabled` directory:
 
@@ -406,12 +400,12 @@ Using Nginx as a reverse proxy is a more robust solution, especially for product
     sudo systemctl status nginx
     ```
 
-    ![alt text](https://raw.githubusercontent.com/AhnafNabil/Jenkins-Labs/main/Lab%2005/images/method-05.png)
+    ![alt text](./images/image-6.png)
 
-Now, Nginx will forward all requests on port 80 to Jenkins on port 8080.
+Now, Nginx will forward all requests on port 80 to Jenkins on port 8080. Now, find the public ip of the instance and access the jenkins on `http://<public-ip>:80`.
 
-![alt text](https://raw.githubusercontent.com/AhnafNabil/Jenkins-Labs/main/Lab%2005/images/method-04.png)
+![alt text](./images/image-7.png)
 
 ## Conclusion
 
-This lab explored two effective methods to run Jenkins on port 80: **IP Table Forwarding** and **Nginx Reverse Proxy**. The IP table method is lightweight and quick to implement, making it ideal for test or non-critical environments. On the other hand, using Nginx provides a more robust and scalable solution, suitable for production setups where additional control and features like load balancing and SSL termination are required. Choose the method that suits your needs—simplicity for quick setups or scalability for production. Happy learning! 🚀
+This lab explored two effective methods to run Jenkins on port 80: **IP Table Forwarding** and **Nginx Reverse Proxy**. The IP table method is lightweight and quick to implement, making it ideal for test or non-critical environments. On the other hand, using Nginx provides a more robust and scalable solution, suitable for production setups where additional control and features like load balancing and SSL termination are required. Choose the method that suits your needs—simplicity for quick setups or scalability for production. Keep learning! 🚀
