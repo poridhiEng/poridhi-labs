@@ -1,52 +1,56 @@
 # Simulating VLAN Networks with Mininet
 
-## Introduction
-The `vlanhost.py` script defines a custom Mininet host class called `VLANHost` which uses a VLAN tag for the default interface. This allows for the creation of virtual networks where hosts are segmented into different VLANs, providing network isolation and security. The script also includes example topologies demonstrating the use of `VLANHost`.
+Mininet is an incredibly versatile tool that allows for the simulation of complex networks within a virtualized environment. By leveraging Mininet, network engineers, researchers, and students can experiment with Virtual Local Area Network (VLAN) configurations to better understand and manage network segmentation and isolation. VLANs are a crucial aspect of modern networking, enabling enhanced security, traffic management, and logical separation within larger networks. This document provides a comprehensive guide to setting up a simulated VLAN network using a custom Mininet host class called `VLANHost`.
+
+The key element of this simulation is the `vlanhost.py` script, which enables the creation of hosts configured with specific VLAN tags. These VLAN tags act as identifiers that segment the network, ensuring that only devices within the same VLAN can communicate, while others remain isolated. This provides an ideal platform for experimenting with VLAN-based network architectures.
 
 ## Task Description
-The task is to simulate a network with two VLANs, each having 2 hosts. Hosts within the same VLAN should be able to communicate with each other, while hosts in different VLANs should not be able to communicate.
+The primary objectives of this task are as follows:
+1. Simulate a network consisting of two VLANs.
+2. Configure each VLAN with two hosts, ensuring proper isolation and segmentation.
+3. Verify that communication is successful between hosts within the same VLAN.
+4. Confirm that communication between hosts in different VLANs is blocked.
+5. Offer a detailed step-by-step guide, complete with an architecture diagram and sample code, to facilitate the simulation process.
 
-## Solution Code with Explanation
+## Network Architecture
 
-### VLANHost Class
-The `VLANHost` class is a subclass of Mininet's `Host` class. It configures a host to use a VLAN tag for its default interface.
+![](./1.svg)
+
+## File Creation
+
+### 1. `vlanhost.py`
+This script is essential for defining the `VLANHost` class, which facilitates the creation of hosts with VLAN tags. The class extends Mininet's `Host` class and overrides its configuration method to include VLAN-specific settings.
 
 ```python
+#!/usr/bin/env python
+from sys import exit
+from functools import partial
 from mininet.node import Host
+from mininet.topo import Topo
+from mininet.net import Mininet
+from mininet.cli import CLI
+from mininet.log import setLogLevel, error
+from mininet.util import quietRun
 
 class VLANHost(Host):
-    "Host connected to VLAN interface"
+    """Host connected to VLAN interface"""
 
     def config(self, vlan=100, **params):
-        """Configure VLANHost according to (optional) parameters:
-           vlan: VLAN ID for default interface"""
-
         r = super(VLANHost, self).config(**params)
-
         intf = self.defaultIntf()
         self.cmd('ifconfig %s inet 0' % intf)  # remove IP from default interface
         self.cmd('vconfig add %s %d' % (intf, vlan))  # create VLAN interface
         self.cmd('ifconfig %s.%d inet %s' % (intf, vlan, params['ip']))  # assign IP to VLAN interface
-        
+
         newName = '%s.%d' % (intf, vlan)
         intf.name = newName
         self.nameToIntf[newName] = intf
-
         return r
 
 hosts = {'vlan': VLANHost}
-```
-
-### VLANStarTopo Class
-The `VLANStarTopo` class defines a topology with a single switch and multiple VLANs. Each VLAN has a specified number of hosts.
-
-```python
-from mininet.topo import Topo
 
 class VLANStarTopo(Topo):
-    """Example topology that uses host in multiple VLANs
-       The topology has a single switch. There are k VLANs with
-       n hosts in each, all connected to the single switch."""
+    """Topology with VLAN hosts connected to a single switch"""
 
     def build(self, k=2, n=2, vlanBase=100):
         s1 = self.addSwitch('s1')
@@ -56,33 +60,26 @@ class VLANStarTopo(Topo):
                 name = 'h%d-%d' % (j+1, vlan)
                 h = self.addHost(name, cls=VLANHost, vlan=vlan)
                 self.addLink(h, s1)
-        for j in range(n):
-            h = self.addHost('h%d' % (j+1))
-            self.addLink(h, s1)
 ```
 
-### Example Script
-The following script sets up the network using the `VLANStarTopo` topology and starts the Mininet CLI for manual testing.
+### 2. `simulate_vlan_network.py`
+This script sets up the VLAN network and provides an interactive Mininet CLI for testing and verification.
 
 ```python
 #!/usr/bin/env python
-
+from vlanhost import VLANStarTopo
 from mininet.net import Mininet
 from mininet.cli import CLI
 from mininet.log import setLogLevel
-from vlanhost import VLANStarTopo
 
 def simulate_vlan_network():
-    """Simulate a network with 2 VLANs, each having 2 hosts"""
-    
+    """Simulate a VLAN network with Mininet"""
     topo = VLANStarTopo(k=2, n=2, vlanBase=100)  # 2 VLANs, each with 2 hosts
     net = Mininet(topo=topo, waitConnected=True)
-    
+
     net.start()
-    
     print("Network setup complete. Entering CLI...")
     CLI(net)
-    
     net.stop()
 
 if __name__ == '__main__':
@@ -90,178 +87,53 @@ if __name__ == '__main__':
     simulate_vlan_network()
 ```
 
-## Usage
-1. Install the necessary dependencies:
-   ```sh
-   sudo apt-get install vlan
-   ```
+## Run Steps
 
-2. Save the script as `simulate_vlan_network.py`.
+### 1. Install Dependencies
+Before running the simulation, ensure the necessary VLAN package is installed:
+```bash
+sudo apt-get install vlan
+```
 
-3. Run the script using `sudo`:
-   ```sh
-   sudo python simulate_vlan_network.py
-   ```
+### 2. Save Files
+- Save the first script as `vlanhost.py`.
+- Save the second script as `simulate_vlan_network.py`.
+
+### 3. Execute the Simulation
+Run the simulation script using the command:
+```bash
+sudo python simulate_vlan_network.py
+```
 
 ## Verification
-After running the script, you will be presented with the Mininet CLI. Use the following commands to verify connectivity:
+After starting the simulation, the Mininet CLI will allow you to test and verify the setup. Use the following commands:
 
-1. Hosts within the same VLAN should be able to communicate:
-   ```sh
-   mininet> h1-100 ping -c 1 h2-100  # Should succeed
-   mininet> h1-101 ping -c 1 h2-101  # Should succeed
-   ```
+### 1. Test Connectivity Within the Same VLAN
+- For VLAN 100:
+  ```bash
+  mininet> h1-100 ping -c 1 h2-100
+  ```
+  This command should show a successful ping response.
+- For VLAN 101:
+  ```bash
+  mininet> h1-101 ping -c 1 h2-101
+  ```
+  This should also succeed.
 
-2. Hosts in different VLANs should not be able to communicate:
-   ```sh
-   mininet> h1-100 ping -c 1 h1-101  # Should fail
-   mininet> h2-100 ping -c 1 h2-101  # Should fail
-   ```
+### 2. Test Connectivity Across Different VLANs
+- Test between VLAN 100 and VLAN 101:
+  ```bash
+  mininet> h1-100 ping -c 1 h1-101
+  ```
+  This command should fail, demonstrating VLAN isolation.
 
-3. Hosts not in any VLAN should not be able to communicate with VLAN hosts:
-   ```sh
-   mininet> h1 ping -c 1 h1-100  # Should fail
-   mininet> h2 ping -c 1 h2-100  # Should fail
-   ```
+### 3. Test Connectivity for Hosts Without VLANs
+- If there are hosts without VLAN tags:
+  ```bash
+  mininet> h1 ping -c 1 h1-100
+  ```
+  This should fail, as VLAN tags enforce strict isolation.
 
-This documentation provides a comprehensive guide to using the `vlanhost.py` script to simulate a VLAN network with Mininet.
+## Conclusion
+This simulation serves as an excellent example of how VLANs can be implemented and tested in a controlled environment. By assigning VLAN tags and configuring hosts accordingly, users can explore the principles of network segmentation and isolation. Mininet provides an efficient way to experiment with VLAN configurations, making it a valuable tool for both learning and practical applications. Through this exercise, you gain hands-on experience in creating secure and segmented virtual networks, mirroring real-world VLAN setups.
 
-
-
-
-
-
-Full code:
-
-```python
-#!/usr/bin/env python
-"""
-vlanhost.py: Host subclass that uses a VLAN tag for the default interface.
-
-Dependencies:
-    This class depends on the "vlan" package
-    $ sudo apt-get install vlan
-
-Usage (example uses VLAN ID=1000):
-    From the command line:
-        sudo mn --custom vlanhost.py --host vlan,vlan=1000
-
-    From a script (see exampleUsage function below):
-        from functools import partial
-        from vlanhost import VLANHost
-
-        ....
-
-        host = partial( VLANHost, vlan=1000 )
-        net = Mininet( host=host, ... )
-
-    Directly running this script:
-        sudo python vlanhost.py 1000
-
-"""
-
-from sys import exit  # pylint: disable=redefined-builtin
-
-from mininet.node import Host
-from mininet.topo import Topo
-from mininet.util import quietRun
-from mininet.log import error
-
-
-class VLANHost( Host ):
-    "Host connected to VLAN interface"
-
-    # pylint: disable=arguments-differ
-    def config( self, vlan=100, **params ):
-        """Configure VLANHost according to (optional) parameters:
-           vlan: VLAN ID for default interface"""
-
-        r = super( VLANHost, self ).config( **params )
-
-        intf = self.defaultIntf()
-        # remove IP from default, "physical" interface
-        self.cmd( 'ifconfig %s inet 0' % intf )
-        # create VLAN interface
-        self.cmd( 'vconfig add %s %d' % ( intf, vlan ) )
-        # assign the host's IP to the VLAN interface
-        self.cmd( 'ifconfig %s.%d inet %s' % ( intf, vlan, params['ip'] ) )
-        # update the intf name and host's intf map
-        newName = '%s.%d' % ( intf, vlan )
-        # update the (Mininet) interface to refer to VLAN interface name
-        intf.name = newName
-        # add VLAN interface to host's name to intf map
-        self.nameToIntf[ newName ] = intf
-
-        return r
-
-
-hosts = { 'vlan': VLANHost }
-
-
-def exampleAllHosts( vlan ):
-    """Simple example of how VLANHost can be used in a script"""
-    # This is where the magic happens...
-    host = partial( VLANHost, vlan=vlan )
-    # vlan (type: int): VLAN ID to be used by all hosts
-
-    # Start a basic network using our VLANHost
-    topo = SingleSwitchTopo( k=2 )
-    net = Mininet( host=host, topo=topo, waitConnected=True )
-    net.start()
-    CLI( net )
-    net.stop()
-
-# pylint: disable=arguments-differ
-
-class VLANStarTopo( Topo ):
-    """Example topology that uses host in multiple VLANs
-
-       The topology has a single switch. There are k VLANs with
-       n hosts in each, all connected to the single switch. There
-       are also n hosts that are not in any VLAN, also connected to
-       the switch."""
-
-    def build( self, k=2, n=2, vlanBase=100 ):
-        s1 = self.addSwitch( 's1' )
-        for i in range( k ):
-            vlan = vlanBase + i
-            for j in range(n):
-                name = 'h%d-%d' % ( j+1, vlan )
-                h = self.addHost( name, cls=VLANHost, vlan=vlan )
-                self.addLink( h, s1 )
-        for j in range( n ):
-            h = self.addHost( 'h%d' % (j+1) )
-            self.addLink( h, s1 )
-
-
-def exampleCustomTags():
-    """Simple example that exercises VLANStarTopo"""
-
-    net = Mininet( topo=VLANStarTopo(), waitConnected=True )
-    net.start()
-    CLI( net )
-    net.stop()
-
-
-if __name__ == '__main__':
-    import sys
-    from functools import partial
-
-    from mininet.net import Mininet
-    from mininet.cli import CLI
-    from mininet.topo import SingleSwitchTopo
-    from mininet.log import setLogLevel
-
-    setLogLevel( 'info' )
-
-    if not quietRun( 'which vconfig' ):
-        error( "Cannot find command 'vconfig'\nThe package",
-               "'vlan' is required in Ubuntu or Debian,",
-               "or 'vconfig' in Fedora\n" )
-        exit()
-
-    if len( sys.argv ) >= 2:
-        exampleAllHosts( vlan=int( sys.argv[ 1 ] ) )
-    else:
-        exampleCustomTags()
-```
