@@ -1,7 +1,10 @@
 # Simulating VLAN Networks with Mininet
 
-Mininet is an incredibly versatile tool that allows for the simulation of complex networks within a virtualized environment. By leveraging Mininet, network engineers, researchers, and students can experiment with Virtual Local Area Network (VLAN) configurations to better understand and manage network segmentation and isolation. VLANs are a crucial aspect of modern networking, enabling enhanced security, traffic management, and logical separation within larger networks. This document provides a comprehensive guide to setting up a simulated VLAN network using a custom Mininet host class called `VLANHost`.
+Mininet is an incredibly versatile tool that allows for the simulation of complex networks within a virtualized environment. By leveraging Mininet, network engineers, researchers, and students can experiment with Virtual Local Area Network (VLAN) configurations to better understand and manage network segmentation and isolation. 
 
+![](./images/2.svg)
+
+VLANs are a crucial aspect of modern networking, enabling enhanced security, traffic management, and logical separation within larger networks. This document provides a comprehensive guide to setting up a simulated VLAN network using a custom Mininet host class called `VLANHost`.
 The key element of this simulation is the `vlanhost.py` script, which enables the creation of hosts configured with specific VLAN tags. These VLAN tags act as identifiers that segment the network, ensuring that only devices within the same VLAN can communicate, while others remain isolated. This provides an ideal platform for experimenting with VLAN-based network architectures.
 
 ## Task Description
@@ -14,7 +17,43 @@ The primary objectives of this task are as follows:
 
 ## Network Architecture
 
-![](./1.svg)
+![](./images/1.svg)
+
+
+
+The provided diagram illustrates the logical structure of a network simulation featuring VLANs (Virtual Local Area Networks) using a single switch, S1, and two VLANs (VLAN 100 and VLAN 101). Here’s a detailed explanation:
+
+### **Key Components**
+1. **Switch S1:** 
+   - The central point of communication, enabling connectivity between all the hosts in the network. It supports VLAN tagging to segregate traffic.
+
+2. **VLAN 100 and VLAN 101:** 
+   - VLAN 100 consists of two hosts: `h1_100` and `h2_100`.
+   - VLAN 101 also has two hosts: `h1_101` and `h2_101`.
+   - Each VLAN operates as a distinct broadcast domain, ensuring that traffic within one VLAN remains isolated from the other.
+
+3. **Hosts:** 
+   - `h1_100` and `h2_100` are configured to operate on VLAN 100.
+   - `h1_101` and `h2_101` are configured for VLAN 101.
+
+### **Connections**
+- **Switch to Hosts:** 
+  - The switch (S1) has interfaces connected to all the hosts.
+  - Each interface is associated with a VLAN ID, ensuring traffic from a host is tagged with the corresponding VLAN ID when leaving the switch.
+  - For instance, packets from `h1_100` and `h2_100` are tagged with VLAN 100, while packets from `h1_101` and `h2_101` are tagged with VLAN 101.
+
+### **Behavior**
+1. **Intra-VLAN Communication:** 
+   - Hosts within the same VLAN (e.g., `h1_100` and `h2_100`) can communicate directly, as their packets carry the same VLAN tag. 
+   - The switch forwards these packets without interference to other VLANs.
+
+2. **Inter-VLAN Isolation:**
+   - Communication between hosts in different VLANs (e.g., `h1_100` and `h1_101`) is not allowed by default, ensuring logical segmentation. This is a critical feature of VLANs, enhancing network security and reducing broadcast domain sizes.
+
+
+
+
+
 
 ## File Creation
 
@@ -57,7 +96,7 @@ class VLANStarTopo(Topo):
         for i in range(k):
             vlan = vlanBase + i
             for j in range(n):
-                name = 'h%d-%d' % (j+1, vlan)
+                name = 'h%d_%d' % (j+1, vlan)
                 h = self.addHost(name, cls=VLANHost, vlan=vlan)
                 self.addLink(h, s1)
 ```
@@ -102,7 +141,7 @@ sudo apt-get install vlan
 ### 3. Execute the Simulation
 Run the simulation script using the command:
 ```bash
-sudo python simulate_vlan_network.py
+sudo python3 simulate_vlan_network.py
 ```
 
 ## Verification
@@ -110,29 +149,48 @@ After starting the simulation, the Mininet CLI will allow you to test and verify
 
 ### 1. Test Connectivity Within the Same VLAN
 - For VLAN 100:
+
   ```bash
-  mininet> h1-100 ping -c 1 h2-100
+  mininet> h1_100 ping -c 3 h2_100
   ```
   This command should show a successful ping response.
 - For VLAN 101:
+
   ```bash
-  mininet> h1-101 ping -c 1 h2-101
+  mininet> h1_101 ping -c 3 h2_101
   ```
   This should also succeed.
 
 ### 2. Test Connectivity Across Different VLANs
 - Test between VLAN 100 and VLAN 101:
+
   ```bash
-  mininet> h1-100 ping -c 1 h1-101
+  mininet> h1_100 ping -c 3 h1_101
   ```
   This command should fail, demonstrating VLAN isolation.
 
-### 3. Test Connectivity for Hosts Without VLANs
+
+### 3. Test Connectivity from all hosts 
+
 - If there are hosts without VLAN tags:
+
   ```bash
-  mininet> h1 ping -c 1 h1-100
+  mininet> pingall
   ```
-  This should fail, as VLAN tags enforce strict isolation.
+
+  Expected output:
+
+  ```bash
+  mininet> pingall
+  *** Ping: testing ping reachability
+  h1_100 -> X h2_100 X 
+  h1_101 -> X X h2_101 
+  h2_100 -> h1_100 X X 
+  h2_101 -> X h1_101 X 
+  *** Results: 66% dropped (4/12 received)
+  ```
+
+  This should show a list of successful and failed ping responses.
 
 ## Conclusion
 This simulation serves as an excellent example of how VLANs can be implemented and tested in a controlled environment. By assigning VLAN tags and configuring hosts accordingly, users can explore the principles of network segmentation and isolation. Mininet provides an efficient way to experiment with VLAN configurations, making it a valuable tool for both learning and practical applications. Through this exercise, you gain hands-on experience in creating secure and segmented virtual networks, mirroring real-world VLAN setups.
