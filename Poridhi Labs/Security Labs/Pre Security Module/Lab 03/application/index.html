@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSI Model: Inter-System Communication</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1 class="title">OSI Model: Inter-System Communication</h1>
+
+    <div class="control-panel">
+        <button class="btn" id="send-data-btn">Send Data</button>
+        <button class="btn" id="reset-btn">Reset</button>
+    </div>
+
+    <div class="systems-container">
+        <!-- Sender System -->
+        <div class="system">
+            <h2 class="system-title">Sender (Client)</h2>
+            <div class="osi-layers" id="sender-layers">
+                <div class="layer" data-layer="application" data-system="sender">
+                    <div class="layer-number">7</div>
+                    <div class="layer-content">
+                        <div class="layer-name">Application Layer</div>
+                        <div class="layer-description">Generates network request</div>
+                    </div>
+                </div>
+                
+                <div class="layer" data-layer="presentation" data-system="sender">
+                    <div class="layer-number">6</div>
+                    <div class="layer-content">
+                        <div class="layer-name">Presentation Layer</div>
+                        <div class="layer-description">Formats and encrypts data</div>
+                    </div>
+                </div>
+                
+                <div class="layer" data-layer="session" data-system="sender">
+                    <div class="layer-number">5</div>
+                    <div class="layer-content">
+                        <div class="layer-name">Session Layer</div>
+                        <div class="layer-description">Establishes connection</div>
+                    </div>
+                </div>
+                
+                <div class="layer" data-layer="transport" data-system="sender">
+                    <div class="layer-number">4</div>
+                    <div class="layer-content">
+                        <div class="layer-name">Transport Layer</div>
+                        <div class="layer-description">Segments data, adds ports</div>
+                    </div>
+                </div>
+                
+                <div class="layer" data-layer="network" data-system="sender">
+                    <div class="layer-number">3</div>
+                    <div class="layer-content">
+                        <div class="layer-name">Network Layer</div>
+                        <div class="layer-description">Adds IP addressing</div>
+                    </div>
+                </div>
+                
+                <div class="layer" data-layer="datalink" data-system="sender">
+                    <div class="layer-number">2</div>
+                    <div class="layer-content">
+                        <div class="layer-name">Data Link Layer</div>
+                        <div class="layer-description">Adds MAC addressing</div>
+                    </div>
+                </div>
+                
+                <div class="layer" data-layer="physical" data-system="sender">
+                    <div class="layer-number">1</div>
+                    <div class="layer-content">
+                        <div class="layer-name">Physical Layer</div>
+                        <div class="layer-description">Transmits raw bits</div>
+                    </div>
+                </div>
+
+                <div class="packet packet-send" id="send-packet">Data</div>
+            </div>
+        </div>
+
+        <!-- Physical Connection between layers -->
+        <div class="physical-connection" id="physical-connection"></div>
+
+        <!-- Receiver System -->
+        <div class="system">
+            <h2 class="system-title">Receiver (Server)</h2>
+            <div class="osi-layers" id="receiver-layers">
+                <div class="layer" data-layer="application" data-system="receiver">
+                    <div class="layer-number">7</div>
+                    <div class="layer-content">
+                        <div class="layer-name">Application Layer</div>
+                        <div class="layer-description">Processes network request</div>
+                    </div>
+                </div>
+                
+                <div class="layer" data-layer="presentation" data-system="receiver">
+                    <div class="layer-number">6</div>
+                    <div class="layer-content">
+                        <div class="layer-name">Presentation Layer</div>
+                        <div class="layer-description">Decrypts and formats data</div>
+                    </div>
+                </div>
+                
+                <div class="layer" data-layer="session" data-system="receiver">
+                    <div class="layer-number">5</div>
+                    <div class="layer-content">
+                        <div class="layer-name">Session Layer</div>
+                        <div class="layer-description">Manages connection</div>
+                    </div>
+                </div>
+                
+                <div class="layer" data-layer="transport" data-system="receiver">
+                    <div class="layer-number">4</div>
+                    <div class="layer-content">
+                        <div class="layer-name">Transport Layer</div>
+                        <div class="layer-description">Reassembles data segments</div>
+                    </div>
+                </div>
+                
+                <div class="layer" data-layer="network" data-system="receiver">
+                    <div class="layer-number">3</div>
+                    <div class="layer-content">
+                        <div class="layer-name">Network Layer</div>
+                        <div class="layer-description">Checks destination IP</div>
+                    </div>
+                </div>
+                
+                <div class="layer" data-layer="datalink" data-system="receiver">
+                    <div class="layer-number">2</div>
+                    <div class="layer-content">
+                        <div class="layer-name">Data Link Layer</div>
+                        <div class="layer-description">Validates MAC address</div>
+                    </div>
+                </div>
+                
+                <div class="layer" data-layer="physical" data-system="receiver">
+                    <div class="layer-number">1</div>
+                    <div class="layer-content">
+                        <div class="layer-name">Physical Layer</div>
+                        <div class="layer-description">Receives raw bits</div>
+                    </div>
+                </div>
+
+                <div class="packet packet-receive" id="receive-packet">Data</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="details-panel" id="details-panel">
+        <h2 class="details-title">Inter-System Communication</h2>
+        <p class="details-description">
+            Click 'Send Data' to see how data travels through the OSI layers across two systems
+        </p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

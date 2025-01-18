@@ -177,10 +177,35 @@
             color: #00ff00;
             font-size: 0.9em;
         }
+
+        #port-forwarding-btn {
+            background-color: #00c3ff;
+            color: #1a1a2e;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        #port-forwarding-btn:hover {
+            background-color: #00ff00;
+            transform: scale(1.05);
+        }
+
+        #port-forwarding-btn.enabled {
+            background-color: #00ff00;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+        }
     </style>
 </head>
 <body>
     <h1 class="game-title">Port Forwarding</h1>
+    
+    <button id="port-forwarding-btn">Enable Port Forwarding</button>
+    
     <div class="instructions">
         Click on computers in Network #1 to send packets through port forwarding
     </div>
@@ -217,6 +242,22 @@
         const status = document.querySelector('.status');
         const container = document.querySelector('.network-container');
         const targetComputer = document.querySelector('.network2 .computer');
+        const portForwardingBtn = document.getElementById('port-forwarding-btn');
+
+        let isPortForwardingEnabled = false;
+
+        portForwardingBtn.addEventListener('click', () => {
+            isPortForwardingEnabled = !isPortForwardingEnabled;
+            if (isPortForwardingEnabled) {
+                portForwardingBtn.textContent = 'Port Forwarding Enabled';
+                portForwardingBtn.classList.add('enabled');
+                status.textContent = 'Port forwarding is now active. Click a computer in Network #1.';
+            } else {
+                portForwardingBtn.textContent = 'Enable Port Forwarding';
+                portForwardingBtn.classList.remove('enabled');
+                status.textContent = 'Port forwarding is disabled.';
+            }
+        });
 
         function createPacket(text, startX, startY) {
             const packet = document.createElement('div');
@@ -229,6 +270,12 @@
         }
 
         async function animatePacket(sourceIP) {
+            // Only animate if port forwarding is enabled
+            if (!isPortForwardingEnabled) {
+                status.textContent = 'Enable port forwarding first!';
+                return;
+            }
+
             const positions = [
                 { x: 250, y: 200 },  // Router 1
                 { x: 500, y: 200 },  // Internet
