@@ -7,7 +7,7 @@ By default, Jenkins runs on port 8080 after installation. However, there are sce
 
 Both methods will be demonstrated on two separate EC2 instances, ensuring a clear and practical understanding of the setup process.
 
-![alt text](./images/jenkins-port.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2005/images/jenkins-port.svg)
 
 ## Prerequisites
 - Create two EC2 instances for checking both the methods.
