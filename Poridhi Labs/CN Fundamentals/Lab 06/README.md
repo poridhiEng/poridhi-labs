@@ -165,29 +165,113 @@ This exchange allows both IPs to resolve each other's MAC addresses for communic
 
 ## Advanced Experiments
 
-### Experiment 1: Watch ARP Cache Timing
+### **Experiment 1: Watch ARP Cache Timing**
 
 Observe how long ARP entries remain in the cache.
 
-```bash
-# Clear the cache again
-sudo ip netns exec ns1 ip neigh flush all
+1. **Clear the cache again**
 
-# Monitor the ARP cache
-sudo ip netns exec ns1 watch -n 1 'ip neigh show'
-```
+    ```bash
+    sudo ip netns exec ns1 ip neigh flush all
+    ```
 
-### Experiment 2: Force ARP Updates
+2. **Ping from ns1 to ns2**
 
-Manually delete and add ARP entries.
+    ```bash
+    sudo ip netns exec ns1 ping -c 1 192.168.1.2
+    ```
 
-```bash
-# Delete a specific ARP entry
-sudo ip netns exec ns1 ip neigh del 192.168.1.2 dev veth1
+3. **Monitor the ARP cache**
 
-# Manually add an ARP entry
-sudo ip netns exec ns1 ip neigh add 192.168.1.2 lladdr aa:bb:cc:dd:ee:ff dev veth1
-```
+    ```bash
+    sudo ip netns exec ns1 watch -n 1 'ip neigh show'
+    ```
+
+    This command runs the `ip neigh show` command every second (-n 1).
+
+    - Displays the ARP cache entries in the ns1 namespace in real-time.
+    - Immediately after the ping, you will see an entry like:
+
+        ```bash
+        192.168.1.2 dev veth1 lladdr aa:bb:cc:dd:ee:ff REACHABLE
+        ```
+    - Over time, the state may change to STALE, depending on the kernel's ARP cache timeout.
+
+4. **Wait for the Entry to Transition to `STALE`**
+
+    - ARP entries remain in the `REACHABLE` state for a certain timeout period (default: 30 seconds in Linux).
+    - After this period, the state changes to `STALE` if no further communication occurs.
+    - Keep monitoring the cache using the `watch` command, and after the timeout, you will see:
+
+        ```bash
+        192.168.1.2 dev veth1 lladdr aa:bb:cc:dd:ee:ff STALE
+        ```
+
+5. **Access the STALE Entry**
+
+    - Open another terminal and send another ping to access the `STALE` entry:
+
+        ```bash
+        sudo ip netns exec ns1 ping -c 1 192.168.1.2
+        ```
+
+    - The ARP entry will transition back to `REACHABLE` after the ping:
+
+        ```bash
+        192.168.1.2 dev veth1 lladdr aa:bb:cc:dd:ee:ff REACHABLE
+        ```
+
+### **Experiment 2: Force ARP Updates**
+
+In this experiment, you will manually delete and add ARP entries and verify the changes in the ARP cache.
+
+1. **Retrieve the Current MAC Address**:
+
+    Before manually adding an ARP entry, ensure you have the correct MAC address of `veth2` in the `ns2` namespace. Check the MAC Address of `veth2` using:
+
+   ```bash
+   sudo ip netns exec ns2 ip link show veth2
+   ```
+   - Look for the `link/ether` field in the output, which will display the MAC address (e.g., `aa:bb:cc:dd:ee:ff`).
+
+2. **Delete the Existing ARP Entry**:
+
+    To remove the current ARP entry for `192.168.1.2` in the `ns1` namespace:
+
+    ```bash
+    sudo ip netns exec ns1 ip neigh del 192.168.1.2 dev veth1
+    ```
+
+    - **Verify Deletion:**
+
+        ```bash
+        sudo ip netns exec ns1 ip neigh show
+        ```
+        The entry for `192.168.1.2` should no longer appear in the ARP cache.
+
+3. **Manually Add an ARP Entry**:
+
+    Using the MAC address retrieved in Step 1, manually add the ARP entry:
+
+    ```bash
+    sudo ip netns exec ns1 ip neigh add 192.168.1.2 lladdr aa:bb:cc:dd:ee:ff dev veth1
+    ```
+
+    Replace `aa:bb:cc:dd:ee:ff` with the actual MAC address of `veth2`.
+
+4. **Verify the Manually Added ARP Entry**:
+
+    Check that the new ARP entry has been added successfully:
+
+    ```bash
+    sudo ip netns exec ns1 ip neigh show
+    ```
+
+    You should see an entry like this:
+
+    ```bash
+    192.168.1.2 dev veth1 lladdr aa:bb:cc:dd:ee:ff PERMANENT
+    ```
 
 ## Cleanup
 
@@ -204,7 +288,6 @@ sudo ip netns del ns2
 In this lab, you learned:
 - How to set up and use Linux network namespaces.
 - How ARP operates, including request and reply mechanisms.
-- How to capture and analyze ARP traffic using `tcpdump`.
 - How to experiment with ARP cache timing and manual updates.
 
 This hands-on approach provides a deeper understanding of ARP and its role in local network communication. Keep experimenting and exploring to solidify your networking skills!
