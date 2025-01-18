@@ -12,31 +12,31 @@ The objective of this lab is to:
 
 ## Tasks Related to Defensive Security
 
-### **User Cyber Security Awareness**
+#### **User Cyber Security Awareness**
    - Train users to recognize phishing emails, avoid clicking on suspicious links, and use strong passwords.
    - Conduct regular cybersecurity training sessions to promote safe online practices.
 
-### **Documenting and Managing Assets**
+#### **Documenting and Managing Assets**
    - Maintain an inventory of systems, devices, and software.
    - Ensure that critical assets are identified and adequately protected.
 
-### **Updating and Patching Systems**
+#### **Updating and Patching Systems**
    - Regularly update software and firmware to fix known vulnerabilities.
    - Use automated tools to manage and deploy patches efficiently.
 
-### **Setting Up Preventative Security Devices**
+#### **Setting Up Preventative Security Devices**
    - Configure firewalls to control incoming and outgoing network traffic.
    - Deploy intrusion prevention systems (IPS) to block malicious activities.
 
-### **Logging and Monitoring Systems**
+#### **Logging and Monitoring Systems**
    - Enable logging on all critical systems to capture activity data.
    - Use monitoring tools to detect unusual behaviors or unauthorized access.
 
-### **Incident Response Planning**
+#### **Incident Response Planning**
    - Develop and maintain an incident response plan.
    - Prepare teams to identify, contain, eradicate, and recover from security incidents.
 
-### **Threat Intelligence**
+#### **Threat Intelligence**
    - Collect and analyze data about potential threats and attackers.
    - Use this intelligence to predict and prevent future attacks.
 
