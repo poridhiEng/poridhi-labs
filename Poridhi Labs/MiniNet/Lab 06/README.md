@@ -4,7 +4,8 @@ Mininet is an incredibly versatile tool that allows for the simulation of comple
 
 ![](./images/2.svg)
 
-VLANs are a crucial aspect of modern networking, enabling enhanced security, traffic management, and logical separation within larger networks. This document provides a comprehensive guide to setting up a simulated VLAN network using a custom Mininet host class called `VLANHost`. The key element of this simulation is the `vlanhost.py` script, which enables the creation of hosts configured with specific VLAN tags. These VLAN tags act as identifiers that segment the network, ensuring that only devices within the same VLAN can communicate, while others remain isolated. This provides an ideal platform for experimenting with VLAN-based network architectures.
+VLANs are a crucial aspect of modern networking, enabling enhanced security, traffic management, and logical separation within larger networks. This document provides a comprehensive guide to setting up a simulated VLAN network using a custom Mininet host class called `VLANHost`.
+The key element of this simulation is the `vlanhost.py` script, which enables the creation of hosts configured with specific VLAN tags. These VLAN tags act as identifiers that segment the network, ensuring that only devices within the same VLAN can communicate, while others remain isolated. This provides an ideal platform for experimenting with VLAN-based network architectures.
 
 ## Task Description
 The primary objectives of this task are as follows:
@@ -27,27 +28,27 @@ The provided diagram illustrates the logical structure of a network simulation f
    - The central point of communication, enabling connectivity between all the hosts in the network. It supports VLAN tagging to segregate traffic.
 
 2. **VLAN 100 and VLAN 101:** 
-   - VLAN 100 consists of two hosts: `H1-100` and `H2-100`.
-   - VLAN 101 also has two hosts: `H1-101` and `H2-101`.
+   - VLAN 100 consists of two hosts: `h1_100` and `h2_100`.
+   - VLAN 101 also has two hosts: `h1_101` and `h2_101`.
    - Each VLAN operates as a distinct broadcast domain, ensuring that traffic within one VLAN remains isolated from the other.
 
 3. **Hosts:** 
-   - `H1-100` and `H2-100` are configured to operate on VLAN 100.
-   - `H1-101` and `H2-101` are configured for VLAN 101.
+   - `h1_100` and `h2_100` are configured to operate on VLAN 100.
+   - `h1_101` and `h2_101` are configured for VLAN 101.
 
 ### **Connections**
 - **Switch to Hosts:** 
   - The switch (S1) has interfaces connected to all the hosts.
   - Each interface is associated with a VLAN ID, ensuring traffic from a host is tagged with the corresponding VLAN ID when leaving the switch.
-  - For instance, packets from `H1-100` and `H2-100` are tagged with VLAN 100, while packets from `H1-101` and `H2-101` are tagged with VLAN 101.
+  - For instance, packets from `h1_100` and `h2_100` are tagged with VLAN 100, while packets from `h1_101` and `h2_101` are tagged with VLAN 101.
 
 ### **Behavior**
 1. **Intra-VLAN Communication:** 
-   - Hosts within the same VLAN (e.g., `H1-100` and `H2-100`) can communicate directly, as their packets carry the same VLAN tag. 
+   - Hosts within the same VLAN (e.g., `h1_100` and `h2_100`) can communicate directly, as their packets carry the same VLAN tag. 
    - The switch forwards these packets without interference to other VLANs.
 
 2. **Inter-VLAN Isolation:**
-   - Communication between hosts in different VLANs (e.g., `H1-100` and `H1-101`) is not allowed by default, ensuring logical segmentation. This is a critical feature of VLANs, enhancing network security and reducing broadcast domain sizes.
+   - Communication between hosts in different VLANs (e.g., `h1_100` and `h1_101`) is not allowed by default, ensuring logical segmentation. This is a critical feature of VLANs, enhancing network security and reducing broadcast domain sizes.
 
 
 
@@ -95,7 +96,7 @@ class VLANStarTopo(Topo):
         for i in range(k):
             vlan = vlanBase + i
             for j in range(n):
-                name = 'h%d-%d' % (j+1, vlan)
+                name = 'h%d_%d' % (j+1, vlan)
                 h = self.addHost(name, cls=VLANHost, vlan=vlan)
                 self.addLink(h, s1)
 ```
@@ -150,13 +151,13 @@ After starting the simulation, the Mininet CLI will allow you to test and verify
 - For VLAN 100:
 
   ```bash
-  mininet> h1-100 ping -c 1 h2-100
+  mininet> h1_100 ping -c 3 h2_100
   ```
   This command should show a successful ping response.
 - For VLAN 101:
 
   ```bash
-  mininet> h1-101 ping -c 1 h2-101
+  mininet> h1_101 ping -c 3 h2_101
   ```
   This should also succeed.
 
@@ -164,7 +165,7 @@ After starting the simulation, the Mininet CLI will allow you to test and verify
 - Test between VLAN 100 and VLAN 101:
 
   ```bash
-  mininet> h1-100 ping -c 1 h1-101
+  mininet> h1_100 ping -c 3 h1_101
   ```
   This command should fail, demonstrating VLAN isolation.
 
@@ -182,10 +183,10 @@ After starting the simulation, the Mininet CLI will allow you to test and verify
   ```bash
   mininet> pingall
   *** Ping: testing ping reachability
-  h1-100 -> X h2-100 X 
-  h1-101 -> X X h2-101 
-  h2-100 -> h1-100 X X 
-  h2-101 -> X h1-101 X 
+  h1_100 -> X h2_100 X 
+  h1_101 -> X X h2_101 
+  h2_100 -> h1_100 X X 
+  h2_101 -> X h1_101 X 
   *** Results: 66% dropped (4/12 received)
   ```
 
