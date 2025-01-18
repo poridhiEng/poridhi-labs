@@ -5,126 +5,248 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ARP Process Simulation</title>
     <style>
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #1e293b;
+            --success-color: #4CAF50;
+            --warning-color: #ff4444;
+            --border-color: #cbd5e1;
+            --background-color: #f0f4f8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--secondary-color);
+            background: #f8fafc;
+        }
+
         .container {
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            font-family: Arial, sans-serif;
         }
-        
+
         .network-diagram {
             position: relative;
             height: 600px;
-            background: #f0f4f8;
-            border-radius: 12px;
+            background: var(--background-color);
+            border-radius: 16px;
             margin-bottom: 20px;
-            border: 2px solid #d0d5dd;
+            border: 2px solid var(--border-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
-        
+
         .device {
             position: absolute;
-            width: 140px;
-            padding: 15px;
-            background: white;
-            border: 2px solid #94a3b8;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .computer {
-            background: #fff;
-        }
-        
-        .switch {
-            background: #e2e8f0;
             width: 160px;
-            height: 50px;
-            line-height: 50px;
-            font-weight: bold;
+            padding: 20px;
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        
+
+        .device:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .computer {
+            background: linear-gradient(to bottom, #ffffff, #f8fafc);
+        }
+
+        .switch {
+            background: linear-gradient(to bottom, #e2e8f0, #cbd5e1);
+            width: 180px;
+            height: 60px;
+            line-height: 60px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
         .connection-line {
             position: absolute;
-            background: #94a3b8;
-            height: 2px;
+            height: 3px;
             transform-origin: 0 0;
+            background: linear-gradient(to right, rgba(148, 163, 184, 0.4), rgba(148, 163, 184, 0.8));
+            cursor: pointer;
+            transition: height 0.3s ease, background 0.3s ease;
         }
-        
+
+        .connection-line:hover {
+            height: 5px;
+            background: var(--primary-color);
+        }
+
+        .connection-line::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+            animation: dataFlow 2s linear infinite;
+        }
+
+        @keyframes dataFlow {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
         .packet {
             position: absolute;
-            width: 40px;
-            height: 20px;
-            background: #4CAF50;  /* Green color for ARP */
+            width: 50px;
+            height: 25px;
             color: white;
             display: none;
             text-align: center;
-            line-height: 20px;
-            border-radius: 4px;  /* Slightly rounded corners */
+            line-height: 25px;
+            border-radius: 6px;
             font-weight: bold;
+            font-size: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            animation: pulse 1s infinite;
         }
-        
-        
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
         .port-label {
             position: absolute;
             font-size: 12px;
             background: #f8fafc;
-            padding: 2px 6px;
-            border-radius: 4px;
-            border: 1px solid #cbd5e1;
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-weight: 500;
         }
-        
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
         button {
-            padding: 8px 16px;
-            background: #3b82f6;
+            padding: 10px 20px;
+            background: var(--primary-color);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            margin: 5px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        
+
         button:hover {
             background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
-        
+
+        button:active {
+            transform: translateY(0);
+        }
+
         .status {
-            margin: 10px 0;
-            padding: 10px;
-            background: #f8fafc;
-            border-radius: 6px;
-            border: 1px solid #cbd5e1;
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            font-weight: 500;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
         }
-        
+
         .arp-table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             margin-top: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        
+
         .arp-table th, .arp-table td {
-            border: 1px solid #cbd5e1;
-            padding: 8px;
+            padding: 12px;
             text-align: left;
-            background: white;
+            border: 1px solid var(--border-color);
         }
-        
+
         .arp-table th {
-            background: #f1f5f9;
+            background: linear-gradient(to bottom, #f1f5f9, #e2e8f0);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 0.5px;
         }
-        
+
+        .arp-table tr:nth-child(even) td {
+            background: #f8fafc;
+        }
+
+        .arp-table tr:hover td {
+            background: #e2e8f0;
+        }
+
         .cmd-window {
             position: absolute;
             top: 20px;
             right: 20px;
-            width: 280px;
-            background: #1e293b;
+            width: 300px;
+            background: linear-gradient(to bottom, #1e293b, #0f172a);
             color: #a5f3fc;
-            padding: 12px;
-            border-radius: 6px;
-            font-family: monospace;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Consolas', monospace;
             font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 1px solid #334155;
+        }
+
+        .cmd-window::before {
+            content: '● ● ●';
+            display: block;
+            color: #64748b;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        .cmd-line {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 2px solid #a5f3fc;
+            animation: typing 2s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #a5f3fc }
         }
     </style>
 </head>
@@ -132,7 +254,7 @@
     <div class="container">
         <div class="network-diagram" id="networkDiagram"></div>
         
-        <div>
+        <div class="controls">
             <button onclick="startSimulation()">Start ARP Process</button>
             <button onclick="resetSimulation()">Reset</button>
         </div>
@@ -155,6 +277,16 @@
     </div>
 
     <script>
+        // Global variables
+        let currentStep = 0;
+        const steps = [
+            "PC1 needs to find MAC address for 10.1.1.3",
+            "Sending ARP request broadcast",
+            "Switch forwards ARP request to all ports",
+            "PC3 recognizes its IP and responds",
+            "PC1 receives ARP reply and updates table"
+        ];
+
         const network = {
             computers: [
                 { id: 'pc1', x: 550, y: 50, ip: '10.1.1.1', mac: '00:A1', label: 'PC1', port: 'Fa0/1' },
@@ -165,6 +297,7 @@
             switch: { id: 'switch1', x: 550, y: 225, label: 'Switch' }
         };
 
+        // Function declarations in global scope
         function createDevice(device, isSwitch = false) {
             const div = document.createElement('div');
             div.className = `device ${isSwitch ? 'switch' : 'computer'}`;
@@ -175,11 +308,11 @@
             if (isSwitch) {
                 div.textContent = device.label;
             } else {
-                div.innerHTML = ` 
+                div.innerHTML = `
                     <strong>${device.label}</strong><br>
-                    IP: ${device.ip}<br>
+                    <small>IP: ${device.ip}<br>
                     MAC: ${device.mac}<br>
-                    Port: ${device.port}
+                    Port: ${device.port}</small>
                 `;
             }
             
@@ -195,8 +328,8 @@
             const line = document.createElement('div');
             line.className = 'connection-line';
             line.style.width = `${distance}px`;
-            line.style.left = `${start.x + 70}px`;
-            line.style.top = `${start.y + 25}px`;
+            line.style.left = `${start.x + 80}px`;
+            line.style.top = `${start.y + 30}px`;
             line.style.transform = `rotate(${angle}rad)`;
             
             return line;
@@ -214,21 +347,20 @@
         function initializeNetwork() {
             const diagram = document.getElementById('networkDiagram');
             
-            // Add command window
             const cmdWindow = document.createElement('div');
             cmdWindow.className = 'cmd-window';
-            cmdWindow.innerHTML = 'C:\\> ping 10.1.1.3\nPinging 10.1.1.3 with 32 bytes of data...';
+            cmdWindow.innerHTML = `
+                <div class="cmd-line">C:\\> ping 10.1.1.3</div>
+                <div>Pinging 10.1.1.3 with 32 bytes of data...</div>
+            `;
             diagram.appendChild(cmdWindow);
             
-            // Add switch
             diagram.appendChild(createDevice(network.switch, true));
             
-            // Add computers and connections
             network.computers.forEach(pc => {
                 diagram.appendChild(createDevice(pc));
                 diagram.appendChild(createConnection(pc, network.switch));
                 
-                // Add port labels
                 const portX = (pc.x + network.switch.x) / 2;
                 const portY = (pc.y + network.switch.y) / 2;
                 diagram.appendChild(createPortLabel(portX, portY, pc.port));
@@ -257,8 +389,8 @@
             const packet = document.createElement('div');
             packet.className = 'packet';
             packet.style.background = color;
-            packet.style.left = `${start.x + 70}px`;
-            packet.style.top = `${start.y + 25}px`;
+            packet.style.left = `${start.x + 80}px`;
+            packet.style.top = `${start.y + 30}px`;
             packet.style.display = 'block';
             packet.textContent = 'ARP';
             
@@ -266,25 +398,11 @@
             
             setTimeout(() => {
                 packet.style.transition = `all ${duration}ms ease-in-out`;
-                packet.style.left = `${end.x + 80}px`;
-                packet.style.top = `${end.y + 25}px`;
+                packet.style.left = `${end.x + 90}px`;
+                packet.style.top = `${end.y + 30}px`;
                 
                 setTimeout(() => packet.remove(), duration);
             }, 50);
-        }
-
-        let currentStep = 0;
-        const steps = [
-            "PC1 needs to find MAC address for 10.1.1.3",
-            "Sending ARP request broadcast",
-            "Switch forwards ARP request to all ports",
-            "PC3 recognizes its IP and responds",
-            "PC1 receives ARP reply and updates table"
-        ];
-
-        function startSimulation() {
-            currentStep = 0;
-            simulateNextStep();
         }
 
         function simulateNextStep() {
@@ -323,12 +441,18 @@
             setTimeout(simulateNextStep, 1500);
         }
 
+        function startSimulation() {
+            currentStep = 0;
+            simulateNextStep();
+        }
+
         function resetSimulation() {
             currentStep = 0;
             document.getElementById('status').textContent = 'Reset complete. Click Start to begin.';
             updateArpTable();
         }
 
+        // Initialize when the page loads
         window.onload = initializeNetwork;
     </script>
 </body>
