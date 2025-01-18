@@ -1281,6 +1281,7 @@ We will setup a webhook in GitHub to trigger the Jenkins pipeline when there are
    - Access the application in your browser using the service URL.
 
 ### 7. Update and Verify Application Changes
+
 1. Modify application code, e.g., change a UI element's color:
 2. Commit and push the changes to the repository.
 3. Jenkins will trigger the pipeline. Verify the changes in the deployed application.
@@ -1305,7 +1306,7 @@ Helm is a package manager for Kubernetes that simplifies application deployment.
 curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 ```
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2012/images/image.png)
 
 
 This script downloads and installs Helm 3, the latest version, onto your system. After installation, you can verify the Helm installation by running:
@@ -1348,7 +1349,7 @@ kubectl get nodes
 
 Grafana is a visualization and monitoring tool. To deploy it in your Kubernetes cluster:
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2012/images/image-1.png)
 
 1. Use Helm to install or upgrade Grafana:
 
@@ -1402,12 +1403,12 @@ Grafana supports importing pre-configured dashboards to visualize cluster metric
 2. Use the dashboard ID `15282` (or any desired dashboard ID) to import a pre-built Kubernetes monitoring dashboard.
 3. Click **Load**, configure the Prometheus data source, and then click **Import**.
 
-    ![alt text](./images/image-6.png)
-    ![alt text](./images/image-7.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2012/images/image-6.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2012/images/image-7.png)
 
 Your dashboard is now ready, displaying key metrics for monitoring your Kubernetes cluster.
 
-![alt text](./images/image-9.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2012/images/image-9.png)
 
 ## Conclusion
 

@@ -173,11 +173,7 @@ Then access the Jenkins dashboard using the Load Balancer's URL. Use the credent
 
    ![Create New Job](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2006/images/image.png?raw=true)
 
-4. In the **Source Code Management** section, select **Git** and enter the URL of the GitHub repository:
-
-   ```sh
-   https://github.com/Konami33/simple-java-maven-app
-   ```
+4. In the **Source Code Management** section, select **Git** and enter the URL of java Application GitHub repository:
 
    ![Configure Source Code Management](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2006/images/image-1.png?raw=true)
 

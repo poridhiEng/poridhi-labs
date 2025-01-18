@@ -160,7 +160,7 @@ Then access the Jenkins dashboard using the Load Balancer's URL. Use the credent
 - In the **Available** tab, search for `Maven Integration (Build Tools)`.
 - Install this plugin.
 
-   ![Install Maven Integration Plugin](https://github.com/Konami33/Jenkins-Labs/blob/main/Lab%2006/images/image-4.png?raw=true)
+   ![Install Maven Integration Plugin](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-4.png?raw=true)
 
 **2. Configure Maven Installation:**
 - Go to **Manage Jenkins** -> **Global Tool Configuration**.
@@ -169,7 +169,7 @@ Then access the Jenkins dashboard using the Load Balancer's URL. Use the credent
    - Give it a name, e.g., `Maven-jenkins`.
    - Select the required version and save.
 
-   ![Configure Maven Installation](https://github.com/Konami33/Jenkins-Labs/blob/main/Lab%2006/images/image-5.png?raw=true)
+   ![Configure Maven Installation](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-5.png?raw=true)
 
 ### Step 2: Create a Jenkins Job
 
@@ -200,7 +200,7 @@ Then access the Jenkins dashboard using the Load Balancer's URL. Use the credent
 1. Go to the **Configure** section of the job.
 2. In the **Build** section, click **Add build step** and select **Invoke top-level Maven targets**.
 
-   ![Add Build Step](https://github.com/Konami33/Jenkins-Labs/blob/main/Lab%2006/images/image-6.png?raw=true)
+   ![Add Build Step](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-6.png?raw=true)
 
 3. Select your `Maven Version`.
 
@@ -210,7 +210,7 @@ Then access the Jenkins dashboard using the Load Balancer's URL. Use the credent
    -B -DskipTests clean package
    ```
 
-   ![Configure Maven Goals](https://github.com/Konami33/Jenkins-Labs/blob/main/Lab%2006/images/image-7.png?raw=true)
+   ![Configure Maven Goals](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-7.png?raw=true)
 
 ### Step 4: Configure the Test Step
 
@@ -223,7 +223,7 @@ Then access the Jenkins dashboard using the Load Balancer's URL. Use the credent
    test
    ```
 
-   ![Configure Test Goals](https://github.com/Konami33/Jenkins-Labs/blob/main/Lab%2006/images/image-9.png?raw=true)
+   ![Configure Test Goals](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2007/images/image-9.png?raw=true)
 
 
 ### Step 5: Deploy the JAR File
@@ -264,7 +264,7 @@ Build the job and check the output console for any error.
 
 2. Return to the job configuration and scroll down to **Post-build Actions**. Click **Add post-build action** and select **Publish JUnit test result report**.
 
-   ![Add Post-build Action](https://github.com/Konami33/Jenkins-Labs/blob/main/Lab%2006/images/image-15.png?raw=true)
+   ![Add Post-build Action](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2006/images/image-15.png?raw=true)
 
 3. In the **Test report XMLs** field, enter the path to the XML files:
 
@@ -272,7 +272,7 @@ Build the job and check the output console for any error.
    target/surefire-reports/*.xml
    ```
 
-   ![Configure Test Result Report](https://github.com/Konami33/Jenkins-Labs/blob/main/Lab%2006/images/image-16.png?raw=true)
+   ![Configure Test Result Report](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2006/images/image-16.png?raw=true)
 
 4. Save the configuration and build the job. This will publish the test results on the Jenkins dashboard with graphical representations such as graphs and charts.
 

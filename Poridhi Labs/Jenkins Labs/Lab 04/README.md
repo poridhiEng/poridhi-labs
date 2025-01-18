@@ -2,7 +2,7 @@
 
 In this lab, we will walk through the steps for configuring Docker containers as build agents (slaves) for Jenkins. This setup allows Jenkins to dynamically provision build agents on Docker containers, optimizing resource usage and providing scalability.
 
-![alt text](./images/jenkins-agent.svg)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2004/images/jenkins-agent.svg)
 
 ## Docker Containers as Build Agents/Slaves
 
@@ -14,9 +14,131 @@ Docker containers can serve as build agents for Jenkins, allowing for isolated a
 4. Create and configure the docker cloude agent
 5. Test Jenkins Build Inside a Docker Container
 
-## Prerequisite
 
-- Ensure your jenkins server is up and running. If you do not have one, follow this lab: [Jenkins Installation on Ubuntu](https://github.com/AhnafNabil/Jenkins-Labs/tree/main/Lab%2001)
+### Install and Run Jenkins Server
+
+To install and run Jenkins server, follow the steps below:
+
+**1. Create a file named `jenkins-install.sh` and fill it with the following code:**
+
+```sh
+#!/bin/bash
+
+# Function to print colored output
+print_message() {
+    GREEN='\033[0;32m'
+    NC='\033[0m'
+    echo -e "${GREEN}$1${NC}"
+}
+
+# Function to check if command was successful
+check_status() {
+    if [ $? -eq 0 ]; then
+        print_message "✓ Success: $1"
+    else
+        echo "✗ Error: $1"
+        exit 1
+    fi
+}
+
+# Check if script is run as root
+if [ "$EUID" -ne 0 ]; then 
+    echo "Please run as root (use sudo)"
+    exit 1
+fi
+
+# Set Jenkins port (default 8081 or use command line argument)
+JENKINS_PORT=${1:-8081}
+
+print_message "Starting Jenkins installation..."
+print_message "Jenkins will be configured to run on port: $JENKINS_PORT"
+
+# Update system packages
+print_message "Updating system packages..."
+apt update
+apt upgrade -y
+check_status "System update completed"
+
+# Install Java
+print_message "Installing Java..."
+apt install -y openjdk-17-jre-headless
+check_status "Java installation completed"
+
+# Verify Java installation
+java -version
+check_status "Java verification"
+
+# Add Jenkins repository
+print_message "Adding Jenkins repository..."
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | tee \
+    /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+    https://pkg.jenkins.io/debian-stable binary/ | tee \
+    /etc/apt/sources.list.d/jenkins.list > /dev/null
+check_status "Jenkins repository added"
+
+# Install Jenkins
+print_message "Installing Jenkins..."
+apt update
+apt install -y jenkins
+check_status "Jenkins installation completed"
+
+# Configure Jenkins port
+print_message "Configuring Jenkins port..."
+sed -i "s/HTTP_PORT=.*/HTTP_PORT=$JENKINS_PORT/" /etc/default/jenkins
+sed -i "s/--httpPort=[0-9]*/--httpPort=$JENKINS_PORT/" /etc/default/jenkins
+check_status "Port configuration completed"
+
+# Update systemd service file
+print_message "Updating systemd service..."
+sed -i "s|^ExecStart=.*|ExecStart=/usr/bin/jenkins --httpPort=$JENKINS_PORT|" /lib/systemd/system/jenkins.service
+check_status "Systemd service updated"
+
+# Reload systemd and restart Jenkins
+print_message "Restarting Jenkins..."
+systemctl daemon-reload
+systemctl restart jenkins
+check_status "Jenkins restart completed"
+
+# Wait for Jenkins to start
+print_message "Waiting for Jenkins to start..."
+sleep 30
+
+# Get initial admin password
+if [ -f /var/lib/jenkins/secrets/initialAdminPassword ]; then
+    ADMIN_PASSWORD=$(cat /var/lib/jenkins/secrets/initialAdminPassword)
+    print_message "Jenkins initial admin password: $ADMIN_PASSWORD"
+else
+    echo "Warning: Could not find initial admin password"
+fi
+
+print_message "\nInstallation completed!"
+print_message "Please allow a few minutes for Jenkins to fully start"
+print_message "Access Jenkins at: http://your-server-ip:$JENKINS_PORT"
+```
+
+#### Run the script by executing the following command:
+
+```sh
+sudo chmod +x jenkins-install.sh
+./jenkins-install.sh
+```
+
+### Access Jenkins Dashboard
+
+This lab is intended to be run on a `Poridhi's VM`. To access the Jenkins dashboard, We need to create a Load Balancer. First Go to the `Load Balancer` section and create a Load Balancer using the VM's private IP and port `8081`.
+
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2002/images/image-20.png)
+
+Then access the Jenkins dashboard using the Load Balancer's URL. Use the credentials `admin` and the password you received from the Jenkins installation script.
+
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2002/images/image-21.png)
+
+
+#### Jenkins login page
+
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2002/images/image-22.png)
 
 ## Step by step guide
 
@@ -29,7 +151,7 @@ To use Docker containers as build agents, you need to set up a Docker host that 
 - Install Docker based on your operating system. Refer to the [official Docker documentation](https://docs.docker.com/get-docker/) for installation instructions.
 - Ensure the Docker service is running.
 
-![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2004/images/image-1.png)
 
 **2. Enable Docker Remote API**
 - Log in to the server and open the Docker service file located at `/lib/systemd/system/docker.service`.
@@ -42,7 +164,7 @@ To use Docker containers as build agents, you need to set up a Docker host that 
     ```bash
     ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:4243 -H unix:///var/run/docker.sock
     ```
-    ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-2.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2004/images/image-2.png)
 
 - Save and close the file.
 
@@ -62,7 +184,7 @@ To use Docker containers as build agents, you need to set up a Docker host that 
     ```
 - Ensure the Docker Remote API is working by referring to the [Docker API documentation](https://docs.docker.com/engine/api/v1.41/).
 
-    ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-3.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2004/images/image-3.png)
 
 ## Step 02: Create a Jenkins Agent Docker Image
 
@@ -125,24 +247,24 @@ To use docker as a build agent, we need to install the docker plugin in jenkins.
 - Navigate to **Jenkins Dashboard** → **Manage Jenkins** → **Manage Plugins**.
 - Search for the **Docker** plugin under the **Available** tab, install it, and restart Jenkins.
 
-    ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-4.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2004/images/image-4.png)
 
 ## Step 04: Create and configure the docker cloude agent
 
 1. Go to **Jenkins Dashboard** → **Manage Jenkins** → **Configure System** and Scroll to the **Cloud** section.
 
-    ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-5.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2004/images/image-5.png)
 
 2. Create new cloud and give a name for example `Docker-slave`
 
-    ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-6.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2004/images/image-6.png)
 
 3. **Configure Docker Cloud Details**:
 
     - Docker Host URL: Fill up this with your docker agent Ip.
     - Check the Test connection.
 
-    ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-7.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2004/images/image-7.png)
 
 
 4. **Add Docker Agent Template**
@@ -152,7 +274,7 @@ To use docker as a build agent, we need to install the docker plugin in jenkins.
      - **Name**: Use a Name, e.g., `docker-agent`
      - **Docker Image**: Specify the Docker image you created, e.g., `yourusername/jenkins-agent:latest`. or `konami98/jenkins-agent:latest`.
 
-     ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-8.png)
+     ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2004/images/image-8.png)
 
 
      - **Remote File System Root**: Set to `/home/jenkins` as specified in the dockerfile.
@@ -160,11 +282,11 @@ To use docker as a build agent, we need to install the docker plugin in jenkins.
         - In the `Connect with SSH` method, select **SSH-key**: Inject SSH key
         - **User**: jenkins (specified in the docker file)
 
-    ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-9.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2004/images/image-9.png)
 
 5. After configuring the agent, create or save the confugaration details.
 
-    ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-10.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2004/images/image-10.png)
 
 
 ## Test Jenkins Build Inside a Docker Container
@@ -172,11 +294,11 @@ To use docker as a build agent, we need to install the docker plugin in jenkins.
 1. **Create a Freestyle Job**
    - Go to **Jenkins Dashboard** → **New Item** and create a freestyle project.
 
-   ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-11.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2004/images/image-11.png)
 
    - Under **Build Environment**, select **Restrict where this project can be run** and choose the Docker agent label you configured.
 
-   ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-12.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2004/images/image-12.png)
 
 2. **Add Build Steps**
 
@@ -186,18 +308,18 @@ To use docker as a build agent, we need to install the docker plugin in jenkins.
     echo "Hello from docker agent"
     ```
 
-    ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-13.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2004/images/image-13.png)
 
 3. **Run and Verify**
 
    - Save and run the job. Jenkins will deploy a Docker container as the build agent, execute the build steps, and then clean up the container.
    - Check the build logs in the console output to ensure that the build was executed correctly inside the Docker container.
 
-    ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-14.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2004/images/image-14.png)
 
    - You can also check the cloud statistics.
 
-   ![alt text](https://github.com/Konami33/Jenkins-Labs/raw/main/Lab%2004/images/image-15.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2004/images/image-15.png)
 
 ## Conclusion
 
