@@ -1,0 +1,250 @@
+:root {
+    --bg-gradient-start: #0f2027;
+    --bg-gradient-mid: #203a43;
+    --bg-gradient-end: #2c5364;
+    --layer-bg: rgba(255, 255, 255, 0.05);
+    --layer-border: rgba(0, 195, 255, 0.3);
+    --text-highlight: #00c3ff;
+    --packet-color-send: #00ff00;
+    --packet-color-receive: #ff4500;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-mid), var(--bg-gradient-end));
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+.title {
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 0 0 15px rgba(0, 195, 255, 0.5);
+    text-align: center;
+}
+
+.systems-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    gap: 20px;
+    position: relative;
+}
+
+.system {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.system-title {
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    color: var(--text-highlight);
+}
+
+.osi-layers {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+    position: relative;
+}
+
+.layer {
+    display: flex;
+    align-items: center;
+    background: var(--layer-bg);
+    border: 2px solid var(--layer-border);
+    border-radius: 10px;
+    padding: 15px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.layer.active-send {
+    background: rgba(0, 255, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+.layer.active-receive {
+    background: rgba(255, 69, 0, 0.1);
+    box-shadow: 0 0 10px rgba(255, 69, 0, 0.3);
+}
+
+.layer-number {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(145deg, #00c3ff, #0083c3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-weight: bold;
+}
+
+.layer-content {
+    flex-grow: 1;
+}
+
+.layer-name {
+    font-size: 1em;
+    font-weight: bold;
+    color: var(--text-highlight);
+    margin-bottom: 3px;
+}
+
+.layer-description {
+    font-size: 0.8em;
+    opacity: 0.8;
+}
+
+.packet {
+    position: absolute;
+    width: 120px;
+    height: 40px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    font-size: 0.8em;
+    font-weight: bold;
+    opacity: 0;
+    transition: all 0.5s ease;
+    z-index: 10;
+    text-align: center;
+    padding: 5px;
+}
+
+.packet-send {
+    background: linear-gradient(to right, var(--packet-color-send), #00a500);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.packet-receive {
+    background: linear-gradient(to right, var(--packet-color-receive), #ff1500);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.physical-connection {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 4px;
+    background: linear-gradient(90deg, 
+        transparent 0%,
+        var(--text-highlight) 20%,
+        var(--text-highlight) 80%,
+        transparent 100%
+    );
+    opacity: 0.3;
+    z-index: 1;
+}
+
+.physical-connection::before,
+.physical-connection::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: var(--text-highlight);
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: 0 0 10px var(--text-highlight);
+}
+
+.physical-connection::before {
+    left: 0;
+}
+
+.physical-connection::after {
+    right: 0;
+}
+
+.physical-connection.active {
+    opacity: 1;
+    animation: pulseConnection 1.5s infinite;
+}
+
+@keyframes pulseConnection {
+    0% {
+        opacity: 0.3;
+        box-shadow: 0 0 5px var(--text-highlight);
+    }
+    50% {
+        opacity: 1;
+        box-shadow: 0 0 20px var(--text-highlight);
+    }
+    100% {
+        opacity: 0.3;
+        box-shadow: 0 0 5px var(--text-highlight);
+    }
+}
+
+.control-panel {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn {
+    background-color: var(--text-highlight);
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 195, 255, 0.5);
+}
+
+.details-panel {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--layer-border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+}
+
+.details-title {
+    color: var(--text-highlight);
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+.details-description {
+    font-size: 1em;
+    line-height: 1.6;
+}
