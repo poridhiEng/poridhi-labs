@@ -59,7 +59,7 @@ mininet> sh ovs-ofctl add-flow s1 arp,actions=normal
 
 Here is a simulation of the ARP packets being forwarded to all the ports:
 
-<video controls src="Screen Recording 2025-01-18 225622.mp4" title="Title"></video>
+![alt text](arp.gif)
 
 ARP packets are broadcast traffic and are required for resolving IP-to-MAC addresses. This rule ensures that ARP packets are forwarded normally to all necessary ports.
 
