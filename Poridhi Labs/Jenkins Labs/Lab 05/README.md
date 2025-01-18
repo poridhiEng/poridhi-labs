@@ -25,11 +25,11 @@ Both methods will be demonstrated on two separate EC2 instances, ensuring a clea
 
   This command sets up your AWS CLI with the necessary credentials, region, and output format.
 
-  ![alt text](./images/image.png)
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2005/images/image.png)
 
 - You will find the `AWS Access key` and `AWS Seceret Access key` on Lab description page,where you generated the credentials. 
 
-  ![alt text](./images/image-1.png)
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2005/images/image-1.png)
 
 ### Setup a Pulumi Project
 
@@ -171,11 +171,11 @@ Now, let's create a new Pulumi project and write the code to provision our EC2 i
    pulumi up
    ```
 
-   ![alt text](./images/image-2.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2005/images/image-2.png)
 
 This will create 2 EC2 instances, one for method 1 and one for method 2.
 
-![alt text](./images/image-3.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2005/images/image-3.png)
 
 ## Install Jenkins on both the instances
 
@@ -290,7 +290,7 @@ This method involves creating an IP table forwarding rule that redirects traffic
     ip a
     ```
 
-    ![alt text](./images/image-4.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2005/images/image-4.png)
 
     Now, add the correct rule using the correct interface name (`enX0`):
 
@@ -308,7 +308,7 @@ This method involves creating an IP table forwarding rule that redirects traffic
 
 Now, when you access Jenkins on port 80, the IP table rule will automatically forward the requests to port 8080. Find the public ip of the instance and access the jenkins on `http://<public-ip>:80`.
 
-![alt text](./images/image-5.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2005/images/image-5.png)
 
 ## Method 2: Running Jenkins Behind an Nginx Reverse Proxy
 
@@ -400,11 +400,11 @@ Using Nginx as a reverse proxy is a more robust solution, especially for product
     sudo systemctl status nginx
     ```
 
-    ![alt text](./images/image-6.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2005/images/image-6.png)
 
 Now, Nginx will forward all requests on port 80 to Jenkins on port 8080. Now, find the public ip of the instance and access the jenkins on `http://<public-ip>:80`.
 
-![alt text](./images/image-7.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2005/images/image-7.png)
 
 ## Conclusion
 
