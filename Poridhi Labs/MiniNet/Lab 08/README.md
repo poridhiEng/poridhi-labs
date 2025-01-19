@@ -1,4 +1,4 @@
-# Two-Subnet Network Lab Using Mininet
+# Two-Subnet Network Topology with Routing using Mininet
 
 This lab demonstrates how to create a network with two subnets (172.16.20.x and 172.16.30.x) connected by a router using Mininet. Each subnet contains three hosts connected through a switch.
 
