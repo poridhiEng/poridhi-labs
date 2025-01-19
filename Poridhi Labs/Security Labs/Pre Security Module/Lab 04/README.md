@@ -1,4 +1,4 @@
-# Networking Basics: Packets, TCP/IP, and Ports
+# Networking Basics
 
 Networking is the foundation of modern communication. It allows devices to exchange data efficiently and securely, enabling everything from browsing the web to video calls. This lab focuses on breaking down complex networking concepts such as packets, frames, TCP/IP, UDP, and ports with some real-world examples.
 
@@ -14,19 +14,27 @@ The goal of this lab is to provide a clear understanding of the essential compon
 
 To understand how data travels across a network, imagine sending a letter in the mail. When you mail a letter, it is placed inside an envelope with the recipient’s address written on it. In networking, this letter represents the data you want to send, and the envelope is the packet. A packet contains not only the data but also important information like the sender’s and receiver’s addresses, ensuring it reaches the right destination. Packet are encapsulated with the necessary addressing information like source and destination IP addresses and ports.
 
-![](./images/packet.svg)
+![](./images/packetandframe.svg)
 
 Frames are small units of data used for communication within a local network, like your home Wi-Fi or office Ethernet. They contain the data being sent, along with important information like the sender and receiver's MAC addresses. Frames ensure that data travels efficiently between devices within the same network. They work within the Data Link Layer of the OSI model and are essential for local communication. Frames encapsulate packets by adding MAC addressing information.
 
-![](./images/frame.svg)
 
 This process of wrapping data with the necessary addressing information is called encapsulation. It ensures that data, no matter how large, is split into manageable pieces and routed correctly to its destination. This also helps reduce congestion and bottlenecks, making communication faster and more reliable.
 
-## TCP/IP Protocol
+## TCP/IP
 
 TCP/IP, or Transmission Control Protocol/Internet Protocol, is the backbone of the internet. It is a set of rules or protocols that define how data is sent, transmitted, and received across networks. Think of TCP/IP as a translator that ensures devices with different hardware and software can communicate seamlessly.
 
+TCP/IP is a more shorter version of OSI model. In OSI model, there are 7 layers and in TCP/IP model, there are 4 layers. Some of the layers are combined in TCP/IP model. TCP/IP is more popular than OSI model because it is more practical and easier to understand.
+
+![](./images/osivstcp.svg)
+
+
 TCP/IP works through a process called encapsulation, where data is wrapped with headers containing critical information as it moves through four layers: Application, Transport, Internet, and Network Interface. These layers work together to ensure the data reaches its destination correctly.
+
+### Why is TCP Secure?
+
+One of the key features of TCP is its reliability. Before any data is sent, TCP establishes a connection between the sender and receiver through a process called the **Three-way Handshake**. This ensures both devices are synchronized and ready to communicate. Once the data is sent, TCP checks that all packets have arrived and reassembles them in the correct order. If any packet is missing or corrupted, it is resent. This makes TCP a secure and reliable protocol for tasks like downloading files or sending emails.
 
 To understand how TCP/IP works, let's consider a simple example:
 
@@ -56,10 +64,6 @@ docker run -d -p 8000:8000 fazlulkarim105925/tcpgame:latest
 
    Follow the instructions to play the TCP Handshake Game. This game demonstrates the TCP handshake process. When click on `Client` button, the client will send `SYN` a message to the server. The server will respond with a `SYN-ACK` message. Then the client will send `ACK` message to the server. This is because TCP is a connection-oriented protocol and requires a response.
 
-### Why is TCP Secure?
-
-One of the key features of TCP is its reliability. Before any data is sent, TCP establishes a connection between the sender and receiver through a process called the **Three-way Handshake**. This ensures both devices are synchronized and ready to communicate. Once the data is sent, TCP checks that all packets have arrived and reassembles them in the correct order. If any packet is missing or corrupted, it is resent. This makes TCP a secure and reliable protocol for tasks like downloading files or sending emails.
-
 ### TCP Header
 
 | **Header**                | **Description**                                                                 |
@@ -70,9 +74,18 @@ One of the key features of TCP is its reliability. Before any data is sent, TCP 
 | Checksum                    | Helps verify the integrity of the data.                                       |
 
 
+### TCP Connection Close
+
+For closing a TCP connection, the client will send a `FIN` message to the server. The server will respond with a `ACK` message. Then the server will send a `FIN` message to the client. The client will respond with a `ACK` message. This is because TCP is a connection-oriented protocol and requires a response.
+
+![](./images/tcpclose.svg)
+
+
 ## User Datagram Protocol (UDP)
 
-UDP, or User Datagram Protocol, is another protocol used for sending data across networks. Unlike TCP, UDP is connectionless, meaning it does not establish a handshake before transmitting data. This makes it much faster but less reliable.
+UDP, or User Datagram Protocol, is another protocol used for sending data across networks. Unlike TCP, UDP is connectionless, meaning it does not establish a handshake before transmitting data. This makes it much faster but less reliable. There is no gurantee of delivery of packets. Some packets may be lost or corrupted.
+
+![](./images/udp.svg)
 
 Imagine streaming a live video. If a small amount of data is lost during the stream, it’s better to keep playing the video rather than pausing to recover the lost data. This is where UDP shines. It’s ideal for applications where speed is more important than accuracy, such as online gaming, video streaming, or voice calls.
 
