@@ -60,7 +60,7 @@ sudo apt-get install mininet
 
 Linear Topology is a simple topology where switches are connected in a straight line. Each switch is connected to the next one in the sequence. Hosts are connected to the switches.
 
-![alt text](image-2.png)
+![alt text](./images/image-2.png)
 
 In this example, we will create a linear topology with 3 hosts and 2 switches.
 
@@ -115,23 +115,23 @@ if __name__ == '__main__':
    sudo python3 linear_topology.py
    ```
 
-   ![alt text](image-3.png)
+   ![alt text](./images/image-3.png)
 
 
 3. Inside the CLI:
    - Use `pingall` to test connectivity.
 
-        ![alt text](image-4.png)
+        ![alt text](./images/image-4.png)
 
    - Use `nodes` to view the nodes in the topology.
 
-        ![alt text](image-5.png)
+        ![alt text](./images/image-5.png)
 
 ### **2. Tree Topology**
 
 Now, we will create a tree topology with 3 switches and 4 hosts. The tree topology follows a hierarchical structure where switches are connected in levels, and hosts are connected to the switches at the lowest level.
 
-![alt text](image-7.png)
+![alt text](./images/image-7.png)
 
 
 #### **Topology with Depth 3 and Fanout 2**
@@ -241,7 +241,7 @@ In this code, first we have created an empty network with default controller. Th
     pingall
     ```
 
-    ![alt text](image-6.png)
+    ![alt text](./images/image-6.png)
 
 This script allows flexible creation of tree topologies, making it ideal for hierarchical network testing.
 
