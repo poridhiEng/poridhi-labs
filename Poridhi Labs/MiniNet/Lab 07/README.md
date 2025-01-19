@@ -14,7 +14,7 @@ Hosts represent end devices (like computers or IoT devices). They can send or re
 
 **2. Switches**:
 
-Switcher are network devices that simulate Layer 2 devices (e.g., Open vSwitch). They forward packets between hosts or other switches. They work with a controller to handle traffic intelligently.
+Switcher are network devices that simulate Layer 2 devices `(e.g., Open vSwitch)`. They forward packets between hosts or other switches. They work with a controller to handle traffic intelligently.
 
 **3. Controllers**:
 
@@ -114,118 +114,118 @@ if __name__ == '__main__':
    ```bash
    sudo python3 linear_topology.py
    ```
+
+   ![alt text](image-3.png)
+
+
 3. Inside the CLI:
    - Use `pingall` to test connectivity.
+
+        ![alt text](image-4.png)
+
    - Use `nodes` to view the nodes in the topology.
+
+        ![alt text](image-5.png)
 
 ### **2. Tree Topology**
 
 Now, we will create a tree topology with 3 switches and 4 hosts. The tree topology follows a hierarchical structure where switches are connected in levels, and hosts are connected to the switches at the lowest level.
 
-![alt text](image-1.png)
+![alt text](image-7.png)
 
 
 #### **Topology with Depth 3 and Fanout 2**
 
-- **Root switch**: `s3_1`.
-- **Intermediate switches**: `s2_1`, `s2_2`.
-- **Hosts**: `h1_1_1`, `h1_1_2`, `h1_2_1`, `h1_2_2`.
+- **Root switch**: `s1`.
+- **Intermediate switches**: `s2`, `s3`.
+- **Hosts**: `h1`, `h2`, `h3`, `h4`.
 
 ### **Python Script for Tree Topology**
 
 This python script creates a tree topology with 3 switches and 4 hosts.
 
 ```python
-from mininet.topo import Topo
 from mininet.net import Mininet
+from mininet.node import Controller, OVSSwitch
 from mininet.cli import CLI
-from mininet.log import setLogLevel
+from mininet.log import setLogLevel, info
 
-class TreeTopology(Topo):
-    """
-    Tree topology example:
-        - Root switch at the top.
-        - Intermediate switches connected to the root.
-        - Hosts connected to the intermediate switches.
-    """
+def createTreeTopo(depth=3, fanout=2):
+    # Create an empty network with default controller
+    net = Mininet(controller=Controller, switch=OVSSwitch)
+    
+    # Add controller to the network
+    c0 = net.addController('c0')
+    
+    # Dictionary to store switches at each level
+    switches = {}
+    
+    # Create switches for each level
+    switch_count = 1
+    for level in range(depth):
+        switches[level] = []
+        # Number of switches at this level = fanout^level
+        num_switches_at_level = fanout ** level
+        
+        for i in range(num_switches_at_level):
+            switch = net.addSwitch(f's{switch_count}')
+            switches[level].append(switch)
+            switch_count += 1
+    
+    # Connect switches between levels
+    for level in range(depth-1):
+        for i, parent_switch in enumerate(switches[level]):
+            # Calculate children indices
+            child_start_idx = i * fanout
+            child_end_idx = child_start_idx + fanout
+            
+            # Connect parent to its children
+            for child_switch in switches[level+1][child_start_idx:child_end_idx]:
+                net.addLink(parent_switch, child_switch)
+    
+    # Add hosts to the lowest level switches
+    host_count = 1
+    for switch in switches[depth-1]:
+        # Add fanout number of hosts to each leaf switch
+        for _ in range(fanout):
+            host = net.addHost(f'h{host_count}')
+            net.addLink(switch, host)
+            host_count += 1
+    
+    return net
 
-    def build(self, depth=2, fanout=2):
-        """
-        Build a tree topology.
-        :param depth: Number of levels in the tree.
-        :param fanout: Number of child nodes (switches or hosts) per parent switch.
-        """
-        self.create_tree(depth, fanout, parent=None)
-
-    def create_tree(self, depth, fanout, parent):
-        """
-        Recursively create the tree structure.
-        :param depth: Current depth of the tree.
-        :param fanout: Number of child nodes per parent.
-        :param parent: Parent switch for the current level.
-        """
-        # Base case: If depth is 0, return (no more switches to add).
-        if depth == 0:
-            return
-
-        # Create switches at the current level.
-        for i in range(1, fanout + 1):
-            switch = self.addSwitch(f's{depth}_{i}')
-
-            # If there is a parent switch, connect it to the current switch.
-            if parent:
-                self.addLink(parent, switch)
-
-            # If we are at the last level, add hosts to the switch.
-            if depth == 1:
-                for j in range(1, fanout + 1):
-                    host = self.addHost(f'h{depth}_{i}_{j}')
-                    self.addLink(switch, host)
-            else:
-                # Recurse to add child switches or hosts.
-                self.create_tree(depth - 1, fanout, switch)
-
-def run():
-    """
-    Run the tree topology in Mininet.
-    """
-    # Create the network using the TreeTopology
-    topo = TreeTopology(depth=3, fanout=2)  # Example: Depth of 3, fanout of 2
-    net = Mininet(topo=topo)
+def main():
+    # Set log level for debugging
+    setLogLevel('info')
+    
+    # Create network with specified depth and fanout
+    depth = 3  # Can be changed to any value
+    fanout = 2  # Can be changed to any value
+    
+    info(f'*** Creating tree topology with depth {depth} and fanout {fanout}\n')
+    info(f'*** Number of hosts will be {fanout ** depth}\n')
+    
+    net = createTreeTopo(depth, fanout)
+    
+    # Start network
     net.start()
-
-    # Test network connectivity
-    print("Testing network connectivity...")
-    net.pingAll()
-
-    # Start the CLI for user interaction
+    
+    # Print basic network info
+    info('*** Network is running\n')
+    info(f'*** Total switches: {len(net.switches)}\n')
+    info(f'*** Total hosts: {len(net.hosts)}\n')
+    
+    # Start CLI
     CLI(net)
-
-    # Stop the network
+    
+    # Stop network
     net.stop()
 
 if __name__ == '__main__':
-    setLogLevel('info')  # Set logging level to display info messages
-    run()
+    main()
 ```
 
-### **Explanation of the Code**
-
-1. **Tree Structure**:
-   - The `depth` parameter specifies the number of levels in the tree (e.g., root → intermediate → leaf).
-   - The `fanout` parameter determines how many child nodes (switches or hosts) each switch has.
-
-2. **Recursive Tree Creation**:
-   - The `create_tree` function is a recursive method that adds switches and connects them to their parent.
-   - At the last level (`depth == 1`), hosts are added to the switches instead of more child switches.
-
-3. **Key Classes and Methods**:
-   - `addSwitch(name)`: Adds a switch to the topology.
-   - `addHost(name)`: Adds a host to the topology.
-   - `addLink(node1, node2)`: Connects two nodes (switches or hosts).
-
-4. **Mininet Interaction**:
-   - The `run()` function initializes the network, starts it, performs connectivity tests using `pingAll()`, and launches the interactive CLI.
+In this code, first we have created an empty network with default controller. Then we added controller to the network. Then we created switches at each level and connect them to their parent. Then we added hosts to the lowest level switches.
 
 
 ### **Run the Script**
@@ -236,6 +236,12 @@ if __name__ == '__main__':
    sudo python3 tree_topology.py
    ```
 3. Test connectivity and interact with the network in the Mininet CLI.
+
+    ```sh
+    pingall
+    ```
+
+    ![alt text](image-6.png)
 
 This script allows flexible creation of tree topologies, making it ideal for hierarchical network testing.
 
