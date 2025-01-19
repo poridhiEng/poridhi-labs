@@ -2,7 +2,7 @@
 
 In this lab, we will use **MAC addresses** to create flow rules for traffic between hosts. We will create rules based on the source and destination MAC addresses of the packets.
 
-![alt text](image-3.png)
+![alt text](./images-3/image-3.png)
 
 ## Network Topology
 
@@ -33,7 +33,7 @@ mininet> h2 ifconfig
 mininet> h3 ifconfig
 ```
 
-![alt text](image.png)
+![alt text](./images-3/image.png)
 
 ### Add flow rules based on source and destination MAC addresses:
 
@@ -52,7 +52,7 @@ Send ping requests to each host:
 mininet> pingall
 ```
 
-![alt text](image-1.png)
+![alt text](./images-3/image-1.png)
 
 Here we can see that the ping fails. This is because when you run `pingall` in Mininet, it tries to send ICMP packets (ping) from each host to all others. However, ICMP operates at the `**IP layer**` (Layer 3), while the underlying network setup requires ARP (Address Resolution Protocol) at the `**data link layer (Layer 2)**` to resolve IP addresses to MAC addresses. 
 
@@ -95,7 +95,7 @@ ARP replies are **unicast** (sent directly to the requester). These unicast repl
 mininet> pingall
 ```
 
-![alt text](image-2.png)
+![alt text](./images-3/image-2.png)
 
 When you run `pingall`, the ARP requests are broadcasted to all hosts, enabling them to resolve each other's MAC addresses. Once MAC addresses are resolved, ICMP packets (ping) can flow as expected. 
 

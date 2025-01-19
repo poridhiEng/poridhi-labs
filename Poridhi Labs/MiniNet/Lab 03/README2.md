@@ -2,7 +2,7 @@
 
 In this lab, we will create **OpenFlow** rules using **Layer 3 (IP)** information and implement **QoS (Quality of Service)** with Differentiated Services Code Point (**DSCP**). Let's break it down step by step.
 
-![alt text](image-8.png)
+![alt text](./images-3/image-8.png)
 
 ## Network Topology
 
@@ -60,7 +60,7 @@ mininet> sh ovs-ofctl add-flow s1 priority=800,dl_type=0x800,nw_src=10.0.0.3,nw_
     - The DSCP value is shifted **two bits to the left** when stored in the TOS field.
   - **`normal`**: After modifying the TOS field, packets are forwarded using normal switch behavior.
 
-![alt text](image-6.png)
+![alt text](./images-3/image-6.png)
 
 This rule gives traffic from `h3` higher priority, ensuring low latency and faster delivery (e.g., for real-time applications like VoIP).
 
@@ -68,7 +68,7 @@ This rule gives traffic from `h3` higher priority, ensuring low latency and fast
 
 The **DSCP (Differentiated Services Code Point)** and **TOS (Type of Service)** field are components of the IP header used to indicate and manage the priority or quality of service (QoS) for IP packets in a network.
 
-![alt text](image-9.png)
+![alt text](./images-3/image-9.png)
 
 
 ### **1. TOS (Type of Service) Field**
@@ -144,7 +144,7 @@ mininet> h3 ping h2
 
 ![](./images/lab3-6.drawio.svg)
 
-![alt text](image-7.png)
+![alt text](./images-3/image-7.png)
 
 ## Conclusion
 

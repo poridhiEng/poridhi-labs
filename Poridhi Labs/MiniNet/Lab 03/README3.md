@@ -20,7 +20,7 @@ The network topology consists of:
 
 All hosts are connected to the same switch (`s1`).
 
-![alt text](image-11.png)
+![alt text](./images-3/image-11.png)
 
 ## Steps to Configure the Setup
 
@@ -46,7 +46,7 @@ The server can respond to HTTP requests sent to `h3`’s IP address (e.g., `10.0
 
 We will add flow rules to the switch `s1` to forward HTTP traffic to `h3` and normal traffic from `h3` to the appropriate destination. Also, we will add a rule to handle ARP packets.
 
-![alt text](image-10.png)
+![alt text](./images-3/image-10.png)
 
 
 ### 1. Enable ARP Handling
@@ -59,7 +59,7 @@ mininet> sh ovs-ofctl add-flow s1 arp,actions=normal
 
 Here is a simulation of the ARP packets being forwarded to all the ports:
 
-![alt text](arp.gif)
+![alt text](./images-3/arp.gif)
 
 ARP packets are broadcast traffic and are required for resolving IP-to-MAC addresses. This rule ensures that ARP packets are forwarded normally to all necessary ports.
 
