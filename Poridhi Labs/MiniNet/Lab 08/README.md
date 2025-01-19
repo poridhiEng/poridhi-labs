@@ -168,7 +168,7 @@ mininet> r0 ip addr show
 ```
 Expected output should show two interfaces with IP addresses 172.16.20.1 and 172.16.30.1.
 
-![alt text](image.png)
+![alt text](./images/image.png)
 
 b. Check host configurations:
 ```bash
@@ -183,7 +183,7 @@ a. Check router routing table:
 mininet> r0 ip route
 ```
 
-![alt text](image-1.png)
+![alt text](./images/image-1.png)
 
 b. Check host routing tables:
 ```bash
@@ -199,14 +199,14 @@ mininet> h4 iperf -s &
 mininet> h1 iperf -c 172.16.30.44
 ```
 
-![alt text](image-2.png)
+![alt text](./images/image-2.png)
 
 b. Traceroute between subnets:
 ```bash
 mininet> h1 traceroute 172.16.30.44
 ```
 
-![alt text](image-3.png)
+![alt text](./images/image-3.png)
 
 ## Expected Results
 
