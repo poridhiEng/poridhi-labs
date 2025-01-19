@@ -1,6 +1,6 @@
-# Advanced Networking Concepts: Port Forwarding, Firewalls, VPNs, Routers, and Switches
+# Advanced Networking Concepts
 
-Networking is an essential part of modern communication systems, ensuring secure and efficient data transfer across devices and networks. Beyond basic data transmission, networking involves advanced techniques and devices that manage and protect information flow. This lab provides an in-depth exploration of key concepts such as port forwarding, firewalls, VPNs, routers, and switches, offering a comprehensive understanding of how these components work together to build secure and reliable networks.
+Networking is an essential part of modern communication systems, ensuring secure and efficient data transfer across devices and networks. Beyond basic data transmission, networking involves advanced techniques and devices that manage and protect information flow. This lab provides an in-depth exploration of key concepts such as `port forwarding`, `firewalls`, `VPNs`, `routers`, and `switches`, offering a comprehensive understanding of how these components work together to build secure and reliable networks. We wll visually see how these components work together to build secure and reliable networks.
 
 ## Objective
 - Understand the role of port forwarding in enabling external access to internal services.
@@ -16,23 +16,44 @@ Port forwarding is a technique that allows external devices to access services h
 ### How It Works
 When a device on the Internet tries to access a service hosted on a private network, port forwarding ensures the router forwards the request to the correct internal device. For example, if a web server runs on port 80 at the internal IP address 192.168.1.10, port forwarding maps the router's external IP and port 80 to this internal address, enabling external users to access the web server.
 
+To visualize the port forwarding, we will run a simple application in a docker container.
+
+1. **Pull and Run a Docker Image:**
+   ```bash
+   docker pull fazlulkarim105925/portforwarding:latest
+   ```
+2. **Run the Docker Image:**
+   ```bash
+   docker run -d -p 8000:8000 fazlulkarim105925/portforwarding:latest
+   ```
+
+3. **Access the UI:**
+   - Find the `eth0` ip by using `ifconfig` command in the terminal.
+
+     ![](./images/6.png)
+
+   - Create a LoadBalancer in Poridhi's Cloud with `eth0` ip and port as `8000`.
+
+   - Access the application from any browser with the LoadBalancer's URL.
+
+     ![](./images/1.png)
+
+     This application visualizes and manages **port forwarding** configurations. It shows the flow of packets between two networks (e.g., **Network #1** and **Network #2**) through a public IP and specific port (e.g., **Port 80**). It allows users to configure forwarding rules, enabling traffic from one network to be routed securely and efficiently to another.
+
+
 ### Use Cases
 - Hosting a website on a private server.
 - Enabling remote access to surveillance cameras.
 - Supporting online gaming where specific ports need to be open.
 
-### Best Practices
-- Use non-standard ports for increased security.
-- Combine port forwarding with firewall rules to limit access to trusted sources.
-
 ## Firewalls
 
-Firewalls are critical for protecting networks by monitoring and controlling traffic based on predefined security rules. They act as a barrier between trusted internal networks and untrusted external sources, such as the Internet.
+Firewalls are critical for protecting networks by monitoring and controlling traffic based on predefined security rules. They act as a barrier between trusted internal networks and untrusted external sources, such as the Internet. Firewall decides whether to allow or block traffic based on the rules. 
 
 ### Types of Firewalls
-1. **Stateful Firewalls:** Analyze entire connections, tracking states of active connections to make dynamic decisions about allowing or blocking traffic.
-2. **Stateless Firewalls:** Evaluate individual packets against static rules. They are faster but less adaptive to complex traffic patterns.
-3. **Next-Generation Firewalls (NGFW):** Incorporate advanced features like deep packet inspection, intrusion prevention, and application awareness.
+- **Stateful Firewalls:** Analyze entire connections, tracking states of active connections to make dynamic decisions about allowing or blocking traffic. This firewall type consumes many resources in comparison to stateless firewalls as the decision making is dynamic. For example, a firewall could allow the first parts of a TCP handshake that would later fail. If a connection from a host is bad, it will block the entire device.
+
+- **Stateless Firewalls:** This firewall type uses a static set of rules to determine whether or not individual packets are acceptable or not. For example, a device sending a bad packet will not necessarily mean that the entire device is then blocked. This firewall type is less resource-intensive than stateful firewalls.
 
 ### Key Functions
 - Block unauthorized access to sensitive resources.
@@ -44,16 +65,47 @@ Firewalls are critical for protecting networks by monitoring and controlling tra
 - **Software Firewalls:** Installed on individual devices or integrated into operating systems.
 - **Cloud Firewalls:** Protect cloud-hosted services by monitoring and controlling access.
 
+Let's understand the concept of firewalls by running a simple application.
+#### Pull Docker the Docker Image
+
+```bash
+docker pull fazlulkarim105925/firewall:latest
+```
+
+#### Run the Docker Container
+
+```bash
+docker run -d -p 8001:8001 fazlulkarim105925/firewall:latest
+```
+
+#### Access the Application
+
+- Find the `eth0` ip by using `ifconfig` command in the terminal.
+
+     ![](./images/6.png)
+
+- Create a LoadBalancer in Poridhi's Cloud with `eth0` ip and port as `8001`.
+
+- Access the application from any browser with the LoadBalancer's URL.
+
+   ![](./images/2.png)
+
+
 ## Virtual Private Networks (VPNs)
 A VPN creates a secure and encrypted tunnel between devices, enabling private communication over public networks. This is particularly valuable for businesses, remote workers, and individuals seeking to protect their privacy online.
 
 ### How VPNs Work
 VPNs encapsulate data packets and encrypt them before transmission. This process ensures that even if the data is intercepted, it remains unreadable without the encryption key.
 
-**Applications of VPNs:**
-- **Corporate Use:** Securely connect remote employees to internal resources.
-- **Privacy Protection:** Mask IP addresses and encrypt Internet traffic.
-- **Bypassing Geo-Restrictions:** Access content restricted by geographical location.
+### **Applications of VPNs:**
+
+| **Application**             | **Explanation**                                                                                      |
+|------------------------------|------------------------------------------------------------------------------------------------------|
+| **Corporate Use**            | VPNs allow employees working remotely to securely access their company's private network and files. |
+| **Privacy Protection**       | VPNs hide your real IP address and encrypt your online activity, making it hard for hackers to see. |
+| **Bypassing Geo-Restrictions** | VPNs let you access websites, videos, or services that are blocked in your country by masking your location. |
+
+
 
 **VPN Protocols:**
 | **Protocol** | **Description**                                                                 |
@@ -63,8 +115,44 @@ VPNs encapsulate data packets and encrypt them before transmission. This process
 | OpenVPN      | Open-source and highly secure, offering strong encryption and reliability.      |
 | WireGuard    | Lightweight and faster than traditional VPN protocols with robust encryption.   |
 
+To visualize the concept of VPNs, we will run a simple application.
+
+#### Pull Docker the Docker Image
+
+```bash
+docker pull fazlulkarim105925/vpn:latest
+```         
+
+#### Run the Docker Container
+
+```bash
+docker run -d -p 8002:8002 fazlulkarim105925/vpn:latest
+```
+
+#### Access the Application
+
+- Find the `eth0` ip by using `ifconfig` command in the terminal.
+
+     ![](./images/6.png)
+
+- Create a LoadBalancer in Poridhi's Cloud with `eth0` ip and port as `8002`.
+
+- Access the application from any browser with the LoadBalancer's URL.
+
+   ![](./images/3.png)
+
 ## Routers
-Routers are essential devices that connect multiple networks and direct data packets between them. They determine the most efficient path for data transmission based on network topology and conditions.
+Routers are essential devices that connect multiple networks and direct data packets between them. They determine the most efficient path for data transmission based on network topology and conditions. Routers are the devices that enables to communicate between networks.
+
+![](./images/routers.svg)
+
+This diagram represents a network communication setup between **Network-A** (192.168.1.0/24) and **Network-B** (10.0.0.0/24) through the Internet. 
+
+- **Routers A and B** manage the traffic between the networks using their respective **routing tables**.
+- **PC 192.168.1.10** in Network-A communicates with **PC 10.0.0.10** in Network-B.
+- The connection passes through the **ISP Network** via the Internet, ensuring proper data flow between both networks.
+
+This setup demonstrates how devices from different networks communicate using routing and proper IP addressing.
 
 ### Key Functions of Routers
 - **Routing:** Direct packets across networks using routing tables and protocols (e.g., OSPF, RIP, BGP).
