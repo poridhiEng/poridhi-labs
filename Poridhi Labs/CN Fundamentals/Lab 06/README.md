@@ -11,7 +11,7 @@ This lab will help you understand the Address Resolution Protocol (ARP) through 
 
 ## Task Overview
 
-![alt text](./images/ARP-01%20(1).svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/47288166c8e72883133a1a5acfea8067d18142cb/Poridhi%20Labs/CN%20Fundamentals/Lab%2006/images/ARP-01%20(1).svg)
 
 In this lab, we will:
 1. Create two isolated network namespaces connected by a virtual ethernet link.
@@ -119,7 +119,7 @@ Open a new terminal window to capture ARP packets in `ns2`.
 sudo ip netns exec ns2 tcpdump -i veth2 arp
 ```
 
-![alt text](./images/image.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2006/images/image.png)
 
 ### Step 3: Trigger ARP Process
 
@@ -141,7 +141,7 @@ In your original terminal, trigger the ARP process by pinging `192.168.1.2` from
 
     This sends an ARP request to `ns2` to find the MAC address for `192.168.1.2`.
 
-    ![alt text](./images/image-1.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2006/images/image-1.png)
 
 3. Check ARP cache again
 
@@ -151,15 +151,15 @@ In your original terminal, trigger the ARP process by pinging `192.168.1.2` from
 
     This should now show the ARP entry for `192.168.1.2` with the corresponding MAC address sent by `ns2`.
 
-    ![alt text](./images/image-3.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2006/images/image-3.png)
 
 ### Example tcpdump Output
 
-![alt text](./images/ARP-02%20(1).svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/47288166c8e72883133a1a5acfea8067d18142cb/Poridhi%20Labs/CN%20Fundamentals/Lab%2006/images/ARP-02%20(1).svg)
 
 In the `tcpdump` window, you should see something like:
 
-![alt text](./images/image-2.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2006/images/image-2.png)
 
 ### Understand What's Happening?
 
@@ -174,7 +174,7 @@ This exchange allows both IPs to resolve each other's MAC addresses for communic
 
 ### **Experiment 1: Watch ARP Cache Timing**
 
-![alt text](./images/ARP-03%20(1).svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/47288166c8e72883133a1a5acfea8067d18142cb/Poridhi%20Labs/CN%20Fundamentals/Lab%2006/images/ARP-03%20(1).svg)
 
 Observe how long ARP entries remain in the cache.
 
@@ -205,7 +205,7 @@ Observe how long ARP entries remain in the cache.
         192.168.1.2 dev veth1 lladdr aa:bb:cc:dd:ee:ff REACHABLE
         ```
 
-        ![alt text](./images/image-4.png)
+        ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2006/images/image-4.png)
 
     - Over time, the state may change to STALE, depending on the kernel's ARP cache timeout.
 
@@ -219,7 +219,7 @@ Observe how long ARP entries remain in the cache.
         192.168.1.2 dev veth1 lladdr aa:bb:cc:dd:ee:ff STALE
         ```
 
-        ![alt text](./images/image-5.png)
+        ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2006/images/image-5.png)
 
 5. **Access the STALE Entry**
 
@@ -235,7 +235,7 @@ Observe how long ARP entries remain in the cache.
         192.168.1.2 dev veth1 lladdr aa:bb:cc:dd:ee:ff REACHABLE
         ```
 
-        ![alt text](./images/image-6.png)
+        ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2006/images/image-6.png)
 
 ### **Experiment 2: Force ARP Updates**
 
@@ -250,7 +250,7 @@ In this experiment, you will manually delete and add ARP entries and verify the 
    ```
    - Look for the `link/ether` field in the output, which will display the MAC address (e.g., `aa:bb:cc:dd:ee:ff`).
 
-   ![alt text](./images/image-7.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2006/images/image-7.png)
 
 2. **Delete the Existing ARP Entry**:
 
@@ -287,7 +287,7 @@ In this experiment, you will manually delete and add ARP entries and verify the 
 
     You should see an entry like this:
 
-    ![alt text](./images/image-8.png)
+    ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/CN%20Fundamentals/Lab%2006/images/image-8.png)
 
     Manually added entries are marked as `PERMANENT`, meaning they will not time out or transition to `STALE` automatically.
 
