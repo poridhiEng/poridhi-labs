@@ -241,6 +241,21 @@ if __name__ == '__main__':
     run()
 ```
 
+This script creates an advanced Mininet topology with the following components:  
+
+- **2 Switches**: `s1` and `s2`  
+- **4 Hosts**:  
+  - `h1` and `h2` in subnet `10.0.1.0/24`, connected to `s1`  
+  - `h3` and `h4` in subnet `10.0.2.0/24`, connected to `s2`  
+- **1 Router**: `r1`, connected to both `s1` and `s2` for inter-subnet communication  
+
+#### Additional Configurations
+
+- The router (`r1`) is configured with two interfaces for the two subnets (`10.0.1.254/24` and `10.0.2.254/24`) and IP forwarding is enabled.  
+- Default gateways are set on all hosts to route traffic through the router for cross-subnet communication.  
+
+This topology allows testing communication between hosts in different subnets via the router.
+
 ### Run the Advanced Topology
 
 1. Make the script executable:
