@@ -14,7 +14,7 @@
 
 - [Simulating a Two-Subnet Network Topology in Mininet with One Switch](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MiniNet/Lab%2004/README.md)
 
-- [Exploring ARP Fundamentals and Advanced Topologies with Mininet](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MiniNet/Lab%2005/README.md)
+- [ARP Fundamentals and Advanced Topologies with Mininet](https://github.com/poridhiEng/poridhi-labs/blob/main/Poridhi%20Labs/MiniNet/Lab%2005/README.md)
 
 - [Simulating VLAN Networks with Mininet](https://github.com/poridhiEng/poridhi-labs/tree/main/Poridhi%20Labs/MiniNet/Lab%2006)
 
