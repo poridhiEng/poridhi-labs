@@ -117,6 +117,8 @@ Open a new terminal window to capture ARP packets in `ns2`.
 sudo ip netns exec ns2 tcpdump -i veth2 arp
 ```
 
+![alt text](./images/image.png)
+
 ### Step 3: Trigger ARP Process
 
 In your original terminal, trigger the ARP process by pinging `192.168.1.2` from `ns1`.
@@ -137,6 +139,8 @@ In your original terminal, trigger the ARP process by pinging `192.168.1.2` from
 
     This sends an ARP request to `ns2` to find the MAC address for `192.168.1.2`.
 
+    ![alt text](./images/image-1.png)
+
 3. Check ARP cache again
 
     ```bash
@@ -145,21 +149,20 @@ In your original terminal, trigger the ARP process by pinging `192.168.1.2` from
 
     This should now show the ARP entry for `192.168.1.2` with the corresponding MAC address sent by `ns2`.
 
+    ![alt text](./images/image-3.png)
+
 ### Example tcpdump Output
 
 In the `tcpdump` window, you should see something like:
 
-```
-12:00:00.123456 ARP, Request who-has 192.168.1.2 tell 192.168.1.1, length 28
-12:00:00.123457 ARP, Reply 192.168.1.2 is-at aa:bb:cc:dd:ee:ff, length 28
-```
+![alt text](./images/image-2.png)
 
 ### Understand What's Happening?
 
 This output shows ARP communication on `veth2` in `ns2`.  
 
-- `192.168.1.1` sends a broadcast request asking for the MAC address of `192.168.1.2`, which replies with its MAC (`f2:07:c7:c9:f7:f4`).  
-- Similarly, `192.168.1.2` requests the MAC of `192.168.1.1`, which replies with its MAC (`82:c7:2f:8d:8d:c1`).  
+- `192.168.1.1` sends a broadcast request asking for the MAC address of `192.168.1.2`, which replies with its MAC (`12:d6:fd:8f:7f:c2`).  
+- Similarly, `192.168.1.2` requests the MAC of `192.168.1.1`, which replies with its MAC (`ea:93:63:ff:d8:dc`).  
 
 This exchange allows both IPs to resolve each other's MAC addresses for communication.
 
@@ -195,6 +198,9 @@ Observe how long ARP entries remain in the cache.
         ```bash
         192.168.1.2 dev veth1 lladdr aa:bb:cc:dd:ee:ff REACHABLE
         ```
+
+        ![alt text](./images/image-4.png)
+
     - Over time, the state may change to STALE, depending on the kernel's ARP cache timeout.
 
 4. **Wait for the Entry to Transition to `STALE`**
@@ -206,6 +212,8 @@ Observe how long ARP entries remain in the cache.
         ```bash
         192.168.1.2 dev veth1 lladdr aa:bb:cc:dd:ee:ff STALE
         ```
+
+        ![alt text](./images/image-5.png)
 
 5. **Access the STALE Entry**
 
@@ -221,6 +229,8 @@ Observe how long ARP entries remain in the cache.
         192.168.1.2 dev veth1 lladdr aa:bb:cc:dd:ee:ff REACHABLE
         ```
 
+        ![alt text](./images/image-6.png)
+
 ### **Experiment 2: Force ARP Updates**
 
 In this experiment, you will manually delete and add ARP entries and verify the changes in the ARP cache.
@@ -233,6 +243,8 @@ In this experiment, you will manually delete and add ARP entries and verify the 
    sudo ip netns exec ns2 ip link show veth2
    ```
    - Look for the `link/ether` field in the output, which will display the MAC address (e.g., `aa:bb:cc:dd:ee:ff`).
+
+   ![alt text](./images/image-7.png)
 
 2. **Delete the Existing ARP Entry**:
 
@@ -269,9 +281,7 @@ In this experiment, you will manually delete and add ARP entries and verify the 
 
     You should see an entry like this:
 
-    ```bash
-    192.168.1.2 dev veth1 lladdr aa:bb:cc:dd:ee:ff PERMANENT
-    ```
+    ![alt text](./images/image-8.png)
 
 ## Cleanup
 
