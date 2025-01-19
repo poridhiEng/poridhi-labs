@@ -12,7 +12,7 @@ ARP helps find the MAC address corresponding to a given IP address.
 
 ## **How Address Resolution Protocol (ARP) Works**
 
-![alt text](./images/ARP-01.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/ba45d0ee1153bc17745cd70055fe6fafa43db331/Poridhi%20Labs/CN%20Fundamentals/Lab%2001/images/ARP-01.svg)
 
 1. **Request Phase**:
    - The device (sender) broadcasts an **ARP request** to all devices in the network, asking:  
@@ -28,13 +28,13 @@ ARP helps find the MAC address corresponding to a given IP address.
 
 ### **Scenario**:
 
-![alt text](./images/ARP-02.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/ba45d0ee1153bc17745cd70055fe6fafa43db331/Poridhi%20Labs/CN%20Fundamentals/Lab%2001/images/ARP-02.svg)
 
 - Device A (IP: 192.168.1.10, MAC: AA:BB:CC:DD:EE:01) wants to communicate with Device B (IP: 192.168.1.20, MAC: AA:BB:CC:DD:EE:02) on the same LAN.
 
 ### **Steps**:
 
-![alt text](./images/ARP-03.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/ba45d0ee1153bc17745cd70055fe6fafa43db331/Poridhi%20Labs/CN%20Fundamentals/Lab%2001/images/ARP-03.svg)
 
 1. Device A checks its ARP cache for the MAC address of 192.168.1.20.  
    - If not found, Device A sends an **ARP request**:  
@@ -52,7 +52,7 @@ ARP helps find the MAC address corresponding to a given IP address.
 
 ## **ARP Packet Structure**
 
-![alt text](./images/ARP-Packet.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/ba45d0ee1153bc17745cd70055fe6fafa43db331/Poridhi%20Labs/CN%20Fundamentals/Lab%2001/images/ARP-Packet.svg)
 
 An ARP message consists of:
 - **Hardware Type**: Specifies the hardware type (e.g., Ethernet).
