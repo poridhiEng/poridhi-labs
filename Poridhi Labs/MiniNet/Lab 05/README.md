@@ -1,10 +1,13 @@
-# Exploring ARP Fundamentals and Advanced Topologies with Mininet
+# ARP Fundamentals and Advanced Topologies with Mininet
 
 This tutorial provides an interactive and practical approach to understanding the Address Resolution Protocol (ARP) using Mininet. ARP is essential for devices on a local network to discover each other's MAC addresses. Through this guide, you will observe ARP behavior and experiment with it in a controlled environment.
+
+![alt text](./images/ARP-01.svg)
 
 ## Prerequisites
 
 - A Linux system with Mininet installed.
+- Basic knowledge of ARP packets and how they are sent and received.
 - Basic knowledge of IP addresses and MAC addresses.
 
 ## **Task Overview**
@@ -18,6 +21,8 @@ This tutorial demonstrates the Address Resolution Protocol (ARP) in a simulated 
 ## Part 1: Setting Up a Basic Topology
 
 We will create a simple network topology with two hosts connected through a switch.
+
+![alt text](./images/simple_topo.svg)
 
 ### Step 1: Create the Topology File
 
@@ -84,6 +89,9 @@ This will launch Mininet with the defined topology and open its CLI.
 ## Part 2: Understanding ARP in Action
 
 ### Basic ARP Process
+
+![alt text](./images/simple_topo_seq.svg)
+
 When host `h1` communicates with `h2`:
 
 1. `h1` checks its ARP cache for `h2`'s IP (10.0.0.2).
@@ -93,7 +101,7 @@ When host `h1` communicates with `h2`:
 
 ### Experimenting with ARP
 
-1. **Check the initial ARP cache**:
+1. **Check the initial ARP cache**
 
    In the Mininet CLI, run:
 
@@ -103,7 +111,7 @@ When host `h1` communicates with `h2`:
 
    The ARP cache will be empty initially as no communication has occurred.
 
-2. **Trigger ARP by pinging `h2`**:
+2. **Trigger ARP by pinging `h2`**
 
    Send a ping from `h1` to `h2` to initiate ARP resolution:
 
@@ -111,9 +119,11 @@ When host `h1` communicates with `h2`:
    h1 ping -c1 10.0.0.2
    ```
 
+   ![alt text](./images/image.png)
+
    This will trigger ARP resolution, and `h2` will respond with its MAC address.
 
-3. **View the updated ARP cache**:
+3. **View the updated ARP cache**
 
    After the ping, verify that `h2`'s MAC address is now in `h1`'s ARP cache:
 
@@ -123,9 +133,11 @@ When host `h1` communicates with `h2`:
 
    The output will show `h2`'s MAC address mapped to 10.0.0.2.
 
+   ![alt text](./images/image-1.png)
+
 ### Managing ARP Entries
 
-1. **Clear the ARP cache**:
+1. **Clear the ARP cache**
 
    Clear the ARP cache on `h1`:
 
@@ -133,7 +145,7 @@ When host `h1` communicates with `h2`:
    h1 ip neigh flush all
    ```
 
-2. **Find the MAC address of `h2`**:   
+2. **Find the MAC address of `h2`**  
 
    Retrieve the MAC address of `h2`:
 
@@ -141,7 +153,9 @@ When host `h1` communicates with `h2`:
    h2 ifconfig
    ```
 
-3. **Add a static ARP entry**:
+   ![alt text](./images/image-2.png)
+
+3. **Add a static ARP entry**
 
    Add a static ARP entry to `h1`:
 
@@ -150,7 +164,7 @@ When host `h1` communicates with `h2`:
    ```
    Replace `<h2-mac-address>` with the actual MAC address of `h2`.
 
-4. **Verify the static entry**:
+4. **Verify the static entry**
 
    Check that the static ARP entry is present:
 
@@ -159,6 +173,8 @@ When host `h1` communicates with `h2`:
    ```
 
    The output will show the static ARP entry for `10.0.0.2`.
+
+   ![alt text](./images/image-3.png)
 
 ## Part 3: Understanding ARP Packets
 
@@ -179,6 +195,8 @@ When host `h1` communicates with `h2`:
 ## Part 4: Advanced ARP Topology
 
 To observe ARP behavior across different network segments, we will create a more complex topology.
+
+![alt text](./images/advanced_topo.svg)
 
 ### Setting Up the Topology
 
@@ -282,6 +300,8 @@ This will start the advanced topology in Mininet.
    h1 ping -c1 10.0.2.1
    ```
 
+   ![alt text](./images/image-4.png)
+
 2. View ARP caches:
 
    Check the ARP caches on `h1`, `r1`, and `h3`:
@@ -291,6 +311,26 @@ This will start the advanced topology in Mininet.
    r1 arp -n    # Shows MACs for hosts it communicated with
    h3 arp -n    # Shows router's MAC for 10.0.2.254
    ```
+
+   ![alt text](./images/image-5.png)
+
+### How Communication Took Place?
+
+![alt text](./images/Advanced_topo_seq.svg)
+
+The ARP table output shown in the image explains how communication occurred in this network:
+
+1. **Host `h1`**:
+   - ARP resolved the IP `10.0.1.254` (the router's interface on subnet `10.0.1.0/24`) to the MAC address `66:b4:0e:c7:69:58`.
+   - This indicates that `h1` successfully communicated with the router (`r1`) to send traffic outside its subnet.
+
+2. **Router `r1`**:
+   - ARP entries for `10.0.1.1` (host `h1`) and `10.0.2.1` (host `h3`) show their respective MAC addresses (`be:94:a3:c8:74:18` and `da:ef:e7:d0:06:5e`).
+   - This indicates that the router (`r1`) communicated with both `h1` and `h3` on their respective subnets.
+
+3. **Host `h3`**:
+   - ARP resolved the IP `10.0.2.254` (the router's interface on subnet `10.0.2.0/24`) to the MAC address `c2:76:02:a7:30:0d`.
+   - This shows that `h3` successfully communicated with the router (`r1`) to send traffic outside its subnet.
 
 ## Cleanup
 
