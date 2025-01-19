@@ -11,6 +11,8 @@ This lab will help you understand the Address Resolution Protocol (ARP) through 
 
 ## Task Overview
 
+![alt text](./images/ARP-01%20(1).svg)
+
 In this lab, we will:
 1. Create two isolated network namespaces connected by a virtual ethernet link.
 2. Observe ARP in action when these namespaces communicate.
@@ -153,6 +155,8 @@ In your original terminal, trigger the ARP process by pinging `192.168.1.2` from
 
 ### Example tcpdump Output
 
+![alt text](./images/ARP-02%20(1).svg)
+
 In the `tcpdump` window, you should see something like:
 
 ![alt text](./images/image-2.png)
@@ -169,6 +173,8 @@ This exchange allows both IPs to resolve each other's MAC addresses for communic
 ## Advanced Experiments
 
 ### **Experiment 1: Watch ARP Cache Timing**
+
+![alt text](./images/ARP-03%20(1).svg)
 
 Observe how long ARP entries remain in the cache.
 
@@ -282,6 +288,8 @@ In this experiment, you will manually delete and add ARP entries and verify the 
     You should see an entry like this:
 
     ![alt text](./images/image-8.png)
+
+    Manually added entries are marked as `PERMANENT`, meaning they will not time out or transition to `STALE` automatically.
 
 ## Cleanup
 
