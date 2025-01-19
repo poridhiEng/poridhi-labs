@@ -1,4 +1,4 @@
-# **Mininet: Network Topologies and Network Testing/Debugging**
+# **Mininet: Network Topologies**
 
 Mininet is a powerful tool for network simulation, enabling developers to create, test, and debug network configurations in a virtual environment. In this lab, we will create Network Topologies and perform network testing and debugging.
 
@@ -58,7 +58,11 @@ sudo apt-get install mininet
 
 ### **1. Linear Topology**
 
-This example creates a linear topology with three hosts and two switches.
+Linear Topology is a simple topology where switches are connected in a straight line. Each switch is connected to the next one in the sequence. Hosts are connected to the switches.
+
+![alt text](image-2.png)
+
+In this example, we will create a linear topology with 3 hosts and 2 switches.
 
 ```python
 from mininet.topo import Topo
@@ -114,11 +118,18 @@ if __name__ == '__main__':
    - Use `pingall` to test connectivity.
    - Use `nodes` to view the nodes in the topology.
 
----
-
 ### **2. Tree Topology**
 
-Now, we will create a tree topology with 3 switches and 4 hosts. The tree topology follows a hierarchical structure where switches are connected in levels, and hosts are connected to the switches at the lowest level. Here’s a Python script to create a **tree topology** in Mininet. 
+Now, we will create a tree topology with 3 switches and 4 hosts. The tree topology follows a hierarchical structure where switches are connected in levels, and hosts are connected to the switches at the lowest level.
+
+![alt text](image-1.png)
+
+
+#### **Topology with Depth 3 and Fanout 2**
+
+- **Root switch**: `s3_1`.
+- **Intermediate switches**: `s2_1`, `s2_2`.
+- **Hosts**: `h1_1_1`, `h1_1_2`, `h1_2_1`, `h1_2_2`.
 
 ### **Python Script for Tree Topology**
 
@@ -216,15 +227,6 @@ if __name__ == '__main__':
 4. **Mininet Interaction**:
    - The `run()` function initializes the network, starts it, performs connectivity tests using `pingAll()`, and launches the interactive CLI.
 
----
-
-### **Example: Topology with Depth 3 and Fanout 2**
-
-![alt text](image.png)
-
-- **Root switch**: `s3_1`.
-- **Intermediate switches**: `s2_1`, `s2_2`.
-- **Hosts**: `h1_1_1`, `h1_1_2`, `h1_2_1`, `h1_2_2`.
 
 ### **Run the Script**
 
@@ -236,5 +238,10 @@ if __name__ == '__main__':
 3. Test connectivity and interact with the network in the Mininet CLI.
 
 This script allows flexible creation of tree topologies, making it ideal for hierarchical network testing.
+
+
+## **Conclusion**
+
+In this lab, we have created two network topologies using Mininet. We have created a linear topology with 3 hosts and 2 switches and a tree topology with 3 switches and 4 hosts. We have also tested the connectivity of the networks and interacted with the networks using the Mininet CLI.
 
 
