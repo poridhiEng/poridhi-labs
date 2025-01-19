@@ -2,7 +2,7 @@
 
 This tutorial provides an interactive and practical approach to understanding the Address Resolution Protocol (ARP) using Mininet. ARP is essential for devices on a local network to discover each other's MAC addresses. Through this guide, you will observe ARP behavior and experiment with it in a controlled environment.
 
-![alt text](./images/ARP-01.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/1ad156938f02161add71d04d81c07ed2609d78e0/Poridhi%20Labs/MiniNet/Lab%2005/images/ARP-01.svg)
 
 ## Prerequisites
 
@@ -22,7 +22,7 @@ This tutorial demonstrates the Address Resolution Protocol (ARP) in a simulated 
 
 We will create a simple network topology with two hosts connected through a switch.
 
-![alt text](./images/simple_topo.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/1ad156938f02161add71d04d81c07ed2609d78e0/Poridhi%20Labs/MiniNet/Lab%2005/images/simple_topo.svg)
 
 ### Step 1: Create the Topology File
 
@@ -90,7 +90,7 @@ This will launch Mininet with the defined topology and open its CLI.
 
 ### Basic ARP Process
 
-![alt text](./images/simple_topo_seq.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/1ad156938f02161add71d04d81c07ed2609d78e0/Poridhi%20Labs/MiniNet/Lab%2005/images/simple_topo_seq.svg)
 
 When host `h1` communicates with `h2`:
 
@@ -119,7 +119,7 @@ When host `h1` communicates with `h2`:
    h1 ping -c1 10.0.0.2
    ```
 
-   ![alt text](./images/image.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MiniNet/Lab%2005/images/image.png)
 
    This will trigger ARP resolution, and `h2` will respond with its MAC address.
 
@@ -133,7 +133,7 @@ When host `h1` communicates with `h2`:
 
    The output will show `h2`'s MAC address mapped to 10.0.0.2.
 
-   ![alt text](./images/image-1.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MiniNet/Lab%2005/images/image-1.png)
 
 ### Managing ARP Entries
 
@@ -153,7 +153,7 @@ When host `h1` communicates with `h2`:
    h2 ifconfig
    ```
 
-   ![alt text](./images/image-2.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MiniNet/Lab%2005/images/image-2.png)
 
 3. **Add a static ARP entry**
 
@@ -174,7 +174,7 @@ When host `h1` communicates with `h2`:
 
    The output will show the static ARP entry for `10.0.0.2`.
 
-   ![alt text](./images/image-3.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MiniNet/Lab%2005/images/image-3.png)
 
 ## Part 3: Understanding ARP Packets
 
@@ -196,7 +196,7 @@ When host `h1` communicates with `h2`:
 
 To observe ARP behavior across different network segments, we will create a more complex topology.
 
-![alt text](./images/Advanced_topo.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/1ad156938f02161add71d04d81c07ed2609d78e0/Poridhi%20Labs/MiniNet/Lab%2005/images/Advanced_topo.svg)
 
 ### Setting Up the Topology
 
@@ -300,7 +300,7 @@ This will start the advanced topology in Mininet.
    h1 ping -c1 10.0.2.1
    ```
 
-   ![alt text](./images/image-4.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MiniNet/Lab%2005/images/image-4.png)
 
 2. View ARP caches:
 
@@ -312,11 +312,11 @@ This will start the advanced topology in Mininet.
    h3 arp -n    # Shows router's MAC for 10.0.2.254
    ```
 
-   ![alt text](./images/image-5.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MiniNet/Lab%2005/images/image-5.png)
 
 ### How Communication Took Place?
 
-![alt text](./images/Advanced_topo_seq.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/1ad156938f02161add71d04d81c07ed2609d78e0/Poridhi%20Labs/MiniNet/Lab%2005/images/Advanced_topo_seq.svg)
 
 The ARP table output shown in the image explains how communication occurred in this network:
 
