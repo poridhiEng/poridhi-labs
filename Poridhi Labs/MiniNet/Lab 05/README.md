@@ -196,7 +196,7 @@ When host `h1` communicates with `h2`:
 
 To observe ARP behavior across different network segments, we will create a more complex topology.
 
-![alt text](./images/advanced_topo.svg)
+![alt text](./images/Advanced_topo.svg)
 
 ### Setting Up the Topology
 
