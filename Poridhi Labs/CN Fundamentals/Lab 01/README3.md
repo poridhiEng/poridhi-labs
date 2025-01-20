@@ -6,7 +6,7 @@ This document explains the concepts of collision domain and broadcast domain in 
 
 A **collision domain** in computer networks refers to a network segment where data packets can collide with one another while being sent over a shared communication medium. Collisions occur when two or more devices attempt to send data simultaneously, leading to interference and the need for retransmission.
 
-![alt text](./images/Collision-01.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/9176868c70e700a518a4039b42714026159f0ada/Poridhi%20Labs/CN%20Fundamentals/Lab%2001/images/Collision-01.svg)
 
 ### Key Characteristics of Collision Domains
 
@@ -41,7 +41,7 @@ To address these issues, it is crucial to measure and manage the size of collisi
 
 ### Examples
 
-![alt text](./images/Collision-02.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/9176868c70e700a518a4039b42714026159f0ada/Poridhi%20Labs/CN%20Fundamentals/Lab%2001/images/Collision-02.svg)
 
 The diagram shows how collision domains are created in a network using a hub, a switch, and a router. There are six collision domains in total. Collision domain 1 (blue) is the largest, as it includes the hub and all four devices connected to it, along with the link to the switch. Here, signals from the switch can collide with signals from the devices on the hub.
 
@@ -115,7 +115,7 @@ The size of a broadcast domain is determined by the number of devices that can r
 
 ### Examples of Broadcast Domains
 
-![alt text](./images/Collision-03.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/9176868c70e700a518a4039b42714026159f0ada/Poridhi%20Labs/CN%20Fundamentals/Lab%2001/images/Collision-03.svg)
 
 The above diagram shows the broadcast domains in the same network where we previously explained collision domains. Here, there are three broadcast domains in total. Broadcast domain 1 (blue) is the largest, covering six devices, including the connection to the router's interface. The router interface is part of this domain because it can send and receive broadcast messages, like ARP requests.
 
