@@ -15,7 +15,7 @@ LAN is a local area network. It is a network that connects computers and other d
 
 **Scenario Description:** 
 
-![alt text](./images/Lan.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/9176868c70e700a518a4039b42714026159f0ada/Poridhi%20Labs/CN%20Fundamentals/Lab%2001/images/Lan.svg)
 
 In a small office, three devices are connected to a Local Area Network (LAN):  
 - **Computer A** (IP: 192.168.1.10)  
@@ -28,7 +28,7 @@ These devices communicate through a central switch using Ethernet cables, all co
 
 **Task:** Computer A sends a document to the printer for printing. 
 
-![alt text](./images/lan-01.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/9176868c70e700a518a4039b42714026159f0ada/Poridhi%20Labs/CN%20Fundamentals/Lab%2001/images/lan-01.svg)
 
 **Steps:**  
 1. **Network Check:** Computer A verifies that the printer’s IP address (192.168.1.20) is within the same subnet.  
@@ -42,7 +42,7 @@ These devices communicate through a central switch using Ethernet cables, all co
 
 **Task:** Computer A shares a file with Computer B.  
 
-![alt text](./images/lan-02.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/9176868c70e700a518a4039b42714026159f0ada/Poridhi%20Labs/CN%20Fundamentals/Lab%2001/images/lan-02.svg)
 
 **Steps:**  
 1. **Connection Setup:**  
@@ -84,7 +84,7 @@ A **network link** is a fundamental component in networking that acts as the **c
 
 ### **Examples of Network Links**
 
-![alt text](./images/Network-Link.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/9176868c70e700a518a4039b42714026159f0ada/Poridhi%20Labs/CN%20Fundamentals/Lab%2001/images/Network-Link.svg)
 
 1. **Wired Network Link (Ethernet)**:
    - Imagine a group of computers connected to a **network switch** using Ethernet cables.

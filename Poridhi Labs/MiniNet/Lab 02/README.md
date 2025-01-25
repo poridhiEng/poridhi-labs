@@ -17,7 +17,7 @@ Before starting this lab, ensure that you have the following:
 
 ## Task Overview
 
-![alt text](./images/Mininet-lab-02.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/9326b22e2d6c578030a1c9978f83913f712fd2af/Poridhi%20Labs/MiniNet/Lab%2002/images/Mininet-lab-02.svg)
 
 We will create a simple network topology consisting of:
 
@@ -100,7 +100,7 @@ h2 -> h1
 
 This confirms that the two hosts can communicate with each other through the switch.
 
-![alt text](./images/image.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MiniNet/Lab%2002/images/image.png)
 
 #### Manual Testing with Mininet CLI
 
@@ -112,7 +112,7 @@ After the script starts the network, you can interact with it using the Mininet 
    mininet> h1 ping h2
    ```
 
-   ![alt text](./images/image-1.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MiniNet/Lab%2002/images/image-1.png)
 
 2. Check the IP address of `h1`:
 
@@ -120,7 +120,7 @@ After the script starts the network, you can interact with it using the Mininet 
    mininet> h1 ifconfig
    ```
 
-   ![alt text](./images/image-2.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MiniNet/Lab%2002/images/image-2.png)
 
 3. Exit the CLI:
 
