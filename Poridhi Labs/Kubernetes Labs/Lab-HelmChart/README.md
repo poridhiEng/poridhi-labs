@@ -2,7 +2,8 @@
 
 This documentation provides a step-by-step guide to creating Helm charts for deploying Kubernetes applications. By following this guide, you will learn how to generate a Helm chart, understand its folder structure, and apply templating to customize deployments for different environments such as development, staging, and production.
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Labs/Lab-HelmChart/images/overview.png)
+
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Kubernetes%20Labs/Lab-HelmChart/images/image-17.png)
 
 ## **Introduction to Helm Charts**
 Helm is a package manager for Kubernetes that simplifies the deployment process by bundling Kubernetes resources into reusable templates called charts. A Helm chart allows you to deploy your application with a single command, reducing complexity and ensuring consistency across environments.
