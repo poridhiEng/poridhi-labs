@@ -32,47 +32,59 @@ TCP/IP is a more shorter version of OSI model. In OSI model, there are 7 layers 
 
 TCP/IP works through a process called encapsulation, where data is wrapped with headers containing critical information as it moves through four layers: Application, Transport, Internet, and Network Interface. These layers work together to ensure the data reaches its destination correctly.
 
+### Application Layer
+
+The Application Layer of TCP/IP model is the same as the Application Layer of OSI model. It is the layer that interacts with the user. It is responsible for providing services to the user. It act as the sum of the OSI model's Application, Presentation, and Session layers. 
+
+### Transport Layer
+
+The Transport Layer of TCP/IP model is the same as the Transport Layer of OSI model. It is the layer that ensures the data is delivered to the correct destination. It is responsible for providing services to the user. It act as the sum of the OSI model's Transport Layer. It uses protocols like TCP and UDP.
+
+### Internet Layer
+
+The Internet Layer of TCP/IP model is the same as the Network Layer of OSI model. It is the layer that ensures the data is delivered to the correct destination. It is responsible for providing services to the user. It act as the sum of the OSI model's Network Layer. It uses protocols like IP, ICMP, ARP, RARP, etc.
+
+### Network Access Layer
+
+The Network Access Layer of TCP/IP model is the same as the Data Link Layer of OSI model. It is the layer that ensures the data is delivered to the correct destination. It is responsible for providing services to the user. It act as the sum of the OSI model's Data Link Layer.
+
 ### Why is TCP Secure?
 
-One of the key features of TCP is its reliability. Before any data is sent, TCP establishes a connection between the sender and receiver through a process called the **Three-way Handshake**. This ensures both devices are synchronized and ready to communicate. Once the data is sent, TCP checks that all packets have arrived and reassembles them in the correct order. If any packet is missing or corrupted, it is resent. This makes TCP a secure and reliable protocol for tasks like downloading files or sending emails.
+One of the key features of TCP is its reliability. Before any data is sent, TCP establishes a connection between the sender and receiver through a process called the **Three-way Handshake**. This ensures both devices are synchronized and ready to communicate. 
 
-To understand how TCP/IP works, let's consider a simple example:
+![](./images/1.svg)
 
-#### Pull Docker the Docker Image
+To establish a connection, the client sends a `SYN` message to the server. The server responds with a `SYN-ACK` message. Then the client sends an `ACK` message to the server. This is because TCP is a connection-oriented protocol and requires a response. Now the connection is established and data can be sent.
 
-```bash
-docker pull fazlulkarim105925/tcpgame:latest
-```
+Once the data is sent, TCP checks that all packets have arrived and reassembles them in the correct order. If any packet is missing or corrupted, it is resent. This makes TCP a secure and reliable protocol for tasks like downloading files or sending emails.
 
-#### Run the Docker Container
+### TCP Segment
 
-```bash
-docker run -d -p 8000:8000 fazlulkarim105925/tcpgame:latest
-```
+After establishing a connection, the data is sent in smaller chunks, and each chunk is wrapped in a TCP segment that includes the TCP header and the data payload. Each segment is wrapped in a TCP header and data payload. 20-60 bytes for the TCP header + up to 1460 bytes of data (in most cases). 
 
-#### Access the Application
+![](./images/new.svg)
 
-- Find the `eth0` ip by using `ifconfig` command in the terminal.
+The TCP header contains the source and destination ports, sequence number, acknowledgment number, header length, reserved, flags, window size, checksum, and urgent pointer. 
 
-     ![](./images/6.png)
+![](./images/2.svg)
 
-- Create a LoadBalancer in Poridhi's Cloud with `eth0` ip and port as `8000`.
-
-- Access the application from any browser with the LoadBalancer's URL.
-
-     ![](./images/1.png)
-
-   Follow the instructions to play the TCP Handshake Game. This game demonstrates the TCP handshake process. When click on `Client` button, the client will send `SYN` a message to the server. The server will respond with a `SYN-ACK` message. Then the client will send `ACK` message to the server. This is because TCP is a connection-oriented protocol and requires a response.
-
-### TCP Header
-
-| **Header**                | **Description**                                                                 |
-|---------------------------|-------------------------------------------------------------------------------|
-| Source and Destination Ports | Indicate the ports used by the sender and receiver.                          |
-| Source and Destination IPs   | Specify the IP addresses of the communicating devices.                       |
-| Sequence Number             | Ensures that packets are reassembled in the correct order.                    |
-| Checksum                    | Helps verify the integrity of the data.                                       |
-
+- **Source Port**: The 16-bit address of the port sending the data.
+- **Destination Port**: The 16-bit address of the port receiving the data.
+- **Sequence Number**: Tracks the position of data in the session.
+- **Acknowledgment Number**: Acknowledges receipt of data. If segment 'x' is received, the acknowledgment will be 'x+1'.
+- **HLEN (Header Length)**: Specifies the size of the header in 4-byte chunks. The header size ranges from 20 bytes (5 chunks) to 60 bytes (15 chunks).
+- **Reserved**: 4 bits set to 0 for future use.
+- **Flags (Control Bits)**:
+  - **URG**: Urgent data is present.
+  - **ACK**: Indicates acknowledgment is included in the packet.
+  - **PSH**: Requests immediate delivery of data to the application without buffering.
+  - **RST**: Requests to reset the connection.
+  - **SYN**: Initiates a connection.
+  - **FIN**: Closes a connection.
+- **Window Size**: A 16-bit field that specifies how much data the receiver can handle. Helps with flow control.
+- **Checksum**: A 16-bit mandatory field to check for errors in the segment.
+- **Urgent Pointer**: Points to urgent data when the URG flag is set. It adds to the sequence number to locate the last urgent byte.
+- **Options**: Extra features, stored in 32-bit units. If less than 32 bits, padding is added to make up the difference.
 
 ### TCP Connection Close
 
@@ -85,50 +97,24 @@ For closing a TCP connection, the client will send a `FIN` message to the server
 
 UDP, or User Datagram Protocol, is another protocol used for sending data across networks. Unlike TCP, UDP is connectionless, meaning it does not establish a handshake before transmitting data. This makes it much faster but less reliable. There is no gurantee of delivery of packets. Some packets may be lost or corrupted.
 
-![](./images/udp.svg)
-
 Imagine streaming a live video. If a small amount of data is lost during the stream, it’s better to keep playing the video rather than pausing to recover the lost data. This is where UDP shines. It’s ideal for applications where speed is more important than accuracy, such as online gaming, video streaming, or voice calls.
-
-To understand how UDP works, let's play a simple UDP game.
-
-#### Pull Docker the Docker Image
-
-```bash
-docker pull fazlulkarim105925/udpgame:latest
-``` 
-
-#### Run the Docker Container
-
-```bash
-docker run -d -p 8001:8001 fazlulkarim105925/udpgame:latest
-```
-
-#### Access the Application
-
-- Find the `eth0` ip by using `ifconfig` command in the terminal.
-
-     ![](./images/6.png)
-
-- Create a LoadBalancer in Poridhi's Cloud with `eth0` ip and port as `8001`.
-
-- Access the application from any browser with the LoadBalancer's URL.
-
-     ![](./images/2.png)
-
-  Follow the instructions to play the UDP Game. This game demonstrates the UDP communication process. When click on `Client` button, the client will send a message to the server. But there is no response from the server. This is because UDP is a connectionless protocol and does not require a response. There is no guarantee of delivery of packets.
 
 ### Why is UDP Unreliable?
 
 UDP is unreliable because it does not require a response. This means that if a packet is lost, there is no way to know if it was received. This can lead to data loss, especially in real-time applications like video streaming.
 
+![](./images/udp.svg)
+
 ### UDP Header
 
-| **Header**                | **Description**                                                                 |
-|---------------------------|-------------------------------------------------------------------------------|
-| Source Port               | The port from which data is sent.                                              |
-| Destination Port          | The port at which data is received.                                            |
-| Source and Destination IPs| Indicate the IP addresses of the sender and receiver.                          |
-| Data                      | The main content being transmitted.                                            |
+UDP header is 8 bytes long. It contains the source and destination ports, length, and checksum. It is much simpler than the TCP header, making it faster to process. 
+
+![](./images/new2.svg)
+
+**Source Port (2 bytes)**: Identifies the sending application.  
+**Destination Port (2 bytes)**: Identifies the receiving application.  
+**Length (2 bytes)**: Total size of the UDP packet (header + data).  
+**Checksum (2 bytes)**: Ensures data integrity using the header, pseudo-header, and data.
 
 
 ## Key Differences Between TCP and UDP
