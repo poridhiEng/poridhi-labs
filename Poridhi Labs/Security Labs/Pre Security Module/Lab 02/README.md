@@ -57,7 +57,7 @@ SOC operations are supported by tools like SIEM (Security Information and Event 
 
 ## Incident Response
 
-![](./images/ds2.svg)
+![](./images/1.svg)
 
 Incident Response is the process of detecting, investigating, and recovering from security incidents. It involves several key phases:
 

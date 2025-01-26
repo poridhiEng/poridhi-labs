@@ -12,7 +12,7 @@ In this lab, you will learn:
 ## What is OSI?
 The OSI model is a guide that describes how devices communicate in a network. It has seven layers, each with a unique job. These layers work together to send data from one device to another in an organized way. By following these layers, devices from different manufacturers can communicate smoothly. It has 7 unique layers.
 
-![](./images/OSI.svg)
+![](./images/1.svg)
 
 ## Details of Each Layer
 - ### Physical Layer (Layer 1)
@@ -26,14 +26,12 @@ The OSI model is a guide that describes how devices communicate in a network. It
 
    The Functionalist provided by this Layer is shown in the diagram below.
 
-   ![](./images/osi_L3.svg)
+   ![](./images/2.svg)
 
 - ### Transport Layer (Layer 4)
    The Transport Layer ensures data is delivered error-free and in the correct order. It uses protocols like TCP (Transmission Control Protocol) for reliable communication and UDP (User Datagram Protocol) for faster, less reliable communication. This layer manages data flow by dividing it into smaller segments.
 
    The Functionalist provided by this Layers are shown in the diagram below.
-
-   ![](./images/osi_L4.svg)
 
    #### **TCP (Transmission Control Protocol)**  
     TCP is a connection-oriented protocol that ensures reliable data transmission between devices. It establishes a persistent connection using a **3-way handshake** (SYN, SYN-ACK, ACK), verifies the integrity of data with error checking, and retransmits lost packets. TCP guarantees that all packets arrive in order.
@@ -83,7 +81,7 @@ The OSI model is a guide that describes how devices communicate in a network. It
 ## Encapsulation
 Encapsulation is the process by which data is wrapped with the necessary information at each layer of the OSI model as it moves from the application layer down to the physical layer. This process ensures the data can be transmitted and interpreted correctly by the receiving device.
 
-![](./images/osi1.svg)
+![](./images/3.svg)
 
 - At the **Application Layer (Layer 7)**, the data is created and passed down to the lower layers.
 - At the **Presentation Layer (Layer 6)**, the data is formatted or encrypted, if necessary.
