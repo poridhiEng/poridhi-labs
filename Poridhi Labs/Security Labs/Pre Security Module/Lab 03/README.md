@@ -1,13 +1,12 @@
 # Exploring the OSI Model
 
-The Open Systems Interconnection (OSI) model is a framework that helps us understand how devices communicate over a network. It breaks the process into seven layers, each with a specific role. This lab will explain the OSI model step-by-step and show how it works in a real-world example using Docker.
+The Open Systems Interconnection (OSI) model is a framework that helps us understand how devices communicate over a network. It breaks the process into seven layers, each with a specific role. This lab will explain the OSI model step-by-step. We will explore the functions of each layer and how data moves through them.
 
 ## Objective
 In this lab, you will learn:
 - Learn the purpose of the OSI model.
 - Understand the functions of each layer.
 - Explore how data moves through the OSI layers.
-- Perform a practical example to see the OSI model in action.
 
 ## What is OSI?
 The OSI model is a guide that describes how devices communicate in a network. It has seven layers, each with a unique job. These layers work together to send data from one device to another in an organized way. By following these layers, devices from different manufacturers can communicate smoothly. It has 7 unique layers.
@@ -92,32 +91,6 @@ Encapsulation is the process by which data is wrapped with the necessary informa
 - Finally, at the **Physical Layer (Layer 1)**, the frames are converted into electrical signals, light pulses, or radio waves for transmission over the network.
 
 On the receiving device, the process is reversed (decapsulation), where each layer removes its specific information to reconstruct the original data.
-
-
-## Practical Example of How OSI Works
-To demonstrate the OSI model, we will use a containerized environment to simulate data communication across layers.
-
-1. **Pull and Run a Docker Image:**
-   ```bash
-   docker pull fazlulkarim105925/osimodelpractice:latest
-   ```
-2. **Run the Docker Image:**
-   ```bash
-   docker run -d -p 8000:8000 fazlulkarim105925/osimodelpractice:latest
-   ```
-
-3. **Access the UI:**
-   - Find the `eth0` ip by using `ifconfig` command in the terminal.
-
-     ![](./images/6.png)
-
-   - Create a LoadBalancer in Poridhi's Cloud with `eth0` ip and port as `8000`.
-
-   - Access the application from any browser with the LoadBalancer's URL.
-
-     ![](./images/image.png)
-    
-     Click on `Send Data` button to visulize the data flow.
 
 ## Conclusion
 The OSI model breaks down complex network communication into manageable layers, making it easier to understand and troubleshoot. Each layer plays a unique role, from transmitting raw signals to enabling user-friendly applications. By using Docker and tools like Wireshark, we can see the OSI model in action and better appreciate its importance in modern networking.
