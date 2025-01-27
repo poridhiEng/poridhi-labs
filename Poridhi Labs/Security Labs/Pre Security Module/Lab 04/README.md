@@ -1,14 +1,16 @@
-# Networking Basics
+# TCP/IP Protocol Analysis
 
-Networking is the foundation of modern communication. It allows devices to exchange data efficiently and securely, enabling everything from browsing the web to video calls. This lab focuses on breaking down complex networking concepts such as packets, frames, TCP/IP, UDP, and ports with some real-world examples.
+This lab will help you understand how TCP/IP works and how it can be used to analyze network traffic. We will use `tcpdump` to capture the traffic and `termshark` to analyze the traffic. Then use a python script to convert the traffic to a readable format.
 
 ## Objective
+
 The goal of this lab is to provide a clear understanding of the essential components of data communication in a network. By the end of this lab, you will:
 
-1. Understand what packets and frames are.
-2. Learn how TCP/IP works and ensures secure communication.
-3. Differentiate between TCP and UDP protocols.
-4. Recognize the importance of ports in organizing network communication.
+1. Basic understanding for Packets and Frames
+2. Understand how TCP/IP works and how it can be used to analyze network traffic.
+3. Understanding tcp headers and how they are used to transport data.
+3. Learn how to use `tcpdump` to capture the traffic.
+4. Learn how to use `termshark` to analyze the traffic.
 
 ## Packets and Frames
 
@@ -92,57 +94,275 @@ For closing a TCP connection, the client will send a `FIN` message to the server
 
 ![](./images/tcpclose.svg)
 
+## Analyzing TCP Traffic with Postgres
 
-## User Datagram Protocol (UDP)
+Now we will analyze the TCP traffic with Postgres. We will use `tcpdump` to capture the traffic and `termshark` to analyze the traffic. Then use a python script to convert the traffic to a readable format.
 
-UDP, or User Datagram Protocol, is another protocol used for sending data across networks. Unlike TCP, UDP is connectionless, meaning it does not establish a handshake before transmitting data. This makes it much faster but less reliable. There is no gurantee of delivery of packets. Some packets may be lost or corrupted.
+### tcpdump 
+`tcpdump` is a command-line utility for capturing and analyzing network traffic. It is a powerful tool for network monitoring and troubleshooting. It can be used to capture traffic from a specific port or protocol. 
 
-Imagine streaming a live video. If a small amount of data is lost during the stream, it’s better to keep playing the video rather than pausing to recover the lost data. This is where UDP shines. It’s ideal for applications where speed is more important than accuracy, such as online gaming, video streaming, or voice calls.
+### termshark
 
-### Why is UDP Unreliable?
+`termshark` is a terminal-based UI for `wireshark`. It is a powerful tool for network monitoring and troubleshooting. It can be used to analyze network traffic in real-time. Using filters, you can analyze the traffic based on the source and destination IP addresses, ports, protocols, etc.
 
-UDP is unreliable because it does not require a response. This means that if a packet is lost, there is no way to know if it was received. This can lead to data loss, especially in real-time applications like video streaming.
+## 1. Setup PostgreSQL with Docker Compose
 
-![](./images/udp.svg)
+Create `docker-compose.yml`:
+```yaml
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: testpass123
+      POSTGRES_DB: testdb
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres-net
 
-### UDP Header
+networks:
+  postgres-net:
+    driver: bridge
+```
 
-UDP header is 8 bytes long. It contains the source and destination ports, length, and checksum. It is much simpler than the TCP header, making it faster to process. 
+Start PostgreSQL:
+```bash
+docker-compose up -d
+```
 
-![](./images/new2.svg)
+## 2. Install Necessary Tools 
 
-**Source Port (2 bytes)**: Identifies the sending application.  
-**Destination Port (2 bytes)**: Identifies the receiving application.  
-**Length (2 bytes)**: Total size of the UDP packet (header + data).  
-**Checksum (2 bytes)**: Ensures data integrity using the header, pseudo-header, and data.
+```bash
+sudo apt update
+sudo apt install tcpdump termshark postgresql-client-common postgresql-client -y
+```
+
+### 3.Find the network id for the postgres-net
+```bash
+docker network ls
+```
+![](./images/200.png)
+Copy the network id for the `code_postgres-net`.
+
+### 4. Capture Packets with tcpdump
+```bash
+sudo tcpdump -i br-<network_id_for_postgres-net> -nn -vv -w postgres_capture.pcap port 5432
+```
+
+This will capture the traffic from the `code_postgres-net` and save it to `postgres_capture.pcap`.
+
+>Note: Replace `<network_id_for_postgres-net>` with the network id copied from the previous step.
+
+### 5. Access PostgreSQL
+In a new terminal:
+```bash
+PGPASSWORD=testpass123 psql -h localhost -p 5432 -U testuser -d testdb
+```
+After entering to postgres, stop the tcpdump capture, by pressing `Ctrl+C` in the terminal where tcpdump is running.
+
+### 6. Analyze the captured packets with termshark
+
+```bash
+termshark -r postgres_capture.pcap
+```
+
+![](./images/202.svg)
+
+Use filter:
+```
+tcp.port == 5432 && tcp.len > 0
+```
+This will filter the traffic to only show the traffic to and from the port 5432 and only the packets with data not the `SYN` and `ACK` packets.
+
+One little problem still exists. If you see the bottom section of the termshark, you will see that the data is not in a readable format. It is in `HEX/ASCII` format. We need to convert it to a readable format. We will use a python script to do this.
 
 
-## Key Differences Between TCP and UDP
+### 7. Python Packet Analyzer Script
 
-| **Feature**       | **TCP**                                | **UDP**                     |
-|-------------------|----------------------------------------|-----------------------------|
-| Connection        | Connection-oriented (requires handshake). | Connectionless (no handshake). |
-| Reliability       | Ensures reliable data delivery.        | No guarantee of delivery.   |
-| Speed             | Slower due to reliability checks.      | Faster, suitable for real-time data. |
-| Use Case          | File transfers, emails, web browsing.  | Video streaming, gaming, VoIP. |
+Create `postgres_analyzer.py`:
+```python
+import dpkt
+import datetime
+import socket
+import binascii
 
-## Ports
+def decode_postgres_message(payload):
+    """Decode PostgreSQL message"""
+    if len(payload) < 1:
+        return "Empty payload"
+        
+    # First byte is message type
+    msg_type = payload[0:1]
+    msg_types = {
+        b'R': 'Authentication',
+        b'S': 'Parameter Status',
+        b'K': 'Backend Key Data',
+        b'Q': 'Query',
+        b'T': 'Row Description',
+        b'D': 'Data Row',
+        b'C': 'Command Complete',
+        b'Z': 'Ready for Query',
+        b'E': 'Error',
+        b'N': 'Notice'
+    }
+    
+    message_type = msg_types.get(msg_type, f'Unknown ({msg_type})')
+    
+    # Next 4 bytes are length
+    if len(payload) >= 5:
+        length = int.from_bytes(payload[1:5], byteorder='big')
+        content = payload[5:length+1]
+        
+        # Try to decode content as ASCII where possible
+        try:
+            decoded_content = content.decode('ascii', errors='replace')
+        except:
+            decoded_content = binascii.hexlify(content).decode()
+            
+        return {
+            'type': message_type,
+            'length': length,
+            'content': decoded_content,
+            'raw_hex': binascii.hexlify(content).decode()
+        }
+    return {
+        'type': message_type,
+        'error': 'Incomplete message'
+    }
 
-Ports are essential for organizing and directing data on a network. Think of a port as a specific docking point for data on a device. Each port is assigned a number, ranging from 0 to 65535, and is used to identify specific applications or services.
+def decode_packet(packet_bytes):
+    """Decode full packet including headers"""
+    eth = dpkt.ethernet.Ethernet(packet_bytes)
+    
+    # Decode Ethernet header
+    eth_header = {
+        'source_mac': ':'.join('%02x' % b for b in eth.src),
+        'dest_mac': ':'.join('%02x' % b for b in eth.dst),
+        'eth_type': eth.type
+    }
+    
+    # Decode IP header
+    ip = eth.data
+    ip_header = {
+        'version': ip.v,
+        'header_length': ip.hl,
+        'tos': ip.tos,
+        'total_length': ip.len,
+        'source_ip': socket.inet_ntoa(ip.src),
+        'dest_ip': socket.inet_ntoa(ip.dst),
+        'protocol': ip.p
+    }
+    
+    # Decode TCP header
+    tcp = ip.data
+    tcp_header = {
+        'source_port': tcp.sport,
+        'dest_port': tcp.dport,
+        'sequence': tcp.seq,
+        'ack': tcp.ack,
+        'flags': tcp.flags,
+        'window': tcp.win
+    }
+    
+    # Decode PostgreSQL payload if present
+    postgres_data = None
+    if len(tcp.data) > 0:
+        postgres_data = decode_postgres_message(tcp.data)
+    
+    return {
+        'ethernet': eth_header,
+        'ip': ip_header,
+        'tcp': tcp_header,
+        'postgres': postgres_data
+    }
 
-For example, when you browse a website, your browser communicates with the server using port 80 for HTTP or port 443 for HTTPS. Similarly, when you log into a remote server using SSH, port 22 is used. These standard port numbers ensure that devices and applications know how to interact with each other.
+def analyze_pcap(pcap_file):
+    """Read and analyze pcap file"""
+    with open(pcap_file, 'rb') as f:
+        pcap = dpkt.pcap.Reader(f)
+        
+        for ts, buf in pcap:
+            try:
+                decoded = decode_packet(buf)
+                print(f"\nTimestamp: {datetime.datetime.fromtimestamp(ts)}")
+                print("\nETHERNET HEADER:")
+                for k, v in decoded['ethernet'].items():
+                    print(f"{k:15}: {v}")
+                    
+                print("\nIP HEADER:")
+                for k, v in decoded['ip'].items():
+                    print(f"{k:15}: {v}")
+                    
+                print("\nTCP HEADER:")
+                for k, v in decoded['tcp'].items():
+                    print(f"{k:15}: {v}")
+                    
+                if decoded['postgres']:
+                    print("\nPOSTGRES PAYLOAD:")
+                    for k, v in decoded['postgres'].items():
+                        print(f"{k:15}: {v}")
+                print("="*50)
+                
+            except Exception as e:
+                print(f"Error processing packet: {e}")
+                continue
 
-| **Protocol**                 | **Port Number** | **Description**                                          |
-|------------------------------|-----------------|--------------------------------------------------------|
-| File Transfer Protocol (FTP) | 21              | Transfers files between a client and server.           |
-| Secure Shell (SSH)           | 22              | Securely logs into systems via a text-based interface. |
-| HyperText Transfer Protocol (HTTP) | 80       | Loads web pages and content.                          |
-| HTTPS                        | 443             | Secure version of HTTP using encryption.              |
-| Remote Desktop Protocol (RDP)| 3389            | Connects to remote desktops.                          |
+if __name__ == "__main__":
+    analyze_pcap("postgres_capture.pcap")
+```
+### 8. Run Analysis
 
-Ports help manage network traffic efficiently. Without them, a device would struggle to determine which application should handle incoming data. By using a system of standard ports, networking remains organized and consistent.
+Install dependencies:
+```bash
+sudo apt install python3-pip -y
+```
+
+Install `dpkt`:
+```bash
+pip3 install dpkt
+```
+
+Run the python script:
+```bash
+python3 postgres_analyzer.py > output.txt
+```
+
+This will create a file called `output.txt` with the readable format of the traffic.
+
+![](./images/203.png)
+
+### 9. Analyzing Output
+
+The analysis output includes:
+
+#### TCP/IP Headers:
+- Source/Destination MAC addresses
+- IP addresses and ports
+- TCP flags and sequence numbers
+
+#### PostgreSQL Protocol Messages:
+- Startup Message
+- Authentication Request
+- Parameter Status
+- Query Messages
+- Data Rows
+
+From the output.txt if you search `POSTGRES PAYLOAD` you will find the credentials of the postgres user that was used to connect to the postgres server.
+
+![](./images/204.png)
+#### Important Security Points:
+- Authentication messages are visible but passwords are hashed
+- Queries and data are in plaintext
+- Connection parameters are visible
+
+#### Network Performance:
+- Window sizes indicate flow control
+- Sequence numbers show packet ordering
+- Timestamps show connection timing
 
 ## Conclusion
 
-Understanding networking concepts like packets, frames, TCP/IP, UDP, and ports is essential for appreciating how data travels across networks. Packets and frames break down large messages into manageable pieces, while protocols like TCP and UDP define how this data is transmitted. Ports ensure that data reaches the correct application, keeping communication organized. Together, these components form the foundation of reliable and efficient networking, enabling the seamless connectivity we rely on every day.
+This lab helped you understand how TCP/IP works and how it can be used to analyze network traffic. We used `tcpdump` to capture the traffic and `termshark` to analyze the traffic. Then use a python script to convert the traffic to a readable format. It provided a basic understanding of how data are transported across a network and how TCP/IP works.
 
