@@ -19,10 +19,12 @@ When a device on the Internet tries to access a service hosted on a private netw
 To visualize the port forwarding, we will run a simple application in a docker container.
 
 1. **Pull and Run a Docker Image:**
+
    ```bash
    docker pull fazlulkarim105925/portforwarding:latest
    ```
 2. **Run the Docker Image:**
+
    ```bash
    docker run -d -p 8000:8000 fazlulkarim105925/portforwarding:latest
    ```
@@ -190,4 +192,6 @@ In an office network, a Layer 3 switch connects multiple departments, allowing e
 
 ## Conclusion
 This lab has provided a detailed overview of advanced networking concepts and their real-world applications. From enabling external access through port forwarding to securing data with firewalls and VPNs, each component plays a critical role in modern network management. The functionalities of routers and switches emphasize the structured and efficient operation of networks, ensuring reliable and secure communication across devices and locations. Understanding these concepts equips individuals with the knowledge to design, deploy, and manage complex networking systems effectively.
+
+
 
