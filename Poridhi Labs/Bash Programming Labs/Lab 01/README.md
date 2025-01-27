@@ -152,7 +152,7 @@ find ~/code/lab -type d
 2. **No such file or directory**: Verify the path you entered. Use tab completion to avoid typos.
 3. **Command not found**: Ensure the command syntax is correct and the required tools are installed.
 
-## Next Steps
+## Conclusion
 
 Now that you've completed this lab, you should be comfortable with:
 - Navigating directories using `cd`
