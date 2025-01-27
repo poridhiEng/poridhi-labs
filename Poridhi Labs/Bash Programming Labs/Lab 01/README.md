@@ -2,6 +2,8 @@
 
 Navigating the Linux file system is a fundamental skill for anyone working with Linux. This lab will guide you through the essential commands for file system navigation, directory management, and file searching. By the end of this lab, you'll have a solid understanding of basic Bash commands and how to use them effectively.
 
+![alt text](./images/File-system.svg)
+
 ## Prerequisites
 - A Linux terminal or Windows Subsystem for Linux (WSL)
 - Basic familiarity with using a terminal
@@ -94,6 +96,8 @@ This script creates directories and files that will be used in the exercises.
     ![alt text](./images/image-2.png)
 
 ### Exercise 4: Finding Files with `find`
+
+![alt text](./images/Find.svg)
 
 1. Return to the lab directory:
 
