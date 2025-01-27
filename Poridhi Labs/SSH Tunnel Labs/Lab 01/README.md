@@ -421,7 +421,7 @@ Even if MySQL allows remote connections, the EC2 security group might block acce
    SELECT * FROM test_table;
    ```
 
-
+   ![alt text](./images/image-3.png)
 
 
 
