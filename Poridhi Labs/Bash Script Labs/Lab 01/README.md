@@ -23,7 +23,7 @@ sudo apt-get install -y jq
 jq --version
 ```
 
-### Why We Need jq?
+### Why We Need `jq`?
 
 `jq` is a lightweight and powerful command-line JSON processor.
 
@@ -65,7 +65,7 @@ Create a new file named `create-vpc.sh` and add the following script:
 
 # Configuration
 REGION="ap-southeast-1"
-VPC_NAME="MyBasicVPC"
+VPC_NAME="Poridhi-VPC"
 VPC_CIDR="10.0.0.0/16"
 
 # Create VPC
@@ -93,42 +93,56 @@ This will create a VPC with the specified name and CIDR block in the specified r
 
 ### Running the Bash Script
 
-```bash
-# Make script executable
-chmod +x create-vpc.sh
+Make the script executable by running the following command:
 
-# Run the script
+```bash
+chmod +x create-vpc.sh
+```
+
+Run the script by executing the following command:
+
+```bash
 ./create-vpc.sh
 ```
 
-## 4. Understanding CIDR Block Issues
+We can see that the VPC has been created successfully. Now, what will happen if we run the script again? Let's find out.
 
-### Testing Duplicate VPC Creation
-Run the script again and check existing VPCs:
+## Running the Script Again
+
+Run the script again by executing the following command:
 
 ```bash
-# List all VPCs
+./create-vpc.sh
+```
+
+We can see that the VPC has been created successfully again. But this is not expected. We don't want to create VPCs with the same name and CIDR block because it can create following issues:
+
+- It can cause problems if you ever want to peer these VPCs
+- It makes network planning and management more complicated
+- It could lead to IP conflicts if you ever need to merge or connect these networks
+
+### Testing Duplicate VPC Creation
+
+We can check existing VPCs by running the following command:
+
+```bash
 aws ec2 describe-vpcs --region ap-southeast-1 \
   --query 'Vpcs[*].{ID:VpcId,Name:Tags[?Key==`Name`].Value,CIDR:CidrBlock}' \
   --output table
 ```
 
-### Identified Problems
-- Multiple VPCs with same CIDR block (10.0.0.0/16) are created
-- No built-in AWS prevention of duplicate CIDR blocks
-- Potential networking complications
+We can solve this issue by using state management. We will create a JSON file to store the VPC details and check if the VPC already exists in the JSON file before creating it.
 
 ## Enhanced Solution with State Management
 
-### Enhanced VPC Creation Script
-Save the following script as create-vpc-with-state.sh:
+Create a new file named `create-vpc-with-state.sh` and add the following script:
 
 ```bash
 #!/bin/bash
 
 # Configuration
 REGION="ap-southeast-1"
-VPC_NAME="MyBasicVPC"
+VPC_NAME="Poridhi-VPC-02"
 VPC_CIDR="10.0.0.0/16"
 JSON_FILE="vpc_inventory.json"
 
@@ -189,8 +203,87 @@ add_vpc_to_json() {
            "created_at": (now | strftime("%Y-%m-%d %H:%M:%S"))
        }]' "$JSON_FILE" > "$temp_file" && mv "$temp_file" "$JSON_FILE"
 }
+
+# Main script
+echo "Checking prerequisites..."
+check_jq
+init_json_file
+
+echo "Checking for existing VPC..."
+if check_existing_vpc; then
+    echo "Creating new VPC..."
+    VPC_ID=$(aws ec2 create-vpc \
+        --cidr-block $VPC_CIDR \
+        --region $REGION \
+        --query 'Vpc.VpcId' \
+        --output text)
+
+    # Add name tag
+    aws ec2 create-tags \
+        --resources $VPC_ID \
+        --tags Key=Name,Value=$VPC_NAME \
+        --region $REGION
+
+    # Add to JSON inventory
+    add_vpc_to_json $VPC_ID
+
+    echo "VPC created successfully!"
+    echo "VPC Name: $VPC_NAME"
+    echo "VPC ID: $VPC_ID"
+    echo "Region: $REGION"
+    echo "CIDR: $VPC_CIDR"
+    echo "Details stored in $JSON_FILE"
+else
+    echo "Skipping VPC creation due to conflicts."
+    echo "Please check $JSON_FILE for existing VPC details."
+fi
 ```
 
+This Bash script automates the creation of an AWS VPC while ensuring that duplicate VPCs (by name or CIDR) are not created.  
+
+### **Key Steps:**  
+1. **Prerequisite Check:** Ensures `jq` (a JSON processor) is installed.  
+2. **JSON Initialization:** Creates an inventory file (`vpc_inventory.json`) if it doesn’t exist.  
+3. **VPC Existence Check:**  
+   - Checks if a VPC with the same name or CIDR already exists in the JSON file.  
+   - If a match is found, it prints details and stops execution.  
+4. **VPC Creation:**  
+   - If no conflict is found, it creates a new VPC in AWS using `aws ec2 create-vpc`.  
+   - Tags the VPC with the provided name.  
+5. **Inventory Update:** Stores the new VPC details (ID, name, CIDR, region, timestamp) in `vpc_inventory.json`.  
+6. **Final Output:** Displays VPC details if successfully created, otherwise skips creation.  
+
+This script ensures VPCs are managed efficiently without accidental duplicates.
+
+### Running the Script
+
+Make the script executable by running the following command:
+
+```bash
+chmod +x create-vpc-with-state.sh
+```
+
+Run the script by executing the following command:
+
+```bash
+./create-vpc-with-state.sh
+```
+
+We can see that the VPC has been created successfully and a JSON file named `vpc_inventory.json` has been created where we can see the VPC details. 
+
+Now that we have a state file, we can use it to check if the VPC already exists in the JSON file before creating it.
+
+### Running the Script Again
+
+Run the script again by executing the following command:
+
+```bash
+./create-vpc-with-state.sh
+```
+
+We can see that the VPC has not been created and there is a warning message saying that the VPC with the same name and CIDR block already exists.
+
 ## Conclusion
-This guide provides a structured approach to creating and managing AWS VPCs using Bash scripts. By implementing state management with `jq`, we ensure that duplicate VPCs are not created, avoiding networking conflicts and maintaining resource efficiency. Following best practices and troubleshooting guidelines will help in managing AWS networking infrastructure effectively. Regular maintenance and monitoring of the state file further enhance the reliability of the setup.
+
+This guide provides a structured approach to creating and managing AWS VPCs using Bash scripts. By implementing state management with `jq`, we ensure that duplicate VPCs are not created, avoiding networking conflicts and maintaining resource efficiency.
 
