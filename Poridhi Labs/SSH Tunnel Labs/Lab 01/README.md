@@ -76,7 +76,7 @@ cd aws-pulumi-infra
 
 ```sh 
 sudo apt update
-sudo apt install python3.8-venv
+sudo apt install python3.8-venv -y
 ```
 
 #### Initialize a New Pulumi Project
