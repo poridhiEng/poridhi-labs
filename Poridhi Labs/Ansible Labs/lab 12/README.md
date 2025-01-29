@@ -3,7 +3,7 @@
 Automating the setup of GitHub runners on a public EC2 instance using Ansible allows for streamlined deployment and management of continuous integration (CI) and continuous deployment (CD) processes. 
 This documentation provides a step-by-step guide on how to set-up the process of automating the setup of a GitHub runner on a public EC2 instance using `Ansible`.
 
-![](./images/ansible-jenkins.drawio.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Ansible%20Labs/lab%2012/images/ansible-jenkins.drawio.png)
 
 ## Steps
 
