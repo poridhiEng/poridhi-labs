@@ -5,7 +5,7 @@ In the previous lab, we have created the AWS infrastucture (AWS VPC, Subnet, Int
 <!-- ![alt text](https://github.com/Konami33/Ansible-Labs/raw/main/lab%2010/images/image-6.png) -->
 
 
-![](./images/arch.drawio.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/36ad07672cb75056554d1ef6bf94669bc749c085/Poridhi%20Labs/Ansible%20Labs/lab%2010/images/arch.drawio.svg)
 
 ## Project Structure
 
