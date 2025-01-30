@@ -56,6 +56,14 @@ First, we need to configure our AWS CLI with the following command:
 aws configure
 ``` 
 
+This command sets up your AWS CLI with the necessary credentials, region, and output format.
+
+![alt text](./images/image.png)
+
+You will find the `AWS Access key` and `AWS Seceret Access key` on Lab description page,where you generated the credentials.
+
+![alt text](./images/image-1.png)
+
 ## VPC Creation using Bash Script
 
 Create a new file named `create-vpc.sh` and add the following script:
@@ -89,7 +97,7 @@ echo "Region: $REGION"
 echo "CIDR: $VPC_CIDR"
 ```
 
-This will create a VPC with the specified name and CIDR block in the specified region.
+This will create a VPC with the specified name and CIDR block in the specified region(`ap-southeast-1`).
 
 ### Running the Bash Script
 
@@ -105,9 +113,11 @@ Run the script by executing the following command:
 ./create-vpc.sh
 ```
 
+![alt text](./images/image-2.png)
+
 We can see that the VPC has been created successfully. Now, what will happen if we run the script again? Let's find out.
 
-## Running the Script Again
+### Running the Script Again
 
 Run the script again by executing the following command:
 
@@ -115,11 +125,13 @@ Run the script again by executing the following command:
 ./create-vpc.sh
 ```
 
-We can see that the VPC has been created successfully again. But this is not expected. We don't want to create VPCs with the same name and CIDR block because it can create following issues:
+![alt text](./images/image-3.png)
 
-- It can cause problems if you ever want to peer these VPCs
-- It makes network planning and management more complicated
-- It could lead to IP conflicts if you ever need to merge or connect these networks
+We can see that the VPC has been created successfully again with the same name and CIDR block. But this is not expected. We don't want to create VPCs with the same name and CIDR block because it can create following issues:
+
+- It can cause problems if you ever want to peer these VPCs.
+- It makes network planning and management more complicated.
+- It could lead to IP conflicts if you ever need to merge or connect these networks.
 
 ### Testing Duplicate VPC Creation
 
@@ -130,6 +142,8 @@ aws ec2 describe-vpcs --region ap-southeast-1 \
   --query 'Vpcs[*].{ID:VpcId,Name:Tags[?Key==`Name`].Value,CIDR:CidrBlock}' \
   --output table
 ```
+
+![alt text](./images/image-4.png)
 
 We can solve this issue by using state management. We will create a JSON file to store the VPC details and check if the VPC already exists in the JSON file before creating it.
 
@@ -269,7 +283,11 @@ Run the script by executing the following command:
 ./create-vpc-with-state.sh
 ```
 
+![alt text](./images/image-5.png)
+
 We can see that the VPC has been created successfully and a JSON file named `vpc_inventory.json` has been created where we can see the VPC details. 
+
+![alt text](./images/image-6.png)
 
 Now that we have a state file, we can use it to check if the VPC already exists in the JSON file before creating it.
 
@@ -281,9 +299,19 @@ Run the script again by executing the following command:
 ./create-vpc-with-state.sh
 ```
 
-We can see that the VPC has not been created and there is a warning message saying that the VPC with the same name and CIDR block already exists.
+![alt text](./images/image-7.png)
+
+We can see that the VPC has not been created and there is a warning message saying that the VPC with the same name already exists. In this manner, we can avoid creating duplicate VPCs.
+
+## Verifying VPC Creation
+
+We can verify the VPC creation by logging into the AWS Management Console and checking the VPCs.
+
+![alt text](./images/image-8.png)
+
+We can see that duplicate VPCs are not created after we started to store the VPC details in the JSON file.
 
 ## Conclusion
 
-This guide provides a structured approach to creating and managing AWS VPCs using Bash scripts. By implementing state management with `jq`, we ensure that duplicate VPCs are not created, avoiding networking conflicts and maintaining resource efficiency.
+This lab demonstrated the creation and management of AWS VPCs using bash scripts. We started with a basic VPC creation script, identified challenges with duplicate CIDR blocks, and implemented a solution using JSON-based state management. By utilizing `jq` for JSON processing, we created a robust system to track VPC creation and prevent duplicates. 
 
