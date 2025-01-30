@@ -388,7 +388,7 @@ You can optionally set the hostname of the Jenkins Master to `jenkins-master` by
 sudo hostnamectl set-hostname jenkins-master
 ```
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2003/images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2003/images-1/image-3.png)
 
 **2. Access the Jenkins UI**
 
@@ -405,7 +405,7 @@ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 ```
 This will output the initial admin password. Use this password to log in to the Jenkins UI.
 
-![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2003/images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Jenkins%20Labs/Lab%2003/images-1/image-4.png)
 
 ### Create a New Node in Jenkins
 
