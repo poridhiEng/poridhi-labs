@@ -5,6 +5,43 @@ Remote port forwarding is a technique that allows external users to access servi
 
 ![](./images/2.svg)
 
+
+
+Remote port forwarding is used to **expose a service running on a private machine to the public internet or another remote system**. It allows a remote server to access a service running on your local machine or a private network that is not directly accessible.  
+
+ 
+
+### **How does Remote Port Forwarding solve this?**  
+You can use an **intermediate SSH server (Bastion Host)** with a **public IP** to forward the private database port. The command:  
+```sh
+ssh -N -R 3306:localhost:3306 user@bastion-host
+```
+does the following:  
+- The **remote server (Bastion)** listens on **port 3306**.  
+- Any connection made to `bastion-host:3306` is forwarded to **your local MySQL database**.  
+- Now, any user with access to the Bastion can reach the database as if it were running there.  
+
+### **Real-World Use Cases**  
+#### **Accessing a Local Web Server Remotely**  
+Suppose you have a web app running on **localhost:8080** on your laptop, and you want someone from another location to access it. Since your laptop is not publicly accessible, you can set up **remote port forwarding** using an SSH server with a public IP. Now, the other person can visit `public-server:8080` and access your web app as if it were running on the public server.  
+
+#### **Securely Exposing a Private Database**  
+If you have a **database in a private AWS subnet**, it cannot be accessed directly from the internet. However, a remote developer may need to connect to it. By using a **Bastion Host with SSH remote port forwarding**, you can securely expose the database to a remote server without making it publicly available, allowing controlled access.  
+
+#### **Accessing Devices Behind NAT or Firewall**  
+If your home computer is behind a **firewall or NAT**, you cannot connect to it from outside. However, by forwarding a port to a **public SSH server**, you create a secure tunnel that lets you access your home machine remotely. This is useful for managing personal servers, IoT devices, or remote desktops. 
+
+
+
+
+
+
+
+
+
+
+
+
 ## **Task Description**
 You are required to:
 1. Deploy an AWS EC2 instance (gateway) using Pulumi.
