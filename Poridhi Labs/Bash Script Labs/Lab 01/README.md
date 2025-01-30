@@ -2,7 +2,7 @@
 
 This lab walks through creating and managing AWS Virtual Private Clouds (VPCs) using Bash scripts, implementing state management to prevent duplicate resources, and following AWS networking best practices.
 
-![alt text](./images/vpc.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/0e0654f477b5900d2dccd035b94b4a6f66d04ca2/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2001/images/vpc.svg)
 
 ## Prerequisites
 
@@ -60,11 +60,11 @@ aws configure
 
 This command sets up your AWS CLI with the necessary credentials, region, and output format.
 
-![alt text](./images/image.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2001/images/image.png)
 
 You will find the `AWS Access key` and `AWS Seceret Access key` on Lab description page,where you generated the credentials.
 
-![alt text](./images/image-1.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2001/images/image-1.png)
 
 ## VPC Creation using Bash Script
 
@@ -115,7 +115,7 @@ Run the script by executing the following command:
 ./create-vpc.sh
 ```
 
-![alt text](./images/image-2.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2001/images/image-2.png)
 
 We can see that the VPC has been created successfully. Now, what will happen if we run the script again? Let's find out.
 
@@ -127,7 +127,7 @@ Run the script again by executing the following command:
 ./create-vpc.sh
 ```
 
-![alt text](./images/image-3.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2001/images/image-3.png)
 
 We can see that the VPC has been created successfully again with the same name and CIDR block. But this is not expected. We don't want to create VPCs with the same name and CIDR block because it can create following issues:
 
@@ -145,13 +145,13 @@ aws ec2 describe-vpcs --region ap-southeast-1 \
   --output table
 ```
 
-![alt text](./images/image-4.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2001/images/image-4.png)
 
 We can solve this issue by using state management. We will create a JSON file to store the VPC details and check if the VPC already exists in the JSON file before creating it.
 
 ## Enhanced Solution with State Management
 
-![alt text](./images/vpc-state.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/0e0654f477b5900d2dccd035b94b4a6f66d04ca2/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2001/images/vpc-state.svg)
 
 Create a new file named `create-vpc-with-state.sh` and add the following script:
 
@@ -259,7 +259,7 @@ fi
 
 This Bash script automates the creation of an AWS VPC while ensuring that duplicate VPCs (by name or CIDR) are not created.  
 
-![alt text](./images/vpc-state-01.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/0e0654f477b5900d2dccd035b94b4a6f66d04ca2/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2001/images/vpc-state-01.svg)
 
 ### **Key Steps:**  
 1. **Prerequisite Check:** Ensures `jq` (a JSON processor) is installed.  
@@ -289,11 +289,11 @@ Run the script by executing the following command:
 ./create-vpc-with-state.sh
 ```
 
-![alt text](./images/image-5.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2001/images/image-5.png)
 
 We can see that the VPC has been created successfully and a JSON file named `vpc_inventory.json` has been created where we can see the VPC details. 
 
-![alt text](./images/image-6.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2001/images/image-6.png)
 
 Now that we have a state file, we can use it to check if the VPC already exists in the JSON file before creating it.
 
@@ -305,7 +305,7 @@ Run the script again by executing the following command:
 ./create-vpc-with-state.sh
 ```
 
-![alt text](./images/image-7.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2001/images/image-7.png)
 
 We can see that the VPC has not been created and there is a warning message saying that the VPC with the same name already exists. In this manner, we can avoid creating duplicate VPCs.
 
@@ -313,7 +313,7 @@ We can see that the VPC has not been created and there is a warning message sayi
 
 We can verify the VPC creation by logging into the AWS Management Console and checking the VPCs.
 
-![alt text](./images/image-8.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2001/images/image-8.png)
 
 We can see that duplicate VPCs are not created after we started to store the VPC details in the JSON file.
 
