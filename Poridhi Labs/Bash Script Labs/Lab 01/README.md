@@ -2,6 +2,8 @@
 
 This lab walks through creating and managing AWS Virtual Private Clouds (VPCs) using Bash scripts, implementing state management to prevent duplicate resources, and following AWS networking best practices.
 
+![alt text](./images/vpc.svg)
+
 ## Prerequisites
 
 ### Required Tools
@@ -149,6 +151,8 @@ We can solve this issue by using state management. We will create a JSON file to
 
 ## Enhanced Solution with State Management
 
+![alt text](./images/vpc-state.svg)
+
 Create a new file named `create-vpc-with-state.sh` and add the following script:
 
 ```bash
@@ -254,6 +258,8 @@ fi
 ```
 
 This Bash script automates the creation of an AWS VPC while ensuring that duplicate VPCs (by name or CIDR) are not created.  
+
+![alt text](./images/vpc-state-01.svg)
 
 ### **Key Steps:**  
 1. **Prerequisite Check:** Ensures `jq` (a JSON processor) is installed.  
