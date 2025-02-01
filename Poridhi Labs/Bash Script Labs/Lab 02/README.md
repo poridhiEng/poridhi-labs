@@ -2,7 +2,7 @@
 
 JSON (JavaScript Object Notation) is a lightweight and widely-used data format for exchanging structured information. It is commonly found in configuration files, API responses, and log files. To efficiently parse and manipulate JSON data from the command line, we use `jq`, a powerful command-line tool designed specifically for working with JSON.
 
-![alt text](./images/jq.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2002/images/jq.png)
 
 ## Task Overview
 
@@ -75,7 +75,7 @@ For this lab, we'll use the following sample JSON file (`data.json`). So, let's 
 cat data.json | jq '.company.name'
 ```
 
-![alt text](./images/image.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2002/images/image.png)
 
 The `.company.name` filter selects and returns the value of the `name` field inside the `company` object.
 
@@ -86,7 +86,7 @@ The `.company.name` filter selects and returns the value of the `name` field ins
 cat data.json | jq '.company.address.city'
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2002/images/image-1.png)
 
 The `.company.address.city` filter drills down into the address object and extracts the city value.
 
@@ -96,7 +96,7 @@ The `.company.address.city` filter drills down into the address object and extra
 cat data.json | jq '.company.employees[].name'
 ```
 
-![alt text](./images/image-2.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2002/images/image-2.png)
 
 The `.company.employees[]` expands the employees array, and `.name` extracts the name field from each object in the array.
 
@@ -108,7 +108,7 @@ The `.company.employees[]` expands the employees array, and `.name` extracts the
 cat data.json | jq '.company.employees[]'
 ```
 
-![alt text](./images/image-3.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2002/images/image-3.png)
 
 The `.company.employees[]` expands the employees array, returning each employee object in full detail.
 
@@ -118,7 +118,7 @@ The `.company.employees[]` expands the employees array, returning each employee 
 cat data.json | jq '.company.employees[].contact'
 ```
 
-![alt text](./images/image-4.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2002/images/image-4.png)
 
 The `.company.employees[].contact` filter extracts only the contact object for each employee.
 
@@ -131,7 +131,7 @@ cat data.json | jq '.'
 ```
 This outputs the JSON data in a readable, formatted manner.
 
-![alt text](./images/image-5.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2002/images/image-5.png)
 
 The `.` filter prints the entire JSON document, formatting it with proper indentation for readability.
 
@@ -145,7 +145,7 @@ The `.` filter prints the entire JSON document, formatting it with proper indent
 cat data.json | jq '.company.employees[] | select(.position == "Junior Software Engineer")'
 ```
 
-![alt text](./images/image-6.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2002/images/image-6.png)
 
 The `select(.position == "Junior Software Engineer")` filters the employees array to return only those whose position matches the specified string.
 
