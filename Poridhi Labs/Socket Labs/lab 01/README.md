@@ -180,7 +180,16 @@ We will need to install `nodemon` to automatically restart the server when we ma
 npm install --save-dev nodemon
 ```
 
-> `--save-dev` is used to install the dependencies in the devDependencies section of the package.json file.\
+> `--save-dev` is used to install the dependencies in the devDependencies section of the package.json file.
+
+Update the `scripts` section of the `package.json` file to include the following:
+
+```json
+"scripts": {
+    "start": "node server/server.js",
+    "dev": "nodemon server/server.js"
+}
+```
 
 **2. Chat app UI**
 
@@ -465,6 +474,19 @@ socket.on('chat-message', (message) => {
     addMessageToChat(message, false);
 });
 ```
+
+**5. Running the Server**
+
+To run the server, we will use the following command in our terminal:
+
+```bash
+npm run dev
+```
+
+
+## Conclusion
+
+In this lab, we have learned how to implement a simple chat application using Socket.IO. We have created a server and a client, and then connected them using Socket.IO. We have also learned how to handle default and custom events in Socket.IO.
 
 
 
