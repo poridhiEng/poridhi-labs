@@ -2,7 +2,7 @@
 
 This lab introduces the basics of Bash scripting. You will learn how to create, execute, and understand a simple Bash script step by step.
 
-![alt text](./images/image.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2003/images/image.png)
 
 ## Prerequisites
 - Basic familiarity with the Linux command line
@@ -18,7 +18,7 @@ A Bash script is a file containing a sequence of commands that are executed in o
 
 The first line of a Bash script usually starts with `#!/bin/bash`. This is known as the shebang line. It tells the operating system which interpreter to use to execute the script. Without this line, the script may not run as expected unless explicitly invoked with `bash script_name.sh`.
 
-![alt text](./images/Shebang.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/23424549c7e2c4931ff903c7ea4bca47547916dd/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2003/images/Shebang.svg)
 
 ### Instructions:
 
@@ -58,7 +58,7 @@ Now, you can execute your script.
 ./greetings.sh
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2003/images/image-1.png)
 
 ## Step 4: Accepting User Input
 
@@ -85,7 +85,7 @@ echo "Hello, $name! Welcome to Bash scripting Labs."
 ./greetings.sh
 ```
 
-![alt text](./images/image-2.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2003/images/image-2.png)
 
 ## Conclusion
 
