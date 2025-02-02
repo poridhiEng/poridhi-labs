@@ -1,4 +1,4 @@
-# **Setting Up an SSH Tunnel to Access a Database on AWS**
+# **Local Port Forwarding Using SSH Tunnel in AWS**
 
 
 ### **What is SSH Tunneling?**
