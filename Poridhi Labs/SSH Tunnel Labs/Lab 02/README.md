@@ -2,7 +2,8 @@
 
 In cloud environments, it is common to have resources deployed in private subnets that are not directly accessible from the internet. To securely access these resources, a bastion host (also known as a jump box) is used. A bastion host resides in a public subnet and acts as an intermediary for accessing resources in private subnets.
 
-![](./images/2.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2002/images/2.svg)
+
 
 Local Port Forwarding is a SSH tunneling technique that allows you to securely access services in a private network through an intermediate server (Bastion Host). This lab demonstrates how to access a MySQL server in a private subnet through a bastion host in a public subnet.
 
@@ -10,7 +11,7 @@ Local Port Forwarding is a SSH tunneling technique that allows you to securely a
 
 ### Architecture Overview
 
-![](./images/1.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2002/images/1.svg)
 
 - Public Subnet: Contains the Bastion Host (Jump Server)
 - Private Subnet: Contains the MySQL Server
@@ -53,7 +54,7 @@ This command prompts you for your AWS Access Key ID, Secret Access Key, region, 
 
 ###  **Step 2: Set Up a Pulumi Project**
 
-![](./images/3.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2002/images/3.svg)
 
 #### **Set Up a new directory**
 Create a new directory for your project and navigate into it:
@@ -296,11 +297,11 @@ You can varify the creteated resources such as VPC, Subnet, EC2 instance using A
 
 - VPC resource map:
 
-   ![alt text](./images/image-1.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2002/images/image-1.png)
 
 - EC2 instances:
 
-   ![alt text](./images/image.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2002/images/image.png)
 
 
 
@@ -389,11 +390,11 @@ You can varify the creteated resources such as VPC, Subnet, EC2 instance using A
     sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf
     ```
 
-    ![alt text](./images/image-3.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2002/images/image-3.png)
 
     Make sure the bind-address is set to `0.0.0.0` to allow remote connections:
 
-    ![alt text](./images/image-4.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2002/images/image-4.png)
 
 - Reload the database:
    ```bash
@@ -422,7 +423,7 @@ You can varify the creteated resources such as VPC, Subnet, EC2 instance using A
 
     How it works:
 
-    ![](./images/4.svg)
+    ![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2002/images/4.svg)
 
 
 ### **Step 4. Connect to MySQL Through Tunnel**
@@ -448,7 +449,7 @@ You can varify the creteated resources such as VPC, Subnet, EC2 instance using A
    SELECT * FROM test_table;
    ```
 
-   ![alt text](./images/image-2.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2002/images/image-2.png)
 
 
 ## Cleanup

@@ -7,7 +7,7 @@ SSH tunneling is a method of transporting arbitrary networking data over an encr
 - Bypass firewalls or network restrictions.
 - Encrypt traffic over untrusted networks.
 
-![](./images/2.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2001/images/2.svg)
 
 ### **Types of SSH Tunnels**
 1. **Local Port Forwarding**:
@@ -62,7 +62,7 @@ This command prompts you for your AWS Access Key ID, Secret Access Key, region, 
 
 ###  Step 2: Set Up a Pulumi Project
 
-![](./images/3.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2001/images/3.svg)
 
 #### Set Up a new directory
 Create a new directory for your project and navigate into it:
@@ -269,11 +269,11 @@ You can varify the creteated resources such as VPC, Subnet, EC2 instance using A
 
 - VPC resource map:
 
-   ![alt text](./images/image.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2001/images/image.png)
 
 - EC2 instance:
 
-   ![alt text](./images/image-1.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2001/images/image-1.png)
 
 
 ### **Step 2: Install and Configure MySQL Database**
@@ -306,7 +306,7 @@ You can varify the creteated resources such as VPC, Subnet, EC2 instance using A
 
    Here's our responses:
 
-      ![alt text](./images/image-2.png)
+      ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2001/images/image-2.png)
 
 
 
@@ -363,7 +363,7 @@ You can varify the creteated resources such as VPC, Subnet, EC2 instance using A
 
 ### **Step 3: Create an SSH Tunnel from Your Local Machine**
 
-![](./images/4.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2001/images/4.svg)
 
 1. Use the following command to create an SSH tunnel from your local machine:
    ```bash
@@ -398,7 +398,7 @@ Even if MySQL allows remote connections, the EC2 security group might block acce
 
 ### **Step 5: Test the SSH Tunnel and Access the Database**
 
-![](./images/1.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2001/images/1.svg)
 
 1. Open a new terminal window.
 2. Install the MySQL Client:
@@ -421,7 +421,7 @@ Even if MySQL allows remote connections, the EC2 security group might block acce
    SELECT * FROM test_table;
    ```
 
-   ![alt text](./images/image-3.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2001/images/image-3.png)
 
 
 

@@ -33,7 +33,7 @@ If you have an SSH server inside a private network, you can use dynamic port for
 
 **Problem:** If you are on a restricted network, the request might be blocked.  
 
-![](./images/5.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2004/images/5.svg)
 
 
 
@@ -46,7 +46,7 @@ If you have an SSH server inside a private network, you can use dynamic port for
 **Benefit:** The restricted network **only sees an encrypted SSH connection**, not the actual websites you're visiting.  
 
 
-![](./images/6.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2004/images/6.svg)
 
 
 ## **Task description**
@@ -83,7 +83,7 @@ This command prompts you for your AWS Access Key ID, Secret Access Key, region, 
 
 ## **Step 2: Set Up a Pulumi Project**
 
-![](./images/1.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2004/images/1.svg)
 
 ### **Set Up a new directory**
 Create a new directory for your project and navigate into it:
@@ -236,7 +236,7 @@ Review the changes and confirm by typing "yes".
 curl -s ifconfig.me
 ```
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2004/images/image.png)
 
 
 ## **Step 3: Create an SSH SOCKS Proxy**  
@@ -250,7 +250,7 @@ ssh -D 1080 -N -C -i your-key.pem ubuntu@<EC2_PUBLIC_IP>
 
 This command **does not give a shell**, but it creates the tunnel. Keep the terminal open. 
 
-![](./images/2.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2004/images/2.svg)
 
 
 
@@ -261,7 +261,7 @@ curl --socks5 localhost:1080 ifconfig.me
 ```
 It should return the **remote server’s IP** instead of your local one.  
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2004/images/image-1.png)
 
 
 
@@ -274,7 +274,7 @@ sudo lsof -i :1080
 ```
 Expected output should show ssh process listening
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2004/images/image-2.png)
 
 
 ### **Check if the tunnel process is running**
@@ -285,7 +285,7 @@ ps aux | grep "ssh -D"
 
 Should see your ssh tunnel process
 
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2004/images/image-3.png)
 
 
 ### **Verify port is open and listening**
@@ -296,7 +296,7 @@ netstat -tlnp | grep 1080
 
 Expected:
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2004/images/image-4.png)
 
 
 ### **Monitor SSH tunnel traffic**
@@ -310,7 +310,7 @@ sudo iftop -i any -f "port ssh"
 
 Expected:
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2004/images/image-5.png)
 
 Now open a new terminal and curl using the proxy and immediately switch to the monitoring terminal:
 
@@ -318,11 +318,11 @@ Now open a new terminal and curl using the proxy and immediately switch to the m
 curl --socks5 localhost:1080 http://www.google.com
 ```
 
-![](./images/3.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2004/images/3.svg)
 
 In the monitoring terminal you will see:
 
-![alt text](./images/image-7.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2004/images/image-7.png)
 
 - When you run `curl --socks5 localhost:1080 http://www.google.com`, you should see:
 
@@ -352,7 +352,7 @@ sudo nethogs
 
 This will open something like following:
 
-![alt text](./images/image-8.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2004/images/image-8.png)
 
 Now open a new terminal and curl using the proxy and immediately switch to the nethogs terminal:
 
@@ -362,7 +362,7 @@ curl --socks5 localhost:1080 http://www.google.com
 
 You will see the bandwidth usage through ssh as follows:
 
-![alt text](./images/image-9.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2004/images/image-9.png)
 
 This highlighted line represents your SSH tunnel traffic. The non-zero values for SENT and RECEIVED confirm that data is actively flowing through your SSH tunnel.
 
@@ -383,7 +383,7 @@ This output confirms your SSH dynamic port forwarding is working correctly since
 
 ### **Test latency through tunnel**
 
-![](./images/4.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2004/images/4.svg)
 
 ```bash
 # Without proxy
@@ -396,7 +396,7 @@ time curl --socks5 localhost:1080 https://www.google.com > /dev/null
 ```
 Expected output:
 
-![alt text](./images/image-10.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2004/images/image-10.png)
 
 
 Let me break down the latency testing results comparing direct connection vs. SSH tunnel:

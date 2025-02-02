@@ -3,7 +3,7 @@
 Remote port forwarding is a technique that allows external users to access services running on a private network by forwarding connections through an SSH tunnel. This is useful when the local machine hosting the service is not directly accessible from the internet, but an intermediary (gateway) machine with SSH access can relay traffic.
 
 
-![](./images/2.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2003/images/2.svg)
 
 
 
@@ -65,7 +65,7 @@ This command prompts you for your AWS Access Key ID, Secret Access Key, region, 
 
 ###  **Step 2: Set Up a Pulumi Project**
 
-![](./images/1.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2003/images/1.svg)
 
 #### **Set Up a new directory**
 Create a new directory for your project and navigate into it:
@@ -267,7 +267,7 @@ ssh -R 0.0.0.0:8080:localhost:3000 -i your-key.pem ec2-user@<EC2_PUBLIC_IP>
 
 ### **Step 4: Verify and Test the Setup**
 
-![](./images/3.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2003/images/3.svg)
 
 #### **Check if Port 8080 is Listening on EC2**
 SSH into the EC2 instance and run:
@@ -288,7 +288,7 @@ Welcome to the Remote Port Forwarding Lab!
 
 Or open the url from any browser:
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/SSH%20Tunnel%20Labs/Lab%2003/images/image.png)
 
 
 ### **Step 5: Cleanup**
