@@ -63,9 +63,7 @@ Once executed, the script can perform harmful actions such as:
 
 ## **Types of XSS Attacks**
 
-1. **Stored XSS (Persistent XSS)**  
-2. **Reflected XSS (Non-Persistent XSS)**  
-3. **DOM-Based XSS**
+![](./images/3.svg)
 
 ### **1. Stored XSS (Persistent XSS)**  
 In **Stored XSS**, the malicious input is saved on the server, such as in a database. It gets embedded in a web page and automatically executed whenever a user accesses that page. For example, an attacker could post a comment containing a script, which runs whenever someone views the comment.

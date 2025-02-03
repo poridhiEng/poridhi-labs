@@ -182,8 +182,7 @@ app.get('/comments', (req, res) => {
 #### **Why This is Vulnerable**
 - The code reads and inserts user-generated comments directly into the HTML response without any sanitization.
 - If a malicious comment like `<script>alert('XSS')</script>` is saved, the script will execute in the browser when another user views the page.
-  
----
+
 
 ### **Fixed Code**
 
@@ -204,8 +203,6 @@ app.get('/comments', (req, res) => {
 #### **Explanation**
 - The `sanitizeHtml()` function removes any dangerous HTML elements and attributes.
 - You can customize the sanitizer to allow safe formatting tags (e.g., `<b>`, `<i>`) while removing unsafe ones (e.g., `<script>`, `onload`).
-
----
 
 ### **Vulnerable Code (Python Flask Example)**
 
