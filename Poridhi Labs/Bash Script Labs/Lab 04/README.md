@@ -15,36 +15,47 @@ By the end of this lab, you will understand:
 - Basic knowledge of Linux/Unix command line
 - A Linux environment or terminal with Bash shell
 
-## Part 1: User-Defined Variables
+## User-Defined Variables
 
 User-defined variables are variables that you create to store and manipulate data in your script. They help manage dynamic content and make scripts more flexible.
 
 ### Declaring and Using Variables
+
 Create a new script named `variables.sh` and add the following content:
 
 ```bash
 #!/bin/bash
 
 # Assigning values to variables
-name="John"
+name="Nabil"
 age=25
-salary=45000.50
+department="CSE"
 
 # Printing variables
 echo "Name: $name"
 echo "Age: $age"
-echo "Salary: $salary"
+echo "Department: $department"
+```
+
+This script declares three variables: `name`, `age`, and `department`, and prints their values.
+
+**Execute and run the script:**
+
+```bash
+chmod +x variables.sh
+./variables.sh
 ```
 
 ### String Operations
+
 Create a script named `string_vars.sh`:
 
 ```bash
 #!/bin/bash
 
 # String operations
-first_name="Jane"
-last_name="Doe"
+first_name="Ahnaf"
+last_name="Nabil"
 
 # String concatenation
 full_name="$first_name $last_name"
@@ -58,7 +69,17 @@ echo "Length of full name: $name_length"
 echo "First 4 characters: ${full_name:0:4}"
 ```
 
-## Part 2: System Variables
+This script declares two variables: `first_name` and `last_name`, and does string operations on them like concatenation and substring extraction.
+
+**Execute and run the script:**
+
+```bash
+chmod +x string_vars.sh
+./string_vars.sh
+```
+
+## System Variables
+
 System variables are predefined variables in the Bash environment that provide information about the system and user.
 
 Create a file named `system_vars.sh`:
@@ -73,7 +94,16 @@ echo "Present working directory: $PWD"
 echo "Path settings: $PATH"
 ```
 
-## Part 3: Special Variables
+This script prints system variables like home directory, current user, shell being used, present working directory, and path settings.
+
+**Execute and run the script:**
+
+```bash
+chmod +x system_vars.sh
+./system_vars.sh
+```
+
+## Special Variables
 Special variables provide useful information about the script execution environment and command-line arguments.
 
 Create a file named `special_vars.sh`:
@@ -90,7 +120,8 @@ echo "Process ID: $$"
 echo "Exit status of last command: $?"
 ```
 
-## Part 4: Array Variables
+## Array Variables
+
 Arrays allow you to store multiple values in a single variable, making it easier to manage lists of data.
 
 Create a file named `arrays.sh`:
@@ -111,7 +142,16 @@ for fruit in "${fruits[@]}"; do
 done
 ```
 
-## Part 5: Readonly Variables
+This script declares an array `fruits` and iterates through it, printing each fruit.
+
+**Execute and run the script:**
+
+```bash
+chmod +x arrays.sh
+./arrays.sh
+```
+
+## Readonly Variables
 Readonly variables prevent modification after assignment, ensuring constant values remain unchanged.
 
 Create a file named `readonly_vars.sh`:
@@ -122,7 +162,7 @@ Create a file named `readonly_vars.sh`:
 # Declare readonly variables
 readonly MIN_AGE=18
 readonly MAX_AGE=65
-readonly COMPANY_NAME="TechCorp"
+readonly COMPANY_NAME="Poridhi"
 
 # Declare a readonly array
 readonly VALID_DEPARTMENTS=("HR" "Engineering" "Marketing" "Finance")
@@ -149,7 +189,6 @@ validate_age 70
 echo "Trying to modify readonly variables..."
 MIN_AGE=16  # This should fail
 VALID_DEPARTMENTS[0]="Sales"  # This should fail
-
 ```
 
 ### Explanation:
@@ -159,14 +198,16 @@ VALID_DEPARTMENTS[0]="Sales"  # This should fail
 3. Implements `validate_age()` to check if an age is within the allowed range.
 4. Demonstrates attempting to modify readonly variables, which results in an error.
 
-Try running the script with:
+Try executing and running the script with:
+
 ```bash
-bash readonly_vars.sh
+chmod +x readonly_vars.sh
+./readonly_vars.sh
 ```
 
 You'll see an error when attempting to modify `MIN_AGE` or `VALID_DEPARTMENTS`, proving they are readonly.
 
-## Part 6: Variable Scope and Export
+## Variable Scope and Export
 
 Variable scope determines where a variable can be accessed, affecting its availability across scripts.
 
@@ -186,6 +227,8 @@ export shared_var="I am shared"
 ./child.sh
 ```
 
+This script declares two variables: `local_var` and `shared_var`, and exports `shared_var`. It then calls `child.sh`, which attempts to access these variables.
+
 `child.sh`:
 ```bash
 #!/bin/bash
@@ -194,6 +237,23 @@ echo "In child script"
 echo "Trying to access local_var: $local_var"
 echo "Accessing shared_var: $shared_var"
 ```
+
+This script attempts to access `local_var` and `shared_var` from the parent script.
+
+Now, Make both scripts executable using the `chmod` command:
+
+```bash
+chmod +x parent.sh
+chmod +x child.sh
+```
+
+Execute and run the parent script:
+
+```bash
+./parent.sh
+```
+
+You'll see that `child.sh` can access `shared_var` but not `local_var`, demonstrating the scope of variables. `local_var` is not exported to child scripts. That's why `child.sh` can't access `local_var`.
 
 ## Conclusion
 
