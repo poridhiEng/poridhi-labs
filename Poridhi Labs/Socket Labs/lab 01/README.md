@@ -219,6 +219,7 @@ We will create a simple UI for the chat application. Create a file named `index.
     <div class="chat-container">
         <!-- Header Section -->
         <div class="header">
+            <h3 id="user-name">UserName</h3>
             <h3 id="online-users">Online Users:</h3>
         </div>
 
@@ -379,6 +380,10 @@ body {
 }
 ```
 
+This CSS file will style the UI of the chat application. Here is the screenshot of the UI:
+
+![alt text](image-6.png)
+
 **3. Server Setup**
 
 Now we will create a server file and add the necessary code to it. Create a file named `server.js` in the root of your project and add the following code to it:
@@ -389,29 +394,35 @@ const app = express();
 const path = require('path');
 const port = process.env.PORT || 3000;
 
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, '../public'))); // serve static files from the public folder
 
 const server = app.listen(port, () => {
     console.log(`Server is up on port ${port}`);
 });
 
+// create a socket.io server
 const io = require('socket.io')(server);
 
+// create a map to store online users
 let onlineUsers = new Map();
 
+// listen for new connections
 io.on('connection', (socket) => {
     console.log('A new user connected: ', socket.id);
 
+    // set the user name
     socket.on('set-name', (name) => {
         onlineUsers.set(socket.id, name);
         io.emit('onlineUsers', onlineUsers.size);
     });
 
+    // listen for disconnections
     socket.on('disconnect', () => {
         onlineUsers.delete(socket.id);
         io.emit('onlineUsers', onlineUsers.size);
     });
 
+    // listen for messages
     socket.on('message', (message) => {
         socket.broadcast.emit('chat-message', message);
     });
@@ -423,46 +434,64 @@ io.on('connection', (socket) => {
 Now we will create a client file and add the necessary code to it. Create a file named `index.js` in the `public/js` folder and add the following code to it:
 
 ```js
+// import socket.io client library
 const socket = io();
 
-let userName = prompt("Enter your name:") || "Anonymous"; // Ask user for name
-socket.emit('set-name', userName); // Send to server
+// ask user for name
+let userName = prompt("Enter your name:") || "Anonymous";
 
+// send the user name to the server
+socket.emit('set-name', userName);
+
+
+// DOM elements
 const chatBox = document.getElementById('chat-box');
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
+const userNameDisplay = document.getElementById('user-name');
 
+// Set the user name
+userNameDisplay.textContent = userName;
+
+// Listen for online users count
 socket.on('onlineUsers', (count) => {
     document.getElementById('online-users').textContent = `Online Users: ${count}`;
 });
 
+// handle send button click
 sendButton.addEventListener('click', (e) => {
     e.preventDefault();
     sendMessage();
 });
 
+// handle enter key press
 messageInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         sendMessage();
     }
 });
 
+// send message to server
 function sendMessage() {
-
+    // check if the input is empty
     if (messageInput.value.trim() === '') {
         return;
     }
 
+    // create message object
     const message = {
         text: messageInput.value,
         sender: userName, // Send username
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
+
+    // send message to server
     socket.emit('message', message);
     addMessageToChat(message, true);
     messageInput.value = '';
 }
 
+// add message to chat UI
 function addMessageToChat(message, isSender) {
     const messageContainer = document.createElement('div');
     messageContainer.classList.add('message-container', isSender ? 'sent' : 'received');
@@ -492,6 +521,32 @@ To run the server, we will use the following command in our terminal:
 ```bash
 npm run dev
 ```
+
+## Access the chat app
+
+This lab is intended to be run on Poridhi's VM. To access the chat app, we need to create a load balancer in the VM.
+
+![alt text](image-2.png)
+
+Follow the URL provided in the load balancer to access the chat app.
+
+
+![alt text](image-3.png)
+
+
+
+The user will be asked to enter a name.
+
+![alt text](image-4.png)
+
+
+
+After entering the name, the user will be on the home page and communicate with other users in real-time.
+
+![alt text](image-5.png)
+
+Here, we can see the Online Users count. and the chat messages are displayed in real-time.
+
 
 
 ## Conclusion

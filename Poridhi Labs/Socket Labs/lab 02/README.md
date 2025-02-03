@@ -86,8 +86,8 @@ We will create a simple UI for the chat application. Create a file named `index.
     <div class="chat-container">
         <!-- Header Section -->
         <div class="header">
+            <h3 id="user-name">Anonymous</h3>
             <h3 id="online-users">Online Users:</h3>
-            <!-- Room Controls -->
             <div class="room-controls">
                 <input id="room-input" type="text" placeholder="Room name...">
                 <button id="create-room">Create Room</button>
@@ -141,6 +141,10 @@ body {
     border-radius: 15px 15px 0 0;
     font-size: 16px;
     text-align: center;
+}
+
+#user-name {    
+    color: white;
 }
 
 .chat-container {
@@ -292,6 +296,10 @@ body {
 }
 ```
 
+These two files will create the UI for the chat application. Here is the screenshot of the UI:
+
+![alt text](image.png)
+
 **3. Server Setup**
 
 Now we will create a server file and add the necessary code to it. Create a file named `server.js` in the root of your project and add the following code to it:
@@ -311,14 +319,15 @@ const server = app.listen(port, () => {
 
 const io = require('socket.io')(server);
 
-let onlineUsers = new Map();
-let rooms = new Map();
+// global variables
+let onlineUsers = new Map(); // map of online users
+let rooms = new Map(); // map of rooms
 
 io.on('connection', (socket) => {
     console.log('A new user connected: ', socket.id);
     let currentRoom = null;
 
-    // Send the list of rooms to the client
+    // Send the list of rooms to the new connected client
     socket.emit('update-rooms', Array.from(rooms.keys()));
 
     // set the userName
@@ -329,26 +338,28 @@ io.on('connection', (socket) => {
 
     // create a new room
     socket.on('create-room', (roomName) => {
-        rooms.set(roomName, new Set());
-        io.emit('update-rooms', Array.from(rooms.keys()));
+        rooms.set(roomName, new Set()); // create a new room roomName with an empty set of users
+        io.emit('update-rooms', Array.from(rooms.keys())); // send the updated list of rooms to all clients
     });
 
     // join a room
     socket.on('join-room', (roomName) => {
+        console.log('join-room', roomName);
+        // leave the current room if the user is already in a room
         if (currentRoom) {
             socket.leave(currentRoom);
             rooms.get(currentRoom).delete(socket.id);
         }
         
-        socket.join(roomName);
-        currentRoom = roomName;
-        if (!rooms.has(roomName)) {
-            rooms.set(roomName, new Set());
+        socket.join(roomName); // join the new room
+        currentRoom = roomName; // set the current room to the new room
+        if (!rooms.has(roomName)) { // if the new room does not exist, create it
+            rooms.set(roomName, new Set()); // create a new room roomName with an empty set of users
         }
-        rooms.get(roomName).add(socket.id);
+        rooms.get(roomName).add(socket.id); // add the user to the new room
         
         // Emit room members count
-        io.to(roomName).emit('room-users', {
+        io.to(roomName).emit('room-users', { // send the updated list of users in the new room to all clients in the new room
             room: roomName,
             count: rooms.get(roomName).size
         });
@@ -356,29 +367,27 @@ io.on('connection', (socket) => {
 
     socket.on('message', (message) => {
         if (currentRoom) {
-            socket.to(currentRoom).emit('chat-message', message);
+            socket.to(currentRoom).emit('chat-message', message); // send the message to all clients in the current room
         }
     });
 
     socket.on('disconnect', () => {
-        if (currentRoom && rooms.get(currentRoom)) {
-            rooms.get(currentRoom).delete(socket.id);
-            if (rooms.get(currentRoom).size === 0) {
-                rooms.delete(currentRoom);
-                io.emit('update-rooms', Array.from(rooms.keys()));
+        if (currentRoom && rooms.get(currentRoom)) { // if the user is in a room
+            rooms.get(currentRoom).delete(socket.id); // remove the user from the current room
+            if (rooms.get(currentRoom).size === 0) { // if the current room has no users
+                rooms.delete(currentRoom); // delete the current room
+                io.emit('update-rooms', Array.from(rooms.keys())); // send the updated list of rooms to all clients
             } else {
-                io.to(currentRoom).emit('room-users', {
+                io.to(currentRoom).emit('room-users', { // send the updated list of users in the current room to all clients in the current room
                     room: currentRoom,
                     count: rooms.get(currentRoom).size
                 });
             }
         }
-        onlineUsers.delete(socket.id);
-        io.emit('onlineUsers', onlineUsers.size);
+        onlineUsers.delete(socket.id); // remove the user from the list of online users
+        io.emit('onlineUsers', onlineUsers.size); // send the updated list of online users to all clients
     });
 });
-
-
 ```
 
 **4. Client Setup**
@@ -391,14 +400,18 @@ const socket = io();
 let userName = prompt("Enter your name:") || "Anonymous"; // Ask user for name
 socket.emit('set-name', userName); // Send to server
 
+// DOM elements
 const chatBox = document.getElementById('chat-box');
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
-
 const roomInput = document.getElementById('room-input');
 const createRoomBtn = document.getElementById('create-room');
 const roomSelect = document.getElementById('room-select');
 const currentRoomDisplay = document.getElementById('current-room');
+const userNameDisplay = document.getElementById('user-name');
+
+// set the user name
+userNameDisplay.textContent = userName;
 
 let currentRoom = null;
 
@@ -412,54 +425,59 @@ sendButton.addEventListener('click', (e) => {
     sendMessage();
 });
 
+// send message when the user presses enter
 messageInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         sendMessage();
     }
 });
 
+// handle room creation
 createRoomBtn.addEventListener('click', () => {
-    const roomName = roomInput.value.trim();
+    const roomName = roomInput.value.trim(); // get the room name from the input
     if (roomName) {
-        socket.emit('create-room', roomName);
-        roomInput.value = '';
+        socket.emit('create-room', roomName); // send the room name to the server under the create-room event
+        roomInput.value = ''; // clear the room input
     }
 });
 
 roomSelect.addEventListener('change', () => {
-    const selectedRoom = roomSelect.value;
+    const selectedRoom = roomSelect.value; // get the selected room from the dropdown
     if (selectedRoom) {
-        joinRoom(selectedRoom);
+        joinRoom(selectedRoom); // join the selected room
     }
 });
 
+// Handle room joining
 function joinRoom(roomName) {
     currentRoom = roomName;
-    socket.emit('join-room', roomName);
-    currentRoomDisplay.textContent = `Current Room: ${roomName}`;
+    socket.emit('join-room', roomName); // send the room name to the server under the join-room event
+    currentRoomDisplay.textContent = `Current Room: ${roomName}`; // update the current room display
     chatBox.innerHTML = ''; // Clear chat when joining new room
 }
 
+// Handle room updates
 socket.on('update-rooms', (rooms) => {
-    roomSelect.innerHTML = '<option value="">Select a room...</option>';
-    rooms.forEach(room => {
+    roomSelect.innerHTML = '<option value="">Select a room...</option>'; // clear the room select dropdown
+    rooms.forEach(room => { // for each room, create an option and add it to the dropdown
         const option = document.createElement('option');
         option.value = room;
         option.textContent = room;
-        roomSelect.appendChild(option);
+        roomSelect.appendChild(option); // add the option to the dropdown
     });
 });
 
-socket.on('room-users', (data) => {
-    if (data.room === currentRoom) {
+// Handle room users
+socket.on('room-users', (data) => { // handle the room users event
+    if (data.room === currentRoom) { // if the room is the current room
         document.getElementById('online-users').textContent = 
-            `Online Users in ${data.room}: ${data.count}`;
+            `Online Users in ${data.room}: ${data.count}`; // update the online users display
     }
 });
 
 // send message to server
 function sendMessage() {
-    if (messageInput.value.trim() === '' || !currentRoom) {
+    if (messageInput.value.trim() === '' || !currentRoom) { // if the message is empty or the user is not in a room
         return;
     }
 
@@ -469,11 +487,12 @@ function sendMessage() {
         sender: userName, // Send username
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
-    socket.emit('message', message);
-    addMessageToChat(message, true);
-    messageInput.value = '';
+    socket.emit('message', message); // send the message to the server under the message event
+    addMessageToChat(message, true); // add the message to the chat
+    messageInput.value = ''; // clear the message input
 }
 
+// add message to chat
 function addMessageToChat(message, isSender) {
     const messageContainer = document.createElement('div');
     messageContainer.classList.add('message-container', isSender ? 'sent' : 'received');
@@ -505,4 +524,40 @@ To run the server, we will use the following command in our terminal:
 ```bash
 npm run dev
 ```
+
+## Access the chat app
+
+This lab is intended to be run on Poridhi's VM. To access the chat app, we need to create a load balancer in the VM.
+
+![alt text](image-1.png)
+
+Follow the URL provided in the load balancer to access the chat app.
+
+![alt text](image-2.png)
+
+The user will be asked to enter a name.
+
+![alt text](image-3.png)
+
+After entering the name, the user will be on the home page.
+
+![alt text](image-4.png)
+
+Users can create a room or join a room and start chatting.
+
+![alt text](image-5.png)
+
+Here, we can see, in the `TestRoom` room, there are 3 users online. They can also communicate with each other in real-time.
+
+## Conclusion
+
+In this lab, we learned how to use Socket.io to create a chat app with rooms. We also learned how to use the `join` and `leave` methods to join and leave a room. We also learned how to use the `to` method to send messages to a specific room.
+
+
+
+
+
+
+
+
 
