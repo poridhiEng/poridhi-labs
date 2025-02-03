@@ -146,6 +146,16 @@ socket.on('chatMessage', (data) => {
 
 Now, let's implement a simple chat application using Socket.IO. We will create a server and a client, and then connect them using Socket.IO. We will use Node.js and Express to create the server, and Socket.IO to handle the real-time communication. We also make a simple UI using HTML, CSS, and JavaScript for the chat application.
 
+![alt text](image-1.png)
+
+### Key Features
+
+- Real-time communication between clients and server.
+- Multiple clients can connect to the server.
+- Messages are broadcasted to all connected clients.
+- Users can send messages to each other.
+- Users can see the list of online users.
+
 ### Project Structure
 
 We will create a project named `Chat App` and add the necessary files to it.
