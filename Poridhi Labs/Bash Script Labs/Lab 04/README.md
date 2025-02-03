@@ -2,6 +2,8 @@
 
 Variables in Bash scripting play a crucial role in storing and managing data. They allow scripts to handle dynamic values, making automation more efficient. In this lab, we will explore different types of variables, their scope, and best practices for using them effectively in Bash scripts.
 
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/7104604f7099003f0548aae6814b07429c846ae4/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2004/images/Bash-variable.svg)
+
 By the end of this lab, you will understand:
 - User-defined variables
 - System variables
@@ -46,7 +48,7 @@ chmod +x variables.sh
 ./variables.sh
 ```
 
-![alt text](./images/image.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2004/images/image.png)
 
 ### String Operations
 
@@ -80,7 +82,7 @@ chmod +x string_vars.sh
 ./string_vars.sh
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2004/images/image-1.png)
 
 ## System Variables
 
@@ -107,7 +109,7 @@ chmod +x system_vars.sh
 ./system_vars.sh
 ```
 
-![alt text](./images/image-2.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2004/images/image-2.png)
 
 ## Special Variables
 
@@ -158,7 +160,7 @@ chmod +x special_vars.sh
 ./special_vars.sh arg1 arg2 arg3
 ```
 
-![alt text](./images/image-3.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2004/images/image-3.png)
 
 ## Array Variables
 
@@ -191,7 +193,7 @@ chmod +x arrays.sh
 ./arrays.sh
 ```
 
-![alt text](./images/image-4.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2004/images/image-4.png)
 
 ## Readonly Variables
 Readonly variables prevent modification after assignment, ensuring constant values remain unchanged.
@@ -249,7 +251,7 @@ chmod +x readonly_vars.sh
 
 You'll see an error when attempting to modify `MIN_AGE` or `VALID_DEPARTMENTS`, proving they are readonly.
 
-![alt text](./images/image-5.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2004/images/image-5.png)
 
 ## Variable Scope and Export
 
@@ -299,7 +301,7 @@ Execute and run the parent script:
 
 You'll see that `child.sh` can access `shared_var` but not `local_var`, demonstrating the scope of variables. `local_var` is not exported to child scripts. That's why `child.sh` can't access `local_var`.
 
-![alt text](./images/image-6.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2004/images/image-6.png)
 
 ## Conclusion
 
