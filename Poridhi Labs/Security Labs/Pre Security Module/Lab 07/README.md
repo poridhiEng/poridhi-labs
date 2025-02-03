@@ -7,6 +7,7 @@ Cross-Site Scripting (XSS) is a critical security vulnerability in web applicati
 - Learn about different types of XSS attacks.
 - Understand how Reflected XSS works.
 - Perform a Reflected XSS attack on an application.
+- Learn how to prevent Reflected XSS attacks.
 
 ## **What is Cross-Site Scripting (XSS)?**
 
@@ -168,6 +169,52 @@ Now as your information is being `hacked`, you can see the `hacked` information 
 ![](./images/11.png)
 
 
+## **How to Prevent Reflected XSS**
+
+### **Input Validation**  
+   Validate user input to allow only safe and expected formats. Reject input with special characters or HTML tags.
+
+   **Example (Python):**
+   ```python
+   import re
+
+   def is_valid_input(user_input):
+       # Allow only letters, numbers, and spaces
+       return bool(re.match("^[a-zA-Z0-9 ]+$", user_input))
+   ```
+
+   **Example Usage:**  
+   ```python
+   user_input = "<script>alert('XSS');</script>"
+   if not is_valid_input(user_input):
+       print("Invalid input!")
+   ```
+
+### **Output Escaping**  
+   Escape special characters like `<`, `>`, and `&` to prevent browsers from executing scripts.
+
+   **Example (Python with Flask):**
+   ```python
+   from flask import Flask, request
+   from markupsafe import escape
+
+   app = Flask(__name__)
+
+   @app.route('/search')
+   def search():
+       user_input = request.args.get('q', '')
+       safe_output = escape(user_input)  # Escape special characters
+       return f"<p>Search results for: {safe_output}</p>"
+   ```
+
+   **Result:**  
+   If the input is `<script>alert('XSS');</script>`, it will be displayed as plain text (`&lt;script&gt;alert('XSS');&lt;/script&gt;`) instead of executing the script.
+
+### **Use Content Security Policy (CSP)**  
+   Implement a CSP to block unauthorized scripts. Example header:  
+   ```http
+   Content-Security-Policy: default-src 'self'; script-src 'self';
+   ```
 ## **Conclusion**
 
-In this lab, we have learned about the basics of XSS and how it works. We have also learned about different types of XSS attacks and how to perform a Reflected XSS attack on an application. In our upcoming labs, we will learn about how to detect and prevent XSS attacks.
+In this lab, we have learned about the basics of XSS and how it works. We have also learned about different types of XSS attacks and how to perform a Reflected XSS attack on an application. We also learned about how to prevent Reflected XSS attacks. In our upcoming labs, we wll explore Stored XSS.
