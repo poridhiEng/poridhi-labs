@@ -2,6 +2,8 @@
 
 Variables in Bash scripting play a crucial role in storing and managing data. They allow scripts to handle dynamic values, making automation more efficient. In this lab, we will explore different types of variables, their scope, and best practices for using them effectively in Bash scripts.
 
+![alt text](./images/Bash-variable.svg)
+
 By the end of this lab, you will understand:
 - User-defined variables
 - System variables
