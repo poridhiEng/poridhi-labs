@@ -19,6 +19,8 @@ Rooms in **Socket.IO** are a way to group sockets (clients) within a namespace.
 - Messages can be **broadcasted to all clients** in a specific room without affecting others.  
 - Rooms help in **efficient event handling** for features like chat groups, gaming lobbies, and private notifications.
 
+![alt text](image-7.png)
+
 > **Note:** Rooms are **not** a separate namespace. They exist **within** a namespace.
 
 ### How rooms work?
