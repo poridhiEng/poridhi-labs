@@ -30,7 +30,7 @@ The graphs are basically divided into two types:
     1. Directed edge & 2. Undirected edge.
     
 
-![directedgraph.drawio.svg](images/image1.svg)
+![directedgraph.drawio.svg](https://github.com/nakibworkspace/AS-Lab-03/raw/main/images/image1.svg)
 
 Here the nodes are the verticles and the arrows are called the edges.
 
@@ -88,7 +88,7 @@ spark = SparkSession.builder \
 .getOrCreate()
 ```
 
-![Screenshot 2025-01-16 at 15.08.32.png](images/image2.png)
+![Screenshot 2025-01-16 at 15.08.32.png](https://github.com/nakibworkspace/AS-Lab-03/raw/main/images/image2.png)
 
 Creating vertices(nodes) and edges(the connection between the nodes)
 
@@ -361,11 +361,11 @@ new.show()
 
  a graph clustering algorithm used to identify communities or clusters in a graph. It assigns labels to vertices and propagates these labels through the graph based on the structures of the graph.
 
-![Initial phase of LPA where only two nodes are marked only as different.](images/image3.svg)
+![Initial phase of LPA where only two nodes are marked only as different.](https://github.com/nakibworkspace/AS-Lab-03/raw/main/images/image3.svg)
 
 Initial phase of LPA where only two nodes are marked only as different.
 
-![Final phase of LPA where the other nodes are effected by the neighbour nodes.](images/image4.svg)
+![Final phase of LPA where the other nodes are effected by the neighbour nodes.](https://github.com/nakibworkspace/AS-Lab-03/raw/main/images/image4.svg)
 
 Final phase of LPA where the other nodes are effected by the neighbour nodes.
 

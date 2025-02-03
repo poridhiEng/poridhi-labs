@@ -23,7 +23,7 @@ Apache Spark MLlib is a built-in scalable machine learning library. It provides 
 4. Pipelines
 5. Tuning and Evaluation 
 
-![A diagram of what is usually done using MLlib library from Spark for handling Machine Learning Model that are trained with BIg Data.](image/image1.svg)
+![A diagram of what is usually done using MLlib library from Spark for handling Machine Learning Model that are trained with BIg Data.](https://github.com/nakibworkspace/AS-Lab-04/raw/main/image/image1.svg)
 
 A diagram of what is usually done using MLlib library from Spark for handling Machine Learning Model that are trained with BIg Data.
 
@@ -227,7 +227,7 @@ def evaluate_model(predictions, model_name):
 
 ```
 
-![The way the Pipeline is making the whole process to one line from assembling, scaling to evaluating, selecting best model and then saving it.](image/image2.svg)
+![The way the Pipeline is making the whole process to one line from assembling, scaling to evaluating, selecting best model and then saving it.](https://github.com/nakibworkspace/AS-Lab-04/raw/main/image/image2.svg)
 
 The way the Pipeline is making the whole process to one line from assembling, scaling to evaluating, selecting best model and then saving it.
 
@@ -292,7 +292,7 @@ def plot_model_comparison(df):
 plot_model_comparison(comparison_df)
 ```
 
-![Output of the comparison to the models used to train and predict on the dataset.](image/image3.png)
+![Output of the comparison to the models used to train and predict on the dataset.](https://github.com/nakibworkspace/AS-Lab-04/raw/main/image/image3.png)
 
 Output of the comparison to the models used to train and predict on the dataset.
 
