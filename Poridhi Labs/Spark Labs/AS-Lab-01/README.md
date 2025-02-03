@@ -12,11 +12,11 @@ Spark has two fundamentals data abstractions: RDD(a set of element of same type)
 
 Spark applications run as independent sets of processes on a cluster, coordinated by the SparkContext object in your main program (*driver program*).
 
-![SparkArchi.drawio.svg](images/image1.svg)
+![SparkArchi.drawio.svg](https://github.com/nakibworkspace/AS-Lab-01/raw/main/images/image1.svg)
 
 To run on a cluster, the SparkContext can connect to several types of cluster **managers (such as Spark’s own standalone cluster manager, Mesos and Kubernetes), which allocate resources across applications. Once connected, Spark acquires executors on nodes in the cluster, which are processes that run computations and store data for your application. Next, it sends your application code (Python files passed to SparkContext) to the executors. Finally, SparkContext sends tasks to the executors to run.
 
-![This figure helps us to understand how we can perform operations where the DataFrames are collected from sources and stored it into Cloud with the help of Programming Languages like Python, Java, Scala.](images/image2.svg)
+![This figure helps us to understand how we can perform operations where the DataFrames are collected from sources and stored it into Cloud with the help of Programming Languages like Python, Java, Scala.](https://github.com/nakibworkspace/AS-Lab-01/raw/main/images/image2.svg)
 
 This figure helps us to understand how we can perform operations where the DataFrames are collected from sources and stored it into Cloud with the help of Programming Languages like Python, Java, Scala.
 
@@ -30,13 +30,13 @@ Spark uses a **master/slave architecture** with one central coordinator, called 
 
 Spark has **built-in modules** for SQL, streaming, machine learning, and graph processing.
 
-![A pictorial idea of how the SparkContext takes input and converts it to new_rdd with transformations.](images/image3.svg)
+![A pictorial idea of how the SparkContext takes input and converts it to new_rdd with transformations.](https://github.com/nakibworkspace/AS-Lab-01/raw/main/images/image3.svg)
 
 A pictorial idea of how the SparkContext takes input and converts it to new_rdd with transformations.
 
 **Spark Context** is the entry point to any Spark functionality. It allows an user application to interact with the cluster and submit jobs by connecting to a cluster(Standalone, Kubernetes).
 
-![How transformations are done in SparkContext with some tasks to make the data more reliable.](images/image4.svg)
+![How transformations are done in SparkContext with some tasks to make the data more reliable.](https://github.com/nakibworkspace/AS-Lab-01/raw/main/images/image4.svg)
 
 How transformations are done in SparkContext with some tasks to make the data more reliable.
 
@@ -73,7 +73,7 @@ records=spark.sparkContext.textFile("sample.txt")
     ```
     
 
-![Screenshot 2025-01-07 at 22.11.33.png](images/image5.png)
+![Screenshot 2025-01-07 at 22.11.33.png](https://github.com/nakibworkspace/AS-Lab-01/raw/main/images/image5.png)
 
 - As everything installed, let’s try some basic code to see spark is working fine.
 
@@ -114,7 +114,7 @@ Lazy evaluation is a concept where the whole transformations and actions are des
 
 ### Narrow vs Wide Transformation
 
-![narrow.drawio.svg](images/image6.svg)
+![narrow.drawio.svg](https://github.com/nakibworkspace/AS-Lab-01/raw/main/images/image6.svg)
 
 **Narrow transformations:** are process within a single partition.
 
@@ -205,7 +205,7 @@ output:
 +------+
 ```
 
-![functions to change the RDD to more useable for analysis with transformations and here count() is used as an action.](images/image7.svg)
+![functions to change the RDD to more useable for analysis with transformations and here count() is used as an action.](https://github.com/nakibworkspace/AS-Lab-01/raw/main/images/image7.svg)
 
 functions to change the RDD to more useable for analysis with transformations and here count() is used as an action.
 
