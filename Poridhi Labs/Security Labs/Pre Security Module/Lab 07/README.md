@@ -164,7 +164,7 @@ If we click on the the Button, it will redirect you to `/whatWasHappen` page wit
 
 Now as your information is being `hacked`, you can see the `hacked` information by clicking on `View Stolen Data` Button.
 
-![](./images/11.png)
+![](./images/12.png)
 
 
 ## **How to Prevent Reflected XSS**
