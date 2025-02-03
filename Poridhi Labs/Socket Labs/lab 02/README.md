@@ -21,11 +21,30 @@ Rooms in **Socket.IO** are a way to group sockets (clients) within a namespace.
 
 > **Note:** Rooms are **not** a separate namespace. They exist **within** a namespace.
 
+### How rooms work?
+
+Rooms function by allowing a **socket (client) to join a named room** on the server, and the server can send messages to all sockets in that room.  
+
+🔹 **Core Concepts:**  
+- **Join a Room:** `socket.join(roomName)`  
+- **Leave a Room:** `socket.leave(roomName)`  
+- **Send a message to all users in a room:** `io.to(roomName).emit('eventName', data)`  
+- **Send a message to a specific user in a room:** `socket.to(socketId).emit('eventName', data)`
+
 ![alt text](./images/room-seq-diagram.png)
 
-### Project Structure
+### How Messages Are Sent in Rooms
 
-We will create a project named `Chat App` and add the necessary files to it.
+| **Scenario** | **Code (Server-Side)** |
+|-------------|----------------|
+| **Send to all users in a room** | `io.to('room1').emit('message', 'Hello Room 1!');` |
+| **Send to all except the sender** | `socket.to('room1').emit('message', 'Hello Room!');` |
+| **Send to a specific socket (user)** | `socket.to(socketId).emit('message', 'Private message!');` |
+| **Broadcast to everyone except sender** | `socket.broadcast.emit('message', 'Hello everyone except sender!');` |
+
+### Hands-on implementation
+
+To demonstrate how rooms work, we will create a project named `Chat App` and add the necessary files to it.
 
 ```
 Chat App
@@ -40,7 +59,7 @@ Chat App
 └── README.md
 ```
 
-### **Setting Up the Server**
+### **Setting Up the Project**
 
 **1. Project initialization and Dependencies**
 
@@ -67,6 +86,8 @@ Update the `scripts` section of the `package.json` file to include the following
     "dev": "nodemon server/server.js"
 }
 ```
+
+![alt text](image-6.png)
 
 **2. Chat app UI**
 

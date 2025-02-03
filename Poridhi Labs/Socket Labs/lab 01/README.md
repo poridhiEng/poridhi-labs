@@ -212,7 +212,7 @@ We will create a simple UI for the chat application. Create a file named `index.
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat App</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="index.css">
     <script src="/socket.io/socket.io.js"></script> <!-- Socket.io client library -->
 </head>
 <body>
@@ -242,7 +242,7 @@ We will create a simple UI for the chat application. Create a file named `index.
 
 - `<script src="/socket.io/socket.io.js"></script>` is used to include the Socket.io client library in the HTML file. This is required for the client to connect to the server.
 
-- `<link rel="stylesheet" href="style.css">` is used to include the CSS file in the HTML file. This is required for the UI to be styled properly.
+- `<link rel="stylesheet" href="index.css">` is used to include the CSS file in the HTML file. This is required for the UI to be styled properly.
 
 - `<script src="js/index.js"></script>` is used to include the JavaScript file in the HTML file. This is required for the client to connect to the server.
 
