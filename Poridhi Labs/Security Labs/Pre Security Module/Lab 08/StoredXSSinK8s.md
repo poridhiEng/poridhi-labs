@@ -54,41 +54,162 @@ The script may send sensitive information, such as session cookies, to the attac
 
 
 ## **Hands on with Stored XSS**
-Now we will see a web application which is vulnerable to Stored XSS. To run this application, you need to follow the following steps:
 
-### **Step 1: Pull the docker image**
 
-```bash
-docker pull fazlulkarim105925/stored_xss_app:latest
+Now we will see a web application which is vulnerable to Stored XSS. We will host the application in `Poridhi's` Kubernetes Cluster. 
+
+![](./images/k8sinfra.svg)
+
+We will deploy the application in 3 kubernetes pods and expose it through a `NodePort` service. We will use a `persistent volume` to store the database file. A `PersistentVolumeClaim` will request the storage from the `persistent volume`.
+
+### **Step 1: Create the k8s-manifests**
+```
+/k8s-manifests
+│   ├── deploy.yml 
+│   ├── svc.yml         
+│   ├── pv.yml          
+│   ├── pvc.yml           
 ```
 
-### **Step 2: Run the docker container**
+Create this files with this command
+```bash
+mkdir k8s-manifests
+touch deploy.yml svc.yml pv.yml pvc.yml
+```
+
+Now add the following content to the files.
+
+**deploy.yml**
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-app-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: python-app
+  template:
+    metadata:
+      labels:
+        app: python-app
+    spec:
+      containers:
+      - name: python-app-container
+        image: fazlulkarim105925/stored_xss_app:latest
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+        - name: sqlite-storage
+          mountPath: /app/xss_demo.db
+          subPath: xss_demo.db
+      volumes:
+      - name: sqlite-storage
+        persistentVolumeClaim:
+          claimName: sqlite-pvc
+``` 
+This deployment will create 3 replicas of the application and will mount the `sqlite-pvc` to the container.
+
+**svc.yml**
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: stored-xss-app-service
+spec:
+  type: NodePort
+  selector:
+    app: python-app 
+  ports:
+  - protocol: TCP
+    port: 8000      
+    targetPort: 8000 
+    nodePort: 30007  
+```
+
+This service will expose the application on the `NodePort` `30007`.
+
+**pv.yml**
+
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sqlite-pv
+spec:
+  capacity:
+    storage: 1Gi 
+  accessModes:
+    - ReadWriteOnce  
+  hostPath:
+    path: /mnt/data  
+```
+
+This persistent volume will be mounted to the container and will store the database file.
+
+**pvc.yml**
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sqlite-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi 
+```
+
+This persistent volume claim will request a `1Gi` storage.
+
+### **Step 2: Apply the k8s-manifests**
 
 ```bash
-docker run -d -p 8000:8000 fazlulkarim105925/stored_xss_app:latest
+cd k8s-manifests
+kubectl apply -f pv.yml
+kubectl apply -f pvc.yml
+kubectl apply -f deploy.yml
+kubectl apply -f svc.yml
 ```
+
+Verify the deployment and service
+
+```bash
+kubectl get deployments
+kubectl get services
+```
+Copy the `NodePort` (e.g `30007`) of the `stored-xss-app-service`
+
+![](./images/k1.png)
+
+
 
 ### **Step 3: Exposing the application with Poridhi's Loadbalancer**
 
-Create a `Laodbalancer` in `Poridhi's Cloud` with `eth0` ip and port `8000`.
-
-To find the `eth0` ip address, run the following command.
+Find the `eth0` ip address by running the following command.
 
 ```bash
 ifconfig
 ```
 ![](./images/10.png)
 
+
+Create a `Laodbalancer` in `Poridhi's Cloud` with `eth0` ip and `NodePort` (e.g `30007`).
+
 With `Loadbalancer` `URL` you can open the application from any browser.
 
 ![](./images/5.png)
 
-### **Step 4: Exploring the Application**
+### **Step 4: Exploring the application**
 
 If you first time open the application, you need to create a new user in `Sign up` page.
 
 ![](./images/4.png)
-
 
 After creating a new user, you can login to the application. After login, you will see the `Home` page.
 
