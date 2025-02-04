@@ -1,13 +1,13 @@
-# **Cross-Site Scripting (XSS)**
+# **Reflected XSS Attack Simulation in Kubernetes**
 
 Cross-Site Scripting (XSS) is a critical security vulnerability in web applications that allows attackers to inject and execute malicious scripts in a user’s browser. These scripts can compromise sensitive data, hijack user sessions, deface websites, or perform unauthorized actions. We will also perform a Reflected XSS attack on an application to understand how it works.
 
 ## **Objective**
-- Understand basics of XSS and how it works.
-- Learn about different types of XSS attacks.
-- Understand how Reflected XSS works.
-- Perform a Reflected XSS attack on an application.
-- Learn how to prevent Reflected XSS attacks.
+- Deploy a web application in kubernetes cluster.
+- Expose the application through a `NodePort` service.
+- Simulate a **Reflected XSS attack** in the application.
+- Demonstrate how the attack can be exploited to compromise user data and services.
+- Implement security measures to prevent XSS attacks in production systems.
 
 ## **What is Cross-Site Scripting (XSS)?**
 

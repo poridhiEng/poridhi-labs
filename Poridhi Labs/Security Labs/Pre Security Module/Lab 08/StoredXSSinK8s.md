@@ -1,12 +1,13 @@
-# **Stored XSS Attack**
+# **Stored XSS Attack Simulation in Kubernetes**
 
 Web security vulnerabilities can expose users and applications to severe risks, such as data theft, unauthorized access, or service disruption. Among these vulnerabilities, **Cross-Site Scripting (XSS)** is one of the most common and dangerous attacks. This documentation explores **Stored XSS**, including how it works and its impact and how to prevent it.
 ## **Objective**
 The objective of this project is to:
-1. Simulate a **Stored XSS attack** in a web application.
-2. Understand how malicious scripts can be injected and stored on a server.
-3. Identify ways to detect and mitigate stored XSS vulnerabilities.
-4. Demonstrate security best practices to prevent XSS attacks in production systems.
+1. Deploy a web application in kubernetes cluster.
+2. Expose the application through a `NodePort` service.
+3. Simulate a **Stored XSS attack** in the application.
+4. Demonstrate how the attack can be exploited to compromise user data and services.
+5. Implement security measures to prevent XSS attacks in production systems.
 
 ## **What is XSS?**
 **Cross-Site Scripting (XSS)** is a web security vulnerability that allows attackers to inject malicious scripts into web pages viewed by other users. When a vulnerable web page fails to properly handle untrusted user input, attackers can execute scripts in the browsers of other users, leading to various security risks.
