@@ -2,6 +2,8 @@
 
 In this lab, we will continue extending our chat app by integrating Database for storing User information, messages and room data. We will use Redis for storing messages. Here is the architecture of the app:
 
+![alt text](image-3.png)
+
 ### Project Structure
 
 ```
