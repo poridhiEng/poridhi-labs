@@ -1048,6 +1048,10 @@ app.get('/', (req, res) => {
 });
 ```
 
+Here is the sequence diagram for Real-time communication flow:
+
+![alt text](image-5.png)
+
 ## Redis Server Setup
 
 We will use Docker to run the Redis server. We will create a `docker-compose.yml` file in the root of the project.
