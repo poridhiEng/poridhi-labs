@@ -2,7 +2,7 @@
 
 Arrays in Bash scripting allow you to store multiple values in a single variable, making it easier to manage lists and collections of data. In this lab, you'll learn how to declare, manipulate, and iterate over arrays for scripting.
 
-![alt text](./images/Numeric-Arrays.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/8a13067db934d8069d52adbd68e51d7cc5e8a85c/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2005/images/Numeric-Arrays.svg)
 
 By the end of this lab, you will get to know about:
 - Declaring and initializing arrays
@@ -51,7 +51,7 @@ chmod +x array_basics.sh
 ./array_basics.sh
 ```
 
-![alt text](./images/image.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2005/images/image.png)
 
 ## Accessing Array Elements
 
@@ -84,7 +84,7 @@ chmod +x access_elements.sh
 ./access_elements.sh
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2005/images/image-1.png)
 
 ## Modifying Arrays
 
@@ -124,7 +124,7 @@ chmod +x modify_array.sh
 ./modify_array.sh
 ```
 
-![alt text](./images/image-2.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2005/images/image-2.png)
 
 ## Iterating Over Arrays
 
@@ -159,13 +159,13 @@ chmod +x iterate_array.sh
 ./iterate_array.sh
 ```
 
-![alt text](./images/image-3.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2005/images/image-3.png)
 
 ## Associative Arrays (Bash 4+)
 
 An `associative array` in Bash is a type of array that allows you to use `string keys` instead of just numeric indices. This means you can store and retrieve values using meaningful names rather than numbers. 
 
-![alt text](./images/Associative-array.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/8a13067db934d8069d52adbd68e51d7cc5e8a85c/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2005/images/Associative-array.svg)
 
 ### **Syntax:**
 
@@ -207,7 +207,7 @@ chmod +x associative_array.sh
 ./associative_array.sh
 ```
 
-![alt text](./images/image-4.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2005/images/image-4.png)
 
 ## Conclusion
 
