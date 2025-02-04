@@ -709,7 +709,7 @@ style.textContent = `
 document.head.appendChild(style);
 ```
 
-### Database
+## Database
 
 To configure the database, we will use Redis. Redis is an in-memory data structure store, used as a database, cache and message broker. We will use Redis to store messages and user data. To connect to Redis, we will use the `redis` package. First we will install the package by running the following command:
 
@@ -745,7 +745,33 @@ module.exports = { redisClient, connectRedis };
 
 ### Database Schema
 
-We will create a `ChatModel` class in the `src/models/chat.js` file. This class will contain the methods for storing and retrieving data from the database.
+We will create a `ChatModel` class in the `src/models/chat.js` file. This class will contain the methods for storing and retrieving data from the database. Here is the ER diagram of the database:
+
+![alt text](image-4.png)
+
+The ER diagram shows three main entities:
+
+**1. USERS**
+
+- Stored as hash with username as key. Contains password (hashed), timestamps, and status.
+- `Methods`: registerUser(), loginUser(), updateUserStatus()
+
+**2. ROOMS**
+
+- Stored as hash with room name as key. Tracks creator and creation time.
+- `Methods`: saveRoom(), getAllRooms()
+
+**3. MESSAGES**
+
+- Stored as lists with key `messages:{roomId}`. - Auto-incrementing ID using Redis INCR. Limited to 100 messages per room via `LTRIM`
+- `Methods`: saveMessage(), getRoomMessages()
+
+**The relationships:**
+- Users can create multiple rooms (1:many)
+- Users can send multiple messages (1:many) 
+- Rooms contain multiple messages (1:many)
+
+All data is stored as JSON strings in Redis, with appropriate keys for lookup and relationships.
 
 ```js
 const { redisClient } = require('../config/redis');
