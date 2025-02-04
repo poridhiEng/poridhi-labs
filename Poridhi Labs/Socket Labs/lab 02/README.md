@@ -1,6 +1,6 @@
 # Chat App with Socket.io
 
-In this lab, we will build a chat app using Socket.io extending our previous lab by integrating rooms.
+In this lab, we will build a chat app using Socket.io extending our previous lab by integrating rooms. Rooms are a way to group sockets (clients) within a namespace.
 
 ![alt text](./images/image.png)
 
