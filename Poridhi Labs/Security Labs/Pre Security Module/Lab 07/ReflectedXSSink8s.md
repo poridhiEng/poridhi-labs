@@ -1,13 +1,13 @@
-# **Cross-Site Scripting (XSS)**
+# **Reflected XSS Attack Simulation in Kubernetes**
 
 Cross-Site Scripting (XSS) is a critical security vulnerability in web applications that allows attackers to inject and execute malicious scripts in a user’s browser. These scripts can compromise sensitive data, hijack user sessions, deface websites, or perform unauthorized actions. We will also perform a Reflected XSS attack on an application to understand how it works.
 
 ## **Objective**
-- Understand basics of XSS and how it works.
-- Learn about different types of XSS attacks.
-- Understand how Reflected XSS works.
-- Perform a Reflected XSS attack on an application.
-- Learn how to prevent Reflected XSS attacks.
+- Deploy a web application in kubernetes cluster.
+- Expose the application through a `NodePort` service.
+- Simulate a **Reflected XSS attack** in the application.
+- Demonstrate how the attack can be exploited to compromise user data and services.
+- Implement security measures to prevent XSS attacks in production systems.
 
 ## **What is Cross-Site Scripting (XSS)?**
 
@@ -104,35 +104,86 @@ Reflected XSS, also known as **non-persistent XSS**, occurs when the web applica
 
 ## **Hands-on with Reflected XSS**
 
-1. **Pull the Docker Image**
+To demonstrate the Reflected XSS attack, we will deploy a web application in kubernetes cluster in Poridhi's Cloud. 
 
-   ```bash
-   docker pull fazlulkarim105925/reflected-xss
-   ```
+![](./images/k8sinfra.svg)
 
-2. **Run the Docker Container**
+In our infrastructure, we will deploy the application in 3 kubernetes pods and expose it through a `NodePort` service.
 
-   ```bash
-   docker run -d -p 8000:8000 fazlulkarim105925/reflected-xss
-   ```
-3. **Create a Load Balancer in Poridhi's Cloud**
+### **Step 1: Create the k8s-manifests**
+```
+/k8s-manifests
+│   ├── deploy.yml
+│   ├── svc.yml
+```
+Create this files with this command
+```bash
+mkdir k8s-manifests
+touch deploy.yml svc.yml
+```
+
+Now add the following content to the files.
+
+**deploy.yml**
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: reflected-xss
+  template:
+    metadata:
+      labels:
+        app: reflected-xss
+    spec:
+      containers:
+      - name: app-container
+        image:  fazlulkarim105925/reflected-xss:latest
+        ports:
+        - containerPort: 8000
+``` 
+This deployment will create 3 replicas of the application.
+
+**svc.yml**
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: reflected-xss
+spec:
+  type: NodePort
+  selector:
+    app: reflected-xss
+  ports:
+  - protocol: TCP
+    port: 8000      
+    targetPort: 8000 
+    nodePort: 30007   
+```
+
+This service will expose the application on the `NodePort` `30007`.
+
+### **Step 2: Exposing the application with Poridhi's Loadbalancer**
 
    Find the `eth0` IP address with `ifconfig` command.
 
    ![](./images/3.png)
 
-   Create a Load Balancer with the `eth0 IP` address and the port `8000`
+   Create a Load Balancer with the `eth0 IP` address and the `NodePort` (e.g `30007`)
 
-   ![](./images/4.png)
-
-4. **Access the Web Application**
-
-   Access the web application with the the provided `URL` by `loadbalancer`
-
+   With the `URL` provided by the `loadbalancer`, we can access the application from any browser.
+   
    ![](./images/5.png)
+   
 
 
-### **Exploring the Application**
+### **Step 3: Exploring the Application**
 
 This web app designed to demonstrate Reflected XSS attacks. It allows users to input data, which is reflected without sanitization, making it vulnerable to malicious script execution. The app includes an attack simulation, hacker dashboard for captured data, and an XSS explanation page.
 

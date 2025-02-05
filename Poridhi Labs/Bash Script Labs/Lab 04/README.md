@@ -2,6 +2,8 @@
 
 Variables in Bash scripting play a crucial role in storing and managing data. They allow scripts to handle dynamic values, making automation more efficient. In this lab, we will explore different types of variables, their scope, and best practices for using them effectively in Bash scripts.
 
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/7104604f7099003f0548aae6814b07429c846ae4/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2004/images/Bash-variable.svg)
+
 By the end of this lab, you will understand:
 - User-defined variables
 - System variables
@@ -46,6 +48,8 @@ chmod +x variables.sh
 ./variables.sh
 ```
 
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2004/images/image.png)
+
 ### String Operations
 
 Create a script named `string_vars.sh`:
@@ -78,6 +82,8 @@ chmod +x string_vars.sh
 ./string_vars.sh
 ```
 
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2004/images/image-1.png)
+
 ## System Variables
 
 System variables are predefined variables in the Bash environment that provide information about the system and user.
@@ -103,7 +109,10 @@ chmod +x system_vars.sh
 ./system_vars.sh
 ```
 
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2004/images/image-2.png)
+
 ## Special Variables
+
 Special variables provide useful information about the script execution environment and command-line arguments.
 
 Create a file named `special_vars.sh`:
@@ -119,6 +128,39 @@ echo "Number of arguments: $#"
 echo "Process ID: $$"
 echo "Exit status of last command: $?"
 ```
+
+### **Explanation**
+
+1. **`$0`** → Displays the script name.  
+   - Example output: `Script name: ./special_vars.sh`
+
+2. **`$1`, `$2`** → Represent the first and second command-line arguments.  
+   - If executed as `./special_vars.sh arg1 arg2 arg3`, the output would be:  
+     ```
+     First argument: arg1
+     Second argument: arg2
+     ```
+
+3. **`$@`** → Displays all the arguments passed to the script.  
+   - Output: `All arguments: arg1 arg2 arg3`
+
+4. **`$#`** → Shows the total number of arguments passed.  
+   - Output: `Number of arguments: 3`
+
+5. **`$$`** → Prints the process ID (PID) of the script itself.  
+   - Example output: `Process ID: 12345` (The actual PID will vary.)
+
+6. **`$?`** → Displays the exit status of the last executed command.  
+   - If the previous command was successful, it returns `0`; otherwise, it returns a non-zero error code.
+
+**Execute and run the script:**
+
+```bash
+chmod +x special_vars.sh
+./special_vars.sh arg1 arg2 arg3
+```
+
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2004/images/image-3.png)
 
 ## Array Variables
 
@@ -150,6 +192,8 @@ This script declares an array `fruits` and iterates through it, printing each fr
 chmod +x arrays.sh
 ./arrays.sh
 ```
+
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2004/images/image-4.png)
 
 ## Readonly Variables
 Readonly variables prevent modification after assignment, ensuring constant values remain unchanged.
@@ -207,6 +251,8 @@ chmod +x readonly_vars.sh
 
 You'll see an error when attempting to modify `MIN_AGE` or `VALID_DEPARTMENTS`, proving they are readonly.
 
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2004/images/image-5.png)
+
 ## Variable Scope and Export
 
 Variable scope determines where a variable can be accessed, affecting its availability across scripts.
@@ -254,6 +300,8 @@ Execute and run the parent script:
 ```
 
 You'll see that `child.sh` can access `shared_var` but not `local_var`, demonstrating the scope of variables. `local_var` is not exported to child scripts. That's why `child.sh` can't access `local_var`.
+
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2004/images/image-6.png)
 
 ## Conclusion
 
