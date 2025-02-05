@@ -3,7 +3,7 @@
 Cross-Site Scripting (XSS) is a critical security vulnerability in web applications that allows attackers to inject and execute malicious scripts in a user’s browser. These scripts can compromise sensitive data, hijack user sessions, deface websites, or perform unauthorized actions. We will also perform a Reflected XSS attack on an application hosted in `AWS` to understand how it works.
 
 ## **Objective**
-- Performing a `Reflected XSS` attack on an application hosted in `AWS`.
+
 - Creating the infrastructure in `AWS` using `Terraform`.
 - Running the vulnerable `Application` in `Docker`.
 - Performing a `Reflected XSS` attack on the `Application`.
@@ -118,6 +118,9 @@ To Deploy the `Application` in `AWS` first we need to create the infrastructure.
 ### **Step 1: Configure aws credentials**
 
 To get `AWS` Credententals open the lab landing page in right bottom corner in `Poridhi`, Click on Generate Credentails for `AWS`.
+
+![](./images/awsconfig.png)
+
 It will provide necessary credentials to access `AWS` services.
 
 Copy the `Access Key ID` and `Secret Access Key`.
@@ -127,6 +130,8 @@ To Configure the `AWS` try the following command:
 ```bash
 aws configure
 ```
+
+![](./images/awsconfig2.png)
 Use the `Access Key ID` and `Secret Access Key` that was copied to configure the `AWS` credentials. For `region` type `ap-southeast-1` and format as `json`.
 
 ### **Step 2: Creating Key Pair**
