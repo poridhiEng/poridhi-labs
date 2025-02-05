@@ -16,13 +16,51 @@ By the end of this lab, you will gain practical experience in:
 
 ![](./images/1.svg)
 
-The architecture of our serverless application consists of the following components:
+This lab aims to build a serverless workflow where a user interacts with a web application hosted on Amazon S3, triggering a sequence of AWS services to process data and send an email.
 
-- **Amazon API Gateway**: Serves as the entry point for HTTP requests and triggers AWS Step Functions.
-- **AWS Step Functions**: Manages and executes the workflow by invoking Lambda functions.
-- **AWS Lambda Functions**: Handles computation tasks such as processing requests and sending email reminders.
-- **Amazon S3**: Stores the frontend files for hosting a static website.
-- **AWS SES**: Sends email notifications to users.
+The diagram represents a **serverless application** built using **AWS Step Functions, API Gateway, Lambda, and S3**. Below is a breakdown of each component and the flow of the process:
+
+
+### **Component Breakdown and Flow:**
+
+1. **Customer (User)**
+   - A user interacts with the web application hosted in **Amazon S3** (a static website).
+
+2. **Amazon Simple Storage Service (S3)**
+   - The frontend is stored in an **S3 bucket** and accessed via a website URL.
+   - The user triggers an action (e.g., form submission, file upload, or request).
+
+3. **Amazon API Gateway**
+   - The S3 frontend sends a request to **Amazon API Gateway**.
+   - API Gateway acts as an entry point, routing the request to a **Lambda function**.
+
+4. **AWS Lambda (`api_handler Lambda`)**
+   - This **Lambda function** is triggered by API Gateway.
+   - It processes the request and triggers an **AWS Step Functions workflow**.
+
+5. **AWS Step Functions**
+   - This service orchestrates multiple AWS services to execute tasks sequentially or in parallel.
+   - It calls another **Lambda function (`Email Lambda`)** to send an email.
+
+6. **AWS Lambda (`Email Lambda`)**
+   - This Lambda function handles email-sending logic.
+   - It processes data and interacts with **Amazon Simple Email Service (SES)**.
+
+7. **Amazon Simple Email Service (SES)**
+   - **SES** is used to send emails based on the request.
+   - The email is sent to the user as a confirmation or notification.
+
+
+
+### **Summary of the Flow:**
+1. **User interacts** with the web app hosted on **S3**.
+2. **S3 frontend** sends a request to **API Gateway**.
+3. **API Gateway** forwards the request to **Lambda (`api_handler Lambda`)**.
+4. **Lambda** triggers **AWS Step Functions**.
+5. **Step Functions** initiates another **Lambda function (`Email Lambda`)**.
+6. **Lambda (`Email Lambda`)** calls **Amazon SES** to send an email.
+7. **SES** delivers the email notification.
+
 
 
 ## Task Description
