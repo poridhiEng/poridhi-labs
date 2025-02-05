@@ -10,17 +10,12 @@ By the end of this lab, you'll be able to:
 - Split strings into arrays
 - Check for substrings and empty strings
 
-
 ## Prerequisites
 
 - A basic understanding of Linux/Unix command line operations.
-- Access to a Linux environment or a terminal with Bash shell (version 4+ for some operations).
-
----
+- Access to a Linux environment or a terminal with Bash shell.
 
 ## Basic String Declaration and Printing
-
-### Overview
 
 Declaring and printing strings is the foundation of string operations in Bash. This script demonstrates how to define strings and print them effectively.
 
@@ -32,17 +27,18 @@ Declaring and printing strings is the foundation of string operations in Bash. T
 # Declare strings
 str1="Bash"
 str2='Scripting'
-str3="Hello, World!"
+str3="Hello, Poridhi!"
 
 # Print strings
-echo "$str1 $str2"  # Output: Bash Scripting
-echo "$str3"        # Output: Hello, World!
+echo "$str1 $str2" 
+echo "$str3"      
 ```
 
 ### Explanation
-- Strings can be defined using either double (`" "`) or single (`' '`) quotes.
-- Double quotes allow variable interpolation, while single quotes treat text literally.
-- The `echo` command prints strings to the terminal.
+
+In Bash, double quotes (" ") and single quotes (' ') handle variables differently:
+- Double Quotes (" "): Allow variable interpolation, meaning variables inside the quotes will be replaced with their values.
+- Single Quotes (' '): Treat everything literally, meaning variables inside will not be expanded.
 
 ### Running the Script
 
@@ -51,11 +47,7 @@ chmod +x string_basics.sh
 ./string_basics.sh
 ```
 
----
-
 ## String Concatenation
-
-### Overview
 
 String concatenation joins multiple strings together, either from variables or literals.
 
@@ -65,24 +57,21 @@ String concatenation joins multiple strings together, either from variables or l
 #!/bin/bash
 
 first="Hello"
-second="World"
+second="Poridhi"
 
 # Concatenate variables
 combined="$first $second"
-echo "$combined"  # Output: Hello World
+echo "$combined"
 
-echo "Welcome to $first $second!"  # Output: Welcome to Hello World!
+echo "Welcome to $first $second!"
 ```
 
 ### Explanation
+
 - Strings can be concatenated directly using variable expansion (`$var`).
 - Spaces must be explicitly included where needed.
 
----
-
 ## String Length Calculation
-
-### Overview
 
 To determine the length of a string, use the syntax `${#variable}`.
 
@@ -91,46 +80,40 @@ To determine the length of a string, use the syntax `${#variable}`.
 ```bash
 #!/bin/bash
 
-str="OpenAI"
-echo "Length of '$str': ${#str}"  # Output: 6
+str="Poridhi"
+echo "Length of '$str': ${#str}"
 ```
 
 ### Explanation
 - `${#str}` returns the number of characters in the string.
 
----
-
 ## Substring Extraction
 
-### Overview
-
 Substring extraction retrieves a portion of a string using specific indices.
+
 
 ### Script: `substring.sh`
 
 ```bash
 #!/bin/bash
 
-str="Hello World"
+str="Hello Poridhi"
 
 # Extract from index 6 (length 5)
 substr="${str:6:5}"
-echo "Substring: $substr"  # Output: World
+echo "Substring: $substr"
 
-echo "First 5 chars: ${str:0:5}"  # Output: Hello
+echo "First 5 chars: ${str:0:5}"
 ```
 
 ### Explanation
 - `${str:start:length}` extracts a substring from `start` index of specified `length`.
 - Omitting `length` extracts everything from `start` to the end.
 
----
-
 ## String Substitution
 
-### Overview
-
 Replace occurrences of a substring within a string.
+
 
 ### Script: `substitution.sh`
 
@@ -151,11 +134,7 @@ echo "${str%.*}"  # Remove suffix
 - `${str//pattern/replacement}` replaces all occurrences.
 - `${str%.*}` removes the last `.*` pattern.
 
----
-
 ## Trimming Whitespace
-
-### Overview
 
 Whitespace can be trimmed from strings using parameter expansion or `sed`.
 
@@ -181,11 +160,7 @@ echo "Trimmed with sed: '$trimmed_sed'"
 - `extglob` enables advanced pattern matching for trimming.
 - `sed` removes leading and trailing spaces using regex.
 
----
-
 ## Case Conversion
-
-### Overview
 
 Convert strings between uppercase and lowercase.
 
@@ -206,11 +181,7 @@ echo "${str^}"   # Capitalize first letter
 - `${var,,}` converts to lowercase.
 - `${var^}` capitalizes only the first character.
 
----
-
 ## Splitting Strings into Arrays
-
-### Overview
 
 Use `IFS` (Internal Field Separator) to split strings into arrays.
 
@@ -226,15 +197,13 @@ echo "First fruit: ${fruits[0]}"
 echo "All fruits: ${fruits[@]}"
 ```
 
+When `IFS=','` is set, Bash treats the comma as a separator. When it finds a comma, it splits the string at that point and stores each part as a separate array element.
+
 ### Explanation
 - `IFS=','` sets the delimiter to `,`.
 - `read -ra` reads input into an array.
 
----
-
 ## Checking Substrings and Empty Strings
-
-### Overview
 
 Determine if a string contains a substring or is empty.
 
