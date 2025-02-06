@@ -8,8 +8,7 @@ The objective of this project is to:
 3. Running the vulnerable `Application` in `Docker`.
 4. Performing a `Stored XSS` attack on the `Application`.
 5. Understanding how malicious scripts can be injected and stored on a server.
-6. Identifying ways to detect and mitigate stored XSS vulnerabilities.
-7. Demonstrating security best practices to prevent XSS attacks in production systems.
+6. Understanding how to prevent `Stored XSS` attacks.
 
 ## **What is XSS?**
 **Cross-Site Scripting (XSS)** is a web security vulnerability that allows attackers to inject malicious scripts into web pages viewed by other users. When a vulnerable web page fails to properly handle untrusted user input, attackers can execute scripts in the browsers of other users, leading to various security risks.
@@ -98,6 +97,7 @@ Inside the project folder apply the following command to create the key file
 ```bash
 aws ec2 create-key-pair --key-name my-key --query "KeyMaterial" --output text > my-key.pem
 ```
+After running the command, a key file will be created in the project folder named `my-key.pem`.
 
 Make the key file read only
 
@@ -238,7 +238,7 @@ output "ec2_public_ip" {
 }
 ```
 
-This state file will create the infrastructure and output the public IP of the EC2 instance.
+This state file will create the infrastructure and output the public IP of the EC2 instance. Here we have created a `VPC`, `Subnet`, `Internet Gateway`, `Route Table`, `Security Group` and `EC2 Instance`.
 
 ### **Step 4: Apply the Terraform State File**
 

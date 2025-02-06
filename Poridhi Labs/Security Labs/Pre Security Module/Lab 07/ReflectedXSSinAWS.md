@@ -146,6 +146,8 @@ Inside the project folder apply the following command to create the key file
 aws ec2 create-key-pair --key-name my-key --query "KeyMaterial" --output text > my-key.pem
 ```
 
+After running the command, a key file will be created in the project folder named `my-key.pem`.
+
 Make the key file read only
 
 ```bash
@@ -285,7 +287,7 @@ output "ec2_public_ip" {
 }
 ```
 
-This state file will create the infrastructure and output the public IP of the EC2 instance.
+This state file will create the infrastructure and output the public IP of the EC2 instance. Here we have created a `VPC`, `Subnet`, `Internet Gateway`, `Route Table`, `Security Group` and `EC2 Instance`.
 
 ### **Step 4: Apply the Terraform State File**
 
