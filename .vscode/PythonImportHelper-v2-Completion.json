@@ -1,0 +1,1773 @@
+[
+    {
+        "label": "pulumi",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pulumi",
+        "description": "pulumi",
+        "detail": "pulumi",
+        "documentation": {}
+    },
+    {
+        "label": "pulumi_aws",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pulumi_aws",
+        "description": "pulumi_aws",
+        "detail": "pulumi_aws",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "base64",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "base64",
+        "description": "base64",
+        "detail": "base64",
+        "documentation": {}
+    },
+    {
+        "label": "boto3",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "boto3",
+        "description": "boto3",
+        "detail": "boto3",
+        "documentation": {}
+    },
+    {
+        "label": "pandas",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pandas",
+        "description": "pandas",
+        "detail": "pandas",
+        "documentation": {}
+    },
+    {
+        "label": "load_dotenv",
+        "importPath": "dotenv",
+        "description": "dotenv",
+        "isExtraImport": true,
+        "detail": "dotenv",
+        "documentation": {}
+    },
+    {
+        "label": "load_dotenv",
+        "importPath": "dotenv",
+        "description": "dotenv",
+        "isExtraImport": true,
+        "detail": "dotenv",
+        "documentation": {}
+    },
+    {
+        "label": "ray",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "ray",
+        "description": "ray",
+        "detail": "ray",
+        "documentation": {}
+    },
+    {
+        "label": "train",
+        "importPath": "ray",
+        "description": "ray",
+        "isExtraImport": true,
+        "detail": "ray",
+        "documentation": {}
+    },
+    {
+        "label": "MinMaxScaler",
+        "importPath": "sklearn.preprocessing",
+        "description": "sklearn.preprocessing",
+        "isExtraImport": true,
+        "detail": "sklearn.preprocessing",
+        "documentation": {}
+    },
+    {
+        "label": "StandardScaler",
+        "importPath": "sklearn.preprocessing",
+        "description": "sklearn.preprocessing",
+        "isExtraImport": true,
+        "detail": "sklearn.preprocessing",
+        "documentation": {}
+    },
+    {
+        "label": "StandardScaler",
+        "importPath": "sklearn.preprocessing",
+        "description": "sklearn.preprocessing",
+        "isExtraImport": true,
+        "detail": "sklearn.preprocessing",
+        "documentation": {}
+    },
+    {
+        "label": "OneHotEncoder",
+        "importPath": "sklearn.preprocessing",
+        "description": "sklearn.preprocessing",
+        "isExtraImport": true,
+        "detail": "sklearn.preprocessing",
+        "documentation": {}
+    },
+    {
+        "label": "matplotlib.pyplot",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "matplotlib.pyplot",
+        "description": "matplotlib.pyplot",
+        "detail": "matplotlib.pyplot",
+        "documentation": {}
+    },
+    {
+        "label": "xgboost",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "xgboost",
+        "description": "xgboost",
+        "detail": "xgboost",
+        "documentation": {}
+    },
+    {
+        "label": "train_test_split",
+        "importPath": "sklearn.model_selection",
+        "description": "sklearn.model_selection",
+        "isExtraImport": true,
+        "detail": "sklearn.model_selection",
+        "documentation": {}
+    },
+    {
+        "label": "train_test_split",
+        "importPath": "sklearn.model_selection",
+        "description": "sklearn.model_selection",
+        "isExtraImport": true,
+        "detail": "sklearn.model_selection",
+        "documentation": {}
+    },
+    {
+        "label": "ScalingConfig",
+        "importPath": "ray.train",
+        "description": "ray.train",
+        "isExtraImport": true,
+        "detail": "ray.train",
+        "documentation": {}
+    },
+    {
+        "label": "XGBoostTrainer",
+        "importPath": "ray.train.xgboost",
+        "description": "ray.train.xgboost",
+        "isExtraImport": true,
+        "detail": "ray.train.xgboost",
+        "documentation": {}
+    },
+    {
+        "label": "mlflow",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "mlflow",
+        "description": "mlflow",
+        "detail": "mlflow",
+        "documentation": {}
+    },
+    {
+        "label": "MLflowLoggerCallback",
+        "importPath": "ray.air.integrations.mlflow",
+        "description": "ray.air.integrations.mlflow",
+        "isExtraImport": true,
+        "detail": "ray.air.integrations.mlflow",
+        "documentation": {}
+    },
+    {
+        "label": "pickle",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pickle",
+        "description": "pickle",
+        "detail": "pickle",
+        "documentation": {}
+    },
+    {
+        "label": "tempfile",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "tempfile",
+        "description": "tempfile",
+        "detail": "tempfile",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "joblib",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "joblib",
+        "description": "joblib",
+        "detail": "joblib",
+        "documentation": {}
+    },
+    {
+        "label": "seaborn",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "seaborn",
+        "description": "seaborn",
+        "detail": "seaborn",
+        "documentation": {}
+    },
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "start_http_server",
+        "importPath": "prometheus_client",
+        "description": "prometheus_client",
+        "isExtraImport": true,
+        "detail": "prometheus_client",
+        "documentation": {}
+    },
+    {
+        "label": "Gauge",
+        "importPath": "prometheus_client",
+        "description": "prometheus_client",
+        "isExtraImport": true,
+        "detail": "prometheus_client",
+        "documentation": {}
+    },
+    {
+        "label": "make_wsgi_app",
+        "importPath": "prometheus_client",
+        "description": "prometheus_client",
+        "isExtraImport": true,
+        "detail": "prometheus_client",
+        "documentation": {}
+    },
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "BackgroundScheduler",
+        "importPath": "apscheduler.schedulers.background",
+        "description": "apscheduler.schedulers.background",
+        "isExtraImport": true,
+        "detail": "apscheduler.schedulers.background",
+        "documentation": {}
+    },
+    {
+        "label": "DispatcherMiddleware",
+        "importPath": "werkzeug.middleware.dispatcher",
+        "description": "werkzeug.middleware.dispatcher",
+        "isExtraImport": true,
+        "detail": "werkzeug.middleware.dispatcher",
+        "documentation": {}
+    },
+    {
+        "label": "detect_data_drift",
+        "importPath": "data_drift",
+        "description": "data_drift",
+        "isExtraImport": true,
+        "detail": "data_drift",
+        "documentation": {}
+    },
+    {
+        "label": "detect_concept_drift",
+        "importPath": "concept_drift",
+        "description": "concept_drift",
+        "isExtraImport": true,
+        "detail": "concept_drift",
+        "documentation": {}
+    },
+    {
+        "label": "train_model",
+        "importPath": "train",
+        "description": "train",
+        "isExtraImport": true,
+        "detail": "train",
+        "documentation": {}
+    },
+    {
+        "label": "mean_squared_error",
+        "importPath": "sklearn.metrics",
+        "description": "sklearn.metrics",
+        "isExtraImport": true,
+        "detail": "sklearn.metrics",
+        "documentation": {}
+    },
+    {
+        "label": "mean_squared_error",
+        "importPath": "sklearn.metrics",
+        "description": "sklearn.metrics",
+        "isExtraImport": true,
+        "detail": "sklearn.metrics",
+        "documentation": {}
+    },
+    {
+        "label": "ks_2samp",
+        "importPath": "scipy.stats",
+        "description": "scipy.stats",
+        "isExtraImport": true,
+        "detail": "scipy.stats",
+        "documentation": {}
+    },
+    {
+        "label": "ColumnTransformer",
+        "importPath": "sklearn.compose",
+        "description": "sklearn.compose",
+        "isExtraImport": true,
+        "detail": "sklearn.compose",
+        "documentation": {}
+    },
+    {
+        "label": "RandomForestRegressor",
+        "importPath": "sklearn.ensemble",
+        "description": "sklearn.ensemble",
+        "isExtraImport": true,
+        "detail": "sklearn.ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "Pipeline",
+        "importPath": "sklearn.pipeline",
+        "description": "sklearn.pipeline",
+        "isExtraImport": true,
+        "detail": "sklearn.pipeline",
+        "documentation": {}
+    },
+    {
+        "label": "create_config_file",
+        "kind": 2,
+        "importPath": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "description": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "peekOfCode": "def create_config_file(ip_list):\n    # Define the hostnames for each IP address\n    hostnames = ['controller-0', 'worker-0', 'worker-1']\n    config_content = \"\"\n    # Iterate over IP addresses and corresponding hostnames\n    for hostname, ip in zip(hostnames, ip_list):\n        config_content += f\"Host {hostname}\\n\"\n        config_content += f\"    HostName {ip}\\n\"\n        config_content += f\"    User ubuntu\\n\"\n        config_content += f\"    IdentityFile ~/.ssh/kubernetes.id_rsa\\n\\n\"",
+        "detail": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "documentation": {}
+    },
+    {
+        "label": "vpc",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "description": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "peekOfCode": "vpc = aws.ec2.Vpc(\n    'kubernetes-vpc',\n    cidr_block='10.0.0.0/16',\n    enable_dns_support=True,\n    enable_dns_hostnames=True,\n    tags={'Name': 'kubernetes-the-hard-way'}\n)\n# Create a subnet\nsubnet = aws.ec2.Subnet(\n    'kubernetes-subnet',",
+        "detail": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "documentation": {}
+    },
+    {
+        "label": "subnet",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "description": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "peekOfCode": "subnet = aws.ec2.Subnet(\n    'kubernetes-subnet',\n    vpc_id=vpc.id,\n    cidr_block='10.0.1.0/24',\n    map_public_ip_on_launch=True,\n    tags={'Name': 'kubernetes'}\n)\n# Create an Internet Gateway\ninternet_gateway = aws.ec2.InternetGateway(\n    'kubernetes-internet-gateway',",
+        "detail": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "documentation": {}
+    },
+    {
+        "label": "internet_gateway",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "description": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "peekOfCode": "internet_gateway = aws.ec2.InternetGateway(\n    'kubernetes-internet-gateway',\n    vpc_id=vpc.id,\n    tags={'Name': 'kubernetes'}\n)\n# Create a Route Table\nroute_table = aws.ec2.RouteTable(\n    'kubernetes-route-table',\n    vpc_id=vpc.id,\n    routes=[",
+        "detail": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "documentation": {}
+    },
+    {
+        "label": "route_table",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "description": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "peekOfCode": "route_table = aws.ec2.RouteTable(\n    'kubernetes-route-table',\n    vpc_id=vpc.id,\n    routes=[\n        aws.ec2.RouteTableRouteArgs(\n            cidr_block='0.0.0.0/0',\n            gateway_id=internet_gateway.id,\n        )\n    ],\n    tags={'Name': 'kubernetes'}",
+        "detail": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "documentation": {}
+    },
+    {
+        "label": "route_table_association",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "description": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "peekOfCode": "route_table_association = aws.ec2.RouteTableAssociation(\n    'kubernetes-route-table-association',\n    subnet_id=subnet.id,\n    route_table_id=route_table.id\n)\n# Create a security group with egress and ingress rules\nsecurity_group = aws.ec2.SecurityGroup(\n    'kubernetes-security-group',\n    vpc_id=vpc.id,\n    description=\"Kubernetes security group\",",
+        "detail": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "documentation": {}
+    },
+    {
+        "label": "security_group",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "description": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "peekOfCode": "security_group = aws.ec2.SecurityGroup(\n    'kubernetes-security-group',\n    vpc_id=vpc.id,\n    description=\"Kubernetes security group\",\n    ingress=[\n        aws.ec2.SecurityGroupIngressArgs(\n            protocol='-1',\n            from_port=0,\n            to_port=0,\n            cidr_blocks=['10.0.0.0/16', '10.200.0.0/16'],",
+        "detail": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "documentation": {}
+    },
+    {
+        "label": "controller_instances",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "description": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "peekOfCode": "controller_instances = []\nfor i in range(1):\n    controller = aws.ec2.Instance(\n        f'controller-{i}',\n        instance_type='t2.small', # update the instance type\n        ami='ami-01811d4912b4ccb26',  # Update with correct Ubuntu AMI ID\n        subnet_id=subnet.id,\n        key_name=\"kubernetes\",\n        vpc_security_group_ids=[security_group.id],\n        associate_public_ip_address=True,",
+        "detail": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "documentation": {}
+    },
+    {
+        "label": "worker_instances",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "description": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "peekOfCode": "worker_instances = []\nfor i in range(2):\n    worker = aws.ec2.Instance(\n        f'worker-{i}',\n        instance_type='t2.small',\n        ami='ami-01811d4912b4ccb26',  # Update with correct Ubuntu AMI ID\n        subnet_id=subnet.id,\n        key_name=\"kubernetes\",\n        vpc_security_group_ids=[security_group.id],\n        associate_public_ip_address=True,",
+        "detail": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "documentation": {}
+    },
+    {
+        "label": "controller_public_ips",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "description": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "peekOfCode": "controller_public_ips = [controller.public_ip for controller in controller_instances]\ncontroller_private_ips = [controller.private_ip for controller in controller_instances]\nworker_public_ips = [worker.public_ip for worker in worker_instances]\nworker_private_ips = [worker.private_ip for worker in worker_instances]\npulumi.export('controller_public_ips', controller_public_ips)\npulumi.export('controller_private_ips', controller_private_ips)\npulumi.export('worker_public_ips', worker_public_ips)\npulumi.export('worker_private_ips', worker_private_ips)\n# Export the VPC ID and Subnet ID for reference\npulumi.export('vpc_id', vpc.id)",
+        "detail": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "documentation": {}
+    },
+    {
+        "label": "controller_private_ips",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "description": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "peekOfCode": "controller_private_ips = [controller.private_ip for controller in controller_instances]\nworker_public_ips = [worker.public_ip for worker in worker_instances]\nworker_private_ips = [worker.private_ip for worker in worker_instances]\npulumi.export('controller_public_ips', controller_public_ips)\npulumi.export('controller_private_ips', controller_private_ips)\npulumi.export('worker_public_ips', worker_public_ips)\npulumi.export('worker_private_ips', worker_private_ips)\n# Export the VPC ID and Subnet ID for reference\npulumi.export('vpc_id', vpc.id)\npulumi.export('subnet_id', subnet.id)",
+        "detail": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "documentation": {}
+    },
+    {
+        "label": "worker_public_ips",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "description": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "peekOfCode": "worker_public_ips = [worker.public_ip for worker in worker_instances]\nworker_private_ips = [worker.private_ip for worker in worker_instances]\npulumi.export('controller_public_ips', controller_public_ips)\npulumi.export('controller_private_ips', controller_private_ips)\npulumi.export('worker_public_ips', worker_public_ips)\npulumi.export('worker_private_ips', worker_private_ips)\n# Export the VPC ID and Subnet ID for reference\npulumi.export('vpc_id', vpc.id)\npulumi.export('subnet_id', subnet.id)\n# create config file",
+        "detail": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "documentation": {}
+    },
+    {
+        "label": "worker_private_ips",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "description": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "peekOfCode": "worker_private_ips = [worker.private_ip for worker in worker_instances]\npulumi.export('controller_public_ips', controller_public_ips)\npulumi.export('controller_private_ips', controller_private_ips)\npulumi.export('worker_public_ips', worker_public_ips)\npulumi.export('worker_private_ips', worker_private_ips)\n# Export the VPC ID and Subnet ID for reference\npulumi.export('vpc_id', vpc.id)\npulumi.export('subnet_id', subnet.id)\n# create config file\ndef create_config_file(ip_list):",
+        "detail": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "documentation": {}
+    },
+    {
+        "label": "all_ips",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "description": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "peekOfCode": "all_ips = [controller.public_ip for controller in controller_instances] + [worker.public_ip for worker in worker_instances]\n# Create the config file with the IPs once the instances are ready\npulumi.Output.all(*all_ips).apply(create_config_file)",
+        "detail": "Poridhi Labs.Github Action Labs.Self-Hosted-Runner-k3s.main",
+        "documentation": {}
+    },
+    {
+        "label": "create_config_file",
+        "kind": 2,
+        "importPath": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "description": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "peekOfCode": "def create_config_file(ip_addresses):\n    git_runner_ip, master_ip, *worker_ips = ip_addresses\n    config_content = f\"\"\"Host git-runner\n    HostName {git_runner_ip}\n    User ubuntu\n    IdentityFile ~/.ssh/kubernetes.id_rsa\nHost k3s-master\n    HostName {master_ip}\n    User ubuntu\n    IdentityFile ~/.ssh/kubernetes.id_rsa",
+        "detail": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "documentation": {}
+    },
+    {
+        "label": "instance_type",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "description": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "peekOfCode": "instance_type = 't3.small'\nami = \"ami-06650ca7ed78ff6fa\"\n# Create a VPC\nvpc = aws.ec2.Vpc(\n    'k3s-cluster',\n    cidr_block='10.0.0.0/16',\n    enable_dns_hostnames=True,\n    enable_dns_support=True,\n    tags={\n        'Name': 'k3s-cluster-vpc',",
+        "detail": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "documentation": {}
+    },
+    {
+        "label": "ami",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "description": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "peekOfCode": "ami = \"ami-06650ca7ed78ff6fa\"\n# Create a VPC\nvpc = aws.ec2.Vpc(\n    'k3s-cluster',\n    cidr_block='10.0.0.0/16',\n    enable_dns_hostnames=True,\n    enable_dns_support=True,\n    tags={\n        'Name': 'k3s-cluster-vpc',\n    }",
+        "detail": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "documentation": {}
+    },
+    {
+        "label": "vpc",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "description": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "peekOfCode": "vpc = aws.ec2.Vpc(\n    'k3s-cluster',\n    cidr_block='10.0.0.0/16',\n    enable_dns_hostnames=True,\n    enable_dns_support=True,\n    tags={\n        'Name': 'k3s-cluster-vpc',\n    }\n)\n# Create subnets",
+        "detail": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "documentation": {}
+    },
+    {
+        "label": "public_subnet",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "description": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "peekOfCode": "public_subnet = aws.ec2.Subnet('public-subnet',\n    vpc_id=vpc.id,\n    cidr_block='10.0.1.0/24',\n    map_public_ip_on_launch=True,\n    availability_zone='ap-southeast-1a',\n    tags={\n        'Name': 'public-subnet',\n    }\n)\nprivate_subnet = aws.ec2.Subnet('private-subnet',",
+        "detail": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "documentation": {}
+    },
+    {
+        "label": "private_subnet",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "description": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "peekOfCode": "private_subnet = aws.ec2.Subnet('private-subnet',\n    vpc_id=vpc.id,\n    cidr_block='10.0.2.0/24',\n    map_public_ip_on_launch=False,\n    availability_zone='ap-southeast-1a',\n    tags={\n        'Name': 'private-subnet',\n    }\n)\n# Internet Gateway",
+        "detail": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "documentation": {}
+    },
+    {
+        "label": "igw",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "description": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "peekOfCode": "igw = aws.ec2.InternetGateway(\n    'internet-gateway',\n    vpc_id=vpc.id,\n    tags={\n        'Name': 'k3s-cluster-igw'\n    }\n)\n# Route Table for Public Subnet\npublic_route_table = aws.ec2.RouteTable(\n    'public-route-table', ",
+        "detail": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "documentation": {}
+    },
+    {
+        "label": "public_route_table",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "description": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "peekOfCode": "public_route_table = aws.ec2.RouteTable(\n    'public-route-table', \n    vpc_id=vpc.id,\n    routes=[{\n        'cidr_block': '0.0.0.0/0',\n        'gateway_id': igw.id,\n    }],\n    tags={\n        'Name': 'public-route-table',\n    }",
+        "detail": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "documentation": {}
+    },
+    {
+        "label": "public_route_table_association",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "description": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "peekOfCode": "public_route_table_association = aws.ec2.RouteTableAssociation(\n    'public-route-table-association',\n    subnet_id=public_subnet.id,\n    route_table_id=public_route_table.id\n)\n# Elastic IP for NAT Gateway\neip = aws.ec2.Eip('nat-eip', vpc=True)\n# NAT Gateway\nnat_gateway = aws.ec2.NatGateway(\n    'nat-gateway',",
+        "detail": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "documentation": {}
+    },
+    {
+        "label": "eip",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "description": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "peekOfCode": "eip = aws.ec2.Eip('nat-eip', vpc=True)\n# NAT Gateway\nnat_gateway = aws.ec2.NatGateway(\n    'nat-gateway',\n    subnet_id=public_subnet.id,\n    allocation_id=eip.id,\n    tags={\n        'Name': 'nat-gateway',\n    }\n)",
+        "detail": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "documentation": {}
+    },
+    {
+        "label": "nat_gateway",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "description": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "peekOfCode": "nat_gateway = aws.ec2.NatGateway(\n    'nat-gateway',\n    subnet_id=public_subnet.id,\n    allocation_id=eip.id,\n    tags={\n        'Name': 'nat-gateway',\n    }\n)\n# Route Table for Private Subnet \nprivate_route_table = aws.ec2.RouteTable(",
+        "detail": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "documentation": {}
+    },
+    {
+        "label": "private_route_table",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "description": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "peekOfCode": "private_route_table = aws.ec2.RouteTable(\n    'private-route-table', \n    vpc_id=vpc.id,\n    routes=[{\n        'cidr_block': '0.0.0.0/0',\n        'nat_gateway_id': nat_gateway.id,\n    }],\n    tags={\n        'Name': 'private-route-table',\n    }",
+        "detail": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "documentation": {}
+    },
+    {
+        "label": "private_route_table_association",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "description": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "peekOfCode": "private_route_table_association = aws.ec2.RouteTableAssociation(\n    'private-route-table-association',\n    subnet_id=private_subnet.id,\n    route_table_id=private_route_table.id\n)\n# Security Group for allowing SSH and k3s traffic\nsecurity_group = aws.ec2.SecurityGroup(\"web-secgrp\",\n    description='Enable SSH and K3s access',\n    vpc_id=vpc.id,\n    ingress=[",
+        "detail": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "documentation": {}
+    },
+    {
+        "label": "security_group",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "description": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "peekOfCode": "security_group = aws.ec2.SecurityGroup(\"web-secgrp\",\n    description='Enable SSH and K3s access',\n    vpc_id=vpc.id,\n    ingress=[\n        {\n            \"protocol\": \"tcp\",\n            \"from_port\": 22,\n            \"to_port\": 22,\n            \"cidr_blocks\": [\"0.0.0.0/0\"],\n        },",
+        "detail": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "documentation": {}
+    },
+    {
+        "label": "master",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "description": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "peekOfCode": "master = aws.ec2.Instance(\n    'master-instance',\n    instance_type=instance_type,\n    ami=ami,\n    subnet_id=private_subnet.id,\n    vpc_security_group_ids=[security_group.id],\n    key_name='kubernetes',\n    tags={\n        'Name': 'Master Node',\n    }",
+        "detail": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "documentation": {}
+    },
+    {
+        "label": "worker_instances",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "description": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "peekOfCode": "worker_instances = []\nfor i in range(2):\n    worker = aws.ec2.Instance(\n        f'worker-{i+1}',\n        instance_type=instance_type,\n        ami=ami,\n        subnet_id=private_subnet.id,\n        vpc_security_group_ids=[security_group.id],\n        tags={'Name': f'k3s-worker-{i+1}'},\n        key_name='kubernetes'",
+        "detail": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "documentation": {}
+    },
+    {
+        "label": "git_runner",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "description": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "peekOfCode": "git_runner = aws.ec2.Instance(\n    'git-runner',\n    instance_type=instance_type,\n    ami=ami,\n    subnet_id=public_subnet.id,\n    vpc_security_group_ids=[security_group.id],\n    key_name='kubernetes',\n    tags={\n        'Name': 'git-runner',\n    }",
+        "detail": "Poridhi Labs.Github Action Labs.k3s-deployment.main",
+        "documentation": {}
+    },
+    {
+        "label": "create_config_file",
+        "kind": 2,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "peekOfCode": "def create_config_file(ip_addresses):\n    jenkins_master_ip, jenkins_agent_ip = ip_addresses\n    config_content = f\"\"\"Host jenkins-master\n    HostName {jenkins_master_ip}\n    User ubuntu\n    IdentityFile ~/.ssh/jenkins_cluster.id_rsa\n    Host agent-1\n    HostName {jenkins_agent_ip}\n    User ubuntu\n    IdentityFile ~/.ssh/jenkins_cluster.id_rsa",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "documentation": {}
+    },
+    {
+        "label": "t3_small",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "peekOfCode": "t3_small = 't3.small' # Change this to your desired instance type\nt3_medium = 't3.medium'\nami = \"ami-06650ca7ed78ff6fa\" # Change this to your desired AMI\n# Read installation scripts\nwith open('jenkins_install.sh', 'r') as file:\n    jenkins_script = file.read()\n# Create a VPC\nvpc = aws.ec2.Vpc(\n    'jenkins-cluster',\n    cidr_block='10.0.0.0/16',",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "documentation": {}
+    },
+    {
+        "label": "t3_medium",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "peekOfCode": "t3_medium = 't3.medium'\nami = \"ami-06650ca7ed78ff6fa\" # Change this to your desired AMI\n# Read installation scripts\nwith open('jenkins_install.sh', 'r') as file:\n    jenkins_script = file.read()\n# Create a VPC\nvpc = aws.ec2.Vpc(\n    'jenkins-cluster',\n    cidr_block='10.0.0.0/16',\n    enable_dns_hostnames=True,",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "documentation": {}
+    },
+    {
+        "label": "ami",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "peekOfCode": "ami = \"ami-06650ca7ed78ff6fa\" # Change this to your desired AMI\n# Read installation scripts\nwith open('jenkins_install.sh', 'r') as file:\n    jenkins_script = file.read()\n# Create a VPC\nvpc = aws.ec2.Vpc(\n    'jenkins-cluster',\n    cidr_block='10.0.0.0/16',\n    enable_dns_hostnames=True,\n    enable_dns_support=True,",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "documentation": {}
+    },
+    {
+        "label": "vpc",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "peekOfCode": "vpc = aws.ec2.Vpc(\n    'jenkins-cluster',\n    cidr_block='10.0.0.0/16',\n    enable_dns_hostnames=True,\n    enable_dns_support=True,\n    tags={\n        'Name': 'Jenkins-cluster-vpc',\n    }\n)\n# Create subnets",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "documentation": {}
+    },
+    {
+        "label": "public_subnet",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "peekOfCode": "public_subnet = aws.ec2.Subnet('public-subnet',\n    vpc_id=vpc.id,\n    cidr_block='10.0.1.0/24',\n    map_public_ip_on_launch=True,\n    availability_zone='ap-southeast-1a',\n    tags={\n        'Name': 'public-subnet',\n    }\n)\n# Internet Gateway",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "documentation": {}
+    },
+    {
+        "label": "igw",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "peekOfCode": "igw = aws.ec2.InternetGateway(\n    'internet-gateway',\n    vpc_id=vpc.id,\n    tags={\n        'Name': 'jenkins-cluster-igw'\n    }\n)\n# Route Table\npublic_route_table = aws.ec2.RouteTable(\n    'public-route-table', ",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "documentation": {}
+    },
+    {
+        "label": "public_route_table",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "peekOfCode": "public_route_table = aws.ec2.RouteTable(\n    'public-route-table', \n    vpc_id=vpc.id,\n    routes=[{\n        'cidr_block': '0.0.0.0/0',\n        'gateway_id': igw.id,\n    }],\n    tags={\n        'Name': 'public-route-table',\n    }",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "documentation": {}
+    },
+    {
+        "label": "public_route_table_association",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "peekOfCode": "public_route_table_association = aws.ec2.RouteTableAssociation(\n    'public-route-table-association',\n    subnet_id=public_subnet.id,\n    route_table_id=public_route_table.id\n)\n# Security Group for Jenkins Master\njenkins_master_sg = aws.ec2.SecurityGroup(\"jenkins-master-sg\",\n    description='Jenkins Master Security Group',\n    vpc_id=vpc.id,\n    ingress=[",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "documentation": {}
+    },
+    {
+        "label": "jenkins_master_sg",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "peekOfCode": "jenkins_master_sg = aws.ec2.SecurityGroup(\"jenkins-master-sg\",\n    description='Jenkins Master Security Group',\n    vpc_id=vpc.id,\n    ingress=[\n        # SSH access\n        {\n            \"protocol\": \"tcp\",\n            \"from_port\": 22,\n            \"to_port\": 22,\n            \"cidr_blocks\": [\"0.0.0.0/0\"],",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "documentation": {}
+    },
+    {
+        "label": "jenkins_agent_sg",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "peekOfCode": "jenkins_agent_sg = aws.ec2.SecurityGroup(\n    'jenkins-agent-sg',\n    description='Allow SSH and communication with Jenkins Master',\n    vpc_id=vpc.id,\n    ingress=[\n        {\"protocol\": \"tcp\", \"from_port\": 22, \"to_port\": 22, \"cidr_blocks\": [\"0.0.0.0/0\"], \"description\": \"SSH access\"},\n        {\"protocol\": \"tcp\", \"from_port\": 50000, \"to_port\": 50000, \"cidr_blocks\": [\"10.0.0.0/16\"], \"description\": \"JNLP communication with Master\"}\n    ],\n    egress=[{\"protocol\": \"-1\", \"from_port\": 0, \"to_port\": 0, \"cidr_blocks\": [\"0.0.0.0/0\"], \"description\": \"Allow all outbound\"}],\n    tags={'Name': 'Jenkins Agent SG'}",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "documentation": {}
+    },
+    {
+        "label": "jenkins_user_data",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "peekOfCode": "jenkins_user_data = f'''#!/bin/bash\n# Write installation scripts\ncat > /tmp/jenkins_install.sh << 'EOL'\n{jenkins_script}\nEOL\n# Make scripts executable\nchmod +x /tmp/jenkins_install.sh\n# Run installation scripts\n/tmp/jenkins_install.sh\n'''",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "documentation": {}
+    },
+    {
+        "label": "jenkins_master",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "peekOfCode": "jenkins_master = aws.ec2.Instance(\n    'jenkins-master-instance',\n    instance_type=t3_medium,\n    ami=ami,\n    subnet_id=public_subnet.id,\n    vpc_security_group_ids=[jenkins_master_sg.id],\n    key_name='jenkins_cluster',\n    user_data=jenkins_user_data,\n    tags={\n        'Name': 'Jenkins Master Node',",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "documentation": {}
+    },
+    {
+        "label": "jenkins_agent",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "peekOfCode": "jenkins_agent = aws.ec2.Instance(\n    'jenkins-agent-instance',\n    instance_type=t3_medium,\n    ami=ami,\n    subnet_id=public_subnet.id,\n    vpc_security_group_ids=[jenkins_agent_sg.id],\n    key_name='jenkins_cluster',\n    tags={\n        'Name': 'Jenkins Agent Node',\n    }",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 03.main",
+        "documentation": {}
+    },
+    {
+        "label": "create_config_file",
+        "kind": 2,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "peekOfCode": "def create_config_file(ip_addresses):\n    jenkins_master_ip, k3s_master_ip = ip_addresses\n    config_content = f\"\"\"Host jenkins-master\n    HostName {jenkins_master_ip}\n    User ubuntu\n    IdentityFile ~/.ssh/jenkins_k3s.id_rsa\n    Host master\n    HostName {k3s_master_ip}\n    User ubuntu\n    IdentityFile ~/.ssh/jenkins_k3s.id_rsa",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "documentation": {}
+    },
+    {
+        "label": "t3_small",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "peekOfCode": "t3_small = 't3.small' # Change this to your desired instance type\nt3_medium = 't3.medium'\nami = \"ami-06650ca7ed78ff6fa\" # Change this to your desired AMI\n# Read installation scripts\nwith open('jenkins_install.sh', 'r') as file:\n    jenkins_script = file.read()\nwith open('docker_install.sh', 'r') as file:\n    docker_script = file.read()\n# Create a VPC\nvpc = aws.ec2.Vpc(",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "documentation": {}
+    },
+    {
+        "label": "t3_medium",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "peekOfCode": "t3_medium = 't3.medium'\nami = \"ami-06650ca7ed78ff6fa\" # Change this to your desired AMI\n# Read installation scripts\nwith open('jenkins_install.sh', 'r') as file:\n    jenkins_script = file.read()\nwith open('docker_install.sh', 'r') as file:\n    docker_script = file.read()\n# Create a VPC\nvpc = aws.ec2.Vpc(\n    'jenkins-k3s',",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "documentation": {}
+    },
+    {
+        "label": "ami",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "peekOfCode": "ami = \"ami-06650ca7ed78ff6fa\" # Change this to your desired AMI\n# Read installation scripts\nwith open('jenkins_install.sh', 'r') as file:\n    jenkins_script = file.read()\nwith open('docker_install.sh', 'r') as file:\n    docker_script = file.read()\n# Create a VPC\nvpc = aws.ec2.Vpc(\n    'jenkins-k3s',\n    cidr_block='10.0.0.0/16',",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "documentation": {}
+    },
+    {
+        "label": "vpc",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "peekOfCode": "vpc = aws.ec2.Vpc(\n    'jenkins-k3s',\n    cidr_block='10.0.0.0/16',\n    enable_dns_hostnames=True,\n    enable_dns_support=True,\n    tags={\n        'Name': 'Jenkins-k3s-vpc',\n    }\n)\n# Create subnets",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "documentation": {}
+    },
+    {
+        "label": "public_subnet",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "peekOfCode": "public_subnet = aws.ec2.Subnet('public-subnet',\n    vpc_id=vpc.id,\n    cidr_block='10.0.1.0/24',\n    map_public_ip_on_launch=True,\n    availability_zone='ap-southeast-1a',\n    tags={\n        'Name': 'public-subnet',\n    }\n)\n# Internet Gateway",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "documentation": {}
+    },
+    {
+        "label": "igw",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "peekOfCode": "igw = aws.ec2.InternetGateway(\n    'internet-gateway',\n    vpc_id=vpc.id,\n    tags={\n        'Name': 'jenkins-k3s-igw'\n    }\n)\n# Route Table\npublic_route_table = aws.ec2.RouteTable(\n    'public-route-table', ",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "documentation": {}
+    },
+    {
+        "label": "public_route_table",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "peekOfCode": "public_route_table = aws.ec2.RouteTable(\n    'public-route-table', \n    vpc_id=vpc.id,\n    routes=[{\n        'cidr_block': '0.0.0.0/0',\n        'gateway_id': igw.id,\n    }],\n    tags={\n        'Name': 'public-route-table',\n    }",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "documentation": {}
+    },
+    {
+        "label": "public_route_table_association",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "peekOfCode": "public_route_table_association = aws.ec2.RouteTableAssociation(\n    'public-route-table-association',\n    subnet_id=public_subnet.id,\n    route_table_id=public_route_table.id\n)\n# Security Group for Jenkins Master\njenkins_master_sg = aws.ec2.SecurityGroup(\"jenkins-master-sg\",\n    description='Jenkins Master Security Group',\n    vpc_id=vpc.id,\n    ingress=[",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "documentation": {}
+    },
+    {
+        "label": "jenkins_master_sg",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "peekOfCode": "jenkins_master_sg = aws.ec2.SecurityGroup(\"jenkins-master-sg\",\n    description='Jenkins Master Security Group',\n    vpc_id=vpc.id,\n    ingress=[\n        # SSH access\n        {\n            \"protocol\": \"tcp\",\n            \"from_port\": 22,\n            \"to_port\": 22,\n            \"cidr_blocks\": [\"0.0.0.0/0\"],",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "documentation": {}
+    },
+    {
+        "label": "k3s_master_sg",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "peekOfCode": "k3s_master_sg = aws.ec2.SecurityGroup(\"k3s-master-sg\",\n    description='k3s Master Security Group',\n    vpc_id=vpc.id,\n    ingress=[\n        # SSH access\n        {\n            \"protocol\": \"tcp\",\n            \"from_port\": 22,\n            \"to_port\": 22,\n            \"cidr_blocks\": [\"0.0.0.0/0\"],",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "documentation": {}
+    },
+    {
+        "label": "jenkins_user_data",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "peekOfCode": "jenkins_user_data = f'''#!/bin/bash\n# Write installation scripts\ncat > /tmp/jenkins_install.sh << 'EOL'\n{jenkins_script}\nEOL\ncat > /tmp/docker_install.sh << 'EOL'\n{docker_script}\nEOL\n# Make scripts executable\nchmod +x /tmp/jenkins_install.sh",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "documentation": {}
+    },
+    {
+        "label": "jenkins_master",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "peekOfCode": "jenkins_master = aws.ec2.Instance(\n    'jenkins-master-instance',\n    instance_type=t3_medium,\n    ami=ami,\n    subnet_id=public_subnet.id,\n    vpc_security_group_ids=[jenkins_master_sg.id],\n    key_name='jenkins_k3s',\n    user_data=jenkins_user_data,\n    tags={\n        'Name': 'Jenkins Master Node',",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "documentation": {}
+    },
+    {
+        "label": "k3s_install_script",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "peekOfCode": "k3s_install_script = '''#!/bin/bash\n# Install k3s\ncurl -sfL https://get.k3s.io | sh -\n# Wait for k3s to be ready\nsleep 30\n# Make kubeconfig accessible\nsudo chmod 644 /etc/rancher/k3s/k3s.yaml\n'''\nk3s_master = aws.ec2.Instance(\n    'k3s-master-instance',",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "documentation": {}
+    },
+    {
+        "label": "k3s_master",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "description": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "peekOfCode": "k3s_master = aws.ec2.Instance(\n    'k3s-master-instance',\n    instance_type=t3_medium,\n    ami=ami,\n    subnet_id=public_subnet.id,\n    vpc_security_group_ids=[k3s_master_sg.id],\n    key_name='jenkins_k3s',\n    user_data=k3s_install_script,\n    tags={\n        'Name': 'k3s Master Node',",
+        "detail": "Poridhi Labs.Jenkins Labs.Lab 11.Files.main",
+        "documentation": {}
+    },
+    {
+        "label": "create_attachment",
+        "kind": 2,
+        "importPath": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "description": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "peekOfCode": "def create_attachment(name, target_id):\n    return aws.lb.TargetGroupAttachment(\n        name,\n        target_group_arn=target_group.arn,\n        target_id=target_id,\n        port=6443\n    )\n# Iterate over controller instances and create TargetGroupAttachment\nfor i, instance in enumerate(controller_instances):\n    # Use `apply` to get the resolved values of `instance.private_ip` and `instance.tags[\"Name\"]`",
+        "detail": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "documentation": {}
+    },
+    {
+        "label": "create_config_file",
+        "kind": 2,
+        "importPath": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "description": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "peekOfCode": "def create_config_file(ip_list):\n    # Define the hostnames for each IP address\n    hostnames = ['controller-0', 'controller-1', 'worker-0', 'worker-1']\n    config_content = \"\"\n    # Iterate over IP addresses and corresponding hostnames\n    for hostname, ip in zip(hostnames, ip_list):\n        config_content += f\"Host {hostname}\\n\"\n        config_content += f\"    HostName {ip}\\n\"\n        config_content += f\"    User ubuntu\\n\"\n        config_content += f\"    IdentityFile ~/.ssh/kubernetes.id_rsa\\n\\n\"",
+        "detail": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "documentation": {}
+    },
+    {
+        "label": "vpc",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "description": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "peekOfCode": "vpc = aws.ec2.Vpc(\n    'kubernetes-vpc',\n    cidr_block='10.0.0.0/16',\n    enable_dns_support=True,\n    enable_dns_hostnames=True,\n    tags={'Name': 'kubernetes-the-hard-way'}\n)\n# Create a subnet\nsubnet = aws.ec2.Subnet(\n    'kubernetes-subnet',",
+        "detail": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "documentation": {}
+    },
+    {
+        "label": "subnet",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "description": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "peekOfCode": "subnet = aws.ec2.Subnet(\n    'kubernetes-subnet',\n    vpc_id=vpc.id,\n    cidr_block='10.0.1.0/24',\n    map_public_ip_on_launch=True,\n    tags={'Name': 'kubernetes'}\n)\n# Create an Internet Gateway\ninternet_gateway = aws.ec2.InternetGateway(\n    'kubernetes-internet-gateway',",
+        "detail": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "documentation": {}
+    },
+    {
+        "label": "internet_gateway",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "description": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "peekOfCode": "internet_gateway = aws.ec2.InternetGateway(\n    'kubernetes-internet-gateway',\n    vpc_id=vpc.id,\n    tags={'Name': 'kubernetes'}\n)\n# Create a Route Table\nroute_table = aws.ec2.RouteTable(\n    'kubernetes-route-table',\n    vpc_id=vpc.id,\n    routes=[",
+        "detail": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "documentation": {}
+    },
+    {
+        "label": "route_table",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "description": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "peekOfCode": "route_table = aws.ec2.RouteTable(\n    'kubernetes-route-table',\n    vpc_id=vpc.id,\n    routes=[\n        aws.ec2.RouteTableRouteArgs(\n            cidr_block='0.0.0.0/0',\n            gateway_id=internet_gateway.id,\n        )\n    ],\n    tags={'Name': 'kubernetes'}",
+        "detail": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "documentation": {}
+    },
+    {
+        "label": "route_table_association",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "description": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "peekOfCode": "route_table_association = aws.ec2.RouteTableAssociation(\n    'kubernetes-route-table-association',\n    subnet_id=subnet.id,\n    route_table_id=route_table.id\n)\n# Create a security group with egress and ingress rules\nsecurity_group = aws.ec2.SecurityGroup(\n    'kubernetes-security-group',\n    vpc_id=vpc.id,\n    description=\"Kubernetes security group\",",
+        "detail": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "documentation": {}
+    },
+    {
+        "label": "security_group",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "description": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "peekOfCode": "security_group = aws.ec2.SecurityGroup(\n    'kubernetes-security-group',\n    vpc_id=vpc.id,\n    description=\"Kubernetes security group\",\n    ingress=[\n        aws.ec2.SecurityGroupIngressArgs(\n            protocol='-1',\n            from_port=0,\n            to_port=0,\n            cidr_blocks=['10.0.0.0/16', '10.200.0.0/16'],",
+        "detail": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "documentation": {}
+    },
+    {
+        "label": "controller_instances",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "description": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "peekOfCode": "controller_instances = []\nfor i in range(2):\n    controller = aws.ec2.Instance(\n        f'controller-{i}',\n        instance_type='t2.small',\n        ami='ami-01811d4912b4ccb26',  # Update with correct Ubuntu AMI ID\n        subnet_id=subnet.id,\n        key_name=\"kubernetes\",\n        vpc_security_group_ids=[security_group.id],\n        associate_public_ip_address=True,",
+        "detail": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "documentation": {}
+    },
+    {
+        "label": "worker_instances",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "description": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "peekOfCode": "worker_instances = []\nfor i in range(2):\n    worker = aws.ec2.Instance(\n        f'worker-{i}',\n        instance_type='t2.small',\n        ami='ami-01811d4912b4ccb26',  # Update with correct Ubuntu AMI ID\n        subnet_id=subnet.id,\n        key_name=\"kubernetes\",\n        vpc_security_group_ids=[security_group.id],\n        associate_public_ip_address=True,",
+        "detail": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "documentation": {}
+    },
+    {
+        "label": "nlb",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "description": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "peekOfCode": "nlb = aws.lb.LoadBalancer(\n    'kubernetes-nlb',\n    internal=False,\n    load_balancer_type='network',\n    subnets=[subnet.id],\n    name='kubernetes'\n)\n# Create a Target Group for the Load Balancer\ntarget_group = aws.lb.TargetGroup(\n    'kubernetes-target-group',",
+        "detail": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "documentation": {}
+    },
+    {
+        "label": "target_group",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "description": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "peekOfCode": "target_group = aws.lb.TargetGroup(\n    'kubernetes-target-group',\n    port=6443,\n    protocol='TCP',\n    vpc_id=vpc.id,\n    target_type='ip',\n    health_check=aws.lb.TargetGroupHealthCheckArgs(\n        protocol='TCP',\n    )\n)",
+        "detail": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "documentation": {}
+    },
+    {
+        "label": "listener",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "description": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "peekOfCode": "listener = aws.lb.Listener(\n    'kubernetes-listener',\n    load_balancer_arn=nlb.arn,\n    port=443,\n    protocol='TCP',\n    default_actions=[aws.lb.ListenerDefaultActionArgs(\n        type='forward',\n        target_group_arn=target_group.arn,\n    )]\n)",
+        "detail": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "documentation": {}
+    },
+    {
+        "label": "controller_public_ips",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "description": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "peekOfCode": "controller_public_ips = [controller.public_ip for controller in controller_instances]\ncontroller_private_ips = [controller.private_ip for controller in controller_instances]\nworker_public_ips = [worker.public_ip for worker in worker_instances]\nworker_private_ips = [worker.private_ip for worker in worker_instances]\npulumi.export('controller_public_ips', controller_public_ips)\npulumi.export('controller_private_ips', controller_private_ips)\npulumi.export('worker_public_ips', worker_public_ips)\npulumi.export('worker_private_ips', worker_private_ips)\n# Export the VPC ID and Subnet ID for reference\npulumi.export('vpc_id', vpc.id)",
+        "detail": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "documentation": {}
+    },
+    {
+        "label": "controller_private_ips",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "description": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "peekOfCode": "controller_private_ips = [controller.private_ip for controller in controller_instances]\nworker_public_ips = [worker.public_ip for worker in worker_instances]\nworker_private_ips = [worker.private_ip for worker in worker_instances]\npulumi.export('controller_public_ips', controller_public_ips)\npulumi.export('controller_private_ips', controller_private_ips)\npulumi.export('worker_public_ips', worker_public_ips)\npulumi.export('worker_private_ips', worker_private_ips)\n# Export the VPC ID and Subnet ID for reference\npulumi.export('vpc_id', vpc.id)\npulumi.export('subnet_id', subnet.id)",
+        "detail": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "documentation": {}
+    },
+    {
+        "label": "worker_public_ips",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "description": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "peekOfCode": "worker_public_ips = [worker.public_ip for worker in worker_instances]\nworker_private_ips = [worker.private_ip for worker in worker_instances]\npulumi.export('controller_public_ips', controller_public_ips)\npulumi.export('controller_private_ips', controller_private_ips)\npulumi.export('worker_public_ips', worker_public_ips)\npulumi.export('worker_private_ips', worker_private_ips)\n# Export the VPC ID and Subnet ID for reference\npulumi.export('vpc_id', vpc.id)\npulumi.export('subnet_id', subnet.id)\n# create config file",
+        "detail": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "documentation": {}
+    },
+    {
+        "label": "worker_private_ips",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "description": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "peekOfCode": "worker_private_ips = [worker.private_ip for worker in worker_instances]\npulumi.export('controller_public_ips', controller_public_ips)\npulumi.export('controller_private_ips', controller_private_ips)\npulumi.export('worker_public_ips', worker_public_ips)\npulumi.export('worker_private_ips', worker_private_ips)\n# Export the VPC ID and Subnet ID for reference\npulumi.export('vpc_id', vpc.id)\npulumi.export('subnet_id', subnet.id)\n# create config file\ndef create_config_file(ip_list):",
+        "detail": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "documentation": {}
+    },
+    {
+        "label": "all_ips",
+        "kind": 5,
+        "importPath": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "description": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "peekOfCode": "all_ips = [controller.public_ip for controller in controller_instances] + [worker.public_ip for worker in worker_instances]\n# Create the config file with the IPs once the instances are ready\npulumi.Output.all(*all_ips).apply(create_config_file)",
+        "detail": "Poridhi Labs.Kubernetes Tasks.kubernetes-the-hard-way.lab-1.infra",
+        "documentation": {}
+    },
+    {
+        "label": "BatchTransformer",
+        "kind": 6,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "class BatchTransformer:\n    def __init__(self):\n        pass\n    @staticmethod\n    def categorize_time_of_day(hour):\n        if 6 <= hour < 12:\n            return 'Morning'\n        elif 12 <= hour < 18:\n            return 'Afternoon'\n        elif 18 <= hour < 24:",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "encode_categorical_columns",
+        "kind": 2,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "def encode_categorical_columns(batch):\n    categorical_columns = ['TimeOfDay', 'Season']\n    batch_encoded = pd.get_dummies(batch, columns=categorical_columns)\n    batch_encoded = batch_encoded.astype(int)\n    return batch_encoded\n# Apply one-hot encoding\nds_encoded = ds_updated.map_batches(encode_categorical_columns, batch_format=\"pandas\")\ndf_encoded = ds_encoded.to_pandas()\n# Define aggregation functions and perform grouping\naggregation_functions = {",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "scale_partition",
+        "kind": 2,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "def scale_partition(df, cols_to_scale):\n    scaler = MinMaxScaler()\n    df[cols_to_scale] = scaler.fit_transform(df[cols_to_scale])\n    return df\nscaled_ds = feature_ds.map_batches(lambda batch: scale_partition(batch, cols_to_scale), batch_format=\"pandas\")\nscaled_df = scaled_ds.to_pandas()\n# Save transformed data to CSV and upload to S3\nscaled_df.to_csv('2-transformed-data/transformed_features.csv', index=False)\nscaled_ds.write_csv(f\"s3://{destination_bucket_name}/feature_data.csv\")\nprint(\"Data processing and upload complete.\")",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "aws_access_key_id",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "aws_access_key_id = os.getenv('AWS_ACCESS_KEY_ID')\naws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')\naws_region = os.getenv('AWS_REGION')\nsource_bucket_name = os.getenv('SOURCE_BUCKET_NAME')\ndestination_bucket_name = os.getenv('DESTINATION_BUCKET_NAME')\nlocal_file_path = os.getenv('LOCAL_FILE_PATH')\nfile_key = 'staging-directory/raw-dataset.csv'\n# Ensure the variables are correctly set\nif not all([aws_access_key_id, aws_secret_access_key, aws_region, source_bucket_name, destination_bucket_name, local_file_path]):\n    raise ValueError(\"One or more environment variables are not set correctly.\")",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "aws_secret_access_key",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')\naws_region = os.getenv('AWS_REGION')\nsource_bucket_name = os.getenv('SOURCE_BUCKET_NAME')\ndestination_bucket_name = os.getenv('DESTINATION_BUCKET_NAME')\nlocal_file_path = os.getenv('LOCAL_FILE_PATH')\nfile_key = 'staging-directory/raw-dataset.csv'\n# Ensure the variables are correctly set\nif not all([aws_access_key_id, aws_secret_access_key, aws_region, source_bucket_name, destination_bucket_name, local_file_path]):\n    raise ValueError(\"One or more environment variables are not set correctly.\")\n# Create an S3 resource",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "aws_region",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "aws_region = os.getenv('AWS_REGION')\nsource_bucket_name = os.getenv('SOURCE_BUCKET_NAME')\ndestination_bucket_name = os.getenv('DESTINATION_BUCKET_NAME')\nlocal_file_path = os.getenv('LOCAL_FILE_PATH')\nfile_key = 'staging-directory/raw-dataset.csv'\n# Ensure the variables are correctly set\nif not all([aws_access_key_id, aws_secret_access_key, aws_region, source_bucket_name, destination_bucket_name, local_file_path]):\n    raise ValueError(\"One or more environment variables are not set correctly.\")\n# Create an S3 resource\ns3_client = boto3.resource(",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "source_bucket_name",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "source_bucket_name = os.getenv('SOURCE_BUCKET_NAME')\ndestination_bucket_name = os.getenv('DESTINATION_BUCKET_NAME')\nlocal_file_path = os.getenv('LOCAL_FILE_PATH')\nfile_key = 'staging-directory/raw-dataset.csv'\n# Ensure the variables are correctly set\nif not all([aws_access_key_id, aws_secret_access_key, aws_region, source_bucket_name, destination_bucket_name, local_file_path]):\n    raise ValueError(\"One or more environment variables are not set correctly.\")\n# Create an S3 resource\ns3_client = boto3.resource(\n    service_name='s3',",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "destination_bucket_name",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "destination_bucket_name = os.getenv('DESTINATION_BUCKET_NAME')\nlocal_file_path = os.getenv('LOCAL_FILE_PATH')\nfile_key = 'staging-directory/raw-dataset.csv'\n# Ensure the variables are correctly set\nif not all([aws_access_key_id, aws_secret_access_key, aws_region, source_bucket_name, destination_bucket_name, local_file_path]):\n    raise ValueError(\"One or more environment variables are not set correctly.\")\n# Create an S3 resource\ns3_client = boto3.resource(\n    service_name='s3',\n    region_name=aws_region,",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "local_file_path",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "local_file_path = os.getenv('LOCAL_FILE_PATH')\nfile_key = 'staging-directory/raw-dataset.csv'\n# Ensure the variables are correctly set\nif not all([aws_access_key_id, aws_secret_access_key, aws_region, source_bucket_name, destination_bucket_name, local_file_path]):\n    raise ValueError(\"One or more environment variables are not set correctly.\")\n# Create an S3 resource\ns3_client = boto3.resource(\n    service_name='s3',\n    region_name=aws_region,\n    aws_access_key_id=aws_access_key_id,",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "file_key",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "file_key = 'staging-directory/raw-dataset.csv'\n# Ensure the variables are correctly set\nif not all([aws_access_key_id, aws_secret_access_key, aws_region, source_bucket_name, destination_bucket_name, local_file_path]):\n    raise ValueError(\"One or more environment variables are not set correctly.\")\n# Create an S3 resource\ns3_client = boto3.resource(\n    service_name='s3',\n    region_name=aws_region,\n    aws_access_key_id=aws_access_key_id,\n    aws_secret_access_key=aws_secret_access_key",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "s3_client",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "s3_client = boto3.resource(\n    service_name='s3',\n    region_name=aws_region,\n    aws_access_key_id=aws_access_key_id,\n    aws_secret_access_key=aws_secret_access_key\n)\n# Upload file to S3\nprint(f\"Uploading file {local_file_path} to bucket {source_bucket_name} with key {file_key}...\")\ns3_client.meta.client.upload_file(local_file_path, source_bucket_name, file_key)\n# List all objects in the bucket",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "ds",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "ds = ray.data.read_csv(f\"s3://{source_bucket_name}/{file_key}\")\nds.show(limit=5)\ndf = ds.to_pandas()\n# Define batch transformer\nclass BatchTransformer:\n    def __init__(self):\n        pass\n    @staticmethod\n    def categorize_time_of_day(hour):\n        if 6 <= hour < 12:",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "df",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "df = ds.to_pandas()\n# Define batch transformer\nclass BatchTransformer:\n    def __init__(self):\n        pass\n    @staticmethod\n    def categorize_time_of_day(hour):\n        if 6 <= hour < 12:\n            return 'Morning'\n        elif 12 <= hour < 18:",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "transformer",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "transformer = BatchTransformer()\ntransformed_ds = ds.map_batches(transformer.transform, batch_format=\"pandas\")\ntransformed_ds.to_pandas()\n# Drop unnecessary columns\nds_updated = transformed_ds.drop_columns([\"Datetime\"])\ndf_updated = ds_updated.to_pandas()\n# Define function to encode categorical columns\ndef encode_categorical_columns(batch):\n    categorical_columns = ['TimeOfDay', 'Season']\n    batch_encoded = pd.get_dummies(batch, columns=categorical_columns)",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "transformed_ds",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "transformed_ds = ds.map_batches(transformer.transform, batch_format=\"pandas\")\ntransformed_ds.to_pandas()\n# Drop unnecessary columns\nds_updated = transformed_ds.drop_columns([\"Datetime\"])\ndf_updated = ds_updated.to_pandas()\n# Define function to encode categorical columns\ndef encode_categorical_columns(batch):\n    categorical_columns = ['TimeOfDay', 'Season']\n    batch_encoded = pd.get_dummies(batch, columns=categorical_columns)\n    batch_encoded = batch_encoded.astype(int)",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "ds_updated",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "ds_updated = transformed_ds.drop_columns([\"Datetime\"])\ndf_updated = ds_updated.to_pandas()\n# Define function to encode categorical columns\ndef encode_categorical_columns(batch):\n    categorical_columns = ['TimeOfDay', 'Season']\n    batch_encoded = pd.get_dummies(batch, columns=categorical_columns)\n    batch_encoded = batch_encoded.astype(int)\n    return batch_encoded\n# Apply one-hot encoding\nds_encoded = ds_updated.map_batches(encode_categorical_columns, batch_format=\"pandas\")",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "df_updated",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "df_updated = ds_updated.to_pandas()\n# Define function to encode categorical columns\ndef encode_categorical_columns(batch):\n    categorical_columns = ['TimeOfDay', 'Season']\n    batch_encoded = pd.get_dummies(batch, columns=categorical_columns)\n    batch_encoded = batch_encoded.astype(int)\n    return batch_encoded\n# Apply one-hot encoding\nds_encoded = ds_updated.map_batches(encode_categorical_columns, batch_format=\"pandas\")\ndf_encoded = ds_encoded.to_pandas()",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "ds_encoded",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "ds_encoded = ds_updated.map_batches(encode_categorical_columns, batch_format=\"pandas\")\ndf_encoded = ds_encoded.to_pandas()\n# Define aggregation functions and perform grouping\naggregation_functions = {\n    'Temperature': ['mean'],\n    'Humidity': ['mean'],\n    'WindSpeed': ['mean'],\n    'GeneralDiffuseFlows': ['mean'],\n    'DiffuseFlows': ['mean'],\n    'PowerConsumption_Zone1': ['sum'],",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "df_encoded",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "df_encoded = ds_encoded.to_pandas()\n# Define aggregation functions and perform grouping\naggregation_functions = {\n    'Temperature': ['mean'],\n    'Humidity': ['mean'],\n    'WindSpeed': ['mean'],\n    'GeneralDiffuseFlows': ['mean'],\n    'DiffuseFlows': ['mean'],\n    'PowerConsumption_Zone1': ['sum'],\n    'PowerConsumption_Zone2': ['sum'],",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "aggregation_functions",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "aggregation_functions = {\n    'Temperature': ['mean'],\n    'Humidity': ['mean'],\n    'WindSpeed': ['mean'],\n    'GeneralDiffuseFlows': ['mean'],\n    'DiffuseFlows': ['mean'],\n    'PowerConsumption_Zone1': ['sum'],\n    'PowerConsumption_Zone2': ['sum'],\n    'PowerConsumption_Zone3': ['sum'],\n    'Weekday': ['first'],",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "df_grouped",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "df_grouped = df_encoded.groupby(['Year', 'Month', 'Day', 'Hour']).agg(aggregation_functions)\ndf_grouped.columns = ['_'.join(col) if isinstance(col, tuple) else col for col in df_grouped.columns]\ndf_grouped = df_grouped.reset_index()\n# Create lag features\ncolumns_to_lag = [\n    'Temperature_mean', 'Humidity_mean', 'WindSpeed_mean', 'GeneralDiffuseFlows_mean',\n    'DiffuseFlows_mean', 'PowerConsumption_Zone1_sum', 'PowerConsumption_Zone2_sum',\n    'PowerConsumption_Zone3_sum'\n]\nlags = [4, 8, 12, 24, 48]",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "df_grouped.columns",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "df_grouped.columns = ['_'.join(col) if isinstance(col, tuple) else col for col in df_grouped.columns]\ndf_grouped = df_grouped.reset_index()\n# Create lag features\ncolumns_to_lag = [\n    'Temperature_mean', 'Humidity_mean', 'WindSpeed_mean', 'GeneralDiffuseFlows_mean',\n    'DiffuseFlows_mean', 'PowerConsumption_Zone1_sum', 'PowerConsumption_Zone2_sum',\n    'PowerConsumption_Zone3_sum'\n]\nlags = [4, 8, 12, 24, 48]\ndf_lagged = df_grouped.copy()",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "df_grouped",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "df_grouped = df_grouped.reset_index()\n# Create lag features\ncolumns_to_lag = [\n    'Temperature_mean', 'Humidity_mean', 'WindSpeed_mean', 'GeneralDiffuseFlows_mean',\n    'DiffuseFlows_mean', 'PowerConsumption_Zone1_sum', 'PowerConsumption_Zone2_sum',\n    'PowerConsumption_Zone3_sum'\n]\nlags = [4, 8, 12, 24, 48]\ndf_lagged = df_grouped.copy()\nfor col in columns_to_lag:",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "columns_to_lag",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "columns_to_lag = [\n    'Temperature_mean', 'Humidity_mean', 'WindSpeed_mean', 'GeneralDiffuseFlows_mean',\n    'DiffuseFlows_mean', 'PowerConsumption_Zone1_sum', 'PowerConsumption_Zone2_sum',\n    'PowerConsumption_Zone3_sum'\n]\nlags = [4, 8, 12, 24, 48]\ndf_lagged = df_grouped.copy()\nfor col in columns_to_lag:\n    for lag in lags:\n        df_lagged[f'{col}_lag{lag}'] = df_grouped[col].shift(lag)",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "lags",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "lags = [4, 8, 12, 24, 48]\ndf_lagged = df_grouped.copy()\nfor col in columns_to_lag:\n    for lag in lags:\n        df_lagged[f'{col}_lag{lag}'] = df_grouped[col].shift(lag)\ndf_lagged.fillna(0, inplace=True)\ndf_lagged = df_lagged.dropna()\n# Convert to Ray Dataset and scale\nfeature_ds = ray.data.from_pandas(df_lagged)\ncols_to_scale = [",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "df_lagged",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "df_lagged = df_grouped.copy()\nfor col in columns_to_lag:\n    for lag in lags:\n        df_lagged[f'{col}_lag{lag}'] = df_grouped[col].shift(lag)\ndf_lagged.fillna(0, inplace=True)\ndf_lagged = df_lagged.dropna()\n# Convert to Ray Dataset and scale\nfeature_ds = ray.data.from_pandas(df_lagged)\ncols_to_scale = [\n    \"Temperature_mean\", \"Humidity_mean\", \"WindSpeed_mean\",",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "df_lagged",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "df_lagged = df_lagged.dropna()\n# Convert to Ray Dataset and scale\nfeature_ds = ray.data.from_pandas(df_lagged)\ncols_to_scale = [\n    \"Temperature_mean\", \"Humidity_mean\", \"WindSpeed_mean\",\n    \"GeneralDiffuseFlows_mean\", \"DiffuseFlows_mean\", \"PowerConsumption_Zone1_sum\", \n    \"PowerConsumption_Zone2_sum\", \"PowerConsumption_Zone3_sum\",\n    \"Temperature_mean_lag4\", \"Temperature_mean_lag8\", \"Temperature_mean_lag12\", \"Temperature_mean_lag24\", \"Temperature_mean_lag48\",\n    \"Humidity_mean_lag4\", \"Humidity_mean_lag8\", \"Humidity_mean_lag12\", \"Humidity_mean_lag24\", \"Humidity_mean_lag48\",\n    \"WindSpeed_mean_lag4\", \"WindSpeed_mean_lag8\", \"WindSpeed_mean_lag12\", \"WindSpeed_mean_lag24\", \"WindSpeed_mean_lag48\",",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "feature_ds",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "feature_ds = ray.data.from_pandas(df_lagged)\ncols_to_scale = [\n    \"Temperature_mean\", \"Humidity_mean\", \"WindSpeed_mean\",\n    \"GeneralDiffuseFlows_mean\", \"DiffuseFlows_mean\", \"PowerConsumption_Zone1_sum\", \n    \"PowerConsumption_Zone2_sum\", \"PowerConsumption_Zone3_sum\",\n    \"Temperature_mean_lag4\", \"Temperature_mean_lag8\", \"Temperature_mean_lag12\", \"Temperature_mean_lag24\", \"Temperature_mean_lag48\",\n    \"Humidity_mean_lag4\", \"Humidity_mean_lag8\", \"Humidity_mean_lag12\", \"Humidity_mean_lag24\", \"Humidity_mean_lag48\",\n    \"WindSpeed_mean_lag4\", \"WindSpeed_mean_lag8\", \"WindSpeed_mean_lag12\", \"WindSpeed_mean_lag24\", \"WindSpeed_mean_lag48\",\n    \"GeneralDiffuseFlows_mean_lag4\", \"GeneralDiffuseFlows_mean_lag8\", \"GeneralDiffuseFlows_mean_lag12\", \"GeneralDiffuseFlows_mean_lag24\", \"GeneralDiffuseFlows_mean_lag48\",\n    \"DiffuseFlows_mean_lag4\", \"DiffuseFlows_mean_lag8\", \"DiffuseFlows_mean_lag12\", \"DiffuseFlows_mean_lag24\", \"DiffuseFlows_mean_lag48\",",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "cols_to_scale",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "cols_to_scale = [\n    \"Temperature_mean\", \"Humidity_mean\", \"WindSpeed_mean\",\n    \"GeneralDiffuseFlows_mean\", \"DiffuseFlows_mean\", \"PowerConsumption_Zone1_sum\", \n    \"PowerConsumption_Zone2_sum\", \"PowerConsumption_Zone3_sum\",\n    \"Temperature_mean_lag4\", \"Temperature_mean_lag8\", \"Temperature_mean_lag12\", \"Temperature_mean_lag24\", \"Temperature_mean_lag48\",\n    \"Humidity_mean_lag4\", \"Humidity_mean_lag8\", \"Humidity_mean_lag12\", \"Humidity_mean_lag24\", \"Humidity_mean_lag48\",\n    \"WindSpeed_mean_lag4\", \"WindSpeed_mean_lag8\", \"WindSpeed_mean_lag12\", \"WindSpeed_mean_lag24\", \"WindSpeed_mean_lag48\",\n    \"GeneralDiffuseFlows_mean_lag4\", \"GeneralDiffuseFlows_mean_lag8\", \"GeneralDiffuseFlows_mean_lag12\", \"GeneralDiffuseFlows_mean_lag24\", \"GeneralDiffuseFlows_mean_lag48\",\n    \"DiffuseFlows_mean_lag4\", \"DiffuseFlows_mean_lag8\", \"DiffuseFlows_mean_lag12\", \"DiffuseFlows_mean_lag24\", \"DiffuseFlows_mean_lag48\",\n    \"PowerConsumption_Zone1_sum_lag4\", \"PowerConsumption_Zone1_sum_lag8\", \"PowerConsumption_Zone1_sum_lag12\", \"PowerConsumption_Zone1_sum_lag24\", \"PowerConsumption_Zone1_sum_lag48\",",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "scaled_ds",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "scaled_ds = feature_ds.map_batches(lambda batch: scale_partition(batch, cols_to_scale), batch_format=\"pandas\")\nscaled_df = scaled_ds.to_pandas()\n# Save transformed data to CSV and upload to S3\nscaled_df.to_csv('2-transformed-data/transformed_features.csv', index=False)\nscaled_ds.write_csv(f\"s3://{destination_bucket_name}/feature_data.csv\")\nprint(\"Data processing and upload complete.\")",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "scaled_df",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "peekOfCode": "scaled_df = scaled_ds.to_pandas()\n# Save transformed data to CSV and upload to S3\nscaled_df.to_csv('2-transformed-data/transformed_features.csv', index=False)\nscaled_ds.write_csv(f\"s3://{destination_bucket_name}/feature_data.csv\")\nprint(\"Data processing and upload complete.\")",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook1",
+        "documentation": {}
+    },
+    {
+        "label": "log_dataset_info",
+        "kind": 2,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "def log_dataset_info(train_dataset, valid_dataset, experiment_name=\"mlflow_callback_ray\"):\n    mlflow.set_tracking_uri(mlflow_tracking_uri)\n    mlflow.set_experiment(experiment_name)\n    train_df = train_dataset.to_pandas()\n    valid_df = valid_dataset.to_pandas()\n    train_stats = {\n        'num_samples': len(train_df),\n        'feature_columns': list(train_df.columns),\n    }\n    valid_stats = {",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "s3_client",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "s3_client = boto3.client(\n    service_name='s3',\n    region_name='ap-southeast-1',\n    aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),\n    aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY')\n)\n# Download file from S3\nbucket_name = os.getenv('S3_BUCKET_NAME')\nfile_key = os.getenv('S3_FILE_KEY')\nversion_id = os.getenv('S3_VERSION_ID')",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "bucket_name",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "bucket_name = os.getenv('S3_BUCKET_NAME')\nfile_key = os.getenv('S3_FILE_KEY')\nversion_id = os.getenv('S3_VERSION_ID')\nlocal_file_path = \"3-training-data/training_features.csv\"\ns3_client.download_file(bucket_name, file_key, local_file_path, ExtraArgs={\"VersionId\": version_id})\n# Load data\ndf_lagged = pd.read_csv(local_file_path)\n# Prepare data for training\nX = df_lagged.drop(['PowerConsumption_Zone1_sum', 'PowerConsumption_Zone2_sum', 'PowerConsumption_Zone3_sum'], axis=1)\ny1 = df_lagged['PowerConsumption_Zone1_sum']",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "file_key",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "file_key = os.getenv('S3_FILE_KEY')\nversion_id = os.getenv('S3_VERSION_ID')\nlocal_file_path = \"3-training-data/training_features.csv\"\ns3_client.download_file(bucket_name, file_key, local_file_path, ExtraArgs={\"VersionId\": version_id})\n# Load data\ndf_lagged = pd.read_csv(local_file_path)\n# Prepare data for training\nX = df_lagged.drop(['PowerConsumption_Zone1_sum', 'PowerConsumption_Zone2_sum', 'PowerConsumption_Zone3_sum'], axis=1)\ny1 = df_lagged['PowerConsumption_Zone1_sum']\ndf_combined = X.copy()",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "version_id",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "version_id = os.getenv('S3_VERSION_ID')\nlocal_file_path = \"3-training-data/training_features.csv\"\ns3_client.download_file(bucket_name, file_key, local_file_path, ExtraArgs={\"VersionId\": version_id})\n# Load data\ndf_lagged = pd.read_csv(local_file_path)\n# Prepare data for training\nX = df_lagged.drop(['PowerConsumption_Zone1_sum', 'PowerConsumption_Zone2_sum', 'PowerConsumption_Zone3_sum'], axis=1)\ny1 = df_lagged['PowerConsumption_Zone1_sum']\ndf_combined = X.copy()\ndf_combined['label'] = y1 ",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "local_file_path",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "local_file_path = \"3-training-data/training_features.csv\"\ns3_client.download_file(bucket_name, file_key, local_file_path, ExtraArgs={\"VersionId\": version_id})\n# Load data\ndf_lagged = pd.read_csv(local_file_path)\n# Prepare data for training\nX = df_lagged.drop(['PowerConsumption_Zone1_sum', 'PowerConsumption_Zone2_sum', 'PowerConsumption_Zone3_sum'], axis=1)\ny1 = df_lagged['PowerConsumption_Zone1_sum']\ndf_combined = X.copy()\ndf_combined['label'] = y1 \ndf_train, df_valid = train_test_split(df_combined, test_size=0.2, random_state=42)",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "df_lagged",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "df_lagged = pd.read_csv(local_file_path)\n# Prepare data for training\nX = df_lagged.drop(['PowerConsumption_Zone1_sum', 'PowerConsumption_Zone2_sum', 'PowerConsumption_Zone3_sum'], axis=1)\ny1 = df_lagged['PowerConsumption_Zone1_sum']\ndf_combined = X.copy()\ndf_combined['label'] = y1 \ndf_train, df_valid = train_test_split(df_combined, test_size=0.2, random_state=42)\ntrain_dataset = ray.data.from_pandas(df_train)\nvalid_dataset = ray.data.from_pandas(df_valid)\n# XGBoost parameters",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "X",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "X = df_lagged.drop(['PowerConsumption_Zone1_sum', 'PowerConsumption_Zone2_sum', 'PowerConsumption_Zone3_sum'], axis=1)\ny1 = df_lagged['PowerConsumption_Zone1_sum']\ndf_combined = X.copy()\ndf_combined['label'] = y1 \ndf_train, df_valid = train_test_split(df_combined, test_size=0.2, random_state=42)\ntrain_dataset = ray.data.from_pandas(df_train)\nvalid_dataset = ray.data.from_pandas(df_valid)\n# XGBoost parameters\nxgb_params = {\n    \"objective\": \"reg:squarederror\",",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "y1",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "y1 = df_lagged['PowerConsumption_Zone1_sum']\ndf_combined = X.copy()\ndf_combined['label'] = y1 \ndf_train, df_valid = train_test_split(df_combined, test_size=0.2, random_state=42)\ntrain_dataset = ray.data.from_pandas(df_train)\nvalid_dataset = ray.data.from_pandas(df_valid)\n# XGBoost parameters\nxgb_params = {\n    \"objective\": \"reg:squarederror\",\n    \"eval_metric\": [\"rmse\", \"mae\"],",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "df_combined",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "df_combined = X.copy()\ndf_combined['label'] = y1 \ndf_train, df_valid = train_test_split(df_combined, test_size=0.2, random_state=42)\ntrain_dataset = ray.data.from_pandas(df_train)\nvalid_dataset = ray.data.from_pandas(df_valid)\n# XGBoost parameters\nxgb_params = {\n    \"objective\": \"reg:squarederror\",\n    \"eval_metric\": [\"rmse\", \"mae\"],\n}",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "df_combined['label']",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "df_combined['label'] = y1 \ndf_train, df_valid = train_test_split(df_combined, test_size=0.2, random_state=42)\ntrain_dataset = ray.data.from_pandas(df_train)\nvalid_dataset = ray.data.from_pandas(df_valid)\n# XGBoost parameters\nxgb_params = {\n    \"objective\": \"reg:squarederror\",\n    \"eval_metric\": [\"rmse\", \"mae\"],\n}\n# Ray trainer configuration",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "train_dataset",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "train_dataset = ray.data.from_pandas(df_train)\nvalid_dataset = ray.data.from_pandas(df_valid)\n# XGBoost parameters\nxgb_params = {\n    \"objective\": \"reg:squarederror\",\n    \"eval_metric\": [\"rmse\", \"mae\"],\n}\n# Ray trainer configuration\nscaling_config = ScalingConfig(num_workers=2, use_gpu=False)\nmlflow_tracking_uri = os.getenv('MLFLOW_TRACKING_URI')",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "valid_dataset",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "valid_dataset = ray.data.from_pandas(df_valid)\n# XGBoost parameters\nxgb_params = {\n    \"objective\": \"reg:squarederror\",\n    \"eval_metric\": [\"rmse\", \"mae\"],\n}\n# Ray trainer configuration\nscaling_config = ScalingConfig(num_workers=2, use_gpu=False)\nmlflow_tracking_uri = os.getenv('MLFLOW_TRACKING_URI')\ntrainer = XGBoostTrainer(",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "xgb_params",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "xgb_params = {\n    \"objective\": \"reg:squarederror\",\n    \"eval_metric\": [\"rmse\", \"mae\"],\n}\n# Ray trainer configuration\nscaling_config = ScalingConfig(num_workers=2, use_gpu=False)\nmlflow_tracking_uri = os.getenv('MLFLOW_TRACKING_URI')\ntrainer = XGBoostTrainer(\n    scaling_config=scaling_config,\n    label_column=\"label\",",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "scaling_config",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "scaling_config = ScalingConfig(num_workers=2, use_gpu=False)\nmlflow_tracking_uri = os.getenv('MLFLOW_TRACKING_URI')\ntrainer = XGBoostTrainer(\n    scaling_config=scaling_config,\n    label_column=\"label\",\n    params=xgb_params,\n    datasets={\"train\": train_dataset, \"valid\": valid_dataset},\n    run_config=train.RunConfig(\n        storage_path=os.getenv('MODEL_STORAGE_PATH'),\n        name=\"Training_Electricity_Consumption\",",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "mlflow_tracking_uri",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "mlflow_tracking_uri = os.getenv('MLFLOW_TRACKING_URI')\ntrainer = XGBoostTrainer(\n    scaling_config=scaling_config,\n    label_column=\"label\",\n    params=xgb_params,\n    datasets={\"train\": train_dataset, \"valid\": valid_dataset},\n    run_config=train.RunConfig(\n        storage_path=os.getenv('MODEL_STORAGE_PATH'),\n        name=\"Training_Electricity_Consumption\",\n        callbacks=[",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "trainer",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "trainer = XGBoostTrainer(\n    scaling_config=scaling_config,\n    label_column=\"label\",\n    params=xgb_params,\n    datasets={\"train\": train_dataset, \"valid\": valid_dataset},\n    run_config=train.RunConfig(\n        storage_path=os.getenv('MODEL_STORAGE_PATH'),\n        name=\"Training_Electricity_Consumption\",\n        callbacks=[\n            MLflowLoggerCallback(",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "result",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "result = trainer.fit()\nmodel = trainer.get_model(result.checkpoint)\n# Log model with MLflow\nmlflow.set_tracking_uri(mlflow_tracking_uri)\nmlflow.set_experiment(\"mlflow_callback_ray\")\nmlflow.xgboost.log_model(\n    xgb_model=model,\n    artifact_path=\"electricity-consumption-prediction\",\n    registered_model_name=\"xgboost-raytrain-electricity-consumption-prediction\",\n)",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "model",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "model = trainer.get_model(result.checkpoint)\n# Log model with MLflow\nmlflow.set_tracking_uri(mlflow_tracking_uri)\nmlflow.set_experiment(\"mlflow_callback_ray\")\nmlflow.xgboost.log_model(\n    xgb_model=model,\n    artifact_path=\"electricity-consumption-prediction\",\n    registered_model_name=\"xgboost-raytrain-electricity-consumption-prediction\",\n)\n# Save model locally",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "sample_request_input",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "sample_request_input = {\n    \"Year\": 2020,\n    \"Month\": 7,\n    \"Day\": 14,\n    \"Hour\": 15,\n    \"Temperature_mean\": 25.5,\n    \"Humidity_mean\": 30,\n    \"WindSpeed_mean\": 5,\n    \"GeneralDiffuseFlows_mean\": 200,\n    \"DiffuseFlows_mean\": 180,",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "sample_df",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "sample_df = pd.DataFrame.from_dict([sample_request_input])\nsample_df.shape\ndata_dmatrix = xgb.DMatrix(sample_df)\npredictions = model.predict(data=data_dmatrix)\n# Print predictions\nprint(predictions)\n# Predictions on test data\nprediction_dataframe = pd.read_csv(\"./3-training-data/training_features.csv\")\nprediction_dataframe_dropped = prediction_dataframe.drop(['PowerConsumption_Zone1_sum', 'PowerConsumption_Zone2_sum', 'PowerConsumption_Zone3_sum'], axis=1)\ndf_valid_features = df_valid.drop('label', axis=1)",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "data_dmatrix",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "data_dmatrix = xgb.DMatrix(sample_df)\npredictions = model.predict(data=data_dmatrix)\n# Print predictions\nprint(predictions)\n# Predictions on test data\nprediction_dataframe = pd.read_csv(\"./3-training-data/training_features.csv\")\nprediction_dataframe_dropped = prediction_dataframe.drop(['PowerConsumption_Zone1_sum', 'PowerConsumption_Zone2_sum', 'PowerConsumption_Zone3_sum'], axis=1)\ndf_valid_features = df_valid.drop('label', axis=1)\ndata_dmatrix = xgb.DMatrix(df_valid_features)\npredictions = model.predict(data=data_dmatrix)",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "predictions",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "predictions = model.predict(data=data_dmatrix)\n# Print predictions\nprint(predictions)\n# Predictions on test data\nprediction_dataframe = pd.read_csv(\"./3-training-data/training_features.csv\")\nprediction_dataframe_dropped = prediction_dataframe.drop(['PowerConsumption_Zone1_sum', 'PowerConsumption_Zone2_sum', 'PowerConsumption_Zone3_sum'], axis=1)\ndf_valid_features = df_valid.drop('label', axis=1)\ndata_dmatrix = xgb.DMatrix(df_valid_features)\npredictions = model.predict(data=data_dmatrix)\n# Print test data predictions",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "prediction_dataframe",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "prediction_dataframe = pd.read_csv(\"./3-training-data/training_features.csv\")\nprediction_dataframe_dropped = prediction_dataframe.drop(['PowerConsumption_Zone1_sum', 'PowerConsumption_Zone2_sum', 'PowerConsumption_Zone3_sum'], axis=1)\ndf_valid_features = df_valid.drop('label', axis=1)\ndata_dmatrix = xgb.DMatrix(df_valid_features)\npredictions = model.predict(data=data_dmatrix)\n# Print test data predictions\nprint(predictions)",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "prediction_dataframe_dropped",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "prediction_dataframe_dropped = prediction_dataframe.drop(['PowerConsumption_Zone1_sum', 'PowerConsumption_Zone2_sum', 'PowerConsumption_Zone3_sum'], axis=1)\ndf_valid_features = df_valid.drop('label', axis=1)\ndata_dmatrix = xgb.DMatrix(df_valid_features)\npredictions = model.predict(data=data_dmatrix)\n# Print test data predictions\nprint(predictions)",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "df_valid_features",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "df_valid_features = df_valid.drop('label', axis=1)\ndata_dmatrix = xgb.DMatrix(df_valid_features)\npredictions = model.predict(data=data_dmatrix)\n# Print test data predictions\nprint(predictions)",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "data_dmatrix",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "data_dmatrix = xgb.DMatrix(df_valid_features)\npredictions = model.predict(data=data_dmatrix)\n# Print test data predictions\nprint(predictions)",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "predictions",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "description": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "peekOfCode": "predictions = model.predict(data=data_dmatrix)\n# Print test data predictions\nprint(predictions)",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 05.notebook2",
+        "documentation": {}
+    },
+    {
+        "label": "home",
+        "kind": 2,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "description": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "peekOfCode": "def home():\n    \"\"\"\n    Root endpoint providing API documentation.\n    Returns:\n        JSON: A dictionary containing the service status and available endpoints.\n    \"\"\"\n    return jsonify({\n        \"status\": \"running\",\n        \"endpoints\": {\n            \"predict\": \"/predict (POST)\",",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "documentation": {}
+    },
+    {
+        "label": "predict",
+        "kind": 2,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "description": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "peekOfCode": "def predict():\n    \"\"\"\n    Make predictions using the loaded model.\n    Expects:\n        JSON: A dictionary containing diamond features.\n    Returns:\n        JSON: A dictionary containing the prediction.\n    \"\"\"\n    if model_pipeline is None:\n        return jsonify({\"error\": \"Model pipeline not loaded properly\"}), 500",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "documentation": {}
+    },
+    {
+        "label": "retrain_model",
+        "kind": 2,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "description": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "peekOfCode": "def retrain_model():\n    \"\"\"\n    Retrain the model with new data and update the global model pipeline.\n    This function loads the latest data, retrains the model, and updates the\n    global `model_pipeline` variable. It also increments the retraining counter.\n    \"\"\"\n    global model_pipeline\n    print(\"Retraining model with new data...\")\n    train_model()\n    try:",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "documentation": {}
+    },
+    {
+        "label": "monitor_drifts",
+        "kind": 2,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "description": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "peekOfCode": "def monitor_drifts():\n    \"\"\"\n    Periodic monitoring function that checks for data and concept drift.\n    This function simulates real-time data changes by introducing small random\n    variations to the diamond features. It then compares the current data\n    distribution and model performance to the reference data and model,\n    detecting drift if thresholds are exceeded. If drift is detected, the model\n    is retrained and the reference data is updated.\n    \"\"\"\n    global X_reference, y_reference, model_pipeline",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "description": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "peekOfCode": "app = Flask(__name__)\n# Change the model loading path to absolute path\nMODEL_PATH = \"/app/model_pipeline.joblib\"\n# Load the model pipeline\ntry:\n    model_pipeline = joblib.load(MODEL_PATH)\n    print(f\"Model pipeline loaded successfully from {MODEL_PATH}\")\nexcept Exception as e:\n    print(f\"Error loading model pipeline from {MODEL_PATH}: {e}\")\n    print(f\"Current working directory: {os.getcwd()}\")",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "documentation": {}
+    },
+    {
+        "label": "MODEL_PATH",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "description": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "peekOfCode": "MODEL_PATH = \"/app/model_pipeline.joblib\"\n# Load the model pipeline\ntry:\n    model_pipeline = joblib.load(MODEL_PATH)\n    print(f\"Model pipeline loaded successfully from {MODEL_PATH}\")\nexcept Exception as e:\n    print(f\"Error loading model pipeline from {MODEL_PATH}: {e}\")\n    print(f\"Current working directory: {os.getcwd()}\")\n    print(f\"Files in current directory: {os.listdir('.')}\")\n    model_pipeline = None",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "documentation": {}
+    },
+    {
+        "label": "data_drift_gauge",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "description": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "peekOfCode": "data_drift_gauge = Gauge(\"data_drift\", \"Data Drift Score\")\nconcept_drift_gauge = Gauge(\"concept_drift\", \"Concept Drift Score\")\n# Load reference data\ndiamonds = sns.load_dataset(\"diamonds\")\nX_reference = diamonds[[\"carat\", \"cut\", \"color\", \"clarity\", \"depth\", \"table\"]]\ny_reference = diamonds[\"price\"]\n# Update threshold constants to be more sensitive\nDATA_DRIFT_THRESHOLD = 0.15    # Threshold for data drift detection\nCONCEPT_DRIFT_THRESHOLD = 0.15 # Threshold for concept drift detection\n# Add new Prometheus metrics for retraining",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "documentation": {}
+    },
+    {
+        "label": "concept_drift_gauge",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "description": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "peekOfCode": "concept_drift_gauge = Gauge(\"concept_drift\", \"Concept Drift Score\")\n# Load reference data\ndiamonds = sns.load_dataset(\"diamonds\")\nX_reference = diamonds[[\"carat\", \"cut\", \"color\", \"clarity\", \"depth\", \"table\"]]\ny_reference = diamonds[\"price\"]\n# Update threshold constants to be more sensitive\nDATA_DRIFT_THRESHOLD = 0.15    # Threshold for data drift detection\nCONCEPT_DRIFT_THRESHOLD = 0.15 # Threshold for concept drift detection\n# Add new Prometheus metrics for retraining\nretraining_counter = Gauge(\"model_retraining_count\", \"Number of times model has been retrained\")",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "documentation": {}
+    },
+    {
+        "label": "diamonds",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "description": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "peekOfCode": "diamonds = sns.load_dataset(\"diamonds\")\nX_reference = diamonds[[\"carat\", \"cut\", \"color\", \"clarity\", \"depth\", \"table\"]]\ny_reference = diamonds[\"price\"]\n# Update threshold constants to be more sensitive\nDATA_DRIFT_THRESHOLD = 0.15    # Threshold for data drift detection\nCONCEPT_DRIFT_THRESHOLD = 0.15 # Threshold for concept drift detection\n# Add new Prometheus metrics for retraining\nretraining_counter = Gauge(\"model_retraining_count\", \"Number of times model has been retrained\")\ndef retrain_model():\n    \"\"\"",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "documentation": {}
+    },
+    {
+        "label": "X_reference",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "description": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "peekOfCode": "X_reference = diamonds[[\"carat\", \"cut\", \"color\", \"clarity\", \"depth\", \"table\"]]\ny_reference = diamonds[\"price\"]\n# Update threshold constants to be more sensitive\nDATA_DRIFT_THRESHOLD = 0.15    # Threshold for data drift detection\nCONCEPT_DRIFT_THRESHOLD = 0.15 # Threshold for concept drift detection\n# Add new Prometheus metrics for retraining\nretraining_counter = Gauge(\"model_retraining_count\", \"Number of times model has been retrained\")\ndef retrain_model():\n    \"\"\"\n    Retrain the model with new data and update the global model pipeline.",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "documentation": {}
+    },
+    {
+        "label": "y_reference",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "description": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "peekOfCode": "y_reference = diamonds[\"price\"]\n# Update threshold constants to be more sensitive\nDATA_DRIFT_THRESHOLD = 0.15    # Threshold for data drift detection\nCONCEPT_DRIFT_THRESHOLD = 0.15 # Threshold for concept drift detection\n# Add new Prometheus metrics for retraining\nretraining_counter = Gauge(\"model_retraining_count\", \"Number of times model has been retrained\")\ndef retrain_model():\n    \"\"\"\n    Retrain the model with new data and update the global model pipeline.\n    This function loads the latest data, retrains the model, and updates the",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "documentation": {}
+    },
+    {
+        "label": "DATA_DRIFT_THRESHOLD",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "description": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "peekOfCode": "DATA_DRIFT_THRESHOLD = 0.15    # Threshold for data drift detection\nCONCEPT_DRIFT_THRESHOLD = 0.15 # Threshold for concept drift detection\n# Add new Prometheus metrics for retraining\nretraining_counter = Gauge(\"model_retraining_count\", \"Number of times model has been retrained\")\ndef retrain_model():\n    \"\"\"\n    Retrain the model with new data and update the global model pipeline.\n    This function loads the latest data, retrains the model, and updates the\n    global `model_pipeline` variable. It also increments the retraining counter.\n    \"\"\"",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "documentation": {}
+    },
+    {
+        "label": "CONCEPT_DRIFT_THRESHOLD",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "description": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "peekOfCode": "CONCEPT_DRIFT_THRESHOLD = 0.15 # Threshold for concept drift detection\n# Add new Prometheus metrics for retraining\nretraining_counter = Gauge(\"model_retraining_count\", \"Number of times model has been retrained\")\ndef retrain_model():\n    \"\"\"\n    Retrain the model with new data and update the global model pipeline.\n    This function loads the latest data, retrains the model, and updates the\n    global `model_pipeline` variable. It also increments the retraining counter.\n    \"\"\"\n    global model_pipeline",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "documentation": {}
+    },
+    {
+        "label": "retraining_counter",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "description": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "peekOfCode": "retraining_counter = Gauge(\"model_retraining_count\", \"Number of times model has been retrained\")\ndef retrain_model():\n    \"\"\"\n    Retrain the model with new data and update the global model pipeline.\n    This function loads the latest data, retrains the model, and updates the\n    global `model_pipeline` variable. It also increments the retraining counter.\n    \"\"\"\n    global model_pipeline\n    print(\"Retraining model with new data...\")\n    train_model()",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "documentation": {}
+    },
+    {
+        "label": "app.wsgi_app",
+        "kind": 5,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "description": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "peekOfCode": "app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {\"/metrics\": make_wsgi_app()})\nif __name__ == \"__main__\":\n    # Start Prometheus metrics server\n    start_http_server(8000)\n    # Schedule drift monitoring every 5 seconds instead of 10\n    scheduler = BackgroundScheduler()\n    scheduler.add_job(monitor_drifts, \"interval\", seconds=5)  # Changed from 10 to 5 seconds\n    scheduler.start()\n    # Run Flask app\n    app.run(host=\"0.0.0.0\", port=5000)",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 12.src.app",
+        "documentation": {}
+    },
+    {
+        "label": "detect_concept_drift",
+        "kind": 2,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 12.src.concept_drift",
+        "description": "Poridhi Labs.MLOps Lab.Lab 12.src.concept_drift",
+        "peekOfCode": "def detect_concept_drift(\n    model_pipeline, X_reference, y_reference, X_current, y_current, threshold=0.15\n):\n    \"\"\"\n    Detect concept drift by comparing model performance on reference and current data.\n    This function calculates the mean squared error (MSE) of the model's predictions\n    on both the reference and current data. It then determines the relative change\n    in performance (relative performance decrease) and flags concept drift if this\n    change exceeds the specified threshold.\n    Args:",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 12.src.concept_drift",
+        "documentation": {}
+    },
+    {
+        "label": "detect_data_drift",
+        "kind": 2,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 12.src.data_drift",
+        "description": "Poridhi Labs.MLOps Lab.Lab 12.src.data_drift",
+        "peekOfCode": "def detect_data_drift(reference_data, current_data, threshold=0.15):\n    \"\"\"\n    Detect data drift between reference and current datasets.\n    This function compares the distribution of features between the reference\n    and current datasets using the Kolmogorov-Smirnov (KS) test for numerical\n    features and Jensen-Shannon divergence for categorical features. It then\n    calculates an overall drift score based on the average of feature-wise scores.\n    Args:\n        reference_data (pd.DataFrame): The baseline dataset used for comparison.\n        current_data (pd.DataFrame): The new dataset to check for drift.",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 12.src.data_drift",
+        "documentation": {}
+    },
+    {
+        "label": "train_model",
+        "kind": 2,
+        "importPath": "Poridhi Labs.MLOps Lab.Lab 12.src.train",
+        "description": "Poridhi Labs.MLOps Lab.Lab 12.src.train",
+        "peekOfCode": "def train_model(new_data=None):\n    \"\"\"\n    Trains and saves a machine learning pipeline for diamond price prediction.\n    Args:\n        new_data (tuple, optional): Tuple of (X, y) containing new training data.\n                                  If None, uses the original dataset.\n    Returns: None (saves model to disk)\n    \"\"\"\n    if new_data is None:\n        # Load the diamonds dataset from seaborn",
+        "detail": "Poridhi Labs.MLOps Lab.Lab 12.src.train",
+        "documentation": {}
+    }
+]
