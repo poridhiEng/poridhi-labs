@@ -44,13 +44,13 @@ Redis helps manage chat **rooms** and **namespaces** effectively across distribu
 - When a client joins a room, Redis keeps track of it across all server instances.
 - Messages sent to that room are relayed through Redis to **ensure that all participants receive the updates**, even if they are connected to different server instances.
 
-### **4. Load Distribution Without Overloading Servers**
+<!-- ### **4. Load Distribution Without Overloading Servers**
 - Instead of each server processing and maintaining a list of connected users, Redis acts as a **centralized event hub**.
 - This reduces the overhead on individual server instances, allowing them to **handle more concurrent users**.
 
 ### **5. Message Queue for Offline Users**
 - Redis can store messages temporarily when users are offline.
-- When the user reconnects, pending messages can be **retrieved from Redis** and delivered, ensuring no messages are lost.
+- When the user reconnects, pending messages can be **retrieved from Redis** and delivered, ensuring no messages are lost. -->
 
 ## How does the Redis adapter work with Socket.IO?
 
@@ -97,6 +97,10 @@ ChatApp/
 
 This is a simple project structure for the chat application. You can add more files and folders as needed also restructure the project as you see fit.
 
+Here is the system architecture of the chat application:
+
+![alt text](image-11.png)
+
 ## **Setting Up the Project**
 
 ### **1. Project initialization and Dependencies**
@@ -132,9 +136,11 @@ We will create a simple UI for our application. We will create two pages:
 - `auth.html`: This page will contain a form for users to sign up or log in.
 - `chat.html`: This page will contain the chat interface.
 
-We use html css and js to create the UI for simplicity.
+We use html css and js to create the UI for simplicity. The **main focus** of this lab is to understand the **inter-server communication** and how to **scale** the application.
 
-**auth.html**
+### **auth.html**
+
+This file contains the login and registration form.
 
 ```html
 <!DOCTYPE html>
@@ -522,7 +528,9 @@ body {
 }
 ```
 
-**auth.js**
+### **auth.js**
+
+This file contains the code for handling the authentication functionality. It contains the code for registering and logging in users.
 
 ```js
 function toggleForms() {
@@ -589,7 +597,9 @@ async function handleRegister(event) {
 }
 ```
 
-**index.js**
+### **index.js**
+
+This file contains the code for handling the chat functionality. It contains the code for sending and receiving messages, creating and joining rooms, and updating the online users count.
 
 ```js
 const userName = localStorage.getItem('username');
@@ -825,7 +835,7 @@ module.exports = { redisClient, connectRedis };
 
 We will create a `ChatModel` class in the `src/models/chat.js` file. This class will contain the methods for storing and retrieving data from the database. Here is the ER diagram of the database:
 
-![alt text](image-4.png)
+![alt text](image-12.png)
 
 The ER diagram shows three main entities:
 
@@ -1157,10 +1167,6 @@ app.get('/', (req, res) => {
 redisClient.set('online_users', '0').catch(console.error);
 ```
 
-Here is the sequence diagram for Real-time communication flow:
-
-![alt text](image-5.png)
-
 ### Dockerize the application
 
 We will create a `Dockerfile` for the server.
@@ -1198,8 +1204,8 @@ We will create a `nginx.conf` file under the `nginx` folder.
 ```nginx
 upstream socket_nodes {
     ip_hash; # Enable sticky sessions
-    server chat-server-1:3000;  # Changed from 127.0.0.1 to service name
-    server chat-server-2:3001;  # Changed from 127.0.0.1 to service name
+    server chat-server-1:3000; # Docker service name
+    server chat-server-2:3001; # Docker service name
     # Add more socket servers as needed
 }
 
@@ -1306,13 +1312,70 @@ volumes:
 
 ### Running the Project
 
-1. Database: First we will run the Redis server by running the following command:
+We will use the `docker compose up --build` command to run the project.
 
 ```bash
 docker compose up --build
 ```
 
-2. To access the application, create a Load Balancer using Poridhi's loadBalancer and follow the link provided by the Load Balancer.
+![alt text](image-3.png)
+
+Make sure that the Redis server is running before running the server.
+
+2. To access the application, create a Load Balancer using Poridhi's loadBalancer with port `8081` and follow the link provided by the Load Balancer.
+
+![alt text](image-9.png)
+
+The user will be redirected to the login page or if new user, register a new user and login with the new user.
+
+![alt text](image-10.png)
+
+
+
+## Testing the application
+
+To test the application, we will go through the following steps:
+
+1. Open the application in the browser.
+2. Register a new user.
+3. Login with the new user.
+4. Create a new room.
+5. Join the new room.
+6. Send a message to the room.
+7. See the message in the room.
+8. Do the same steps for another user.
+
+![alt text](image-2.png)
+
+Here we can see that the message is sent to the room and all the other users in the room can see the message. We can also see the online users count in the top corner.
+
+### Testing the Inter-Server Communication
+
+To test the inter-server communication, we have to access each server instance individually.
+
+First we have to create two load balancers in Poridhi's loadBalancer with port 3000 and 3001 respectively.
+
+![alt text](image-4.png)
+
+After that access the links provided by the load balancers:
+
+![alt text](image-5.png)
+
+Now, register a new user and login with the new user in both the load balancers and create a new room. Here we can see that the user is created in both the server instances.
+
+![alt text](image-8.png)
+
+After that, join the new room in both the server instances and send a message to the room. Here we can see that the message is sent to the room and all the other users in the room can see the message.
+
+![alt text](image-7.png)
+
+## Conclusion
+
+In this lab, we have learned how to use Socket.IO and Redis Adapter to create a scalable real-time chat application. We have also learned how to use Redis to store the messages and user data. We have also learned how to use Nginx to create a load balancer to distribute the traffic across multiple server instances.
+
+
+
+
 
 
 
