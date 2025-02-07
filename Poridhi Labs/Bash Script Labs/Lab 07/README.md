@@ -2,23 +2,23 @@
 
 Conditional statements are the backbone of decision-making in Bash scripts. They allow your scripts to execute different commands based on specific conditions, enabling dynamic and responsive automation. In this lab, you'll learn the syntax of conditional statements and apply them to a real-world scenario: a **system health monitoring script**.
 
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/82468a232c7d9b5479673278e5f14d62ab766b55/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2007/images/if-else.svg)
+
 By the end of this lab, you will understand:
 - Syntax of `if`, `elif`, and `else` statements
 - Numeric, string, and file comparisons
 - Logical operators (`AND`, `OR`, `NOT`)
-- Real-world use case: System health monitoring
+- Real-world use case: `System health monitoring`
 
----
 
 ## Prerequisites
 - Basic knowledge of Linux/Unix command line
 - A Linux environment or terminal with Bash shell
 
----
-
 ## Syntax of Conditional Statements
 
 ### Basic Structure
+
 ```bash
 if [ condition ]; then
   # Commands if condition is true
@@ -28,6 +28,16 @@ else
   # Commands if all conditions are false
 fi
 ```
+
+#### Explanation
+
+The `if-elif-else` structure in Bash allows decision-making in scripts:
+
+1. **`if [ condition ]; then`** → Executes commands **if condition is true**.  
+2. **`elif [ another_condition ]; then`** → Checks another condition **if the first one is false**.  
+3. **`else`** → Executes commands **if none of the conditions are met**.  
+4. **`fi`** → Marks the **end** of the conditional statement.  
+
 
 ### Comparison Operators
 | **Type**       | **Operator** | **Description**                     |
@@ -50,7 +60,122 @@ fi
 - `||` (OR): `if [ condition1 ] || [ condition2 ]; then`
 - `!` (NOT): `if ! [ condition ]; then`
 
----
+## Examples of Conditional Statements
+
+### 1. Simple If Statement
+
+#### **Script: `Simple-if.sh`** 
+
+```bash
+num=10
+if [ "$num" -gt 5 ]; then
+  echo "Number is greater than 5"
+fi
+```
+
+#### Run the script
+
+```bash
+chmod +x Simple-if.sh
+./Simple-if.sh
+```
+
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2007/images/image.png)
+
+### 2. If-Else Statement
+
+#### **Script: `if-else.sh`** 
+
+```bash
+num=3
+if [ "$num" -gt 5 ]; then
+  echo "Number is greater than 5"
+else
+  echo "Number is less than or equal to 5"
+fi
+```
+
+#### Run the script
+
+```bash
+chmod +x if-else.sh
+./if-else.sh
+```
+
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2007/images/image-1.png)
+
+### 3. If-Elif-Else Statement
+
+#### **Script: `if-elif-else.sh`** 
+
+```bash
+num=5
+if [ "$num" -gt 10 ]; then
+  echo "Number is greater than 10"
+elif [ "$num" -eq 5 ]; then
+  echo "Number is exactly 5"
+else
+  echo "Number is less than 5"
+fi
+```
+
+#### Run the script
+
+```bash
+chmod +x if-elif-else.sh
+./if-elif-else.sh
+```
+
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2007/images/image-2.png)
+
+### 4. Logical Operators Example
+
+#### **Script: `logical-operators.sh`** 
+
+Check if **both** CPU and memory usage are high:
+
+```bash
+cpu_usage=85
+mem_usage=75
+CPU_THRESHOLD=80
+MEM_THRESHOLD=70
+
+
+if [ "$cpu_usage" -gt "$CPU_THRESHOLD" ] && [ "$mem_usage" -gt "$MEM_THRESHOLD" ]; then
+  echo "‼️  CRITICAL: Both CPU and memory are overloaded!"
+fi
+```
+
+#### Run the script
+
+```bash
+chmod +x logical-operators.sh
+./logical-operators.sh
+```
+
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2007/images/image-3.png)
+
+### 5. File Existence Check
+
+#### **Script: `file-existence-check.sh`** 
+
+```bash
+LOG_FILE="/var/log/app.log"
+if [ -f "$LOG_FILE" ]; then
+  echo "Processing $LOG_FILE..."
+else
+  echo "Error: $LOG_FILE not found!"
+fi
+```
+
+#### Run the script
+
+```bash
+chmod +x file-existence-check.sh
+./file-existence-check.sh
+```
+
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2007/images/image-4.png)
 
 ## Scenario: System Health Monitoring
 
@@ -62,15 +187,16 @@ Create a file `system_health.sh`:
 ```bash
 #!/bin/bash
 
-# Thresholds (adjust as needed)
+# Thresholds
 CPU_THRESHOLD=80    # 80% CPU usage
 MEM_THRESHOLD=80    # 80% memory usage
 DISK_THRESHOLD=80   # 80% disk usage
 
-# Get current usage values (simulated for this example)
+# Get current usage values
 cpu_usage=85
 mem_usage=75
 disk_usage=90
+
 
 # Check CPU usage
 if [ "$cpu_usage" -gt "$CPU_THRESHOLD" ]; then
@@ -107,64 +233,7 @@ chmod +x system_health.sh
 ./system_health.sh
 ```
 
----
-
-## Advanced Examples
-
-### 1. Combining Conditions with Logical Operators
-Check if **both** CPU and memory are overloaded:
-```bash
-if [ "$cpu_usage" -gt "$CPU_THRESHOLD" ] && [ "$mem_usage" -gt "$MEM_THRESHOLD" ]; then
-  echo "‼️  CRITICAL: Both CPU and memory are overloaded!"
-fi
-```
-
-### 2. File Existence Check
-Verify if a log file exists before processing:
-```bash
-LOG_FILE="/var/log/app.log"
-if [ -f "$LOG_FILE" ]; then
-  echo "Processing $LOG_FILE..."
-else
-  echo "Error: $LOG_FILE not found!"
-fi
-```
-
-### 3. Case Statements for Multiple Conditions
-Create a menu-driven script:
-```bash
-#!/bin/bash
-echo "1) Start Service"
-echo "2) Stop Service"
-read -p "Choose an option: " choice
-
-case "$choice" in
-  1) echo "Starting service..." ;;
-  2) echo "Stopping service..." ;;
-  *) echo "Invalid option!" ;;
-esac
-```
-
----
-
-## Best Practices
-1. **Quote Variables**: Always use `"$variable"` to handle spaces in values.
-   ```bash
-   if [ "$cpu_usage" -gt 80 ]; then
-   ```
-2. **Prefer `[[ ]]` Over `[ ]`**:  
-   `[[ ]]` supports advanced features like pattern matching:
-   ```bash
-   if [[ "$filename" == *.log ]]; then
-   ```
-3. **Indent Code**: Improve readability with indentation:
-   ```bash
-   if [ condition ]; then
-       echo "Condition met"
-   fi
-   ```
-
----
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2007/images/image-5.png)
 
 ## Conclusion
 
