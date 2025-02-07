@@ -18,9 +18,12 @@ By the end of this lab, you will understand:
 ### 1. `for` Loops
 Iterate over a list of items or ranges.
 
+![alt text](./images/For-loop.svg)
+
 #### Syntax:
 ```bash
 for item in list; do
+
   # Commands
 done
 ```
@@ -75,6 +78,8 @@ chmod +x for_array.sh
 
 Execute commands **while** a condition is true.
 
+![alt text](./images/While-loop.svg)
+
 #### Syntax:
 ```bash
 while [ condition ]; do
@@ -110,6 +115,8 @@ chmod +x while_countdown.sh
 
 ### 3. `until` Loops
 Execute commands `until` a condition becomes true.
+
+![alt text](./images/Until-loop.svg)
 
 #### Syntax:
 ```bash
