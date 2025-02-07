@@ -106,13 +106,14 @@ First we will initialize a new Node.js project and install the necessary depende
 
 ```bash
 npm init -y
-npm install --save express socket.io bcrypt dotenv
+npm install @redis/json@^1.0.7 @socket.io/redis-adapter@^8.3.0 bcrypt@^5.1.1 dotenv@^16.4.7 express@^4.21.2 redis@^4.7.0 socket.io@^4.8.1 socket.io-redis@^6.1.1  
+npm install nodemon@^3.1.9 --save-dev  
 ```
 
 We will need to install `nodemon` to automatically restart the server when we make changes to the code. Run the following command in your terminal:
 
 ```bash
-npm install --save-dev nodemon
+npm install nodemon@^3.1.9 --save-dev
 ```
 
 > `--save-dev` is used to install the dependencies in the devDependencies section of the package.json file.
