@@ -2,7 +2,7 @@
 
 Conditional statements are the backbone of decision-making in Bash scripts. They allow your scripts to execute different commands based on specific conditions, enabling dynamic and responsive automation. In this lab, you'll learn the syntax of conditional statements and apply them to a real-world scenario: a **system health monitoring script**.
 
-![alt text](./images/if-else.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/82468a232c7d9b5479673278e5f14d62ab766b55/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2007/images/if-else.svg)
 
 By the end of this lab, you will understand:
 - Syntax of `if`, `elif`, and `else` statements
@@ -80,7 +80,7 @@ chmod +x Simple-if.sh
 ./Simple-if.sh
 ```
 
-![alt text](./images/image.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2007/images/image.png)
 
 ### 2. If-Else Statement
 
@@ -102,7 +102,7 @@ chmod +x if-else.sh
 ./if-else.sh
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2007/images/image-1.png)
 
 ### 3. If-Elif-Else Statement
 
@@ -126,7 +126,7 @@ chmod +x if-elif-else.sh
 ./if-elif-else.sh
 ```
 
-![alt text](./images/image-2.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2007/images/image-2.png)
 
 ### 4. Logical Operators Example
 
@@ -153,7 +153,7 @@ chmod +x logical-operators.sh
 ./logical-operators.sh
 ```
 
-![alt text](./images/image-3.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2007/images/image-3.png)
 
 ### 5. File Existence Check
 
@@ -175,7 +175,7 @@ chmod +x file-existence-check.sh
 ./file-existence-check.sh
 ```
 
-![alt text](./images/image-4.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2007/images/image-4.png)
 
 ## Scenario: System Health Monitoring
 
@@ -233,7 +233,7 @@ chmod +x system_health.sh
 ./system_health.sh
 ```
 
-![alt text](./images/image-5.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2007/images/image-5.png)
 
 ## Conclusion
 
