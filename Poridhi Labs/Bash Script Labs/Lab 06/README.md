@@ -2,7 +2,7 @@
 
 Working with strings is a crucial skill in Bash scripting, enabling you to handle text efficiently for automation, data processing, and system administration tasks. This guide walks you through essential string operations, from basic declaration to advanced manipulation techniques.
 
-![alt text](./images/Sting-operation.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/213451263aaffe0b3236d90b1f38ec7a30581bfa/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2006/images/Sting-operation.svg)
 
 By the end of this lab, you'll be able to:
 - Declare and print strings
@@ -51,7 +51,7 @@ chmod +x string_basics.sh
 ./string_basics.sh
 ```
 
-![alt text](./images/image.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2006/images/image.png)
 
 ## String Concatenation
 
@@ -83,7 +83,7 @@ chmod +x concatenate.sh
 ./concatenate.sh
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2006/images/image-1.png)
 
 ## String Length Calculation
 
@@ -109,7 +109,7 @@ chmod +x string_length.sh
 ./string_length.sh
 ```
 
-![alt text](./images/image-2.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2006/images/image-2.png)
 
 ## Substring Extraction
 
@@ -140,7 +140,7 @@ chmod +x substring.sh
 ./substring.sh
 ```
 
-![alt text](./images/image-3.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2006/images/image-3.png)
 
 ## String Substitution
 
@@ -176,7 +176,7 @@ chmod +x substitution.sh
 ./substitution.sh
 ```
 
-![alt text](./images/image-4.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2006/images/image-4.png)
 
 ## Trimming Whitespace
 
@@ -224,7 +224,7 @@ chmod +x trimming.sh
 ./trimming.sh
 ```
 
-![alt text](./images/image-5.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2006/images/image-5.png)
 
 ## Case Conversion
 
@@ -255,7 +255,7 @@ chmod +x case_conversion.sh
 ./case_conversion.sh
 ```
 
-![alt text](./images/image-6.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2006/images/image-6.png)
 
 ## Splitting Strings into Arrays
 
@@ -287,7 +287,7 @@ chmod +x split_string.sh
 ./split_string.sh
 ```
 
-![alt text](./images/image-7.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2006/images/image-7.png)
 
 ## Checking Substrings and Empty Strings
 
@@ -322,7 +322,7 @@ chmod +x substring_check.sh
 ./substring_check.sh
 ```
 
-![alt text](./images/image-8.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2006/images/image-8.png)
 
 ## Conclusion
 
