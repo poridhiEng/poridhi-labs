@@ -2,7 +2,7 @@
 
 A chat application requires real-time, bidirectional communication between clients and the server. As the number of users grows, a single server may become a bottleneck, leading to performance issues. To address this, we can scale the chat application by deploying multiple server instances and using `Redis` as a message broker to synchronize events across servers. `Socket.IO` is a popular library for real-time communication, and the `redis-adapter` is a module that allows Socket.IO to use Redis as a message broker.
 
-![](./images/lab4-redis-adapter.drawio.svg)
+![](./images/redis-adapter.drawio.svg)
 
 
 ### What are the challenges in scaling a chat application?
