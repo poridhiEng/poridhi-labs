@@ -8,15 +8,11 @@ By the end of this lab, you will understand:
 - Passing arguments to functions
 - Returning values from functions
 - Variable scope in functions
-- Real-world use case: Log file processor
-
----
+- Real-world use case: `Log file processor`
 
 ## Prerequisites
 - Basic knowledge of Linux/Unix command line
 - A Linux environment or terminal with Bash shell
-
----
 
 ## What Are Functions?
 
@@ -25,14 +21,14 @@ A **function** is a named block of code that performs a specific task. It can be
 - Can accept arguments (inputs).
 - Can return values (exit statuses or output).
 
----
-
 ## How to Create Functions
 
 ### Syntax
+
 There are two ways to define a function in Bash:
 
 #### Method 1: Explicit `function` Keyword
+
 ```bash
 function function_name {
   # Commands
@@ -40,6 +36,7 @@ function function_name {
 ```
 
 #### Method 2: Compact Syntax
+
 ```bash
 function_name() {
   # Commands
@@ -47,27 +44,24 @@ function_name() {
 ```
 
 ### Example 1: Basic Function
+
 Create `function_basic.sh`:
 ```bash
 #!/bin/bash
 
 # Define a function
 greet_user() {
-  echo "Hello, $1! Today is $(date)."
+  echo "Hello, User! Today is $(date)."
 }
 
-# Call the function with an argument
-greet_user "Alice"
+greet_user
 ```
 
-**Execute:**
+**Execute and run the script:**
 ```bash
 chmod +x function_basic.sh
 ./function_basic.sh
-# Output: Hello, Alice! Today is [current date].
 ```
-
----
 
 ## How to Use Arguments in Functions
 
@@ -85,22 +79,26 @@ sum() {
   echo $((num1 + num2))
 }
 
-# Call the function and capture the result
 result=$(sum 10 20)
-echo "Sum: $result"  # Output: Sum: 30
+echo "Sum: $result"
 ```
 
 **Key Points:**
 - `$1` and `$2` represent the first and second arguments passed to the function.
 - Use `local` to declare variables inside functions (avoids global scope side effects).
 
----
+**Execute and run the script:**
+```bash
+chmod +x function_args.sh
+./function_args.sh
+```
 
 ## Returning Values from Functions
 
 Bash functions return an **exit status** (0 for success, non-zero for failure) using `return`. However, you can "return" data by printing it and capturing it with command substitution.
 
 ### Example 3: Return Status and Output
+
 Create `function_return.sh`:
 ```bash
 #!/bin/bash
@@ -116,7 +114,6 @@ check_file() {
   fi
 }
 
-# Call the function and check the exit status
 check_file "/etc/passwd"
 if [ $? -eq 0 ]; then
   echo "File check passed!"
@@ -124,14 +121,22 @@ fi
 ```
 
 **Explanation:**
-- `return 0` indicates success.
-- `$?` captures the exit status of the last command (the function call).
+- Defines a function `check_file` to check if a file exists.  
+- Uses `-f` to verify the file and prints a message.  
+- Returns `0` if the file exists, `1` otherwise.  
+- Calls `check_file` on `/etc/passwd`.  
+- If the file exists, prints `"File check passed!"`.
 
----
+**Execute and run the script:**
+```bash
+chmod +x function_return.sh
+./function_return.sh
+```
 
 ## Variable Scope in Functions
 
 By default, variables in Bash are **global**. Use `local` to restrict them to the function's scope.
+
 
 ### Example 4: Local vs Global Variables
 Create `variable_scope.sh`:
@@ -148,15 +153,27 @@ test_scope() {
 
 test_scope
 
-echo "Outside function: $local_var"  # Output: [Empty]
-echo "Outside function: $global_var" # Output: I am global
+echo "Outside function: $local_var"
+echo "Outside function: $global_var"
 ```
 
----
+**Explanation:**
+
+- Defines a **global variable** `global_var`.  
+- Function `test_scope` declares a **local variable** `local_var`.  
+- Inside the function, both variables are accessible.  
+- Outside the function, `global_var` is accessible, but `local_var` is not.  
+
+**Execute and run the script:**
+```bash
+chmod +x variable_scope.sh
+./variable_scope.sh
+```
 
 ## Scenario: Log File Processor
 
 ### Problem Statement
+
 Create a script that:
 1. Checks if a log file exists.
 2. Processes the log file (counts errors).
@@ -221,27 +238,6 @@ Number of errors: 2
 Log archived to: logs_archive/app_20231015-1420.log
 ```
 
----
-
-## Best Practices
-
-1. **Keep Functions Small**:  
-   Each function should perform a single task (e.g., `check_log`, `process_log`).
-
-2. **Use Descriptive Names**:  
-   Name functions based on their purpose (e.g., `calculate_sum`, `validate_input`).
-
-3. **Comment Your Functions**:  
-   Add comments to explain complex logic or parameters.
-
-4. **Handle Errors**:  
-   Use `return` codes to signal success/failure and validate inputs.
-
-5. **Local Variables**:  
-   Always use `local` for variables inside functions unless global scope is intentional.
-
----
-
 ## Conclusion
 
-Functions are a cornerstone of efficient Bash scripting. They promote code reuse, improve readability, and simplify debugging. By mastering argument handling, return values, and variable scope, you can build modular scripts for tasks like log processing, system monitoring, or data analysis. Apply these techniques to streamline your workflows and create maintainable automation solutions.
+Functions are a cornerstone of efficient Bash scripting. They promote code reuse, improve readability, and simplify debugging. By mastering argument handling, return values, and variable scope, you can build modular scripts for tasks like log processing, system monitoring, or data analysis.
