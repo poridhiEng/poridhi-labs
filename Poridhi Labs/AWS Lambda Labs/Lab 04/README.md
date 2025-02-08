@@ -100,7 +100,7 @@ We aim to build a system that:
     {}
     ```
 
-    ![alt text](image.png)
+    ![alt text](./images/image.png)
 
 4. Click **Format JSON** to validate the JSON.
 5. Click **Save**.
