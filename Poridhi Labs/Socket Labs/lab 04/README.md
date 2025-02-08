@@ -1291,7 +1291,7 @@ services:
   nginx:
     image: nginx:latest
     ports:
-      - "8080:80"
+      - "8081:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
