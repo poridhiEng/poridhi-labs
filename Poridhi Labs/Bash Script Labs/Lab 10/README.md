@@ -2,10 +2,13 @@
 
 Redirection is an essential feature in Bash scripting that enables you to control input and output streams effectively. By mastering redirection, you can efficiently log activities, debug errors, and manage file input/output operations. This lab will guide you through different types of redirections, including standard output, standard error, combined redirection, and input redirection.
 
+![alt text](./images/Redirection.svg)
+
 By the end of this lab, you will understand:
 - Input and output redirection using (>, >>, 2>, &>, <, <<)
 - Suppressing output using /dev/null
 - Practical examples to apply these redirections in scripts
+
 
 ## Prerequisites
 - Basic knowledge of Linux/Unix command line
@@ -39,6 +42,8 @@ echo "Hello Poridhi" > output.txt
 cat output.txt
 ```
 
+![alt text](./images/image.png)
+
 ### Append with `>>`
 
 ```bash
@@ -52,9 +57,10 @@ echo "New line" >> output.txt
 #### Check the file
 
 ```bash
-
 cat output.txt
 ```
+
+![alt text](./images/image-1.png)
 
 ## 2. **Standard Error (stderr) Redirection**
 
@@ -80,6 +86,8 @@ ls /non-existent-directory 2> error.log
 cat error.log
 ```
 
+![alt text](./images/image-2.png)
+
 ### Append with `2>>`  
 
 ```bash
@@ -95,6 +103,8 @@ ls /another-fake-dir 2>> error.log
 ```bash
 cat error.log
 ```
+
+![alt text](./images/image-3.png)
 
 ## 3. **Redirect Both stdout and stderr**
 
@@ -119,6 +129,8 @@ ls /tmp /non-existent &> combined.log
 ```bash        
 cat combined.log
 ```
+
+![alt text](./images/image-4.png)
 
 ### Append with `&>>`
 
@@ -153,6 +165,8 @@ cat combined.log
 
    This will create a file named `input.txt` with the fruits in it.
 
+   ![alt text](./images/image-5.png)
+
 - Sort the input.txt file
 
    ```bash
@@ -161,11 +175,7 @@ cat combined.log
 
    This will sort the fruits in the file.
 
-- Check the sorted output
-
-   ```bash
-   cat sorted.txt
-   ```
+   ![alt text](./images/image-6.png)
 
 ### Multi-Line Input with `<<`
 
@@ -177,6 +187,8 @@ EOF
 ```
 
 This will display the multi-line text block.
+
+![alt text](./images/image-7.png)
 
 ## 5. **Silence Output with `/dev/null`**
 
@@ -206,6 +218,10 @@ ls /root &> /dev/null
 ```
 
 If `/root` is inaccessible, both stdout and stderr are discarded. Great for `quiet mode` in scripts!
+
+![alt text](./images/image-8.png)
+
+We can see that both the stdout and stderr are discarded and prints nothing in the terminal.
 
 ## Conclusion
 
