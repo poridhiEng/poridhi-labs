@@ -2,7 +2,7 @@
 
 Loops are essential for automating repetitive tasks in Bash scripts. They allow you to execute commands multiple times, process lists of data, and handle complex workflows efficiently. In this lab, you'll learn how to use different types of loops (`for`, `while`, `until`) and control statements (`break`, `continue`) to build dynamic scripts. We'll apply these concepts to a practical scenario: **Simulated Backup System with Controlled Failures**.
 
-![alt text](./images/Basic-loop.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/ca1bf8bba5b1d4868ffbbe51d7ca7d1638bb12fd/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/Basic-loop.svg)
 
 By the end of this lab, you will understand:
 - `for` loops (basic and iterating over arrays)
@@ -20,7 +20,7 @@ By the end of this lab, you will understand:
 ### 1. `for` Loops
 Iterate over a list of items or ranges.
 
-![alt text](./images/For-loop.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/ca1bf8bba5b1d4868ffbbe51d7ca7d1638bb12fd/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/For-loop.svg)
 
 #### Syntax:
 ```bash
@@ -50,7 +50,7 @@ chmod +x for_basic.sh
 ./for_basic.sh
 ```
 
-![alt text](./images/image.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image.png)
 
 #### Example 2: Iterate Over Array
 
@@ -78,13 +78,14 @@ chmod +x for_array.sh
 ./for_array.sh
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image-1.png)
 
 ### 2. `while` Loops
 
 Execute commands **while** a condition is true.
 
-![alt text](./images/While-loop.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/ca1bf8bba5b1d4868ffbbe51d7ca7d1638bb12fd/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/While-loop.svg)
+
 
 #### Syntax:
 ```bash
@@ -119,12 +120,13 @@ chmod +x while_countdown.sh
 ./while_countdown.sh
 ```
 
-![alt text](./images/image-2.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image-2.png)
 
 ### 3. `until` Loops
 Execute commands `until` a condition becomes true.
 
-![alt text](./images/Until-loop.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/ca1bf8bba5b1d4868ffbbe51d7ca7d1638bb12fd/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/Until-loop.svg)
+
 
 #### Syntax:
 ```bash
@@ -178,7 +180,7 @@ echo "$file found! Proceeding..."
    important.log found! Proceeding...
    ```
 
-   ![alt text](./images/image-3.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image-3.png)
 
 ## Loop Control Statements
 
@@ -204,7 +206,7 @@ chmod +x break_statement.sh
 ./break_statement.sh
 ```
 
-![alt text](./images/image-4.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image-4.png)
 
 ### `continue`
 Skip the current iteration and proceed to the next.
@@ -228,7 +230,7 @@ chmod +x continue_statement.sh
 ./continue_statement.sh
 ```  
 
-![alt text](./images/image-5.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image-5.png)
 
 ## Scenario: Simulated Backup System with Controlled Failures
 
@@ -350,15 +352,15 @@ chmod +x backup_system.sh
 
 - If **disk space is insufficient**, the script exits immediately. 🚫
 
-  ![alt text](./images/image-6.png)
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image-6.png)
 
 - If **backup succeeds on the first attempt**, it moves to the next directory. ✅
 
-  ![alt text](./images/image-8.png)
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image-8.png)
 
 - If **backup fails**, it retries up to **3 times** before giving up. ⚠️❌
 
-  ![alt text](./images/image-7.png)
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image-7.png)
 
 ## Handling Infinite Loops
 
@@ -385,7 +387,7 @@ chmod +x infinite_loop.sh
 ./infinite_loop.sh
 ```
 
-![alt text](./images/image-9.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image-9.png)
 
 **Fix**: Update the loop variable inside the loop in the script and run again:
 
@@ -399,7 +401,7 @@ while [ $count -le 5 ]; do
 done
 ```
 
-![alt text](./images/image-10.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image-10.png)
 
 ### Example 2: Intentional Infinite Loop with Controlled Exit
 
@@ -433,7 +435,7 @@ chmod +x infinite_with_exit.sh
 ./infinite_with_exit.sh
 ```
 
-![alt text](./images/image-11.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image-11.png)
 
 ## Conclusion
 
