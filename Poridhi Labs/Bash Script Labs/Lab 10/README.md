@@ -2,7 +2,8 @@
 
 Redirection is an essential feature in Bash scripting that enables you to control input and output streams effectively. By mastering redirection, you can efficiently log activities, debug errors, and manage file input/output operations. This lab will guide you through different types of redirections, including standard output, standard error, combined redirection, and input redirection.
 
-![alt text](./images/Redirection.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/38c4e40ccb6944c752d1d761fd18e571f65daf27/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2010/images/Redirection.svg)
+
 
 By the end of this lab, you will understand:
 - Input and output redirection using (>, >>, 2>, &>, <, <<)
@@ -42,7 +43,7 @@ echo "Hello Poridhi" > output.txt
 cat output.txt
 ```
 
-![alt text](./images/image.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2010/images/image.png)
 
 ### Append with `>>`
 
@@ -60,7 +61,7 @@ echo "New line" >> output.txt
 cat output.txt
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2010/images/image-1.png)
 
 ## 2. **Standard Error (stderr) Redirection**
 
@@ -86,7 +87,7 @@ ls /non-existent-directory 2> error.log
 cat error.log
 ```
 
-![alt text](./images/image-2.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2010/images/image-2.png)
 
 ### Append with `2>>`  
 
@@ -104,7 +105,7 @@ ls /another-fake-dir 2>> error.log
 cat error.log
 ```
 
-![alt text](./images/image-3.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2010/images/image-3.png)
 
 ## 3. **Redirect Both stdout and stderr**
 
@@ -130,7 +131,7 @@ ls /tmp /non-existent &> combined.log
 cat combined.log
 ```
 
-![alt text](./images/image-4.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2010/images/image-4.png)
 
 ### Append with `&>>`
 
@@ -165,7 +166,7 @@ cat combined.log
 
    This will create a file named `input.txt` with the fruits in it.
 
-   ![alt text](./images/image-5.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2010/images/image-5.png)
 
 - Sort the input.txt file
 
@@ -175,7 +176,7 @@ cat combined.log
 
    This will sort the fruits in the file.
 
-   ![alt text](./images/image-6.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2010/images/image-6.png)
 
 ### Multi-Line Input with `<<`
 
@@ -188,7 +189,7 @@ EOF
 
 This will display the multi-line text block.
 
-![alt text](./images/image-7.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2010/images/image-7.png)
 
 ## 5. **Silence Output with `/dev/null`**
 
@@ -219,7 +220,7 @@ ls /root &> /dev/null
 
 If `/root` is inaccessible, both stdout and stderr are discarded. Great for `quiet mode` in scripts!
 
-![alt text](./images/image-8.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2010/images/image-8.png)
 
 We can see that both the stdout and stderr are discarded and prints nothing in the terminal.
 
