@@ -2,7 +2,7 @@
 
 In this lab, we will build a chat app using Socket.io extending our previous lab by integrating rooms. Rooms are a way to group sockets (clients) within a namespace.
 
-![alt text](./images/architecture.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2002/images/architecture.png)
 
 ## key features
 
@@ -19,7 +19,7 @@ Rooms in **Socket.IO** are a way to group sockets (clients) within a namespace.
 - Messages can be **broadcasted to all clients** in a specific room without affecting others.  
 - Rooms help in **efficient event handling** for features like chat groups, gaming lobbies, and private notifications.
 
-![alt text](./images/image-7.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2002/images/image-7.png)
 
 > **Note:** Rooms are **not** a separate namespace. They exist **within** a namespace.
 
@@ -33,7 +33,7 @@ Rooms function by allowing a **socket (client) to join a named room** on the ser
 - **Send a message to all users in a room:** `io.to(roomName).emit('eventName', data)`  
 - **Send a message to a specific user in a room:** `socket.to(socketId).emit('eventName', data)`
 
-![alt text](./images/room-seq-diagram.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2002/images/room-seq-diagram.png)
 
 ### How Messages Are Sent in Rooms
 
@@ -89,7 +89,7 @@ Update the `scripts` section of the `package.json` file to include the following
 }
 ```
 
-![alt text](./images/image-6.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2002/images/image-6.png)
 
 **2. Chat app UI**
 
@@ -321,7 +321,7 @@ body {
 
 These two files will create the UI for the chat application. Here is the screenshot of the UI:
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2002/images/image.png)
 
 **3. Server Setup**
 
@@ -552,23 +552,23 @@ npm run dev
 
 This lab is intended to be run on Poridhi's VM. To access the chat app, we need to create a load balancer in the VM.
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2002/images/image-1.png)
 
 Follow the URL provided in the load balancer to access the chat app.
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2002/images/image-2.png)
 
 The user will be asked to enter a name.
 
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2002/images/image-3.png)
 
 After entering the name, the user will be on the home page.
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2002/images/image-4.png)
 
 Users can create a room or join a room and start chatting.
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2002/images/image-5.png)
 
 Here, we can see, in the `TestRoom` room, there are 3 users online. They can also communicate with each other in real-time.
 

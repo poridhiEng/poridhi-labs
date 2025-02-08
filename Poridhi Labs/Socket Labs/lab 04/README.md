@@ -2,7 +2,7 @@
 
 A chat application requires real-time, bidirectional communication between clients and the server. As the number of users grows, a single server may become a bottleneck, leading to performance issues. To address this, we can scale the chat application by deploying multiple server instances and using `Redis` as a message broker to synchronize events across servers. `Socket.IO` is a popular library for real-time communication, and the `redis-adapter` is a module that allows Socket.IO to use Redis as a message broker.
 
-![](./images/redis-adapter.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2004/images/redis-adapter.drawio.svg)
 
 
 ### What are the challenges in scaling a chat application?
@@ -41,19 +41,11 @@ Redis helps manage chat **rooms** and **namespaces** effectively across distribu
 - When a client joins a room, Redis keeps track of it across all server instances.
 - Messages sent to that room are relayed through Redis to **ensure that all participants receive the updates**, even if they are connected to different server instances.
 
-<!-- ### **4. Load Distribution Without Overloading Servers**
-- Instead of each server processing and maintaining a list of connected users, Redis acts as a **centralized event hub**.
-- This reduces the overhead on individual server instances, allowing them to **handle more concurrent users**.
-
-### **5. Message Queue for Offline Users**
-- Redis can store messages temporarily when users are offline.
-- When the user reconnects, pending messages can be **retrieved from Redis** and delivered, ensuring no messages are lost. -->
-
 ## How does the Redis adapter work with Socket.IO?
 
 The **Redis adapter** is a powerful feature in **Socket.IO** that enables communication across multiple Socket.IO server instances. By default, Socket.IO manages connections in a single instance. However, when you have multiple instances, messages sent to a room might not reach users connected to different instances. This is where Redis comes in.
 
-![](./images/image-1.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2004/images/image-1.png)
 
 #### **1. Redis Pub/Sub Mechanism**
 
@@ -96,7 +88,7 @@ This is a simple project structure for the chat application. You can add more fi
 
 Here is the system architecture of the chat application:
 
-![alt text](./images/image-13.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2004/images/image-13.png)
 
 ## **Setting Up the Project**
 
@@ -199,7 +191,7 @@ This file contains the login and registration form.
 </html>
 ```
 
-**auth.css**
+### **auth.css**
 
 ```css
 body {
@@ -274,7 +266,9 @@ button:hover {
 ```
 This will create a simple login and registration page.
 
-**chat.html**
+###**chat.html**
+
+This file contains the chat interface. We will use the `join` and `leave` methods to join and leave a room. We will also use the `to` method to send messages to a specific room.
 
 ```html
 <!DOCTYPE html>
@@ -833,7 +827,7 @@ module.exports = { redisClient, connectRedis };
 
 We will create a `ChatModel` class in the `src/models/chat.js` file. This class will contain the methods for storing and retrieving data from the database. Here is the ER diagram of the database:
 
-![alt text](./images/image-12.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2004/images/image-12.png)
 
 The ER diagram shows three main entities:
 
@@ -1316,17 +1310,17 @@ We will use the `docker compose up --build` command to run the project.
 docker compose up --build
 ```
 
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2004/images/image-3.png)
 
 Make sure that the Redis server is running before running the server.
 
 2. To access the application, create a Load Balancer using Poridhi's loadBalancer with port `8081` and follow the link provided by the Load Balancer.
 
-![alt text](./images/image-9.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2004/images/image-9.png)
 
 The user will be redirected to the login page or if new user, register a new user and login with the new user.
 
-![alt text](./images/image-10.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2004/images/image-10.png)
 
 
 
@@ -1343,7 +1337,7 @@ To test the application, we will go through the following steps:
 7. See the message in the room.
 8. Do the same steps for another user.
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2004/images/image-2.png)
 
 Here we can see that the message is sent to the room and all the other users in the room can see the message. We can also see the online users count in the top corner.
 
@@ -1353,19 +1347,22 @@ To test the inter-server communication, we have to access each server instance i
 
 First we have to create two load balancers in Poridhi's loadBalancer with port 3000 and 3001 respectively.
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2004/images/image-4.png)
 
 After that access the links provided by the load balancers:
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2004/images/image-5.png)
 
 Now, register a new user and login with the new user in both the load balancers and create a new room. Here we can see that the user is created in both the server instances.
 
-![alt text](./images/image-8.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2004/images/image-8.png)
 
 After that, join the new room in both the server instances and send a message to the room. Here we can see that the message is sent to the room and all the other users in the room can see the message.
 
-![alt text](./images/image-7.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2004/images/image-7.png)
+
+
+> As we have deployed the application using **Poridhi's loadBalancer**, we can access the application from any device connected to the internet using the link provided by the loadBalancer.
 
 ## Conclusion
 

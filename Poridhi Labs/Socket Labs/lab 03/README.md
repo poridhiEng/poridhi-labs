@@ -2,7 +2,7 @@
 
 In this lab, we will continue extending our chat app by integrating Database for storing User information, messages and room data. We will use Redis for storing messages. Here is the architecture of the app:
 
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2003/images/image-3.png)
 
 ### Project Structure
 
@@ -753,7 +753,7 @@ module.exports = { redisClient, connectRedis };
 
 We will create a `ChatModel` class in the `src/models/chat.js` file. This class will contain the methods for storing and retrieving data from the database. Here is the ER diagram of the database:
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2003/images/image-4.png)
 
 The ER diagram shows three main entities:
 
@@ -1056,7 +1056,7 @@ app.get('/', (req, res) => {
 
 Here is the sequence diagram for Real-time communication flow:
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2003/images/image-5.png)
 
 ## Redis Server Setup
 
@@ -1105,21 +1105,21 @@ volumes:
 
 3. To access the application, create a Load Balancer with a PORT 3000 in Poridhi's dashboard and follow the link provided by the Load Balancer.
 
-    ![alt text](./images/image-6.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2003/images/image-6.png)
 
 ## Application UI
 
 First an user will be redirected to the login page. If the user does not have an account, they can sign up by clicking on the register button.
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2003/images/image-1.png)
 
 After registering, the user will be redirected to the login page. If the user already has an account, they can log in by clicking on the login button.
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2003/images/image.png)
 
 After logging in, the user will be redirected to the home page. The home page will have a list of rooms. The user can create a new room by clicking on the create room button.
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2003/images/image-2.png)
 
 After creating a room, the user will be redirected to the room page. The user can send a message to the room to communicate with other users in the room.
 
