@@ -2,7 +2,7 @@
 
 Functions in Bash scripting allow you to encapsulate reusable blocks of code, making your scripts modular, organized, and easier to debug. In this lab, you'll learn how to define and use functions, pass arguments to them, and handle return values. We'll apply these concepts to a real-world scenario: **automated log file processing**.
 
-![alt text](./images/Functions.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/9081abec298d6513b8502ac29f8f557d8ea8e4c0/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2009/images/Functions.svg)
 
 By the end of this lab, you will understand:
 - What functions are and why they are useful
@@ -69,7 +69,7 @@ chmod +x function_basic.sh
 ./function_basic.sh
 ```
 
-![alt text](./images/image.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2009/images/image.png)
 
 ## How to Use Arguments in Functions
 
@@ -101,7 +101,7 @@ chmod +x function_args.sh
 ./function_args.sh
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2009/images/image-1.png)
 
 ## Returning Values from Functions
 
@@ -143,13 +143,13 @@ chmod +x function_return.sh
 ./function_return.sh
 ```
 
-![alt text](./images/image-2.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2009/images/image-2.png)
 
 Here we can see that the file exists and file check passed! `etc/passwd` already exists on a typical Linux system. It is a system file that stores user account information. That's why the file check passed!
 
 You can check the file by running `ls -l /etc/passwd`
 
-![alt text](./images/image-3.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2009/images/image-3.png)
 
 ## Variable Scope in Functions
 
@@ -188,7 +188,7 @@ chmod +x variable_scope.sh
 ./variable_scope.sh
 ```
 
-![alt text](./images/image-4.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2009/images/image-4.png)
 
 ## Scenario: Log File Processor
 
@@ -237,26 +237,26 @@ process_log # Step 2: Count errors in the log file
 archive_log # Step 3: Archive the log file
 ```
 
-## Explanation
+### Explanation
 
-### 1️⃣ Checking If the Log File Exists
+#### 1️⃣ Checking If the Log File Exists
 **Function: `check_log`**
 - Verifies if the log file (`app.log`) exists.
 - If the file is missing, an error message is displayed, and the script exits.
 
-### 2️⃣ Processing the Log File
+#### 2️⃣ Processing the Log File
 **Function: `process_log`**
 - Uses `grep -c "ERROR"` to count occurrences of the word "ERROR" in `app.log`.
 - Displays the total number of errors found.
 
-### 3️⃣ Archiving the Log File
+#### 3️⃣ Archiving the Log File
 **Function: `archive_log`**
 - Creates an archive directory (`logs_archive`) if it does not already exist.
 - Renames and moves `app.log` to `logs_archive/` with a timestamp.
 
-## How to Use the Script
+### How to Use the Script
 
-### 1️⃣ Create a Sample Log File
+#### 1️⃣ Create a Sample Log File
 
 Before running the script, create a sample `app.log` file with some log entries using the following command:
 
@@ -267,27 +267,27 @@ INFO: Backup completed
 ERROR: Network timeout" > app.log
 ```
 
-![alt text](./images/image-5.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2009/images/image-5.png)
 
-### 2️⃣ Grant Execute Permission
+#### 2️⃣ Grant Execute Permission
 Make the script executable:
 ```bash
 chmod +x log_processor.sh
 ```
 
-### 3️⃣ Run the Script
+#### 3️⃣ Run the Script
 Execute the script:
 ```bash
 ./log_processor.sh
 ```
 
-## Expected Output
+### Expected Output
 
-![alt text](./images/image-6.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2009/images/image-6.png)
 
 📌 **Note:** The timestamp in the archived filename will match the exact date and time the script runs.
 
-![alt text](./images/image-7.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2009/images/image-7.png)
 
 Here we can see that the log file `app.log` has been archived to the `logs_archive` directory with a timestamp.
 
