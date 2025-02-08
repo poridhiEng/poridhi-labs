@@ -2,6 +2,8 @@
 
 Functions in Bash scripting allow you to encapsulate reusable blocks of code, making your scripts modular, organized, and easier to debug. In this lab, you'll learn how to define and use functions, pass arguments to them, and handle return values. We'll apply these concepts to a real-world scenario: **automated log file processing**.
 
+![alt text](./images/Functions.svg)
+
 By the end of this lab, you will understand:
 - What functions are and why they are useful
 - How to create and call functions
@@ -57,11 +59,17 @@ greet_user() {
 greet_user
 ```
 
+**Explanation:**
+- Defines a function `greet_user` that prints a greeting message.  
+- Calls the function `greet_user`.
+
 **Execute and run the script:**
 ```bash
 chmod +x function_basic.sh
 ./function_basic.sh
 ```
+
+![alt text](./images/image.png)
 
 ## How to Use Arguments in Functions
 
@@ -92,6 +100,8 @@ echo "Sum: $result"
 chmod +x function_args.sh
 ./function_args.sh
 ```
+
+![alt text](./images/image-1.png)
 
 ## Returning Values from Functions
 
@@ -133,6 +143,14 @@ chmod +x function_return.sh
 ./function_return.sh
 ```
 
+![alt text](./images/image-2.png)
+
+Here we can see that the file exists and file check passed! `etc/passwd` already exists on a typical Linux system. It is a system file that stores user account information. That's why the file check passed!
+
+You can check the file by running `ls -l /etc/passwd`
+
+![alt text](./images/image-3.png)
+
 ## Variable Scope in Functions
 
 By default, variables in Bash are **global**. Use `local` to restrict them to the function's scope.
@@ -170,24 +188,28 @@ chmod +x variable_scope.sh
 ./variable_scope.sh
 ```
 
+![alt text](./images/image-4.png)
+
 ## Scenario: Log File Processor
 
-### Problem Statement
+Managing log files is essential for maintaining system health, debugging issues, and tracking errors. This script automates log file processing by:
 
-Create a script that:
-1. Checks if a log file exists.
-2. Processes the log file (counts errors).
-3. Archives the log file after processing.
+1. Checking if a log file exists.
+2. Counting the number of errors in the log file.
+3. Archiving the log file after processing.
 
-### Solution Code
-Create `log_processor.sh`:
+### Script Implementation
+We create a Bash script named `log_processor.sh` to perform these tasks efficiently.
+
+### Script: `log_processor.sh`
+
 ```bash
 #!/bin/bash
 
 LOG_FILE="app.log"
 ARCHIVE_DIR="logs_archive"
 
-# Check if log file exists
+# Function to check if the log file exists
 check_log() {
   if [ ! -f "$LOG_FILE" ]; then
     echo "Error: $LOG_FILE not found!"
@@ -195,48 +217,79 @@ check_log() {
   fi
 }
 
-# Count errors in the log
+# Function to count errors in the log file
 process_log() {
   local error_count=$(grep -c "ERROR" "$LOG_FILE")
   echo "Number of errors: $error_count"
 }
 
-# Archive the log
+# Function to archive the log file
 archive_log() {
-  mkdir -p "$ARCHIVE_DIR"
+  mkdir -p "$ARCHIVE_DIR" # Create archive directory if it doesn't exist
   local timestamp=$(date +%Y%m%d-%H%M%S)
   mv "$LOG_FILE" "$ARCHIVE_DIR/app_${timestamp}.log"
   echo "Log archived to: $ARCHIVE_DIR/app_${timestamp}.log"
 }
 
-# Main workflow
-check_log
-process_log
-archive_log
+# Main script workflow
+check_log   # Step 1: Validate log file existence
+process_log # Step 2: Count errors in the log file
+archive_log # Step 3: Archive the log file
 ```
 
-### Explanation
-1. **`check_log`**: Validates the existence of the log file.
-2. **`process_log`**: Uses `grep` to count "ERROR" entries.
-3. **`archive_log`**: Moves the log file to an archive directory with a timestamp.
+## Explanation
 
-**Run the Script:**
+### 1️⃣ Checking If the Log File Exists
+**Function: `check_log`**
+- Verifies if the log file (`app.log`) exists.
+- If the file is missing, an error message is displayed, and the script exits.
+
+### 2️⃣ Processing the Log File
+**Function: `process_log`**
+- Uses `grep -c "ERROR"` to count occurrences of the word "ERROR" in `app.log`.
+- Displays the total number of errors found.
+
+### 3️⃣ Archiving the Log File
+**Function: `archive_log`**
+- Creates an archive directory (`logs_archive`) if it does not already exist.
+- Renames and moves `app.log` to `logs_archive/` with a timestamp.
+
+## How to Use the Script
+
+### 1️⃣ Create a Sample Log File
+
+Before running the script, create a sample `app.log` file with some log entries using the following command:
+
 ```bash
-# Create a sample log file
 echo "INFO: System started
 ERROR: Disk full
 INFO: Backup completed
 ERROR: Network timeout" > app.log
+```
 
+![alt text](./images/image-5.png)
+
+### 2️⃣ Grant Execute Permission
+Make the script executable:
+```bash
 chmod +x log_processor.sh
+```
+
+### 3️⃣ Run the Script
+Execute the script:
+```bash
 ./log_processor.sh
 ```
 
-**Expected Output:**
-```
-Number of errors: 2
-Log archived to: logs_archive/app_20231015-1420.log
-```
+## Expected Output
+
+![alt text](./images/image-6.png)
+
+📌 **Note:** The timestamp in the archived filename will match the exact date and time the script runs.
+
+![alt text](./images/image-7.png)
+
+Here we can see that the log file `app.log` has been archived to the `logs_archive` directory with a timestamp.
 
 ## Conclusion
 
