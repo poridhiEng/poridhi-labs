@@ -40,9 +40,20 @@ In this hands-on exercise, you'll build a deep neural network using PyTorch to c
 This exercise serves as a practical introduction to deep learning concepts and PyTorch implementation, using a straightforward classification problem as an example.
 
 
+Install required libraries using terminal:
+
+```bash
+pip install pandas
+pip install scikit-learn
+pip install matplotlib
+```
+
+
+
 ## Explore the Dataset
 
 At first open a notebook `lab-notebook.ipynb` then follow the instructions to complete the task.
+
 
 Before we start using PyTorch to create a model, let\'s load the data we
 need from the Palmer Islands penguins dataset, which contains
@@ -53,6 +64,8 @@ observations of three different species of penguin.
 > for a deep learning model; but it\'s a useful, easy to understand
 > dataset with which to demonstrate the principles of neural networks in
 > this notebook.
+
+
 
 ``` python
 import pandas as pd
