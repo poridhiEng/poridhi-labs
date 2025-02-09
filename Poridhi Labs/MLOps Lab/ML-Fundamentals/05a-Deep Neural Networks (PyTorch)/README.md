@@ -22,6 +22,8 @@ length, and their body mass.
 > member of the [Long Term Ecological Research
 > Network](./images/https://lternet.edu/).
 
+Create a data folder and download the dataset `penguins.csv` from [here](https://drive.google.com/drive/folders/1TK_E03iny9t20XHuXHWXrY2UK6T7w31b?usp=drive_link)
+
 
 ## Task Description
 
