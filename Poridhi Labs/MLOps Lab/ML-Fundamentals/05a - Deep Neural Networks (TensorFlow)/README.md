@@ -17,7 +17,7 @@ We will follow the following steps to create a deep neural network using TensorF
 ![!\[alt text\](lab-5a-final.drawio.svg)](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a%20-%20Deep%20Neural%20Networks%20(TensorFlow)/images/lab-5a-final.drawio.svg)
 
 
-## Notebook Setup
+## Environment Setup
 
 First, we need to install the required packages.
 
@@ -48,8 +48,7 @@ So, first we have to install the required packages in the notebook.
 
 ## Explore the dataset
 
-Before we start using TensorFlow to create a model, let's load the data we need from the Palmer Islands penguins dataset, which contains observations of three different species of penguin.
-
+Before we start using TensorFlow to create a model, let's load the data from this [here](https://drive.google.com/drive/folders/1TK_E03iny9t20XHuXHWXrY2UK6T7w31b), which contains observations of three different species of penguin.
 
 > **Note**: In reality, you can solve the penguin classification problem easily using classical machine learning techniques without the need for a deep learning model; but it's a useful, easy to understand dataset with which to demonstrate the principles of neural networks in this notebook.
 
