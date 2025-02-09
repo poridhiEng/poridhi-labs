@@ -14,7 +14,8 @@ Network](https://lternet.edu/).
 
 We will follow the following steps to create a deep neural network using TensorFlow.
 
-![alt text](./images/lab-5a-final.drawio.svg)
+![!\[alt text\](lab-5a-final.drawio.svg)](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a%20-%20Deep%20Neural%20Networks%20(TensorFlow)/images/lab-5a-final.drawio.svg)
+
 
 ## Notebook Setup
 
@@ -29,11 +30,11 @@ sudo apt-get install python3-pip
 
 In Poridhi's VSCode server, create a new Jupyter notebook. Select the python kernel.
 
-![alt text](./images/image-13.png)
+![!\[alt text\](lab-5a-final.drawio.svg)](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a%20-%20Deep%20Neural%20Networks%20(TensorFlow)/images/image-13.png)
 
 Install required extensions for running the notebook and then select the python kernel.
 
-![alt text](./images/image-12.png)
+![!\[alt text\](lab-5a-final.drawio.svg)](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a%20-%20Deep%20Neural%20Networks%20(TensorFlow)/images/image-12.png)
 
 ## Install required packages
 
@@ -43,7 +44,7 @@ So, first we have to install the required packages in the notebook.
 !pip install pandas numpy scikit-learn matplotlib seaborn
 ```
 
-![alt text](./images/image.png)
+![!\[alt text\](lab-5a-final.drawio.svg)](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a%20-%20Deep%20Neural%20Networks%20(TensorFlow)/images/image.png)
 
 ## Explore the dataset
 
@@ -62,7 +63,7 @@ penguins = pd.read_csv('data/penguins.csv').dropna()
 print(penguins.size)
 ```
 
-![alt text](./images/image-1.png)
+![!\[alt text\](lab-5a-final.drawio.svg)](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a%20-%20Deep%20Neural%20Networks%20(TensorFlow)/images/image-1.png)
 
 
 ### Data Normalization
@@ -90,7 +91,7 @@ sample = penguins.sample(10)
 sample
 ```
 
-![alt text](./images/image-2.png)
+![!\[alt text\](lab-5a-final.drawio.svg)](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a%20-%20Deep%20Neural%20Networks%20(TensorFlow)/images/image-2.png)
 
 The **Species** column is the label our model will predict. Each label value represents a class of penguin species. Lets look at the unique values in the column.
 
@@ -113,7 +114,7 @@ for index, row in penguins.sample(10).iterrows():
     print('[',row[0], row[1], row[2],row[3], int(row[4]), ']',penguin_classes[int(row[-1])])
 ```
 
-![alt text](./images/image-3.png)
+![!\[alt text\](lab-5a-final.drawio.svg)](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a%20-%20Deep%20Neural%20Networks%20(TensorFlow)/images/image-3.png)
 
 ### Split the Dataset
 
@@ -151,7 +152,7 @@ Since we plan to use TensorFlow to create our penguin classifier, we'll need to 
 !pip install --no-cache-dir tensorflow
 ```
 
-![alt text](./images/image-4.png)
+![!\[alt text\](lab-5a-final.drawio.svg)](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a%20-%20Deep%20Neural%20Networks%20(TensorFlow)/images/image-4.png)
 
 ### Import TensorFlow libraries
 
@@ -182,7 +183,7 @@ except importlib.metadata.PackageNotFoundError:
     print("Keras is not installed separately, using TensorFlow's built-in Keras.")
 ```
 
-![alt text](./images/image-5.png)
+![!\[alt text\](lab-5a-final.drawio.svg)](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a%20-%20Deep%20Neural%20Networks%20(TensorFlow)/images/image-5.png)
 
 ## Prepare the data for TensorFlow
 
@@ -218,7 +219,7 @@ model.add(Dense(len(penguin_classes), input_dim=hl, activation='softmax'))
 print(model.summary())
 ```
 
-![alt text](./images/image-6.png)
+![!\[alt text\](lab-5a-final.drawio.svg)](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a%20-%20Deep%20Neural%20Networks%20(TensorFlow)/images/image-6.png)
 
 ## Train the model
 
@@ -241,7 +242,7 @@ num_epochs = 50
 history = model.fit(x_train, y_train, epochs=num_epochs, batch_size=10, validation_data=(x_test, y_test))
 ```
 
-![alt text](./images/image-7.png)
+![!\[alt text\](lab-5a-final.drawio.svg)](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a%20-%20Deep%20Neural%20Networks%20(TensorFlow)/images/image-7.png)
 
 ## Understanding the training process
 
@@ -280,7 +281,7 @@ plt.legend(['training', 'validation'], loc='upper right')
 plt.show()
 ```
 
-![alt text](./images/image-8.png)
+![!\[alt text\](lab-5a-final.drawio.svg)](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a%20-%20Deep%20Neural%20Networks%20(TensorFlow)/images/image-8.png)
 
 ## View the learned weights and biases
 
@@ -327,7 +328,7 @@ plt.ylabel("Actual Species")
 plt.show()
 ```
 
-![alt text](./images/image-9.png)
+![!\[alt text\](lab-5a-final.drawio.svg)](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a%20-%20Deep%20Neural%20Networks%20(TensorFlow)/images/image-9.png)
 
 The confusion matrix should show a strong diagonal line indicating that there are more correct than incorrect predictions for each class.
 
@@ -342,7 +343,7 @@ del model  # deletes the existing model variable
 print('model saved as', modelFileName)
 ```
 
-![alt text](./images/image-10.png)
+![!\[alt text\](lab-5a-final.drawio.svg)](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a%20-%20Deep%20Neural%20Networks%20(TensorFlow)/images/image-10.png)
 
 ## Use the trained model
 
@@ -363,7 +364,7 @@ predictions = np.argmax(class_probabilities, axis=1)
 print(penguin_classes[predictions[0]])
 ```
 
-![alt text](./images/image-11.png)
+![!\[alt text\](lab-5a-final.drawio.svg)](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a%20-%20Deep%20Neural%20Networks%20(TensorFlow)/images/image-11.png)
 
 ### Learn more
 
