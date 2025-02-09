@@ -2,7 +2,8 @@
 
 In contrast to *supervised* machine learning, *unsupervised* learning is used when there is no "ground truth" from which to train and validate label predictions. The most common form of unsupervised learning is *clustering*, which is similar conceptually to *classification*, except that the the training data does not include known values for the class label to be predicted. Clustering works by separating the training cases based on similarities that can be determined from their feature values. Think of it this way; the numeric features of a given entity can be thought of as vector coordinates that define the entity's position in n-dimensional space. What a clustering model seeks to do is to identify groups, or *clusters*, of entities that are close to one another while being separated from other clusters.
 
-![alt text](./images/Clustering.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/719aad8ccd0df83b61bb918de560f883676321c1/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/04-Clustering/images/Clustering.svg)
+
 
 ## **Task Overview**  
 
@@ -24,13 +25,13 @@ cd Clustering
 
 In Poridhi's VSCode server, create a new notebook named `Clustering.ipynb` and select the python kernel.
 
-![alt text](./images/image-8.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/04-Clustering/images/image-8.png)
 
-![alt text](./images/image-7.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/04-Clustering/images/image-7.png)
 
 Then select the python kernel from the `ipykernel` environment.
 
-![alt text](./images/image-9.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/04-Clustering/images/image-9.png)
 
 ## Dataset Description
 
@@ -64,7 +65,7 @@ features = data[data.columns[0:6]]
 features.sample(10) 
 ```
 
-![alt text](./images/image.png) 
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/04-Clustering/images/image.png) 
 
 ## **2. Reduce Dimensionality with PCA**
 
@@ -87,7 +88,7 @@ features_2d = pca.transform(scaled_features)
 features_2d[0:10] 
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/04-Clustering/images/image-1.png)
 
 Now that we have the data points translated to two dimensions, we can visualize them in a plot:
 
@@ -103,7 +104,7 @@ plt.title('Data')
 plt.show()
 ```
 
-![alt text](./images/image-2.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/04-Clustering/images/image-2.png)
 
 Hopefully you can see at least two, arguably three, reasonably distinct groups of data points; but here lies one of the fundamental problems with clustering - without known class labels, how do you know how many clusters to separate your data into?
 
@@ -137,7 +138,7 @@ plt.ylabel('WCSS')
 plt.show()  
 ```
 
-![alt text](./images/image-3.png) 
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/04-Clustering/images/image-3.png) 
 
 The plot shows a large reduction in WCSS (so greater *tightness*) as the number of clusters increases from one to two, and a further noticable reduction from two to three clusters. After that, the reduction is less pronounced, resulting in an "elbow" in the chart at around three clusters. This is a good indication that there are two to three reasonably well separated clusters of data points.
 
@@ -182,7 +183,7 @@ def plot_clusters(samples, clusters):
 plot_clusters(features_2d, km_clusters)
 ```
 
-![alt text](./images/image-4.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/04-Clustering/images/image-4.png)
 
 Hopefully, the data has been separated into three distinct clusters.
 
@@ -199,7 +200,7 @@ seed_species = data[data.columns[7]]
 plot_clusters(features_2d, seed_species.values)
 ```
 
-![alt text](./images/image-5.png)  
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/04-Clustering/images/image-5.png)  
 
 There may be some differences between the cluster assignments and class labels, but the K-Means model should have done a reasonable job of clustering the observations so that seeds of the same species are generally in the same cluster.
 
@@ -261,7 +262,7 @@ def plot_clusters(samples, clusters):
 plot_clusters(features_2d, agg_clusters)
 ```
 
-![alt text](./images/image-6.png) 
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/04-Clustering/images/image-6.png) 
 
 ## **Conclusion**  
 
