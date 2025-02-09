@@ -14,13 +14,14 @@ This documentation aims to:
 
 ## What is Reflected XSS?
 
-Reflected XSS is a type of XSS attack where the malicious script is reflected off the web application back to the victim's browser. This type of XSS is common in web applications that handle user input, such as search fields, comment sections, and login forms.
+Reflected XSS is a type of XSS attack where the malicious script is reflected off the web application back to the victim's browser. This type of XSS is common in web applications that handle user input, such as name fields, search fields, comment sections, and login forms.
 
 ![](./images/2.svg)
 
+
 An attacker crafts a malicious URL containing a script and tricks a user into clicking it. The vulnerable website reflects the script in its response without proper sanitization, causing the user's browser to execute it, leading to data theft or session hijacking.
 
-## Understanding HTML Attribute Injection
+## HTML Attribute Injection
 
 Reflected XSS in attributes occurs when **unsanitized user input is placed inside an HTML attribute**, such as:
 
@@ -128,14 +129,14 @@ Access the web application with the the provided `URL` by `loadbalancer`
 
 ### **Step 5: Exploit the Vulnerability**
 
-Now we will exploit the vulnerability by entering the malicious payload in the search field.
+Now we will exploit the vulnerability by entering the malicious payload in the name field.
 
 First try with your name (e.g. `Poridhi`). If you click on submit button, you will see a greeting message.
 
 Below the Greeting message, you will see `Response Viwer` Section. Here you can see the `Raw HTML` that was inserted and in `Encoded HTML` you can see the HTML that was encoded.
-For example, if you enter `Poridhi` in the search field, you will see the following response:
+For example, if you enter `Poridhi` in the name field, you will see the following response:
 
-For `Raw HTML`:
+**For `Raw HTML`:**
 ```bash
 <div data-name="Poridhi">
     <p>Hello, Poridhi! Welcome to our demo.</p>
@@ -144,7 +145,7 @@ For `Raw HTML`:
 
 ![](./images/bei2.png)
 
-For `Encoded HTML`:
+**For `Encoded HTML`:**
 ```bash
 <div data-name="Poridhi">
     <p>Hello, Poridhi! Welcome to our demo.</p>
@@ -160,13 +161,13 @@ Now try with the malicious payload. For example,
 <script>alert(1)</script>
 ```
 
-You will see the following response:
+**You will see the following response:**
 
-For `Raw HTML`:
+**For `Raw HTML`:**
 
 ![](./images/bei4.png)
 
-For `Encoded HTML`:
+**For `Encoded HTML`:**
 
 ![](./images/bei5.png)
 
@@ -203,7 +204,7 @@ In this payload, `"` are used to break out of the attribute and `onmouseover` is
 
 you hovers over the `Greeting area` field.
 
-We can also use  this payload in the `Search` field to exploit the vulnerability.
+We can also try out this payload in the `name` field to exploit the vulnerability.
 
 ```bash
 " onclick="alert('clicked')
