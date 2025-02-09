@@ -37,7 +37,7 @@ Then select the python kernel from the `ipykernel` environment.
 
 
 Let's take a look at a dataset that contains measurements of different species of wheat seed.
-Download the dataset named `seeds.csv` from the link below and save it in the `data` folder.
+Create a data folder and download the dataset named `seeds.csv` from [here](https://drive.google.com/drive/folders/1TK_E03iny9t20XHuXHWXrY2UK6T7w31b?usp=drive_link) and save it in the `data` folder.
 
 > **Citation**: The seeds dataset used in the this exercise was originally published by the Institute of Agrophysics of the Polish Academy of Sciences in Lublin, and can be downloaded from the UCI dataset repository (Dua, D. and Graff, C. (2019). UCI Machine Learning Repository [http://archive.ics.uci.edu/ml]. Irvine, CA: University of California, School of Information and Computer Science).
 
