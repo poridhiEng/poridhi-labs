@@ -2,12 +2,15 @@
 
 Managing users and groups is a fundamental aspect of Linux system administration. This lab will guide you through creating user accounts, managing groups, assigning users to groups, and locking user accounts. These tasks are crucial for effectively controlling user access and permissions.
 
+![alt text](./images/Linux-user.svg)
+
 By the end of this lab, you will be able to:
 - Create user accounts.
 - Create and manage groups.
 - Assign users to primary and supplementary groups.
 - Lock and verify user accounts. 
 - Unlock user accounts.
+- List all users.
 
 ## Understanding Key Concepts
 
@@ -71,10 +74,13 @@ sudo useradd fazlul
 ```bash
 id nabil
 ```
-Example output:
-```
-uid=1001(nabil) gid=1001(nabil) groups=1001(nabil)
-```
+
+![alt text](./images/image.png)
+
+The output shows that `nabil` has:  
+
+- **UID 1000** (User ID) and **GID 1000** (Group ID), meaning they belong to a primary group named `nabil`.  
+- No supplementary groups, so they only have access to resources assigned to their primary group.  
 
 ### 2. Creating the `Poridhi-Minions` Group
 
@@ -93,10 +99,13 @@ sudo groupadd poridhi-minions
 ```bash
 getent group poridhi-minions
 ```
-Example output:
-```
-poridhi-minions:x:1002:
-```
+
+![alt text](./images/image-1.png)
+
+This output shows that the group **`poridhi-minions`** exists with:  
+
+- **GID 1004** (Group ID).  
+- No users listed, meaning no one is currently a member of this group.  
 
 ### 3. Assigning a Primary Group to a User
 
@@ -115,14 +124,27 @@ sudo usermod -g poridhi-minions nabil
 ```bash
 id nabil
 ```
-Example output:
+
+![alt text](./images/image-2.png)
+
+This output shows that:  
+
+- **`nabil`** has **UID 1000** (User ID).  
+- **Primary group** is now **`poridhi-minions`** with **GID 1004**.  
+- **Belongs only** to the **`poridhi-minions`** group (no supplementary groups).  
+
+We can also verify the group of nabil by:
+
+```bash
+groups nabil
 ```
-uid=1001(nabil) gid=1002(poridhi-minions) groups=1002(poridhi-minions)
-```
+
+![alt text](./images/image-3.png)
 
 ### 4. Adding Users to a Supplementary Group
 
 **Objective:** Add `minhaz`, `yasin`, and `fazlul` to `poridhi-minions` as a supplementary group.
+
 
 **Command:**
 ```bash
@@ -144,10 +166,39 @@ sudo usermod -aG poridhi-minions fazlul
 ```bash
 id minhaz
 ```
-Example output:
+
+![alt text](./images/image-4.png)
+
+The output shows the user `minhaz` and their group memberships:  
+
+- **`uid=1001(minhaz)`** → `minhaz` has a user ID (UID) of `1001`.  
+- **`gid=1001(minhaz)`** → `minhaz`'s **primary group** is `1001(minhaz)`.  
+- **`groups=1001(minhaz),1004(poridhi-minions)`** → `minhaz` is also a **supplementary member** of the `poridhi-minions` group (GID `1004`).  
+
+We can also verify the group of minhaz by:
+
+```bash
+groups minhaz
 ```
-uid=1002(minhaz) gid=1002(minhaz) groups=1002(minhaz),1002(poridhi-minions)
+
+![alt text](./images/image-5.png)
+
+We can also check the members of the group `poridhi-minions` by:
+
+```bash
+getent group poridhi-minions
 ```
+
+![alt text](./images/image-6.png)
+
+This output shows that:  
+
+- **Group name:** `poridhi-minions`  
+- **GID (Group ID):** `1004`  
+- **Members:** `minhaz`, `yasin`, `fazlul` (they are part of this supplementary group)  
+
+**Note:** `nabil` is not listed as a member of `poridhi-minions` because `nabil`'s primary group is set to `poridhi-minions` (GID `1004`), rather than being added as a **supplementary group member**.
+
 
 ### 5. Locking a User Account
 
@@ -166,10 +217,17 @@ sudo usermod -L fazlul
 ```bash
 passwd -S fazlul
 ```
-Example output:
-```
-fazlul L 2024-01-28 0 99999 7 -1 (Password locked)
-```
+
+![alt text](./images/image-7.png)
+
+The output of `passwd -S fazlul` provides the status of the user account `fazlul`:
+
+- **`L`** → The account is **locked**, meaning the user cannot log in.  
+- **`02/10/2025`** → Last password change date.  
+- **`0`** → Minimum days before the password can be changed (0 means no restriction).  
+- **`99999`** → Maximum days before the password expires (99999 means never expires).  
+- **`7`** → Warning period (days before expiration to notify the user).  
+- **`-1`** → Password inactivity period (-1 means no automatic account deactivation).
 
 ### 6. Unlocking a User Account
 
@@ -183,14 +241,51 @@ sudo usermod -U fazlul
 **Explanation:**
 - The `-U` option unlocks an account.
 
+![alt text](./images/image-8.png)
+
+Oops! Seems like we have encountered an error. This error occurs because the user account `fazlul` does **not have a password set**, and unlocking it with `usermod -U` would leave the account passwordless (a security risk). To resolve this, you need to **set a password** for the user first.
+
+**Set a password first:**
+
+```bash
+sudo passwd fazlul
+```
+
+**Then unlock the account:**
+
+```bash
+sudo usermod -U fazlul
+```
+
 **Verification:**
+
+
 ```bash 
 passwd -S fazlul
 ```
-Example output:
+
+![alt text](./images/image-9.png)
+
+The command `passwd -S fazlul` shows the status of the user `fazlul`'s password.  
+
+- **`P`** → The account has a **usable password** (unlocked).  
+- **`02/10/2025`** → Date of the last password change.  
+- **`0`** → Minimum days required before changing the password (0 = can change anytime).  
+- **`99999`** → Maximum days before the password expires (99999 = password never expires).  
+- **`7`** → Number of days before expiration to warn the user.  
+- **`-1`** → Account is not set to expire.  
+
+This means `fazlul`'s account is now **active** with a password set.
+
+### 7. List All Users
+
+To see all users present in a Linux system, you can check the `/etc/passwd` file, which contains user account information.
+
+```bash
+cat /etc/passwd
 ```
-fazlul L 2024-01-28 0 99999 7 -1 (Password locked)
-```
+
+![alt text](./images/image-10.png)
 
 ## Conclusion
 
