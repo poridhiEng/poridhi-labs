@@ -35,7 +35,7 @@ data = [50,50,47,97,49,3,53,42,26,74,82,62,37,15,70,27,36,35,48,52,63,64]
 print(data)
 ```
 
-![alt text](./images/image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image.png)
 
 
 The data has been loaded into a Python **list** structure, which is a good data type for general data manipulation, but not optimized for numeric analysis. 
@@ -59,7 +59,7 @@ print(data)
 print(grades)
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-1.png)
 
 ### What is the difference between the two?
 
@@ -73,7 +73,7 @@ print (type(grades),'x 2:', grades * 2)
 
 Here, we've used the `type` function to get the data type of the two structures, and then we've multiplied each by 2 to see the effect.
 
-![alt text](./images/image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-2.png)
 
 * Multiplying a list by 2 creates a new list of twice the length with the original sequence of list elements repeated. 
 
@@ -91,7 +91,7 @@ Run the cell below to view the **shape** of the array.
 ```python
 print(grades.shape)
 ```
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-3.png)
 
 The shape of an array is a tuple that describes the number of elements in each dimension. In this case, the array has a single dimension with 22 elements, so the shape is (22,).
 
@@ -112,7 +112,7 @@ student_data = np.array([study_hours, grades])
 student_data
 ```
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-4.png)
 
 Now, the array has two dimensions: the first dimension has 22 elements (the number of students), and the second dimension has 2 elements (the number of columns of data for each student).
 
@@ -131,7 +131,7 @@ print(student_data[0])
 print(student_data[0][0])
 ```
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-5.png)
 
 ### Apply some operations
 
@@ -171,7 +171,7 @@ df_students = pd.DataFrame({
 df_students
 ```
 
-![alt text](./images/image-6.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-6.png)
 
 
 > Note that in addition to the columns you specified, the DataFrame includes an **index** to unique identify each row. We could have specified the index explicitly, and assigned any kind of appropriate value (for example, an email address); but because we didn't specify an index, one has been created with a unique integer value for each row.
@@ -189,7 +189,7 @@ print(df_students.loc[5])
 print(df_students.loc[0:5])
 ```
 
-![alt text](./images/image-7.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-7.png)
 
 
 We can also use the **`iloc`** method to find rows based on their ordinal position in the DataFrame (regardless of the index):
@@ -199,7 +199,7 @@ We can also use the **`iloc`** method to find rows based on their ordinal positi
 df_students.iloc[0:5]
 ```
 
-![alt text](./images/image-8.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-8.png)
 
 
 #### Can you notice the difference between the two methods?
@@ -214,7 +214,7 @@ df_students.iloc[0,[1, 2]]
 
 This returns a Series object containing the data values for the columns in positions 1 and 2 in row 0.
 
-![alt text](./images/image-9.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-9.png)
 
 Let's return to the **loc** method, and see how it works with columns. Remember that **loc** is used to locate data items based on index values rather than positions. In the absence of an explicit index column, the rows in our dataframe are indexed as integer values, but the columns are identified by name:
 
@@ -229,7 +229,7 @@ Here's another useful trick. You can use the **loc** method to find indexed rows
 df_students.loc[df_students['Name']=='Aisha']
 ```
 
-![alt text](./images/image-10.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-10.png)
 
 Actually, you don't need to explicitly use the **loc** method to do this - you can simply apply a DataFrame filtering expression, like this:
 
@@ -237,7 +237,7 @@ Actually, you don't need to explicitly use the **loc** method to do this - you c
 df_students[df_students['Name']=='Aisha']
 ```
 
-![alt text](./images/image-11.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-11.png)
 
 We can also use the **query** method to filter data
 
@@ -251,7 +251,7 @@ print(df_students[df_students.Name == 'Aisha'])
 
 We have constructed the DataFrame from some existing arrays. However, in many real-world scenarios, data is loaded from sources such as files. Let's replace the student grades DataFrame with the contents of a text file.
 
-First, let's download the data from the course GitHub repository.
+First, download the Dataset by running the following command.
 
 ```bash
 curl -o grades.csv "https://raw.githubusercontent.com/Konami33/MlOps-Dataset/main/Data/grades.csv"
@@ -260,14 +260,14 @@ curl -o grades.csv "https://raw.githubusercontent.com/Konami33/MlOps-Dataset/mai
 * The `-o` flag specifies the output file name (grades.csv in this case).
 * The file will be saved in your current working directory.
 
-Load the data from the file into a DataFrame.
+**Load the data from the file into a DataFrame.**
 
 ```python
 df_students = pd.read_csv('grades.csv', delimiter=',', header=0)
 ```
 
 
-![alt text](./images/image-12.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-12.png)
 
 The DataFrame's **read_csv** method is used to load data from text files. As you can see in the example code, you can specify options such as the column delimiter and which row (if any) contains column headers (in this case, the delimiter is a comma and the first row contains the column names - these are the default settings, so the parameters could have been omitted).
 
@@ -286,7 +286,7 @@ Of course, with a larger DataFrame, it would be inefficient to review all of the
 df_students.isnull().sum()
 ```
 
-![alt text](./images/image-13.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-13.png)
 
 
 So now we know that there's one missing **StudyHours** value, and two missing **Grade** values.
@@ -297,7 +297,7 @@ To see them in context, we can filter the dataframe to include only rows where a
 df_students[df_students.isnull().any(axis=1)]
 ```
 
-![alt text](./images/image-14.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-14.png)
 
 
 When the DataFrame is retrieved, the missing numeric values show up as **NaN** (*not a number*). So now that we've found the null values, what can we do about them?
@@ -345,7 +345,7 @@ Let's filter the DataFrame to find only the students who studied for more than t
 df_students[df_students.StudyHours > mean_study]
 ```
 
-![alt text](./images/image-15.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-15.png)
 
 
 Note that the final result is a new DataFrame that contains only the students who studied for more than the average amount of time.
@@ -368,7 +368,7 @@ df_students = pd.concat([df_students, passes.rename("Pass")], axis=1)
 df_students
 ```
 
-![alt text](./images/image-16.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-16.png)
 
 
 DataFrames are designed for tabular data, and you can use them to perform many of the kinds of data analytics operation you can do in a relational database; such as grouping and aggregating tables of data.
@@ -380,7 +380,7 @@ For example, you can use the **`groupby`** method to group the student data into
 print(df_students.groupby(df_students.Pass).Name.count())
 ```
 
-![alt text](./images/image-17.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-17.png)
 
 
 You can aggregate multiple fields in a group using any available aggregation function. For example, you can find the mean study time and grade for the groups of students who passed and failed the course.
@@ -390,7 +390,7 @@ You can aggregate multiple fields in a group using any available aggregation fun
 print(df_students.groupby(df_students.Pass)[['StudyHours', 'Grade']].mean())
 ```
 
-![alt text](./images/image-18.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-18.png)
 
 
 ## Visualizing data with Matplotlib
@@ -419,7 +419,7 @@ plt.bar(x=df_students.Name, height=df_students.Grade)
 plt.show()
 ```
 
-![alt text](./images/image-19.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-19.png)
 
 
 Well, that worked; but the chart could use some improvements to make it clearer what we're looking at.
@@ -448,7 +448,7 @@ plt.xticks(rotation=90)
 plt.show()
 ```
 
-![alt text](./images/image-20.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-20.png)
 
 
 A plot is technically contained with a **Figure**. In the previous examples, the figure was created implicitly for you; but you can create it explicitly. For example, the following code creates a figure with a specific size.
@@ -499,7 +499,7 @@ fig.suptitle('Student Data')
 fig.show()
 ```
 
-![alt text](./images/image-21.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-21.png)
 
 
 Until now, you've used methods of the Matplotlib.pyplot object to plot charts. However, Matplotlib is so foundational to graphics in Python that many packages, including Pandas, provide methods that abstract the underlying Matplotlib functions and simplify plotting. For example, the DataFrame provides its own methods for plotting data, as shown in the following example to plot a bar chart of study hours.
@@ -509,7 +509,7 @@ Until now, you've used methods of the Matplotlib.pyplot object to plot charts. H
 df_students.plot.bar(x='Name', y='StudyHours', color='teal', figsize=(8,4))
 ```
 
-![alt text](./images/image-22.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-22.png)
 
 ## Getting started with statistical analysis
 
@@ -523,7 +523,7 @@ A lot of data science is rooted in *statistics*, so we'll explore some basic sta
 
 When examining a *variable* (for example a sample of student grades), data scientists are particularly interested in its *distribution* (in other words, how are all the different grade values spread across the sample). The starting point for this exploration is often to visualize the data as a histogram, and see how frequently each value for the variable occurs.
 
-![alt text](./images/image-39.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-39.png)
 
 
 ```python
@@ -545,7 +545,7 @@ plt.ylabel('Frequency')
 fig.show()
 ```
 
-![alt text](./images/image-23.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-23.png)
 
 
 The histogram for grades is a symmetric shape, where the most frequently occurring grades tend to be in the middle of the range (around 50), with fewer grades at the extreme ends of the scale.
@@ -601,7 +601,7 @@ plt.ylabel('Frequency')
 fig.show()
 ```
 
-![alt text](./images/image-24.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-24.png)
 
 
 For the grade data, the mean, median, and mode all seem to be more or less in the middle of the minimum and maximum, at around 50.
@@ -625,7 +625,7 @@ plt.title('Data Distribution')
 fig.show()
 ```
 
-![alt text](./images/image-25.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-25.png)
 
 
 The box plot shows the distribution of the grade values in a different format to the histogram. The *box* part of the plot shows where the inner two *quartiles* of the data reside - so in this case, half of the grades are between approximately 36 and 63. The *whiskers* extending from the box show the outer two quartiles; so the other half of the grades in this case are between 0 and 36 or 63 and 100. The line in the box indicates the *median* value.
@@ -681,7 +681,7 @@ col = df_students['Grade']
 show_distribution(col)
 ```
 
-![alt text](./images/image-26.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-26.png)
 
 All of the measurements of central tendency are right in the middle of the data distribution, which is symmetric with values becoming progressively lower in both directions from the middle.
 
@@ -714,7 +714,7 @@ col = df_students['Grade']
 show_density(col)
 ```
 
-![alt text](./images/image-27.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-27.png)
 
 
 As expected from the histogram of the sample, the density shows the characteristic 'bell curve" of what statisticians call a *normal* distribution with the mean and mode at the center and symmetric tails.
@@ -729,7 +729,7 @@ col = df_students['StudyHours']
 show_distribution(col)
 ```
 
-![alt text](./images/image-28.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-28.png)
 
 
 The distribution of the study time data is significantly different from that of the grades.
@@ -746,7 +746,7 @@ col = df_students[df_students.StudyHours>1]['StudyHours']
 show_distribution(col)
 ```
 
-![alt text](./images/image-29.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-29.png)
 
 
 In this example, the dataset is small enough to clearly see that the value **1** is an outlier for the **StudyHours** column, so you can exclude it explicitly. In most real-world cases, it's easier to consider outliers as being values that fall below or above percentiles within which most of the data lie. For example, the following code uses the Pandas **quantile** function to exclude observations below the 0.01th percentile (the value above which 99% of the data reside).
@@ -770,7 +770,7 @@ Let's look at the density for this distribution.
 show_density(col)
 ```
 
-![alt text](./images/image-30.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-30.png)
 
 
 This kind of distribution is called *right skewed*. The mass of the data is on the left side of the distribution, creating a long tail to the right because of the values at the extreme high end; which pull the mean to the right.
@@ -794,7 +794,7 @@ for col_name in ['Grade','StudyHours']:
     print('\n{}:\n - Range: {:.2f}\n - Variance: {:.2f}\n - Std.Dev: {:.2f}'.format(col_name, rng, var, std))
 ```
 
-![alt text](./images/image-31.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-31.png)
 
 
 Of these statistics, the standard deviation is generally the most useful. It provides a measure of variance in the data on the same scale as the data itself (so grade points for the Grade distribution and hours for the StudyHours distribution). The higher the standard deviation, the more variance there is when comparing values in the distribution to the distribution mean - in other words, the data is more spread out.
@@ -844,7 +844,7 @@ plt.axis('off')
 plt.show()
 ```
 
-![alt text](./images/image-32.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-32.png)
 
 The horizontal lines show the percentage of data within 1, 2, and 3 standard deviations of the mean (plus or minus).
 
@@ -880,7 +880,7 @@ To make this comparison, let's create box plots showing the distribution of Stud
 df_sample.boxplot(column='StudyHours', by='Pass', figsize=(8,5))
 ```
 
-![alt text](./images/image-33.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-33.png)
 
 
 Comparing the StudyHours distributions, it's immediately apparent (if not particularly surprising) that students who passed the course tended to study for more hours than students who didn't. So if you wanted to predict whether or not a student is likely to pass the course, the amount of time they spend studying may be a good predictive feature.
@@ -895,7 +895,7 @@ Now let's compare two numeric variables. We'll start by creating a bar chart tha
 df_sample.plot(x='Name', y=['Grade','StudyHours'], kind='bar', figsize=(8,5))
 ```
 
-![alt text](./images/image-34.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-34.png)
 
 The chart shows bars for both grade and study hours for each student; but it's not easy to compare because the values are on different scales. Grades are measured in grade points, and range from 3 to 97; while study time is measured in hours and ranges from 1 to 16.
 
@@ -925,7 +925,7 @@ df_normalized[['Grade','StudyHours']] = scaler.fit_transform(df_normalized[['Gra
 df_normalized.plot(x='Name', y=['Grade','StudyHours'], kind='bar', figsize=(8,5))
 ```
 
-![alt text](./images/image-35.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-35.png)
 
 
 With the data normalized, it's easier to see an apparent relationship between grade and study time. It's not an exact match, but it definitely seems like students with higher grades tend to have studied more.
@@ -948,7 +948,7 @@ Another way to visualise the apparent correlation between two numeric columns is
 df_sample.plot.scatter(title='Study Time vs Grade', x='StudyHours', y='Grade')
 ```
 
-![alt text](./images/image-36.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-36.png)
 
 
 Again, it looks like there's a discernible pattern in which the students who studied the most hours are also the students who got the highest grades.
@@ -997,7 +997,7 @@ plt.plot(df_regression['StudyHours'],df_regression['fx'], color='cyan')
 plt.show()
 ```
 
-![alt text](./images/image-37.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-37.png)
 
 We can see that the regression line (in cyan) is reasonably close to the general shape of the data points (in blue).
 
@@ -1021,7 +1021,7 @@ Some of the errors, particularly at the extreme ends, are quite large (up to ove
 df_regression[['StudyHours', 'Grade', 'fx', 'error']]
 ```
 
-![alt text](./images/image-38.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/01-Data%20Exploration/images/image-38.png)
 
 ### Using the regression coefficients for prediction
 
