@@ -110,7 +110,7 @@ Your task is to set up:
 8. Search for **LambdaS3SESAccess** policy and select it then click next. 
 7. Name the role **LambdaEmailNotifierRole** and create it.
 
-    ![alt text](image.png)
+    ![alt text](./images/image.png)
 
 
 
@@ -122,7 +122,7 @@ Your task is to set up:
 5. Choose **Python 3.X** as the runtime.
 6. Choose **Use an existing role** and select **LambdaEmailNotifierRole**.
 
-    ![alt text](image-1.png)
+    ![alt text](./images/image-1.png)
 
 7. Click **Create Function**.
 
@@ -178,21 +178,21 @@ Your task is to set up:
 1. Open the **AWS SES Console**.
 2. From the menu select **Identities** then click **Create Identity**. 
 
-    ![alt text](image-2.png)
+    ![alt text](./images/image-2.png)
 
 3. Click **Email Address** and provide your valid email address.
 
-    ![alt text](image-11.png)
+    ![alt text](./images/image-11.png)
 
 4. Click **Create Identity**.
 5. AWS will send a verification email.
 
-    ![alt text](image-12.png)
+    ![alt text](./images/image-12.png)
 
 6. Open your email and click the verification link.
 7. Once verified, refresh the SES console.
 
-    ![alt text](image-13.png)
+    ![alt text](./images/image-13.png)
 
 
 
@@ -204,25 +204,25 @@ Your task is to set up:
 3. Name it **my-s3-event-bucket** (choose a unique name).
 4. Leave all settings as default and click **Create Bucket**.
 
-    ![alt text](image-6.png)
+    ![alt text](./images/image-6.png)
 
 ### **Step 6: Configure S3 Event Notification**
 1. Open the **S3 bucket** you created.
 2. Go to the **Properties** tab.
 3. Scroll down to **Event Notifications**.
 
-    ![alt text](image-7.png)
+    ![alt text](./images/image-7.png)
 
 4. Click **Create event notification**.
 5. Name it **S3EventTrigger**.
 6. Select **All object create events** and **All object delete events**.
 
-    ![alt text](image-8.png)
+    ![alt text](./images/image-8.png)
 
 7. Scroll to **Destination**, choose **Lambda Function**.
 8. Select **EmailNotifier** Lambda function.
 
-    ![alt text](image-9.png)
+    ![alt text](./images/image-9.png)
 
 9. Click **Save Changes**.
 
@@ -233,7 +233,7 @@ Your task is to set up:
 2. Click **Upload**, select a random file, and upload it.
 3. Open your email and check for the notification.
 
-    ![alt text](image-10.png)
+    ![alt text](./images/image-10.png)
 
 
 
