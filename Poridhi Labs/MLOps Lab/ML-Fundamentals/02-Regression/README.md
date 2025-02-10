@@ -2,7 +2,7 @@
 
 This lab explores supervised regression techniques to predict daily bicycle rentals for a bike-sharing service. Using historical data, we train and evaluate multiple regression models to forecast rental counts based on features such as weather, season, and weekday. The lab emphasizes data exploration, preprocessing, model selection, and hyperparameter tuning to optimize performance.
 
-![alt text](./images/Regression.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/f23ce46b4fba8406a13bb4c2ceb3575ac23872da/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/Regression.svg)
 
 ## Environment Setup in Poridhi's VS Code
 
@@ -109,7 +109,7 @@ bike_data = pd.read_csv('data/daily-bike-share.csv')
 bike_data.head()
 ```
 
-![alt text](./images/image.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image.png)
 
 The data consists of the following columns:
 
@@ -154,7 +154,7 @@ bike_data['day'] = pd.DatetimeIndex(bike_data['dteday']).day
 bike_data.head(32)
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-1.png)
 
 OK, let\'s start our analysis of the data by examining a few key
 descriptive statistics. We can use the dataframe\'s **describe** method
@@ -166,7 +166,7 @@ numeric_features = ['temp', 'atemp', 'hum', 'windspeed']
 bike_data[numeric_features + ['rentals']].describe()
 ```
 
-![alt text](./images/image-2.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-2.png)
 
 The statistics reveal some information about the distribution of the
 data in each of the numeric fields, including the number of observations
@@ -216,7 +216,7 @@ fig.suptitle('Rental Distribution')
 fig.show()
 ```
 
-![alt text](./images/image-3.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-3.png)
 
 The plots show that the number of daily rentals ranges from 0 to just
 over 3,400. However, the mean (and median) number of daily rentals is
@@ -242,13 +242,13 @@ for col in numeric_features:
 plt.show()
 ```
 
-![alt text](./images/image-4.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-4.png)
 
-![alt text](./images/image-5.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-5.png)
 
-![alt text](./images/image-6.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-6.png)
 
-![alt text](./images/image-7.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-7.png)
 
 The numeric features seem to be more *normally* distributed, with the
 mean and median nearer the middle of the range of values, coinciding
@@ -282,19 +282,19 @@ for col in categorical_features:
 plt.show()
 ```
 
-![alt text](./images/image-8.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-8.png)
 
-![alt text](./images/image-9.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-9.png)
 
-![alt text](./images/image-10.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-10.png)
 
-![alt text](./images/image-11.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-11.png)
 
-![alt text](./images/image-12.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-12.png)
 
-![alt text](./images/image-13.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-13.png)
 
-![alt text](./images/image-14.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-14.png)
 
 Many of the categorical features show a more or less *uniform*
 distribution (meaning there\'s roughly the same number of rows for each
@@ -330,13 +330,13 @@ for col in numeric_features:
 plt.show()
 ```
 
-![alt text](./images/image-15.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-15.png)
 
-![alt text](./images/image-16.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-16.png)
 
-![alt text](./images/image-17.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-17.png)
 
-![alt text](./images/image-18.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-18.png)
 
 The results aren\'t conclusive, but if you look closely at the scatter
 plots for **temp** and **atemp**, you can see a vague diagonal trend
@@ -361,19 +361,19 @@ for col in categorical_features:
 plt.show()
 ```
 
-![alt text](./images/image-19.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-19.png)
 
-![alt text](./images/image-20.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-20.png)
 
-![alt text](./images/image-21.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-21.png)
 
-![alt text](./images/image-22.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-22.png)
 
-![alt text](./images/image-23.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-23.png)
 
-![alt text](./images/image-24.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-24.png)
 
-![alt text](./images/image-25.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-25.png)
 
 The plots show some variance in the relationship between some category
 values and rentals. For example, there\'s a clear difference in the
@@ -429,7 +429,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random
 print ('Training Set: %d rows\nTest Set: %d rows' % (X_train.shape[0], X_test.shape[0]))
 ```
 
-![alt text](./images/image-26.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-26.png)
 
 Now we have the following four datasets:
 
@@ -475,7 +475,7 @@ print('Predicted labels: ', np.round(predictions)[:10])
 print('Actual labels   : ' ,y_test[:10])
 ```
 
-![alt text](./images/image-27.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-27.png)
 
 Comparing each prediction with its corresponding \"ground truth\" actual
 value isn\'t a very efficient way to determine how well the model is
@@ -500,7 +500,7 @@ plt.plot(y_test,p(y_test), color='magenta')
 plt.show()
 ```
 
-![alt text](./images/image-28.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-28.png)
 
 There\'s a definite diagonal trend, and the intersections of the
 predicted and actual values are generally following the path of the
@@ -550,7 +550,7 @@ r2 = r2_score(y_test, predictions)
 print("R2:", r2)
 ```
 
-![alt text](./images/image-29.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-29.png)
 
 So now we\'ve quantified the ability of our model to predict the number
 of rentals. It definitely has *some* predictive power, but we can
@@ -611,9 +611,9 @@ plt.plot(y_test,p(y_test), color='magenta')
 plt.show()
 ```
 
-![alt text](./images/image-30.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-30.png)
 
-![alt text](./images/image-31.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-31.png)
 
 ### Try a Decision Tree Algorithm
 
@@ -642,7 +642,7 @@ tree = export_text(model)
 print(tree)
 ```
 
-![alt text](./images/image-32.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-32.png)
 
 So now we have a tree-based model; but is it any good? Let\'s evaluate
 it with the test data.
@@ -669,9 +669,9 @@ plt.plot(y_test,p(y_test), color='magenta')
 plt.show()
 ```
 
-![alt text](./images/image-33.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-33.png)
 
-![alt text](./images/image-34.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-34.png)
 
 The tree-based model doesn\'t seem to have improved over the linear
 model, so what else could we try?
@@ -716,9 +716,9 @@ plt.plot(y_test,p(y_test), color='magenta')
 plt.show()
 ```
 
-![alt text](./images/image-35.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-35.png)
 
-![alt text](./images/image-36.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-36.png)
 
 For good measure, let\'s also try a *boosting* ensemble algorithm.
 We\'ll use a Gradient Boosting estimator, which like a Random Forest
@@ -756,9 +756,9 @@ plt.plot(y_test,p(y_test), color='magenta')
 plt.show()
 ```
 
-![alt text](./images/image-37.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-37.png)
 
-![alt text](./images/image-38.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-38.png)
 
 ## Optimize Hyperparameters
 
@@ -838,9 +838,9 @@ plt.plot(y_test,p(y_test), color='magenta')
 plt.show()
 ```
 
-![alt text](./images/image-39.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-39.png)
 
-![alt text](./images/image-40.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-40.png)
 
 > **Note**: The use of random values in the Gradient Boosting algorithm results in slightly different metrics each time. In this case, the best model produced by hyperparameter tuning is unlikely to be significantly better than one trained with the default hyperparameter values; but it's still useful to know about the hyperparameter tuning technique!
 
@@ -957,9 +957,9 @@ plt.plot(y_test,p(y_test), color='magenta')
 plt.show()
 ```
 
-![alt text](./images/image-41.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-41.png)
 
-![alt text](./images/image-42.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-42.png)
 
 The pipeline is composed of the transformations and the algorithm used
 to train the model. To try an alternative algorithm you can just change
@@ -997,9 +997,9 @@ plt.plot(y_test,p(y_test), color='magenta')
 plt.show()
 ```
 
-![alt text](./images/image-43.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-43.png)
 
-![alt text](./images/image-44.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-44.png)
 
 We\'ve now seen a number of common techniques used to train predictive
 models for regression. In a real project, you\'d likely try a few more
@@ -1035,7 +1035,7 @@ result = loaded_model.predict(X_new)
 print('Prediction: {:.0f} rentals'.format(np.round(result[0])))
 ```
 
-![alt text](./images/image-45.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-45.png)
 
 The model\'s **predict** method accepts an array of observations, so you
 can use it to generate multiple predictions as a batch. For example,
@@ -1058,7 +1058,7 @@ for prediction in results:
     print(np.round(prediction))
 ```
 
-![alt text](./images/image-46.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/02-Regression/images/image-46.png)
 
 ## Conclusion  
 This lab demonstrated the effectiveness of ensemble methods like Gradient Boosting and Random Forest for predicting bike rentals. Key takeaways:  
