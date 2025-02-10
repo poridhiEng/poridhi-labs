@@ -59,6 +59,8 @@ Now, whenever a user clicks inside the input field, the JavaScript `alert(1)` ex
 
 ## How Attackers Exploit This Vulnerability
 
+![](./images/htmlencodedreflectedXSS.svg)
+
 Attackers use several techniques to inject malicious scripts, including:
 
 ### 1. Breaking Out of Attributes
