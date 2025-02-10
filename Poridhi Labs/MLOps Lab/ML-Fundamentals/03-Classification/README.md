@@ -23,7 +23,7 @@ of two classes; for example, \"True\" or \"False\"; \"Internal\" or
 
 
 
-## Loading a DataFrame from a  file
+## Loading a Dataset from a  file
 For this lab we need to download the data from github. 
 Download the Dataset by running the following command.
 

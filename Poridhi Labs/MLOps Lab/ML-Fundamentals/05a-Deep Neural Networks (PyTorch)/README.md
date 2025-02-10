@@ -22,7 +22,7 @@ length, and their body mass.
 > member of the [Long Term Ecological Research
 > Network](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a-Deep%20Neural%20Networks%20(PyTorch)/images/https://lternet.edu/).
 
-Create a data folder and download the dataset `penguins.csv` from [here](https://drive.google.com/drive/folders/1TK_E03iny9t20XHuXHWXrY2UK6T7w31b?usp=drive_link)
+
 
 
 ## Task Description
@@ -50,6 +50,17 @@ pip install scikit-learn
 pip install matplotlib
 ```
 
+## Loading a Dataset from a  file
+For this lab we need to download the data from github. 
+Download the Dataset by running the following command.
+
+```bash
+curl -o penguins.csv "https://raw.githubusercontent.com/Konami33/MlOps-Dataset/main/Data/penguins.csv"
+```
+
+
+* The -o flag specifies the output file name (diabetes.csv in this case).
+* The file will be saved in your current working directory.
 
 
 ## Explore the Dataset
