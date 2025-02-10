@@ -82,6 +82,14 @@ curl -o daily-bike-share.csv "https://raw.githubusercontent.com/Konami33/MlOps-D
 * The -o flag specifies the output file name (`daily-bike-share.csv` in this case).
 * The file will be saved in your current working directory.
 
+## Required Libraries
+
+Install the required libraries:
+
+```python
+pip install pandas matplotlib scikit-learn
+```
+
 
 ## Explore the Data
 

@@ -33,11 +33,17 @@ Then select the python kernel from the `ipykernel` environment.
 
 ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/04-Clustering/images/image-9.png)
 
-## Dataset Description
+## Loading a DataFrame from a  file
 
+Download the Dataset by running the following command.
 
-Let's take a look at a dataset that contains measurements of different species of wheat seed.
-Create a data folder and download the dataset named `seeds.csv` from [here](https://drive.google.com/drive/folders/1TK_E03iny9t20XHuXHWXrY2UK6T7w31b?usp=drive_link) and save it in the `data` folder.
+```bash
+curl -o seeds.csv "https://raw.githubusercontent.com/Konami33/MlOps-Dataset/main/Data/seeds.csv"
+```
+
+* The -o flag specifies the output file name (seeds.csv in this case).
+* The file will be saved in your current working directory. 
+
 
 > **Citation**: The seeds dataset used in the this exercise was originally published by the Institute of Agrophysics of the Polish Academy of Sciences in Lublin, and can be downloaded from the UCI dataset repository (Dua, D. and Graff, C. (2019). UCI Machine Learning Repository [http://archive.ics.uci.edu/ml]. Irvine, CA: University of California, School of Information and Computer Science).
 
