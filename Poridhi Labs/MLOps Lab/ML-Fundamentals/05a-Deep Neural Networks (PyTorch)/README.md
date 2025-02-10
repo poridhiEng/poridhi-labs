@@ -17,17 +17,19 @@ length, and their body mass.
 
 > **Citation**: The penguins dataset used in the this exercise is a
 > subset of data collected and made available by [Dr. Kristen
-> Gorman](./images/https://www.uaf.edu/cfos/people/faculty/detail/kristen-gorman.php)
-> and the [Palmer Station, Antarctica LTER](./images/https://pal.lternet.edu/), a
+> Gorman](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a-Deep%20Neural%20Networks%20(PyTorch)/images/https://www.uaf.edu/cfos/people/faculty/detail/kristen-gorman.php)
+> and the [Palmer Station, Antarctica LTER](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a-Deep%20Neural%20Networks%20(PyTorch)/images/https://pal.lternet.edu/), a
 > member of the [Long Term Ecological Research
-> Network](./images/https://lternet.edu/).
+> Network](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a-Deep%20Neural%20Networks%20(PyTorch)/images/https://lternet.edu/).
 
 Create a data folder and download the dataset `penguins.csv` from [here](https://drive.google.com/drive/folders/1TK_E03iny9t20XHuXHWXrY2UK6T7w31b?usp=drive_link)
 
 
 ## Task Description
 
-![](./images/1.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a-Deep%20Neural%20Networks%20(PyTorch)/images/1.svg)
+
+
 
 In this hands-on exercise, you'll build a deep neural network using PyTorch to classify penguin species based on their physical measurements. The model will use four input features (CulmenLength, CulmenDepth, FlipperLength, and BodyMass) to predict one of three penguin species (Adelie, Gentoo, or Chinstrap). You'll learn to:
 
@@ -91,7 +93,7 @@ sample
 
 Expected Output:
 
-![](./images/./image-1.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a-Deep%20Neural%20Networks%20(PyTorch)/images/./image-1.png)
 
 
 
@@ -110,7 +112,7 @@ for index, row in penguins.sample(10).iterrows():
 
 Expected Output:
 
-![](./images/./image.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a-Deep%20Neural%20Networks%20(PyTorch)/images/./image.png)
 
 As is common in a supervised learning problem, we\'ll split the dataset
 into a set of records with which to train the model, and a smaller set
@@ -138,7 +140,7 @@ for n in range(0,24):
 
 Expected Output:
 
-![alt text](./images/image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a-Deep%20Neural%20Networks%20(PyTorch)/images/image-3.png)
 
 
 The *features* are the measurements for each penguin observation, and
@@ -241,7 +243,7 @@ print(model)
 
 Expected Output:
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a-Deep%20Neural%20Networks%20(PyTorch)/images/image-4.png)
 
 ## Train the model
 
@@ -344,7 +346,7 @@ for epoch in range(1, epochs + 1):
 
 Expected Output:
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a-Deep%20Neural%20Networks%20(PyTorch)/images/image-5.png)
 
 
 
@@ -460,7 +462,7 @@ plt.show()
 
 Expected Output:
 
-![alt text](./images/image-6.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a-Deep%20Neural%20Networks%20(PyTorch)/images/image-6.png)
 
 
 ## View the learned weights and biases
@@ -483,7 +485,7 @@ for param_tensor in model.state_dict():
 
 Expected Output:
 
-![alt text](./images/image-7.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a-Deep%20Neural%20Networks%20(PyTorch)/images/image-7.png)
 
 ## Evaluate model performance
 
@@ -521,7 +523,7 @@ plt.show()
 
 Expected Output:
 
-![alt text](./images/image-9.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a-Deep%20Neural%20Networks%20(PyTorch)/images/image-9.png)
 
 
 The confusion matrix should show a strong diagonal line indicating that
@@ -566,7 +568,7 @@ print('Prediction:',penguin_classes[predicted.item()])
 
 Expected Output:
 
-![alt text](./images/image-8.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a-Deep%20Neural%20Networks%20(PyTorch)/images/image-8.png)
 
 
 ## Conclusion
@@ -578,4 +580,4 @@ This tutorial effectively demonstrated the practical implementation of deep lear
 This notebook was designed to help you understand the basic concepts and
 principles involved in deep neural networks, using a simple PyTorch
 example. To learn more about PyTorch, take a look at the [tutorials on
-the PyTorch web site](./images/https://pytorch.org/tutorials/).
+the PyTorch web site](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a-Deep%20Neural%20Networks%20(PyTorch)/images/https://pytorch.org/tutorials/).
