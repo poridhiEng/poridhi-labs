@@ -19,7 +19,9 @@ predicting an appropriate label. The simplest form of classification is
 of two classes; for example, \"True\" or \"False\"; \"Internal\" or
 \"External\"; \"Profitable\" or \"Non-Profitable\"; and so on.
 
-![](./images/1.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/03-Classification/images/1.svg)
+
+
 
 ## Loading a DataFrame from a  file
 For this lab we need to download the data from github. 
@@ -97,21 +99,21 @@ plt.show()
 ```
 
 
-![](images/9255a74dd9e2f3e23ae36daf2a22c53037903eb5.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/03-Classification/images/9255a74dd9e2f3e23ae36daf2a22c53037903eb5.png)
 
-![](images/81d43e6f70764db445cd81497789e0c92ba54f27.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/03-Classification/images/81d43e6f70764db445cd81497789e0c92ba54f27.png)
 
-![](images/a351e1900dc78159b75442c34ef24c0c7c058c56.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/03-Classification/images/a351e1900dc78159b75442c34ef24c0c7c058c56.png)
 
-![](images/c7b8c60279438d34fe74dfb33735c47a8e96824c.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/03-Classification/images/c7b8c60279438d34fe74dfb33735c47a8e96824c.png)
 
-![](images/14965f96f031ff5775b8b811a0582a9f2820d8f7.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/03-Classification/images/14965f96f031ff5775b8b811a0582a9f2820d8f7.png)
 
-![](images/8695dd14a1b661e1c6383aa73f9489892ecd88fd.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/03-Classification/images/8695dd14a1b661e1c6383aa73f9489892ecd88fd.png)
 
-![](images/7f44e8b06219ee8a79340f00b3e9419e0ec1fd3c.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/03-Classification/images/7f44e8b06219ee8a79340f00b3e9419e0ec1fd3c.png)
 
-![](images/2a7480cd2c8bb61bec3afce1150003a49590cb6a.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/03-Classification/images/2a7480cd2c8bb61bec3afce1150003a49590cb6a.png)
 
 For some of the features, there\'s a noticeable difference in the
 distribution for each label value. In particular, **Pregnancies** and
@@ -351,7 +353,7 @@ plt.show()
 ```
 
 
-![](images/8baa07c90caf059d795407a1b59e11a4ce32767b.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/03-Classification/images/8baa07c90caf059d795407a1b59e11a4ce32767b.png)
 
 The ROC chart shows the curve of the true and false positive rates for
 different threshold values between 0 and 1. A perfect classifier would
@@ -479,7 +481,7 @@ plt.show()
 
 ```
 
-![](images/62a612847551fc15fff30d4b12d009132221d93b.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/03-Classification/images/62a612847551fc15fff30d4b12d009132221d93b.png)
 
 The results look a little better, so clearly preprocessing the data has
 made a difference.
@@ -542,7 +544,7 @@ plt.title('ROC Curve')
 plt.show()
 ```
 
-![](images/3ebc3977156f984e5ac57a8334b5e195744fbf4b.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/03-Classification/images/3ebc3977156f984e5ac57a8334b5e195744fbf4b.png)
 
 That looks better!
 
@@ -718,13 +720,13 @@ plt.show()
 ```
 
 
-![](images/ce215edc6b263955205662ac2f28da657a24e622.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/03-Classification/images/ce215edc6b263955205662ac2f28da657a24e622.png)
 
-![](images/120da931bebb4e42c32c2a973befe60864c42ce7.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/03-Classification/images/120da931bebb4e42c32c2a973befe60864c42ce7.png)
 
-![](images/aae93b8def23cd96ff2fbf1d4bfc9932fac3a216.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/03-Classification/images/aae93b8def23cd96ff2fbf1d4bfc9932fac3a216.png)
 
-![](images/313223c9bbe940287eca88aa58d752cd401d3dd0.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/03-Classification/images/313223c9bbe940287eca88aa58d752cd401d3dd0.png)
 
 From the box plots, it looks like species 0 and 2 (Amelie and Chinstrap)
 have similar data profiles for culmen depth, flipper length, and body
@@ -850,7 +852,7 @@ plt.show()
 ```
 
 
-![](images/9f95dadaa4901409d56bc4160df8af997ecb592c.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/03-Classification/images/9f95dadaa4901409d56bc4160df8af997ecb592c.png)
 
 The darker squares in the confusion matrix plot indicate high numbers of
 cases, and you can hopefully see a diagonal line of darker squares
@@ -886,7 +888,7 @@ plt.legend(loc='best')
 plt.show()
 ```
 
-![](images/05246b242dbf62137ad71a88a3d75703ed5cb2ee.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/03-Classification/images/05246b242dbf62137ad71a88a3d75703ed5cb2ee.png)
 
 To quantify the ROC performance, you can calculate an aggregate area
 under the curve score that is averaged across all of the OVR curves.
@@ -959,7 +961,7 @@ plt.show()
 ```
 
 
-![](images/9f95dadaa4901409d56bc4160df8af997ecb592c.png)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/03-Classification/images/9f95dadaa4901409d56bc4160df8af997ecb592c.png)
 
 ### Use the model with new data observations
 
