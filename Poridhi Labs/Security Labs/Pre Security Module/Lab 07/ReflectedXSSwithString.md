@@ -55,6 +55,8 @@ By using `";` in the input, the attacker breaks out of the JavaScript string and
 ## How Attackers Exploit This Vulnerability
 Attackers utilize multiple techniques to inject and execute JavaScript within vulnerable scripts:
 
+![](./images/stringreflectedxss.svg)
+
 ### 1. Breaking Out of String Quotes
 If quotes are not properly sanitized, attackers can inject:
 
