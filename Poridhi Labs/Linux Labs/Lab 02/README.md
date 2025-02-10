@@ -2,7 +2,7 @@
 
 Managing users and groups is a fundamental aspect of Linux system administration. This lab will guide you through creating user accounts, managing groups, assigning users to groups, and locking user accounts. These tasks are crucial for effectively controlling user access and permissions.
 
-![alt text](./images/Linux-user.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/0e3dffef046890d0870a9be043d4be57e5a7026b/Poridhi%20Labs/Linux%20Labs/Lab%2002/images/Linux-user.svg)
 
 By the end of this lab, you will be able to:
 - Create user accounts.
@@ -75,7 +75,7 @@ sudo useradd fazlul
 id nabil
 ```
 
-![alt text](./images/image.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Linux%20Labs/Lab%2002/images/image.png)
 
 The output shows that `nabil` has:  
 
@@ -100,7 +100,7 @@ sudo groupadd poridhi-minions
 getent group poridhi-minions
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Linux%20Labs/Lab%2002/images/image-1.png)
 
 This output shows that the group **`poridhi-minions`** exists with:  
 
@@ -125,7 +125,7 @@ sudo usermod -g poridhi-minions nabil
 id nabil
 ```
 
-![alt text](./images/image-2.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Linux%20Labs/Lab%2002/images/image-2.png)
 
 This output shows that:  
 
@@ -139,7 +139,7 @@ We can also verify the group of nabil by:
 groups nabil
 ```
 
-![alt text](./images/image-3.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Linux%20Labs/Lab%2002/images/image-3.png)
 
 ### 4. Adding Users to a Supplementary Group
 
@@ -167,7 +167,7 @@ sudo usermod -aG poridhi-minions fazlul
 id minhaz
 ```
 
-![alt text](./images/image-4.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Linux%20Labs/Lab%2002/images/image-4.png)
 
 The output shows the user `minhaz` and their group memberships:  
 
@@ -181,7 +181,7 @@ We can also verify the group of minhaz by:
 groups minhaz
 ```
 
-![alt text](./images/image-5.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Linux%20Labs/Lab%2002/images/image-5.png)
 
 We can also check the members of the group `poridhi-minions` by:
 
@@ -189,7 +189,7 @@ We can also check the members of the group `poridhi-minions` by:
 getent group poridhi-minions
 ```
 
-![alt text](./images/image-6.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Linux%20Labs/Lab%2002/images/image-6.png)
 
 This output shows that:  
 
@@ -218,7 +218,7 @@ sudo usermod -L fazlul
 passwd -S fazlul
 ```
 
-![alt text](./images/image-7.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Linux%20Labs/Lab%2002/images/image-7.png)
 
 The output of `passwd -S fazlul` provides the status of the user account `fazlul`:
 
@@ -241,7 +241,7 @@ sudo usermod -U fazlul
 **Explanation:**
 - The `-U` option unlocks an account.
 
-![alt text](./images/image-8.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Linux%20Labs/Lab%2002/images/image-8.png)
 
 Oops! Seems like we have encountered an error. This error occurs because the user account `fazlul` does **not have a password set**, and unlocking it with `usermod -U` would leave the account passwordless (a security risk). To resolve this, you need to **set a password** for the user first.
 
@@ -264,7 +264,7 @@ sudo usermod -U fazlul
 passwd -S fazlul
 ```
 
-![alt text](./images/image-9.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Linux%20Labs/Lab%2002/images/image-9.png)
 
 The command `passwd -S fazlul` shows the status of the user `fazlul`'s password.  
 
@@ -285,7 +285,7 @@ To see all users present in a Linux system, you can check the `/etc/passwd` file
 cat /etc/passwd
 ```
 
-![alt text](./images/image-10.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Linux%20Labs/Lab%2002/images/image-10.png)
 
 ## Conclusion
 
