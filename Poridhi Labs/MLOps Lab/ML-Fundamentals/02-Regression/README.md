@@ -1,6 +1,27 @@
-# Predicting Daily Bike Rentals Using Supervised Regression Models
+# Understanding Supervised Regression Models
 
 This lab explores supervised regression techniques to predict daily bicycle rentals for a bike-sharing service. Using historical data, we train and evaluate multiple regression models to forecast rental counts based on features such as weather, season, and weekday. The lab emphasizes data exploration, preprocessing, model selection, and hyperparameter tuning to optimize performance.
+
+![alt text](./images/Regression.svg)
+
+## Environment Setup in Poridhi's VS Code
+
+First, we need to install the required packages.
+
+```bash
+sudo apt-get update
+sudo apt-get install python3-pip
+```
+
+### Kernel Setup
+
+In **Poridhi's VSCode server**, create a new Jupyter notebook. Select the python kernel.
+
+![!\[alt text\](lab-5a-final.drawio.svg)](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a%20-%20Deep%20Neural%20Networks%20(TensorFlow)/images/image-13.png)
+
+Install required extensions for running the notebook and then select the python kernel.
+
+![!\[alt text\](lab-5a-final.drawio.svg)](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/05a%20-%20Deep%20Neural%20Networks%20(TensorFlow)/images/image-12.png)
 
 ## Regression
 
@@ -49,6 +70,18 @@ that study.
 > Bikeshare](https://www.capitalbikeshare.com/system-data) and is used
 > in accordance with the published [license
 > agreement](https://www.capitalbikeshare.com/data-license-agreement).
+
+## Loading a DataFrame from a  file
+
+Download the Dataset by running the following command.
+
+```bash
+curl -o daily-bike-share.csv "https://raw.githubusercontent.com/Konami33/MlOps-Dataset/main/Data/daily-bike-share.csv"
+```
+
+* The -o flag specifies the output file name (`daily-bike-share.csv` in this case).
+* The file will be saved in your current working directory.
+
 
 ## Explore the Data
 
