@@ -48,7 +48,16 @@ So, first we have to install the required packages in the notebook.
 
 ## Explore the dataset
 
-Before we start using TensorFlow to create a model, let's load the dataset **`penguins.csv`** from this [here](https://drive.google.com/drive/folders/1TK_E03iny9t20XHuXHWXrY2UK6T7w31b), which contains observations of three different species of penguin. Download the dataset and save it in the `data` folder of your project.
+Before we start using TensorFlow to create a model, we will load the dataset `penguins.csv`, which contains observations of three different species of penguin. Run this command to download the dataset and save it in the `data` folder of your project.
+
+```bash
+curl -o penguins.csv "https://raw.githubusercontent.com/Konami33/MlOps-Dataset/main/Data/penguins.csv"
+```
+
+* The `-o` flag specifies the output file name (penguins.csv in this case).
+* The file will be saved in your current working directory. Move the file to the `data` folder of your project.
+
+
 
 > **Note**: In reality, you can solve the penguin classification problem easily using classical machine learning techniques without the need for a deep learning model; but it's a useful, easy to understand dataset with which to demonstrate the principles of neural networks in this notebook.
 
