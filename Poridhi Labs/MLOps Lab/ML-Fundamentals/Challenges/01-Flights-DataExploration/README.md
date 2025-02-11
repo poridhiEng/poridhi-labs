@@ -91,7 +91,7 @@ Add markdown and code cells as required to create your solution.
 
 There is no single "**correct**" solution. First try to explore the data and then come up with your own analysis and conclusions. Here is a sample solution if you get stuck. Here is an overview how to to do analysis on the data.
 
-![alt text](image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/Challenges/01-Flights-DataExploration/image.png)
 
 Run this command in a terminal to download the sample solution.
 

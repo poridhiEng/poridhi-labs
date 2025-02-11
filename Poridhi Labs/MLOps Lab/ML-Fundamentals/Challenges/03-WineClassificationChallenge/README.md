@@ -48,7 +48,7 @@ data = pd.read_csv('wine.csv')
 data.sample(10)
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/Challenges/03-WineClassificationChallenge/images/image-1.png)
 
 > Make sure to install the necessary packages.
 
@@ -76,7 +76,7 @@ When you're happy with your model's predictive performance, save it and then use
 
 There is no single "**correct**" solution. First try to explore the data and then come up with your own analysis and conclusions. Here is a sample solution if you get stuck. Here is method to do analysis on the data.
 
-![](./images/c3.drawio.svg)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/Challenges/03-WineClassificationChallenge/images/c3.drawio.svg)
 
 Run this command in a terminal to download the sample solution.
 

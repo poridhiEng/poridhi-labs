@@ -48,7 +48,7 @@ data.head()
 
 > Make sure you have the dataset file in the same directory as the notebook and necessary libraries installed.
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/Challenges/02-RealState-Regression/images/image-1.png)
 
 The data consists of the following variables:
 
@@ -82,7 +82,7 @@ Save your trained model, and then use it to predict the `price-per-unit` for the
 
 There is no single "**correct**" solution. First try to explore the data and then come up with your own analysis and conclusions. Here is a sample solution if you get stuck. Here is method to do analysis on the data.
 
-![](./images/c2.drawio.svg)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/Challenges/02-RealState-Regression/images/c2.drawio.svg)
 
 Run this command in a terminal to download the sample solution.
 

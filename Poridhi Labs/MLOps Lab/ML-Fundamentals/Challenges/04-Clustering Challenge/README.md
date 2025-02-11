@@ -40,11 +40,9 @@ data = pd.read_csv('clusters.csv')
 data.sample(10)
 ```
 
-![alt text](./images/image.png)
-
 This dataset contains three numeric features (**A**, **B**, and **C**). This is how the data looks like:
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/Challenges/04-Clustering%20Challenge/images/image-1.png)
 
 > Make sure to install the necessary packages.
 
@@ -62,7 +60,7 @@ Your challenge is to
 
 There is no single "**correct**" solution. First try to explore the data and then come up with your own analysis and conclusions. Here is a sample solution if you get stuck. Here is method to do analysis on the data.
 
-![](./images/c4.drawio.svg)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/Challenges/04-Clustering%20Challenge/images/c4.drawio.svg)
 
 Run this command in a terminal to download the sample solution.
 
