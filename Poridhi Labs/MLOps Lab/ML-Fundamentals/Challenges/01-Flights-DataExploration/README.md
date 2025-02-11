@@ -88,7 +88,10 @@ Your challenge is to explore the flight data to analyze possible factors that af
 Add markdown and code cells as required to create your solution.
 
 ## Solution
-There is no single "correct" solution. First try to explore the data and then come up with your own analysis and conclusions. Here is a sample solution if you get stuck.
+
+There is no single "**correct**" solution. First try to explore the data and then come up with your own analysis and conclusions. Here is a sample solution if you get stuck. Here is an overview how to to do analysis on the data.
+
+![alt text](image.png)
 
 Run this command in a terminal to download the sample solution.
 
