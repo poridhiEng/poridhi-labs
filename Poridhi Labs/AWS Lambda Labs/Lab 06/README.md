@@ -68,15 +68,15 @@ This guide explains how to deploy an EC2 instance with MySQL using AWS Lambda an
 
 
 
-## 4. Create AWS Lambda Function for EC2 Deployment
+## 4. Create Lambda Function for EC2 Deployment
 1. Go to Lambda Console → Create Function
 2. Choose "Author from scratch"
 3. Enter details:
    - **Function name:** `EC2MySQLDeployment`
-   - **Runtime:** Python 3.9
+   - **Runtime:** Python 3.X
    - **Architecture:** x86_64
    - **Permissions:** Use existing role → `LambdaEC2DeploymentRole`
-4. Set timeout to **5 minutes** in Configuration → General Configuration
+4. Set timeout to **9 minutes** in Configuration → General Configuration
 5. Replace the code in the Lambda function with:
 
 ```python
@@ -89,56 +89,27 @@ def lambda_handler(event, context):
     ec2 = boto3.client('ec2')
     
     instance_params = {
-        'ImageId': 'ami-0198a868663199764',  # Ubuntu 22.04 LTS AMI
+        'ImageId': 'ami-0672fd5b9210aa093',  # Ubuntu 22.04 LTS AMI
         'InstanceType': 't2.micro',
         'MinCount': 1,
         'MaxCount': 1,
-        'SecurityGroupIds': ['sg-0320080753abca516'],
-        'SubnetId': 'subnet-033daf6f9aaac9520',
+        'SecurityGroupIds': ['sg-0576cb0661881892e'],
+        'SubnetId': 'subnet-0123060192bcda5c8',
         'KeyName': 'mysql-ec2-key',
-        'IamInstanceProfile': {'Name': 'SSMRole'},
+        'IamInstanceProfile': {'Name': 'EC2SSMRole'},
         'UserData': '''#!/bin/bash
-            # Update and install MySQL
             apt update -y
             DEBIAN_FRONTEND=noninteractive apt install -y mysql-server
-            
-            # Start MySQL service
             systemctl start mysql
             systemctl enable mysql
-            
-            # Secure MySQL installation
-            mysql --execute="ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'MySecurePassword123';"
-            mysql --execute="DELETE FROM mysql.user WHERE User='';"
-            mysql --execute="DROP DATABASE IF EXISTS test;"
+            mysql --execute="CREATE DATABASE myapp;"
+            mysql --execute="CREATE USER 'myappuser'@'%' IDENTIFIED BY 'MyAppPassword123';"
+            mysql --execute="GRANT ALL PRIVILEGES ON myapp.* TO 'myappuser'@'%';"
             mysql --execute="FLUSH PRIVILEGES;"
-            
-            # Create database and user with mysql_native_password
-            mysql --user=root --password=MySecurePassword123 --execute="CREATE DATABASE myapp;"
-            mysql --user=root --password=MySecurePassword123 --execute="CREATE USER 'myappuser'@'%' IDENTIFIED WITH mysql_native_password BY 'MyAppPassword123';"
-            mysql --user=root --password=MySecurePassword123 --execute="GRANT ALL PRIVILEGES ON myapp.* TO 'myappuser'@'%';"
-            mysql --user=root --password=MySecurePassword123 --execute="FLUSH PRIVILEGES;"
-            
-            # Configure MySQL for remote access
-            cat > /etc/mysql/mysql.conf.d/mysqld.cnf << EOF
-[mysqld]
-user            = mysql
-pid-file        = /var/run/mysqld/mysqld.pid
-socket          = /var/run/mysqld/mysqld.sock
-port            = 3306
-basedir         = /usr
-datadir         = /var/lib/mysql
-tmpdir          = /tmp
-bind-address    = 0.0.0.0
-default_authentication_plugin = mysql_native_password
-EOF
-
-            # Restart MySQL and configure firewall
             systemctl restart mysql
             ufw allow 22
             ufw allow 3306
             echo "y" | ufw enable
-            
-            # Create a file to indicate completion
             echo "MySQL setup completed" > /var/log/mysql_setup_complete
         '''.encode('utf-8')
     }
@@ -147,60 +118,32 @@ EOF
         response = ec2.run_instances(**instance_params)
         instance_id = response['Instances'][0]['InstanceId']
         
-        try:
-            waiter = ec2.get_waiter('instance_running')
-            waiter.wait(
-                InstanceIds=[instance_id],
-                WaiterConfig={'Delay': 5, 'MaxAttempts': 20}
-            )
-            
-            instance_info = ec2.describe_instances(InstanceIds=[instance_id])
-            public_ip = instance_info['Reservations'][0]['Instances'][0].get('PublicIpAddress', 'Not assigned yet')
-            
-            return {
-                'statusCode': 200,
-                'body': json.dumps({
-                    'message': 'EC2 instance with MySQL created successfully.',
-                    'instance_id': instance_id,
-                    'public_ip': public_ip,
-                    'mysql_user': 'myappuser',
-                    'mysql_password': 'MyAppPassword123',
-                    'mysql_database': 'myapp',
-                    'status': 'INITIALIZING',
-                    'next_steps': [
-                        'Wait ~5 minutes for MySQL installation to complete',
-                        f'SSH into instance: ssh -i mysql-ec2-key.pem ubuntu@{public_ip}',
-                        'Verify MySQL status: sudo systemctl status mysql',
-                        f'Test remote connection: mysql -h {public_ip} -u myappuser -pMyAppPassword123 myapp',
-                        'Check setup completion: cat /var/log/mysql_setup_complete'
-                    ],
-                    'configuration_details': {
-                        'authentication_method': 'mysql_native_password',
-                        'remote_access': 'enabled',
-                        'bind_address': '0.0.0.0',
-                        'ports_opened': ['22 (SSH)', '3306 (MySQL)']
-                    }
-                })
-            }
-            
-        except WaiterError:
-            return {
-                'statusCode': 200,
-                'body': json.dumps({
-                    'message': 'EC2 instance created but still initializing',
-                    'instance_id': instance_id,
-                    'status': 'INITIALIZING'
-                })
-            }
-            
-    except ClientError as e:
+        waiter = ec2.get_waiter('instance_running')
+        waiter.wait(InstanceIds=[instance_id], WaiterConfig={'Delay': 5, 'MaxAttempts': 20})
+        
+        instance_info = ec2.describe_instances(InstanceIds=[instance_id])
+        public_ip = instance_info['Reservations'][0]['Instances'][0].get('PublicIpAddress', 'Not assigned yet')
+        
+        return {
+            'statusCode': 200,
+            'body': json.dumps({
+                'message': 'EC2 instance with MySQL created successfully.',
+                'instance_id': instance_id,
+                'public_ip': public_ip,
+                'mysql_user': 'myappuser',
+                'mysql_password': 'MyAppPassword123',
+                'mysql_database': 'myapp'
+            })
+        }
+    
+    except (ClientError, WaiterError) as e:
         return {
             'statusCode': 500,
             'body': json.dumps({'error': str(e)})
         }
 ```
 
-
+Replace the `ImageId`, `SecurityGroupIds`, `SubnetId` in `instance_params` with valid values.
 
 ## 5. Create Lambda Functions for MySQL Operations
 
@@ -212,14 +155,16 @@ EOF
    - **Runtime:** Python 3.9
    - **Architecture:** x86_64
    - **Permissions:** Use existing role → `LambdaEC2DeploymentRole`
-4. Replace the code with:
+
+4. Set timeout to **5 minutes** in Configuration → General Configuration   
+5. Replace the code with:
 
 ```python
 import pymysql
 import json
 
 # MySQL Configuration
-DB_HOST = "47.129.98.20"  # Replace with your EC2 public IP
+DB_HOST = "54.151.252.4"  # Replace with your EC2 public IP
 DB_USER = "myappuser"
 DB_PASSWORD = "MyAppPassword123"
 DB_NAME = "myapp"
@@ -257,22 +202,26 @@ def lambda_handler(event, context):
         return {'statusCode': 500, 'body': json.dumps({'error': str(e)})}
 ```
 
+Replace the in instance_params
+
 ### B. Create `fetch_user` Lambda Function
 1. Go to Lambda Console → Create Function
 2. Choose "Author from scratch"
 3. Enter details:
    - **Function name:** `fetch_user`
-   - **Runtime:** Python 3.X
+   - **Runtime:** Python 3.9
    - **Architecture:** x86_64
    - **Permissions:** Use existing role → `LambdaEC2DeploymentRole`
-4. Replace the code with:
+
+4. Set timeout to **5 minutes** in Configuration → General Configuration   
+5. Replace the code with:
 
 ```python
 import pymysql
 import json
 
 # MySQL Configuration
-DB_HOST = "47.129.98.20"  # Replace with your EC2 public IP
+DB_HOST = "54.151.252.4"  # Replace with your EC2 public IP
 DB_USER = "myappuser"
 DB_PASSWORD = "MyAppPassword123"
 DB_NAME = "myapp"
@@ -299,6 +248,8 @@ def lambda_handler(event, context):
     except Exception as e:
         return {'statusCode': 500, 'body': json.dumps({'error': str(e)})}
 ```
+
+
 
 
 
@@ -336,6 +287,7 @@ def lambda_handler(event, context):
 
 ## 7. Create API Gateway
 1. Go to API Gateway Console → Create API → **REST API**
+2. Name it `my-REST-API`.
 2. Create resources `/deploy`, `/create-user`, and `/fetch-user`.
 3. Add methods:
    - **POST** for `/deploy` → Integration type: **Lambda Function** → Select `EC2MySQLDeployment`
@@ -343,17 +295,23 @@ def lambda_handler(event, context):
    - **GET** for `/fetch-user` → Integration type: **Lambda Function** → Select `fetch_user`
 4. Deploy API → Create a new stage `prod`
 5. Test the endpoints:
+
+    Replace `<Invoke URL>` with the invoke url your API.  
+
    - Deploy EC2 instance:
      ```bash
-     curl -X POST https://your-api-id.execute-api.region.amazonaws.com/prod/deploy
+     curl -X POST <Invoke URL>/deploy
      ```
+
+    Before using the following command, change the EC2 IP address in your `create_user` and `fetch_user` lambda functions and deploy again.
+
    - Create a user:
      ```bash
-     curl -X POST https://your-api-id.execute-api.region.amazonaws.com/prod/create-user
+     curl -X POST <Invoke URL>/create-user
      ```
    - Fetch users:
      ```bash
-     curl -X GET https://your-api-id.execute-api.region.amazonaws.com/prod/fetch-user
+     curl -X GET <Invoke URL>/fetch-user
      ```
 
 
@@ -383,3 +341,4 @@ def lambda_handler(event, context):
 
 
 
+ 
