@@ -2,7 +2,7 @@
 
 Using `systemd` to manage a Node.js application simplifies the process by ensuring the application starts automatically on boot, restarts on failure, and runs efficiently in the background. This lab provides a step-by-step guide to configuring `systemd` to manage a Node.js application.
 
-![alt text](./images/systemd.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/69c97e61260fba78da8a1e9cd3f9fe6da6368c57/Poridhi%20Labs/Systemd%20Labs/Lab%2001/images/systemd.svg)
 
 ## Lab Overview
 
@@ -44,18 +44,18 @@ http.createServer((req, res) => {
 
 > **Note:** Check the path to the server file using `pwd` as we will be using it in the systemd service file.
 
-![alt text](./images/image.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Systemd%20Labs/Lab%2001/images/image.png)
 
 **Run the server using:**
 ```
 node server.js
 ```
 
-![alt text](./images/image-1.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Systemd%20Labs/Lab%2001/images/image-1.png)
 
 You can also check the server running on the browser using `http://127.0.0.1:3311/`
 
-![alt text](./images/image-2.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Systemd%20Labs/Lab%2001/images/image-2.png)
 
 ## Step 2: Create the systemd Service File
 
@@ -123,7 +123,7 @@ systemctl start node.service
 systemctl status node.service
 ```
 
-![alt text](./images/image-3.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Systemd%20Labs/Lab%2001/images/image-3.png)
 
 This output indicates that the `node.service` is successfully loaded and running under `systemd`.  
 
@@ -139,7 +139,7 @@ Use `journalctl` to view logs related to the Node.js service.
 journalctl -u node.service -f
 ```
 
-![alt text](./images/image-4.png)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Systemd%20Labs/Lab%2001/images/image-4.png)
 
 ## Step 5: Handling Failures and Testing Automatic Restarts
 
@@ -160,7 +160,7 @@ systemd’s `Restart=on-failure` directive ensures the service recovers from cra
    ps aux | grep '/root/code/node/server.js'
    ```
 
-   ![alt text](./images/image-5.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Systemd%20Labs/Lab%2001/images/image-5.png)
 
    Here, the process ID of the Node.js server is `2842`.
 
@@ -178,7 +178,7 @@ systemd’s `Restart=on-failure` directive ensures the service recovers from cra
    sudo systemctl status node.service
    ```
    
-   ![alt text](./images/image-6.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Systemd%20Labs/Lab%2001/images/image-6.png)
 
    Here, we can see that the service is restarted automatically.
 
@@ -188,7 +188,7 @@ systemd’s `Restart=on-failure` directive ensures the service recovers from cra
    ```bash
    sudo journalctl -u node.service
    ```
-   ![alt text](./images/image-7.png)
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Systemd%20Labs/Lab%2001/images/image-7.png)
 
    Here, we can see that the service is restarted by `systemd` after the process is killed.
 
