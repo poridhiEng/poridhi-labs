@@ -74,11 +74,11 @@ When you're happy with your model's predictive performance, save it and then use
 
 ## Solution
 
-There is no single "**correct**" solution. First try to explore the data and then come up with your own analysis and conclusions. Here is a sample solution if you get stuck. Here is method to do analysis on the data.
+There is no single "**correct**" solution. First try to explore the data and then come up with your own analysis and conclusions. Here is method to do analysis on the data.
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/Challenges/03-WineClassificationChallenge/images/c3.drawio.svg)
 
-Run this command in a terminal to download the sample solution.
+Here is a sample solution if you get stuck.Run this command in a terminal to download the sample solution.
 
 ```sh
 curl -o "Wine Classification Solution.ipynb" "https://raw.githubusercontent.com/Konami33/MlOps-Dataset/refs/heads/main/Challenges_Soln/03%20-%20Wine%20Classification%20Solution.ipynb"

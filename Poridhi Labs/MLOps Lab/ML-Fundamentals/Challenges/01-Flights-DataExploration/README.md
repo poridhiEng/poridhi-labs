@@ -89,11 +89,11 @@ Add markdown and code cells as required to create your solution.
 
 ## Solution
 
-There is no single "**correct**" solution. First try to explore the data and then come up with your own analysis and conclusions. Here is a sample solution if you get stuck. Here is an overview how to to do analysis on the data.
+There is no single "**correct**" solution. First try to explore the data and then come up with your own analysis and conclusions. Here is an overview how to to do analysis on the data.
 
 ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/MLOps%20Lab/ML-Fundamentals/Challenges/01-Flights-DataExploration/image.png)
 
-Run this command in a terminal to download the sample solution.
+Here is a sample solution if you get stuck. Run this command in a terminal to download the sample solution.
 
 ```sh
 curl -o "Flights Solution.ipynb" "https://raw.githubusercontent.com/Konami33/MlOps-Dataset/main/Challenges_Soln/01%20-%20Flights%20Solution.ipynb"
