@@ -144,7 +144,7 @@ This guide provides instructions to create an IAM policy named `S3RestrictedPoli
 
 ![policy](https://s3.brilliant.com.bd/blog-bucket/thumbnail/992780b2-f356-4f06-846c-4cb8444e502c.png)
 
-     - For **bucket**:
+   - For **bucket**:
        - Uncheck **Any in this account**.
        - Click **Add ARNs**.
        - Copy the bucket name for `poridhiprod1` from the S3 console and paste it into the **Resource bucket name** field.
