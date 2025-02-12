@@ -1,12 +1,12 @@
 
 
-# **Automated EC2 Deployment & MongoDB Management with Lambda & API Gateway**
+# **Automated EC2 Deployment & PostgreSQL Management with Lambda & API Gateway**
 
-This guide explains how to deploy an EC2 instance with MongoDB using AWS Lambda and API Gateway, ensuring proper permissions and security settings. It also includes Lambda functions for creating and fetching users in the MongoDB database, along with steps to add a custom layer for `pymongo`.
+This guide explains how to deploy an EC2 instance with PostgreSQL using AWS Lambda and API Gateway, ensuring proper permissions and security settings. It also includes Lambda functions for creating and fetching users in the PostgreSQL database, along with steps to add a custom layer for `psycopg2`.
 
-Automating EC2 instance deployment with MongoDB using AWS Lambda and API Gateway simplifies infrastructure management. This serverless approach enables dynamic provisioning, efficient database operations, and secure API access. It’s ideal for applications requiring on-demand database instances, scalable cloud environments, and automated infrastructure setups.
+Automating EC2 instance deployment with PostgreSQL using AWS Lambda and API Gateway simplifies infrastructure management. This serverless approach enables dynamic provisioning, efficient database operations, and secure API access. It’s ideal for applications requiring on-demand database instances, scalable cloud environments, and automated infrastructure setups.
 
-![](./images/1.svg)
+![](./1.svg)
 
 ## **1. Setting Up the Network Environment**  
 
@@ -22,7 +22,7 @@ Before deploying the EC2 instance, you need to create a VPC with the necessary n
 
 - Go to your VPC and see the resource map as follows: 
 
-    ![alt text](./images/image.png)
+    ![alt text](image.png)
 
 
 ## 2. Set Up Required IAM Roles
@@ -52,9 +52,9 @@ Before deploying the EC2 instance, you need to create a VPC with the necessary n
    - `AmazonEC2FullAccess`
    - `AmazonSSMFullAccess`
    - **Custom policy**: `EC2PassRolePolicy`
-5. Name the role `LambdaMongoDBDeploymentRole` and create it.
+5. Name the role `LambdaEC2DeploymentRole` and create it.
 
-    ![alt text](./images/image-2.png)
+    ![alt text](image-2.png)
 
 ### B. Create EC2 Role
 1. Go to IAM Console → Roles → Create Role
@@ -64,23 +64,23 @@ Before deploying the EC2 instance, you need to create a VPC with the necessary n
    - `AmazonEC2FullAccess`
 4. Name it `EC2SSMRole` and create the role.
 
-    ![alt text](./images/image-24.png)
+    ![alt text](image-24.png)
 
 
 ## 3. Create Security Group
 
 1. Go to EC2 Console → Security Groups → Create Security Group.
-2. Name it `MongoDB-EC2-SG`.
+2. Name it `PostgreSQL-EC2-SG`.
 3. Add inbound rules:
-   - **Type:** Custom TCP (Port 27017) → **Source:** Anywhere-IPv4 (0.0.0.0/0)
+   - **Type:** PostgreSQL (Port 5432) → **Source:** Anywhere-IPv4 (0.0.0.0/0)
    - **Type:** SSH (Port 22) → **Source:** Anywhere-IPv4 (0.0.0.0/0)
 
-
+    ![alt text](image-1.png)
 
 ## 4. Create Key Pair
 
 1. Go to EC2 Console → Key Pairs → Create Key Pair
-2. Name it `mongodb-ec2-key`
+2. Name it `postgres-ec2-key`
 3. Choose RSA and `.pem` format.
 4. Click **Create key pair**.
 4. Then download the key.
@@ -88,73 +88,89 @@ Before deploying the EC2 instance, you need to create a VPC with the necessary n
 
 ## 5. Create Lambda Function for EC2 Deployment
 
-1. Go to Lambda Console → Create Function.
-2. Name the function `deploy_mongodb`.
-3. Choose **Python 3.9** as the runtime.
-4. Attach the `LambdaMongoDBDeploymentRole`.
-4. Set timeout to **9 minutes** in Configuration → General Configuration
+1. Go to Lambda Console → Create Function
+2. Choose "Author from scratch"
+3. Enter details:
+   - **Function name:** `EC2PostgreSQLDeployment`
+   - **Runtime:** Python 3.9
+   - **Architecture:** x86_64
+   - **Permissions:** Use existing role → `LambdaEC2DeploymentRole`
+4. Set timeout to **5 minutes** in Configuration → General Configuration
 
-6. Use the following code:
+    ![alt text](image-3.png)
+
+5. Replace the code in the Lambda function with:
 
 ```python
 import json
 import boto3
+import time
+from botocore.exceptions import ClientError, WaiterError
 
 def lambda_handler(event, context):
     ec2 = boto3.client('ec2')
 
     instance_params = {
-        'ImageId': 'ami-0672fd5b9210aa093',  # Ubuntu 22.04 LTS AMI (change as per your region)
+        'ImageId': 'ami-0672fd5b9210aa093',  # Ubuntu 22.04 LTS AMI (Change as per your region)
         'InstanceType': 't2.micro',
         'MinCount': 1,
         'MaxCount': 1,
-        'SecurityGroupIds': ['sg-0c88be8b68d4a7b94'],  # Replace with your security group ID
-        'SubnetId': 'subnet-031e6cf0de9091b0a',  # Replace with your subnet ID
-        'KeyName': 'mongodb-ec2-key',  # Replace with your key pair name
-        'IamInstanceProfile': {'Name': 'EC2SSMRole2'},  # Role for SSM access
+        'SecurityGroupIds': ['sg-0bf3cab7329a1c1fe'],  # Replace with your security group ID
+        'SubnetId': 'subnet-05c5672f1e80b5086',  # Replace with your subnet ID
+        'KeyName': 'postgres-ec2-key',  # Replace with your key pair name
+        'IamInstanceProfile': {'Name': 'EC2SSMRole'},  # Role for SSM access
         'UserData': '''#!/bin/bash
-            # Update and install MongoDB
-            sudo apt update -y
-            sudo apt install -y gnupg curl
-            curl -fsSL https://www.mongodb.org/static/pgp/server-6.0.asc | sudo gpg --dearmor -o /usr/share/keyrings/mongodb-archive-keyring.gpg
-            echo "deb [signed-by=/usr/share/keyrings/mongodb-archive-keyring.gpg] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
-            sudo apt update -y
-            sudo apt install -y mongodb-org
+            # Update and install PostgreSQL
+            apt update -y
+            apt install -y postgresql postgresql-contrib
 
-            # Start MongoDB service
-            sudo systemctl start mongod
-            sudo systemctl enable mongod
+            # Start PostgreSQL service
+            systemctl start postgresql
+            systemctl enable postgresql
+
+            # Set up PostgreSQL database and user
+            sudo -u postgres psql -c "CREATE DATABASE myapp;"
+            sudo -u postgres psql -c "CREATE USER myappuser WITH PASSWORD 'MyAppPassword123';"
+            sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE myapp TO myappuser;"
 
             # Allow remote access (Optional)
-            sudo sed -i "s/bindIp: 127.0.0.1/bindIp: 0.0.0.0/" /etc/mongod.conf
-            sudo systemctl restart mongod
-            sudo ufw allow 27017
+            echo "host all all 0.0.0.0/0 md5" >> /etc/postgresql/14/main/pg_hba.conf
+            sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" /etc/postgresql/14/main/postgresql.conf
+            systemctl restart postgresql
+            ufw allow 5432
         '''.encode('utf-8')
     }
 
     try:
         response = ec2.run_instances(**instance_params)
         instance_id = response['Instances'][0]['InstanceId']
-        
+
+        # Wait for instance to be running
         try:
             waiter = ec2.get_waiter('instance_running')
-            waiter.wait(
-                InstanceIds=[instance_id],
-                WaiterConfig={'Delay': 5, 'MaxAttempts': 20}
-            )
+            waiter.wait(InstanceIds=[instance_id], WaiterConfig={'Delay': 5, 'MaxAttempts': 10})
 
+            # Get instance details
             instance_info = ec2.describe_instances(InstanceIds=[instance_id])
             public_ip = instance_info['Reservations'][0]['Instances'][0].get('PublicIpAddress', 'Not assigned yet')
 
             return {
                 'statusCode': 200,
                 'body': json.dumps({
-                    'message': 'EC2 instance with MongoDB created successfully.',
+                    'message': 'EC2 instance with PostgreSQL created successfully.',
                     'instance_id': instance_id,
                     'public_ip': public_ip,
+                    'postgres_user': 'myappuser',
+                    'postgres_database': 'myapp',
+                    'status': 'INITIALIZING',
+                    'next_steps': [
+                        f'SSH into instance: ssh -i YOUR_KEY.pem ubuntu@{public_ip}',
+                        'Check PostgreSQL status: systemctl status postgresql',
+                        'Login to PostgreSQL: psql -h {public_ip} -U myappuser -d myapp'
+                    ]
                 })
             }
-
+        
         except WaiterError:
             return {
                 'statusCode': 200,
@@ -163,9 +179,9 @@ def lambda_handler(event, context):
                     'instance_id': instance_id,
                     'status': 'INITIALIZING'
                 })
-            }    
-
-    except Exception as e:
+            }
+    
+    except ClientError as e:
         return {
             'statusCode': 500,
             'body': json.dumps({'error': str(e)})
@@ -186,131 +202,143 @@ Replace the `ImageId`, `SecurityGroupIds`, `SubnetId` in `instance_params` with 
 
     - You will see a EC2 creation was successful and MongoDB was setup successfully.
 
-        ![alt text](./images/image-3.png)
+       ![alt text](image-4.png)
 
 
 
 
 
 
-## 6. Create Lambda Functions for MongoDB Operations
+## 6. Create Lambda Functions for PostgreSQL Operations
 
-### A. Create `create_post` Lambda Function
+### A. Create `create_user` Lambda Function
 1. Go to Lambda Console → Create Function
 2. Choose "Author from scratch"
 3. Enter details:
-   - **Function name:** `create_post`
+   - **Function name:** `create_user`
    - **Runtime:** Python 3.9
    - **Architecture:** x86_64
-   - **Permissions:** Use existing role → `LambdaMongoDBDeploymentRole`
+   - **Permissions:** Use existing role → `LambdaEC2DeploymentRole`
 
 4. Set timeout to **5 minutes** in Configuration → General Configuration   
+
+    ![alt text](image-6.png)
+
 5. Replace the code with:
 
 ```python
+import psycopg2
 import json
-from pymongo import MongoClient
 
-# MongoDB Configuration
-MONGO_HOST = "your-ec2-public-ip"  # Replace with EC2 public IP
-MONGO_PORT = 27017
-MONGO_DB = "myapp"
-MONGO_COLLECTION = "posts"
+# PostgreSQL Configuration
+DB_HOST = "your-ec2-public-ip"  # Replace with your EC2 public IP
+DB_USER = "myappuser"
+DB_PASSWORD = "MyAppPassword123"
+DB_NAME = "myapp"
 
 def lambda_handler(event, context):
     try:
-        # Connect to MongoDB
-        client = MongoClient(MONGO_HOST, MONGO_PORT)
-        db = client[MONGO_DB]
-        collection = db[MONGO_COLLECTION]
+        # Connect to PostgreSQL
+        conn = psycopg2.connect(
+            host=DB_HOST,
+            user=DB_USER,
+            password=DB_PASSWORD,
+            database=DB_NAME,
+            connect_timeout=5
+        )
+        cursor = conn.cursor()
 
-        # Insert a new post
-        post = {
-            "title": event.get("title", "Default Title"),
-            "content": event.get("content", "Default Content")
-        }
-        result = collection.insert_one(post)
+        # Create Table
+        create_table_sql = """CREATE TABLE IF NOT EXISTS users (
+            id SERIAL PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            email VARCHAR(255) UNIQUE NOT NULL
+        )"""
+        cursor.execute(create_table_sql)
+
+        # Insert User
+        insert_user_sql = "INSERT INTO users (name, email) VALUES (%s, %s)"
+        user_data = ("John Doe", "john.doe@example.com")
+        cursor.execute(insert_user_sql, user_data)
+
+        # Commit changes and close connection
+        conn.commit()
+        cursor.close()
+        conn.close()
 
         return {
             'statusCode': 200,
-            'body': json.dumps({
-                'message': 'Post created successfully.',
-                'post_id': str(result.inserted_id)
-            })
+            'body': json.dumps({'message': 'User table created and user added successfully'})
         }
 
     except Exception as e:
-        return {
-            'statusCode': 500,
-            'body': json.dumps({'error': str(e)})
-        }
+        return {'statusCode': 500, 'body': json.dumps({'error': str(e)})}
 ```
 
-Replace the `MONGO_HOST` value with your EC2 instance public IP.
+Replace the `DB_HOST` value with your EC2 instance public IP.
 
 6. Click **Deploy**.
 
-### B. Create `fetch_posts` Lambda Function
+### B. Create `fetch_user` Lambda Function
 1. Go to Lambda Console → Create Function
 2. Choose "Author from scratch"
 3. Enter details:
-   - **Function name:** `fetch_posts`
+   - **Function name:** `fetch_user`
    - **Runtime:** Python 3.9
    - **Architecture:** x86_64
-   - **Permissions:** Use existing role → `LambdaMongoDBDeploymentRole`
+   - **Permissions:** Use existing role → `LambdaEC2DeploymentRole`
 
 4. Set timeout to **5 minutes** in Configuration → General Configuration   
+
+    ![alt text](image-5.png)
+
 5. Replace the code with:
 
 ```python
+import psycopg2
 import json
-from pymongo import MongoClient
 
-# MongoDB Configuration
-MONGO_HOST = "your-ec2-public-ip"  # Replace with EC2 public IP
-MONGO_PORT = 27017
-MONGO_DB = "myapp"
-MONGO_COLLECTION = "posts"
+# PostgreSQL Configuration
+DB_HOST = "47.129.98.20"  # Replace with your EC2 public IP
+DB_USER = "myappuser"
+DB_PASSWORD = "MyAppPassword123"
+DB_NAME = "myapp"
 
 def lambda_handler(event, context):
     try:
-        # Connect to MongoDB
-        client = MongoClient(MONGO_HOST, MONGO_PORT)
-        db = client[MONGO_DB]
-        collection = db[MONGO_COLLECTION]
+        # Connect to PostgreSQL
+        conn = psycopg2.connect(
+            host=DB_HOST,
+            user=DB_USER,
+            password=DB_PASSWORD,
+            database=DB_NAME,
+            connect_timeout=5
+        )
+        cursor = conn.cursor()
 
-        # Fetch all posts
-        posts = list(collection.find({}, {'_id': 0}))
+        # Fetch data
+        cursor.execute("SELECT * FROM users")
+        users = cursor.fetchall()
+
+        # Close connection
+        cursor.close()
+        conn.close()
 
         return {
             'statusCode': 200,
-            'body': json.dumps({
-                'message': 'Posts fetched successfully.',
-                'posts': posts
-            })
+            'body': json.dumps({'users': users})
         }
 
     except Exception as e:
-        return {
-            'statusCode': 500,
-            'body': json.dumps({'error': str(e)})
-        }
+        return {'statusCode': 500, 'body': json.dumps({'error': str(e)})}
 ```
 
-Replace the `MONGO_HOST` value with your EC2 instance public IP.
+Replace the `DB_HOST` value with your EC2 instance public IP.
 
 6. Click **Deploy**.
 
 
-
-
-
-
-
-
-
-
-## 7. Add a Custom Layer for `pymongo`
+## 7. Add a Custom Layer for `psycopg2`
 
 ### Steps to Create and Attach a Custom Layer
 
@@ -325,37 +353,64 @@ Replace the `MONGO_HOST` value with your EC2 instance public IP.
 
    ```bash
    mkdir -p python/lib/python3.9/site-packages
-   pip install pymongo -t python/lib/python3.9/site-packages
-   zip -r pymongo_layer.zip python
+   pip install psycopg2-binary -t python/lib/python3.9/site-packages
+   zip -r psycopg2_layer.zip python
    ```
 
 3. Upload the layer to AWS Lambda:
 
    - Go to AWS Lambda Console → Layers → Create Layer.
-   - Name the layer `pymongo_layer`.
-   - Upload the `pymongo_layer.zip` file.
+   - Name the layer `psycopg2_layer`.
+   - Upload the `psycopg2_layer.zip` file.
    - Choose compatible runtimes (e.g., Python 3.9).
 
-        ![alt text](./images/image-4.png)
+        ![alt text](image-7.png)
 
    - Click **Create**.
 
 
 3. **Attach the Layer to Lambda Functions:**
-   - Go to each Lambda function (`create_post` and `fetch_posts`).
+   - Go to each Lambda function (`create_user` and `fetch_user`).
    - Scroll to the **Layers** section and click **Add a layer**.
-   - Select **Custom layers** and choose `pymongo_layer`.
+   - Select **Custom layers** and choose `psycopg2_layer`.
    - Select available version.
 
-        ![alt text](./images/image-7.png)
+        ![alt text](image-8.png)
 
    - Click **Add**.
 
-## 8. Test `create_post` and `fetch_posts` lambda functions
 
-1. Test the `create_post` lambda function
 
-    - Go to `create_post` lambda function
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
+
+## 8. Test `create_user` and `fetch_user` lambda functions
+
+1. Test the `create_user` lambda function
+
+    - Go to `create_user` lambda function
     - Go to **Test** tab
     - Create a test event **test** with empty event json:
         ```json
@@ -368,9 +423,9 @@ Replace the `MONGO_HOST` value with your EC2 instance public IP.
         ![alt text](./images/image-8.png)
 
 
-2. Test the `fetch_posts` lambda function
+2. Test the `fetch_user` lambda function
 
-    - Go to `fetch_posts` lambda function
+    - Go to `fetch_user` lambda function
     - Go to **Test** tab
     - Create a test event **test** with empty event json:
         ```json
@@ -405,11 +460,11 @@ Replace the `MONGO_HOST` value with your EC2 instance public IP.
 
         ![alt text](./images/image-17.png)
 
-   - **POST** for `/posts` → Integration type: **Lambda Function** → Select `create_post`.
+   - **POST** for `/posts` → Integration type: **Lambda Function** → Select `create_user`.
 
         ![alt text](./images/image-11.png)
     
-   - **GET** for `/posts` → Integration type: **Lambda Function** → Select `fetch_posts`.
+   - **GET** for `/posts` → Integration type: **Lambda Function** → Select `fetch_user`.
 
         ![alt text](./images/image-12.png)
 
@@ -441,7 +496,7 @@ Replace the `MONGO_HOST` value with your EC2 instance public IP.
     ![alt text](./images/image-19.png)
 
 
-Before using the following command, change the EC2 IP address in your `create_post` and `fetch_posts` lambda functions and deploy again.
+Before using the following command, change the EC2 IP address in your `create_user` and `fetch_user` lambda functions and deploy again.
 
 ![alt text](./images/image-20.png)
 
@@ -481,4 +536,4 @@ Before using the following command, change the EC2 IP address in your `create_po
 ## Conclusion  
 
 In this guide, we successfully automated the deployment of an EC2 instance with MongoDB using AWS Lambda and API Gateway. We also implemented Lambda functions for database operations, ensuring secure and efficient user management. This approach streamlines infrastructure provisioning while maintaining flexibility and scalability for cloud-based applications.
- 
+  -->
