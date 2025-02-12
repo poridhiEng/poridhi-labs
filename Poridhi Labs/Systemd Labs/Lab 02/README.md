@@ -29,7 +29,7 @@ This creates a directory to host the Node.js application.
 
 ### 2. Create the Node.js Server
 
-Create a file named `server.js` and insert the following content:
+Create a file named `server.js` in the `node` directory and insert the following content:
 
 ```javascript
 const http = require('http');
@@ -51,6 +51,9 @@ Start the server manually:
 ```bash
 node server.js
 ```
+
+![alt text](image.png)
+
 Verify by accessing http://127.0.0.1:3311 in your browser or open a new terminal and run:
 
 ```bash
@@ -96,6 +99,8 @@ sudo systemctl enable node.service
 sudo systemctl start node.service
 sudo systemctl status node.service
 ```
+
+![alt text](image-1.png)
 
 ## Implementing Health Monitoring
 
@@ -216,6 +221,15 @@ sudo chmod 644 /var/log/nodejs-health.log /var/log/nodejs-warnings.log
 
 ### 3. Schedule Health Checks with Cron
 
+At first, install the cron package:
+
+```bash
+sudo apt update
+sudo apt install cron -y
+```
+
+Now, edit the cron tab:
+
 ```bash
 sudo crontab -e
 ```
@@ -235,6 +249,20 @@ sudo crontab -e
 - The script runs once per minute (`* * * * *`).
 - `sleep X &&` ensures it runs at **10, 20, 30, 40, and 50 seconds** after each minute starts.
 - This effectively runs the script every **10 seconds**.
+
+## Start and Enable Cron Service
+
+```bash
+sudo systemctl start cron
+sudo systemctl enable cron
+```
+
+Now, check the status of the cron service:
+
+```bash
+sudo systemctl status cron
+```
+
 
 ## Monitoring and Maintenance
 
@@ -256,6 +284,8 @@ tail -f /var/log/nodejs-warnings.log
 ```
 
 Now, wait for few seconds and you will see the logs being populated in every 10 seconds by sending curl request to the server.
+
+![alt text](image-2.png)
 
 ### 3. Run Manual Health Check
 
@@ -287,6 +317,15 @@ After a few seconds, check the warning logs.
     ```
     
     The health check script should detect the failure and restart the service automatically.
+
+    ![alt text](image-3.png)
+
+    Here, the nodejs service is crashed and the health check script is detecting the failure.
+
+    ![alt text](image-4.png)
+
+    Here, we can see that the service is restarted automatically and the logs are being populated again.
+
 
 ## Conclusion
 
