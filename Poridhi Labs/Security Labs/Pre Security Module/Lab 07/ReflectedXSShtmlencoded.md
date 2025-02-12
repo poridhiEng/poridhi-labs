@@ -1,4 +1,4 @@
-# Reflected XSS via HTML-encoded attribute injection.
+# Reflected XSS via HTML-encoded attribute injection
 
 Cross-site Scripting (XSS) is a prevalent web security vulnerability that allows attackers to inject malicious scripts into web applications. One such variant is **Reflected XSS**, where an attacker injects a payload that gets immediately reflected in the response. Specifically, **Reflected XSS into attributes with angle brackets HTML-encoded** is a technique where user input is embedded into an HTML attribute but is improperly encoded, making it susceptible to exploitation.
 
