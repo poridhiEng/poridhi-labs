@@ -152,10 +152,10 @@ This guide provides instructions to create an IAM policy named `S3RestrictedPoli
 
 ![image](https://s3.brilliant.com.bd/blog-bucket/thumbnail/bb3b7e73-f948-4296-bbab-582f325969bb.png)
 
-       - Repeat the process for `poridhiprod2`.
-     - For **object**:
-       - Select the **Any** checkbox.
-   - Click **Next**.
+  - Repeat the process for `poridhiprod2`.
+  - For **object**:
+     - Select the **Any** checkbox.
+     - Click **Next**.
 
 
 
