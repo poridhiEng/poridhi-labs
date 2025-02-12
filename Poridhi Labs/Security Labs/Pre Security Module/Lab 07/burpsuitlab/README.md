@@ -36,7 +36,7 @@ Burp Suite is a leading tool for web application security testing. It offers a c
 - Detecting and exploiting web application vulnerabilities.
 - Automating security testing workflows.
 
-## **Why is Burp Suite to Bypass HTML Encoding?**
+## **Why use Burp Suite to Bypass HTML Encoding?**
 
 We have so many tags in HTML like `<script>`, `<img>`, `<svg>`, `<a>`, etc. and each of them has so many attributes. When an developer builds a web application, he/she may not encode all the possible HTML tags and attributes. Attackers use Burp Suite to brute-force the HTML tags and find a working exploit.
 
