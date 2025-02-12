@@ -410,7 +410,7 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
 ## 9. Create API Gateway
 1. Go to API Gateway Console → Create API → **REST API**
 2. Name it `My-REST-API`.
-2. Create resources `/deploy`, `/create-user`, and `/fetch-user`.
+3. Create resources `/deploy`, `/create-user`, and `/fetch-user`.
 
     ![alt text](./images/image-3.png)
 
@@ -420,18 +420,18 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
 
     ![alt text](./images/image-6.png)
 
-3. Add methods:
+4. Add methods:
    - **POST** for `/deploy` → Integration type: **Lambda Function** → Select `EC2MySQLDeployment`
    - **POST** for `/create-user` → Integration type: **Lambda Function** → Select `create_user`
    - **GET** for `/fetch-user` → Integration type: **Lambda Function** → Select `fetch_user`
 
         ![alt text](./images/image-7.png)
 
-4. Deploy API → Create a new stage `prod`
+5. Deploy API → Create a new stage `prod`
 
     ![alt text](./images/image-8.png)
 
-5. Test the endpoints:
+6. Test the endpoints:
 
      You can get the invoke url from the **Stages** of your REST API. 
 
