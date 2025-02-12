@@ -6,6 +6,8 @@ In modern application deployment, ensuring uptime and reliability is critical. T
 - Restarts automatically in case of failure.
 - Includes a health monitoring script that periodically checks service availability and restarts the application if necessary.
 
+![alt text](./images/health-check.svg)
+
 ## Task Overview
 
 We will perform the following steps in this lab:
@@ -52,7 +54,7 @@ Start the server manually:
 node server.js
 ```
 
-![alt text](image.png)
+![alt text](./images/image.png)
 
 Verify by accessing http://127.0.0.1:3311 in your browser or open a new terminal and run:
 
@@ -100,7 +102,7 @@ sudo systemctl start node.service
 sudo systemctl status node.service
 ```
 
-![alt text](image-1.png)
+![alt text](./images/image-1.png)
 
 ## Implementing Health Monitoring
 
@@ -274,6 +276,8 @@ Check the status of the `node.service`:
 sudo systemctl status node.service
 ```
 
+![alt text](./images/image-5.png)
+
 ### 2. Check Logs
 
 Open two new terminals for checking the logs and warnings:
@@ -285,7 +289,7 @@ tail -f /var/log/nodejs-warnings.log
 
 Now, wait for few seconds and you will see the logs being populated in every 10 seconds by sending curl request to the server.
 
-![alt text](image-2.png)
+![alt text](./images/image-2.png)
 
 ### 3. Run Manual Health Check
 
@@ -318,11 +322,11 @@ After a few seconds, check the warning logs.
     
     The health check script should detect the failure and restart the service automatically.
 
-    ![alt text](image-3.png)
+    ![alt text](./images/image-3.png)
 
     Here, the nodejs service is crashed and the health check script is detecting the failure.
 
-    ![alt text](image-4.png)
+    ![alt text](./images/image-4.png)
 
     Here, we can see that the service is restarted automatically and the logs are being populated again.
 
