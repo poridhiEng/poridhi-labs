@@ -55,10 +55,10 @@ Burp Suite is an advanced web security tool that can help identify vulnerabiliti
 
 Here’s how **Burp Suite** operates in this context:  
 
-### **Step 1: Capturing and Modifying Requests**  
+### **Capturing and Modifying Requests**  
 Burp Suite’s **Proxy** intercepts the request sent from the browser to the server, allowing an attacker to examine the structure of the request. If the request contains a user input field (such as a form or search bar), Burp Suite extracts and isolates the specific parameter where HTML encoding protections might be applied.  
 
-### **Step 2: Injecting Payloads via Intruder**  
+### **Injecting Payloads via Intruder**  
 Burp Suite’s **Intruder** automates the process of sending multiple variations of a payload to determine how the server handles different encoding schemes. It does this by:  
 
 1. **Identifying Input Fields:** Intruder pinpoints parameters where user input is processed and attempts to manipulate them.  
@@ -70,14 +70,14 @@ Burp Suite’s **Intruder** automates the process of sending multiple variations
 
 Intruder **systematically injects** these payloads into the selected parameter and sends them to the server to analyze the response.  
 
-### **Step 3: Analyzing Server Responses**  
+### **Analyzing Server Responses**  
 Burp Suite **monitors the behavior** of the server when different encoded versions of the payload are received. It does this by:  
 
 - **Comparing HTTP Response Codes:** If different encoding formats return different HTTP status codes (e.g., `200 OK` for successful execution, `403 Forbidden` for blocked input), it indicates how the server processes the input.  
 - **Checking Content Reflection:** If the server returns the payload **without encoding it again**, it suggests a potential vulnerability where the input is rendered as raw HTML, leading to execution in the browser.  
 - **Detecting Filtering Mechanisms:** If some payloads are blocked while others pass through, Intruder helps identify which encoding methods successfully bypass input sanitization.  
 
-### **Step 4: Finding Bypasses through Encoding Variations**  
+### **Finding Bypasses through Encoding Variations**  
 Burp Suite **automates** the process of testing different encoding techniques. If one encoding method is blocked, it tries alternative formats until it finds a **working bypass**. This includes:  
 
 1. **Double Encoding**: `%253Cscript%253Ealert('XSS')%253C/script%253E`  
@@ -86,7 +86,7 @@ Burp Suite **automates** the process of testing different encoding techniques. I
 
 If a certain encoded version gets **executed instead of displayed as text**, Burp Suite flags it as a potential exploit.  
 
-### **Step 5: Extracting the Exploit**  
+### **Extracting the Exploit**  
 Once Burp Suite identifies a bypass, it refines the payload to **maximize impact** while avoiding detection. If an encoded version executes JavaScript or injects unwanted HTML elements, it confirms that the encoding protections are weak. The final exploit is then extracted and used for further testing or reporting the vulnerability.
 
 
