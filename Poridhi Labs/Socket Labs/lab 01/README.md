@@ -2,7 +2,7 @@
 
 Socket.IO is a real-time, bidirectional event-based communication library built on WebSockets. It allows seamless communication between clients (browsers) and servers, making it ideal for real-time applications like chat apps, live notifications, multiplayer games, and collaborative tools. The library provides a simple API for sending and receiving messages, and it handles the complexities of WebSocket connections, including reconnection logic and automatic fallback to other transport methods if WebSockets are not available.
 
-![alt text](image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2001/images/image.png)
 
 
 **Key Features:**
@@ -38,7 +38,7 @@ Socket.IO primarily uses **WebSockets**, but it can **fall back** to other metho
 
 Socket.IO works through a **client-server connection model**.
 
-![](./images/socket-lab1-3.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2001/images/socket-lab1-3.drawio.svg)
 
 ### **Step 1: Client Requests Connection**
 When a client (browser) wants to establish a real-time connection with the server, it sends a **handshake request**. The server then decides which transport mechanism to use (WebSockets, polling, etc.).
@@ -111,7 +111,7 @@ Developers can define their own **custom events** to send and receive real-time 
 2. The server listens for that event and processes it.
 3. The server can then emit a response event, which the client listens for.
 
-![](./images/socket-lab1-4.drawio.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2001/images/socket-lab1-4.drawio.svg)
 
 ### **Example: Chat Application Using Custom Events**
 #### **1. Server Side (Node.js)**
@@ -146,7 +146,7 @@ socket.on('chatMessage', (data) => {
 
 Now, let's implement a simple chat application using Socket.IO. We will create a server and a client, and then connect them using Socket.IO. We will use Node.js and Express to create the server, and Socket.IO to handle the real-time communication. We also make a simple UI using HTML, CSS, and JavaScript for the chat application.
 
-![alt text](image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2001/images/image-1.png)
 
 ### Key Features
 
@@ -382,7 +382,7 @@ body {
 
 This CSS file will style the UI of the chat application. Here is the screenshot of the UI:
 
-![alt text](image-6.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2001/images/image-6.png)
 
 **3. Server Setup**
 
@@ -526,27 +526,26 @@ npm run dev
 
 This lab is intended to be run on Poridhi's VM. To access the chat app, we need to create a load balancer in the VM.
 
-![alt text](image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2001/images/image-2.png)
 
 Follow the URL provided in the load balancer to access the chat app.
 
 
-![alt text](image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2001/images/image-3.png)
 
 
 
 The user will be asked to enter a name.
 
-![alt text](image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2001/images/image-4.png)
 
 
 
 After entering the name, the user will be on the home page and communicate with other users in real-time.
 
-![alt text](image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2001/images/image-5.png)
 
 Here, we can see the Online Users count. and the chat messages are displayed in real-time.
-
 
 
 ## Conclusion

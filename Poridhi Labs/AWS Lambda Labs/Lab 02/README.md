@@ -14,7 +14,8 @@ By the end of this lab, you will gain practical experience in:
 
 ## Lab Architecture
 
-![](./images/1.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/1.svg)
+
 
 This lab aims to build a serverless workflow where a user interacts with a web application hosted on Amazon S3, triggering a sequence of AWS services to process data and send an email.
 
@@ -74,25 +75,25 @@ The goal is to create an API that processes user input, orchestrates a workflow 
 1. Navigate to **AWS Management Console** > **Simple Email Service (SES)**.
 2. Click **Identities** > **Create Identity**.
 
-    ![alt text](./images/image.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image.png)
 
 3. Select **Email Address** and enter a valid email.
 
-    ![alt text](./images/image-1.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-1.png)
 
 4. Click **Create Identity** and check your inbox for a verification email as it requires verification.
 
-    ![alt text](./images/image-2.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-2.png)
 
 5. Click the verification link to validate your email.
 
-    ![alt text](./images/image-3.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-3.png)
 
-    ![alt text](./images/image-4.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-4.png)
 
     You can see now that the identity is verified.
 
-    ![alt text](./images/image-5.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-5.png)
 
 ### Step 2: Create the Email Reminder Lambda Function
 
@@ -104,7 +105,7 @@ The goal is to create an API that processes user input, orchestrates a workflow 
 6. Select **Execution Role**: `LambdaRuntimeRole`.
 7. Click **Create function**.
 
-    ![alt text](./images/image-6.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-6.png)
 
 8. Copy and paste the following code into the function editor:
 ```python
@@ -129,7 +130,7 @@ def lambda_handler(event, context):
 ```
 9. Set `VERIFIED_EMAIL` with your verified email address you used for SES.
 
-    ![alt text](./images/image-7.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-7.png)
 
 10. Click **Deploy**.    
 
@@ -139,7 +140,7 @@ def lambda_handler(event, context):
 2. Click **Create state machine**.
 3. Select **Create your own** workflow.
 
-    ![alt text](./images/image-8.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-8.png)
 
 4. Choose **Code** and paste the following JSON:
 ```json
@@ -184,15 +185,15 @@ def lambda_handler(event, context):
 }
 ```
 
-![alt text](./images/image-9.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-9.png)
 
 5. Replace `EMAIL_REMINDER_ARN` with your email reminder lambda function ARN.
 
-    ![alt text](./images/image-10.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-10.png)
 
 6. Goto **Config**, choose **RoleForStepFunction**, and **Create State Machine**.
 
-    ![alt text](./images/image-11.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-11.png)
 
 
 ### Step 4: Configure the API Handler Lambda Function
@@ -203,7 +204,7 @@ def lambda_handler(event, context):
 4. Choose **Runtime**: Python 3.x.
 5. Select **Execution Role**: `LambdaRuntimeRole`.
 
-    ![alt text](./images/image-12.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-12.png)
 
 6. Click **Create function**.
 7. Copy and paste the following code:
@@ -270,7 +271,7 @@ def lambda_handler(event, context):
    ```
 8. Replace `STEP_FUNCTION_ARN` with your step function ARN.
 
-    ![alt text](./images/image-13.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-13.png)
 
 9. Click **Deploy**.
 
@@ -280,23 +281,23 @@ def lambda_handler(event, context):
 2. Click **Create API** > **REST API**.
 3. Enter **API Name**: `reminders`.
 
-    ![alt text](./images/image-14.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-14.png)
 
 4. Click **Create Resource** and name it `reminders`.
 5. Enable **CORS**.
 
-    ![alt text](./images/image-15.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-15.png)
 
 6. Create a **POST method** for the `reminders` resource.
 7. Set **Integration type**: Lambda Function.
 8. Enable **Lambda Proxy Integration**.
 9. Select the **api_handler** function.
 
-    ![alt text](./images/image-16.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-16.png)
 
 10. Deploy the API to a **new stage** called `prod`.
 
-    ![alt text](./images/image-17.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-17.png)
 
 ### Step 6: Create a Static Website in S3
 
@@ -510,9 +511,9 @@ Now follow the following steps:
 
 1. Update `formlogic.js` in the static website folder to include the API Gateway URL. Update `UPDATE_TO_YOUR_INVOKE_URL_ENDPOINT` with your invoke URL endpoint.
 
-    ![alt text](./images/image-18.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-18.png)
 
-    ![alt text](./images/image-19.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-19.png)
 
     Save the file.
 
@@ -520,64 +521,64 @@ Now follow the following steps:
 3. Enter a globally unique **Bucket Name**.
 4. Enable **ACLs** and **Public Access**.
 
-    ![alt text](./images/image-20.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-20.png)
 
     Unblock public access:
 
-    ![alt text](./images/image-22.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-22.png)
 
 5. Goto the S3 bucket and upload website files (all files from `static_website` folder) then select them all and set **public-read access**.
 
-    ![alt text](./images/image-23.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-23.png)
 
-    ![alt text](./images/image-25.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-25.png)
 
-    ![alt text](./images/image-24.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-24.png)
 
 
 
 6. Goto **Properties**:
 
-    ![alt text](./images/image-26.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-26.png)
 
     Enable **Static website hosting**:
 
-    ![alt text](./images/image-27.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-27.png)
 
 
 
    - **Index document**: `index.html`
    - **Error document**: `error.html`
 
-    ![alt text](./images/image-28.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-28.png)
 
 7. Copy the **S3 website URL** and test.
 
-    ![alt text](./images/image-29.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-29.png)
 
 ### Step 7: Test the Application
 
 1. Open the static website.
 
-    ![alt text](./images/image-30.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-30.png)
 
 2. Fill in the form as follows and submit.
 
-    ![alt text](./images/image-31.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-31.png)
 
-    ![alt text](./images/image-32.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-32.png)
 
 3. Monitor Step Functions execution.
 
-    ![alt text](./images/image-33.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-33.png)
 
     Click the execution name:
 
-    ![alt text](./images/image-34.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-34.png)
 
 4. Check SES email delivery. It may be in spam folder.
 
-    ![alt text](./images/image-35.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2002/images/image-35.png)
 
 
 

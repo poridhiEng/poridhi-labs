@@ -2,7 +2,7 @@
 
 In this lab, we will continue extending our chat app by integrating Database for storing User information, messages and room data. We will use Redis for storing messages. Here is the architecture of the app:
 
-![alt text](image-3.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2003/images/image-3.png)
 
 ### Project Structure
 
@@ -62,9 +62,9 @@ We will create a simple UI for our application. We will create two pages:
 - `auth.html`: This page will contain a form for users to sign up or log in.
 - `chat.html`: This page will contain the chat interface.
 
-We use html css and js to create the UI for simplicity.
+> We have used html css and js to create the UI for simplicity. You can use any other framework or library to create the UI.
 
-**auth.html**
+### **auth.html**
 
 ```html
 <!DOCTYPE html>
@@ -125,7 +125,7 @@ We use html css and js to create the UI for simplicity.
 </html>
 ```
 
-**auth.css**
+###**auth.css**
 
 ```css
 body {
@@ -200,7 +200,9 @@ button:hover {
 ```
 This will create a simple login and registration page.
 
-**chat.html**
+### **chat.html**
+
+This page will contain the chat interface. We will use the `join` and `leave` methods to join and leave a room. We will also use the `to` method to send messages to a specific room.
 
 ```html
 <!DOCTYPE html>
@@ -252,7 +254,7 @@ This will create a simple login and registration page.
 </html>
 ```
 
-**index.css**
+###**index.css**
 
 ```css
 body {
@@ -452,7 +454,9 @@ body {
 }
 ```
 
-**auth.js**
+### **auth.js**
+
+This file contains the logic for the login and registration pages. We will use the `fetch` method to send the login and registration requests to the server.
 
 ```js
 function toggleForms() {
@@ -519,7 +523,9 @@ async function handleRegister(event) {
 }
 ```
 
-**index.js**
+### **index.js**
+
+This file contains the logic for the chat page. We will use the `io` method to connect to the server. We will also use the `on` method to listen for events from the server.
 
 ```js
 const userName = localStorage.getItem('username');
@@ -747,7 +753,7 @@ module.exports = { redisClient, connectRedis };
 
 We will create a `ChatModel` class in the `src/models/chat.js` file. This class will contain the methods for storing and retrieving data from the database. Here is the ER diagram of the database:
 
-![alt text](image-4.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2003/images/image-4.png)
 
 The ER diagram shows three main entities:
 
@@ -1050,7 +1056,7 @@ app.get('/', (req, res) => {
 
 Here is the sequence diagram for Real-time communication flow:
 
-![alt text](image-5.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2003/images/image-5.png)
 
 ## Redis Server Setup
 
@@ -1087,35 +1093,37 @@ volumes:
 
 1. Database: First we will run the Redis server by running the following command:
 
-```bash
-docker compose up
-```
+    ```bash
+    docker compose up
+    ```
 
 2. Server: Next we will run the server by running the following command:
 
-```bash
-npm run dev
-```
+    ```bash
+    npm run dev
+    ```
 
-3. To access the application, create a Load Balancer and follow the link provided by the Load Balancer.
+3. To access the application, create a Load Balancer with a PORT 3000 in Poridhi's dashboard and follow the link provided by the Load Balancer.
+
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2003/images/image-6.png)
 
 ## Application UI
 
-First user will be redirected to the login page. If the user does not have an account, they can sign up by clicking on the register button.
+First an user will be redirected to the login page. If the user does not have an account, they can sign up by clicking on the register button.
 
-![alt text](image-1.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2003/images/image-1.png)
 
 After registering, the user will be redirected to the login page. If the user already has an account, they can log in by clicking on the login button.
 
-![alt text](image.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2003/images/image.png)
 
 After logging in, the user will be redirected to the home page. The home page will have a list of rooms. The user can create a new room by clicking on the create room button.
 
-![alt text](image-2.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/Socket%20Labs/lab%2003/images/image-2.png)
 
 After creating a room, the user will be redirected to the room page. The user can send a message to the room to communicate with other users in the room.
 
-As we have deployed the application using Poridhi's loadBalancer, we can access the application from any device connected to the internet using the link provided by the loadBalancer.
+> As we have deployed the application using **Poridhi's loadBalancer**, we can access the application from any device connected to the internet using the link provided by the loadBalancer.
 
 ## Conclusion
 

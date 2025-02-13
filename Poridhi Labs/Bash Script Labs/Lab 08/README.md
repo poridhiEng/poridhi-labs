@@ -2,6 +2,8 @@
 
 Loops are essential for automating repetitive tasks in Bash scripts. They allow you to execute commands multiple times, process lists of data, and handle complex workflows efficiently. In this lab, you'll learn how to use different types of loops (`for`, `while`, `until`) and control statements (`break`, `continue`) to build dynamic scripts. We'll apply these concepts to a practical scenario: **Simulated Backup System with Controlled Failures**.
 
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/ca1bf8bba5b1d4868ffbbe51d7ca7d1638bb12fd/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/Basic-loop.svg)
+
 By the end of this lab, you will understand:
 - `for` loops (basic and iterating over arrays)
 - `while` and `until` loops
@@ -18,7 +20,7 @@ By the end of this lab, you will understand:
 ### 1. `for` Loops
 Iterate over a list of items or ranges.
 
-![alt text](./images/For-loop.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/ca1bf8bba5b1d4868ffbbe51d7ca7d1638bb12fd/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/For-loop.svg)
 
 #### Syntax:
 ```bash
@@ -48,6 +50,8 @@ chmod +x for_basic.sh
 ./for_basic.sh
 ```
 
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image.png)
+
 #### Example 2: Iterate Over Array
 
 Create `for_array.sh`:
@@ -74,11 +78,14 @@ chmod +x for_array.sh
 ./for_array.sh
 ```
 
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image-1.png)
+
 ### 2. `while` Loops
 
 Execute commands **while** a condition is true.
 
-![alt text](./images/While-loop.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/ca1bf8bba5b1d4868ffbbe51d7ca7d1638bb12fd/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/While-loop.svg)
+
 
 #### Syntax:
 ```bash
@@ -113,10 +120,13 @@ chmod +x while_countdown.sh
 ./while_countdown.sh
 ```
 
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image-2.png)
+
 ### 3. `until` Loops
 Execute commands `until` a condition becomes true.
 
-![alt text](./images/Until-loop.svg)
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/ca1bf8bba5b1d4868ffbbe51d7ca7d1638bb12fd/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/Until-loop.svg)
+
 
 #### Syntax:
 ```bash
@@ -170,6 +180,8 @@ echo "$file found! Proceeding..."
    important.log found! Proceeding...
    ```
 
+   ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image-3.png)
+
 ## Loop Control Statements
 
 ### `break`
@@ -194,6 +206,8 @@ chmod +x break_statement.sh
 ./break_statement.sh
 ```
 
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image-4.png)
+
 ### `continue`
 Skip the current iteration and proceed to the next.
 
@@ -208,13 +222,15 @@ for num in {1..5}; do
 done
 ```
 
-This script was supposed to print the numbers from 1 to 5, but because of `continue` statement, when it reaches 3, it will skip the current iteration and proceed to the next.
+This script was supposed to print the numbers from 1 to 5, but because of `continue` statement, when it reaches 3, it will skip the current iteration and proceed to the next iteration.
 
 **Execute and run the script:**
 ```bash
 chmod +x continue_statement.sh
 ./continue_statement.sh
 ```  
+
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image-5.png)
 
 ## Scenario: Simulated Backup System with Controlled Failures
 
@@ -241,11 +257,11 @@ The script is designed to **demonstrate all possible outcomes**, ensuring robust
 ```bash
 #!/bin/bash
 
-# Directories to back up (simulated)
+# Directories to back up
 directories=("docs" "images" "videos")
 
 # Backup destination
-backup_dir="/backups"
+backup_dir="backups"
 
 # Minimum free space required (in MB) - Simulated
 min_space=500
@@ -282,11 +298,14 @@ for dir in "${directories[@]}"; do
     # Simulate backup success/failure (50% chance of failure)
     backup_success=$(( RANDOM % 2 ))
 
-    # Simulated backup process
+    # Generate backup filename
     timestamp=$(date +%Y%m%d-%H%M%S)
     backup_file="$backup_dir/backup_${timestamp}_${dir}.tar.gz"
 
     if [ $backup_success -eq 0 ]; then
+      # Create an actual tar backup
+      tar -czf "$backup_file" "$dir"
+
       echo "✅ Backup successful: $backup_file"
       break
     else
@@ -307,7 +326,7 @@ done
 ### 1️⃣ **Setup Phase**
 - Creates the **source directories** (`docs`, `images`, `videos`) if they do not exist.
 - Adds a **sample file (`sample_file.txt`)** in each directory to simulate real content.
-- Creates the **backup destination (`/backups`)** if it does not exist.
+- Creates the **backup destination (`backups`)** if it does not exist.
 
 ### 2️⃣ **Simulating Disk Space Availability**
 - A random value **between 0 and 999 MB** is assigned to **simulate available disk space**.
@@ -318,23 +337,30 @@ done
 - A **random success/failure condition** (`backup_success=$(( RANDOM % 2 ))`) determines if the backup works.
 - If a failure occurs, the script **retries up to 3 times**.
 - If all retries fail, it logs a **critical failure message**.
+- If the backup is successful, the directory is compressed into a `.tar.gz` archive and stored in the `backups` directory. 
 
-### Expected Behaviors
-
-🔹 **Run the script multiple times** to observe different outcomes due to the randomized conditions:
-
-- If **disk space is insufficient**, the script exits immediately. 🚫
-- If **backup succeeds on the first attempt**, it moves to the next directory. ✅
-- If **backup fails**, it retries up to **3 times** before giving up. ⚠️❌
-
-## Running the Script
+### Running the Script
 
 ```bash
 chmod +x backup_system.sh
 ./backup_system.sh
 ```
 
-Run the script multiple times to **see different random outcomes**!
+### Expected Behaviors
+
+**Run the script multiple times** to observe different outcomes due to the randomized conditions:
+
+- If **disk space is insufficient**, the script exits immediately. 🚫
+
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image-6.png)
+
+- If **backup succeeds on the first attempt**, it moves to the next directory. ✅
+
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image-8.png)
+
+- If **backup fails**, it retries up to **3 times** before giving up. ⚠️❌
+
+  ![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image-7.png)
 
 ## Handling Infinite Loops
 
@@ -361,15 +387,21 @@ chmod +x infinite_loop.sh
 ./infinite_loop.sh
 ```
 
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image-9.png)
+
 **Fix**: Update the loop variable inside the loop in the script and run again:
 
 ```bash
+#!/bin/bash
 count=1
+
 while [ $count -le 5 ]; do
   echo "Iteration: $count"
   count=$((count + 1))  # Increment to eventually exit
 done
 ```
+
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image-10.png)
 
 ### Example 2: Intentional Infinite Loop with Controlled Exit
 
@@ -397,10 +429,13 @@ This Bash script continuously prompts the user to enter a command until they typ
 4. Otherwise, it prints `"Executing: <command>"`. Currently, the script only echoes the command instead of running it.
 
 **Run the script and check:**
+
 ```bash
 chmod +x infinite_with_exit.sh
 ./infinite_with_exit.sh
 ```
+
+![alt text](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/refs/heads/main/Poridhi%20Labs/Bash%20Script%20Labs/Lab%2008/images/image-11.png)
 
 ## Conclusion
 
