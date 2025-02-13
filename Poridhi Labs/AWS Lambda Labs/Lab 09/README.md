@@ -6,7 +6,7 @@ This guide explains how to deploy an EC2 instance with PostgreSQL using AWS Lamb
 
 Automating EC2 instance deployment with PostgreSQL using AWS Lambda and API Gateway simplifies infrastructure management. This serverless approach enables dynamic provisioning, efficient database operations, and secure API access. It’s ideal for applications requiring on-demand database instances, scalable cloud environments, and automated infrastructure setups.
 
-![](./1.svg)
+![](./images/1.svg)
 
 ## **1. Setting Up the Network Environment**  
 
@@ -22,7 +22,7 @@ Before deploying the EC2 instance, you need to create a VPC with the necessary n
 
 - Go to your VPC and see the resource map as follows: 
 
-    ![alt text](image.png)
+    ![alt text](./images/image.png)
 
 
 ## 2. Set Up Required IAM Roles
@@ -54,7 +54,7 @@ Before deploying the EC2 instance, you need to create a VPC with the necessary n
    - **Custom policy**: `EC2PassRolePolicy`
 5. Name the role `LambdaEC2DeploymentRole` and create it.
 
-    ![alt text](image-2.png)
+    ![alt text](./images/image-2.png)
 
 ### B. Create EC2 Role
 1. Go to IAM Console → Roles → Create Role
@@ -64,7 +64,7 @@ Before deploying the EC2 instance, you need to create a VPC with the necessary n
    - `AmazonEC2FullAccess`
 4. Name it `EC2SSMRole` and create the role.
 
-    ![alt text](image-24.png)
+    ![alt text](./images/image-24.png)
 
 
 ## 3. Create Security Group
@@ -75,7 +75,7 @@ Before deploying the EC2 instance, you need to create a VPC with the necessary n
    - **Type:** PostgreSQL (Port 5432) → **Source:** Anywhere-IPv4 (0.0.0.0/0)
    - **Type:** SSH (Port 22) → **Source:** Anywhere-IPv4 (0.0.0.0/0)
 
-    ![alt text](image-1.png)
+    ![alt text](./images/image-1.png)
 
 ## 4. Create Key Pair
 
@@ -97,7 +97,7 @@ Before deploying the EC2 instance, you need to create a VPC with the necessary n
    - **Permissions:** Use existing role → `LambdaEC2DeploymentRole`
 4. Set timeout to **5 minutes** in Configuration → General Configuration
 
-    ![alt text](image-3.png)
+    ![alt text](./images/image-3.png)
 
 5. Replace the code in the Lambda function with:
 
@@ -200,9 +200,9 @@ Replace the `ImageId`, `SecurityGroupIds`, `SubnetId` in `instance_params` with 
         ```
     - Click **Save** then click **Test**
 
-    - You will see a EC2 creation was successful and MongoDB was setup successfully.
+    - You will see a EC2 creation was successful and PostgreSQL was setup successfully.
 
-       ![alt text](image-4.png)
+       ![alt text](./images/image-4.png)
 
 
 
@@ -222,7 +222,7 @@ Replace the `ImageId`, `SecurityGroupIds`, `SubnetId` in `instance_params` with 
 
 4. Set timeout to **5 minutes** in Configuration → General Configuration   
 
-    ![alt text](image-6.png)
+    ![alt text](./images/image-6.png)
 
 5. Replace the code with:
 
@@ -290,7 +290,7 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
 
 4. Set timeout to **5 minutes** in Configuration → General Configuration   
 
-    ![alt text](image-5.png)
+    ![alt text](./images/image-5.png)
 
 5. Replace the code with:
 
@@ -299,7 +299,7 @@ import psycopg2
 import json
 
 # PostgreSQL Configuration
-DB_HOST = "47.129.98.20"  # Replace with your EC2 public IP
+DB_HOST = "your-ec2-public-ip"  # Replace with your EC2 public IP
 DB_USER = "myappuser"
 DB_PASSWORD = "MyAppPassword123"
 DB_NAME = "myapp"
@@ -342,14 +342,24 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
 
 ### Steps to Create and Attach a Custom Layer
 
-1. Intall `zip` in your local machine if not already installed:
+1. Intall `zip` in your local machine if not already installed. Install the python 3.9 version for this lab:
 
     ```bash
     sudo apt update
     sudo apt install zip
+    sudo apt install python3.9 -y
+    sudo apt install python3.9-distutils -y
+    curl -sS https://bootstrap.pypa.io/get-pip.py | python3.9
     ```
 
-2. Install `pymongo` locally:
+    Check installation:
+
+    ```bash
+    python3.9 --version
+    python3.9 -m pip --version
+    ```
+
+2. Install `psycopg2` locally:
 
    ```bash
    mkdir -p python/lib/python3.9/site-packages
@@ -364,7 +374,7 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
    - Upload the `psycopg2_layer.zip` file.
    - Choose compatible runtimes (e.g., Python 3.9).
 
-        ![alt text](image-7.png)
+        ![alt text](./images/image-7.png)
 
    - Click **Create**.
 
@@ -375,35 +385,11 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
    - Select **Custom layers** and choose `psycopg2_layer`.
    - Select available version.
 
-        ![alt text](image-8.png)
+        ![alt text](./images/image-8.png)
 
    - Click **Add**.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- 
 
 
 ## 8. Test `create_user` and `fetch_user` lambda functions
@@ -418,9 +404,9 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
         ```
     - Click **Save** then click **Test**
 
-    - You will see a post has been created successfully.
+    - You will see a user has been created successfully.
 
-        ![alt text](./images/image-8.png)
+        ![alt text](./images/image-9.png)
 
 
 2. Test the `fetch_user` lambda function
@@ -433,9 +419,9 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
         ```
     - Click **Save** then click **Test**
 
-    - You will see demo post fetched successfully.
+    - You will see demo user fetched successfully.
 
-        ![alt text](./images/image-9.png)
+        ![alt text](./images/image-10.png)
 
 
 
@@ -444,31 +430,22 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
 1. Go to API Gateway Console → Create API → **REST API**.
 
 2. Name it `My-REST-API`.
-3. Create resources `/deploy`, and `/posts`.
 
-    ![alt text](./images/image-16.png)
+3. Create resources `/deploy`, `/create-user`, and `/fetch-user`.
 
-    ![alt text](./images/image-10.png)
+    ![alt text](./images/image-11.png)
 
 
 
 4. Add methods:
 
-     - **POST** for `/deploy` → Integration type: **Lambda Function** → Select `deploy_mongodb`.
+   - **POST** for `/deploy` → Integration type: **Lambda Function** → Select `EC2PostgreSQLDeployment`
 
-        ![alt text](./images/image-15.png)
+   - **POST** for `/create-user` → Integration type: **Lambda Function** → Select `create_user`
 
-        ![alt text](./images/image-17.png)
+   - **GET** for `/fetch-user` → Integration type: **Lambda Function** → Select `fetch_user`
 
-   - **POST** for `/posts` → Integration type: **Lambda Function** → Select `create_user`.
-
-        ![alt text](./images/image-11.png)
-    
-   - **GET** for `/posts` → Integration type: **Lambda Function** → Select `fetch_user`.
-
-        ![alt text](./images/image-12.png)
-
-        ![alt text](./images/image-18.png)
+   ![alt text](./images/image-12.png)
 
 5. Deploy API → Create a new stage `prod`.
 
@@ -479,13 +456,13 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
 
      You can get the invoke url from the **Stages** of your REST API. 
 
-     ![alt text](./images/image-14.png)
+    ![alt text](./images/image-13.png)
 
 
 
-2. **Test MongoDB Deployment**:
+2. **Test PostgreSQL Deployment**:
     
-    Use the `/deploy` endpoint to deploy MongoDB on EC2. Replace `<Invoke URL>` with the invoke url your API
+    Use the `/deploy` endpoint to deploy PostgreSQL on EC2. Replace `<Invoke URL>` with the invoke url your API invoke URL.
 
    ```bash
    curl -X POST <Invoke URL>/deploy
@@ -493,40 +470,34 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
 
    Expected output:
 
-    ![alt text](./images/image-19.png)
+    ![alt text](./images/image-14.png)
 
 
-Before using the following command, change the EC2 IP address in your `create_user` and `fetch_user` lambda functions and deploy again.
+Before using the following command, change the EC2 IP address in `DB_HOST` variable in your `create_user` and `fetch_user` lambda functions and deploy again.
 
-![alt text](./images/image-20.png)
-
-![alt text](./images/image-21.png)
-
-3. **Test POST Request**:
+3. **Test creating user**:
   
-   Use the `/posts` endpoint to create a post. Replace `<Invoke URL>` with the invoke url your API
+   Use the `/create-user` endpoint to create a new user. Replace `<Invoke URL>` with the invoke url your API invoke URL.
 
    ```bash
-   curl -X POST <Invoke URL>/posts \
-   -H "Content-Type: application/json" \
-   -d '{"title": "My First Post", "content": "This is a test post."}'
+   curl -X POST <Invoke URL>/create-user
    ```
 
    Expected output:
 
-    ![alt text](./images/image-22.png)
+    ![alt text](./images/image-15.png)
 
-4. **Test GET Request**:
+4. **Test fetching user**:
 
-    Use the `/posts` endpoint to fetch all posts. Replace `<Invoke URL>` with the invoke url your API
+    Use the `/fetch-user` endpoint to fetch user. Replace `<Invoke URL>` with the invoke url your API invoke URL.
 
    ```bash
-   curl -X GET <Invoke URL>/posts
+   curl -X GET <Invoke URL>/fetch-user
    ```
 
    Expected output:
 
-    ![alt text](./images/image-23.png)
+    ![alt text](./images/image-16.png)
 
 
 
@@ -535,5 +506,5 @@ Before using the following command, change the EC2 IP address in your `create_us
 
 ## Conclusion  
 
-In this guide, we successfully automated the deployment of an EC2 instance with MongoDB using AWS Lambda and API Gateway. We also implemented Lambda functions for database operations, ensuring secure and efficient user management. This approach streamlines infrastructure provisioning while maintaining flexibility and scalability for cloud-based applications.
-  -->
+In this guide, we successfully automated the deployment of an EC2 instance with PostgreSQL using AWS Lambda and API Gateway. We also implemented Lambda functions for database operations, ensuring secure and efficient user management. This approach streamlines infrastructure provisioning while maintaining flexibility and scalability for cloud-based applications.
+ 
