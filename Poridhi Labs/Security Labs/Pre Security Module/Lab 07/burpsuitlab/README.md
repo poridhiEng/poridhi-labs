@@ -1,8 +1,6 @@
-# **Reflected XSS: Bypassing HTML Encoding with Burp Suite**
+# **Bypassing HTML Encoding with Burp Suite**
 
-Cross-site Scripting (XSS) is a critical security vulnerability that allows attackers to inject and execute malicious scripts within a web application. **Reflected XSS** occurs when a user's input is included in the response of a web application without proper sanitization.
-
-A specific type of this attack, **Reflected XSS in JS string with HTML encoding.**, arises when user input is inserted into a JavaScript string without proper encoding, allowing attackers to manipulate script execution. In this lab, we will simulate **Reflected XSS** in a vulnerable web application and systematically **test all possible HTML tags** using **Burp Suite** to find an effective payload. By doing so, we will learn how attackers exploit such vulnerabilities and understand the importance of strong security measures.
+In Reflected XSS, a user's input is included in the response of a web application without proper sanitization. When an application is vulnerable to Reflected XSS, an attacker can exploit the application by injecting a malicious script in the input field. In this lab, we will simulate **Reflected XSS** in a vulnerable web application and systematically **test all possible HTML tags** using **Burp Suite** to find an effective payload. By doing so, we will learn how attackers exploit such vulnerabilities and understand the importance of strong security measures.
 
 ## **Objective**  
 
@@ -51,9 +49,9 @@ But in `HTML` we have more than 100 tags, for attackers it is very difficult to 
 
 ## **How Burp Suite Bypass HTML Encoding**  
 
-Burp Suite is an advanced web security tool that can help identify vulnerabilities in web applications, including **bypassing HTML encoding protections**. One of its core features, **Intruder**, plays a crucial role in testing how a web server processes encoded HTML inputs and whether they can be exploited.  
+Burp Suite is an advanced web security tool that can help identify vulnerabilities in web applications, including **bypassing HTML encoding protections**. One of its core features, **Intruder**, plays a crucial role in testing how a web server processes encoded HTML inputs and whether they can be exploited. 
 
-Here’s how **Burp Suite** operates in this context:  
+![](./images/logo1.svg)
 
 ### **Capturing and Modifying Requests**  
 Burp Suite’s **Proxy** intercepts the request sent from the browser to the server, allowing an attacker to examine the structure of the request. If the request contains a user input field (such as a form or search bar), Burp Suite extracts and isolates the specific parameter where HTML encoding protections might be applied.  
@@ -71,6 +69,9 @@ Burp Suite’s **Intruder** automates the process of sending multiple variations
 Intruder **systematically injects** these payloads into the selected parameter and sends them to the server to analyze the response.  
 
 ### **Analyzing Server Responses**  
+
+![](./images/logo2.svg)
+
 Burp Suite **monitors the behavior** of the server when different encoded versions of the payload are received. It does this by:  
 
 - **Comparing HTTP Response Codes:** If different encoding formats return different HTTP status codes (e.g., `200 OK` for successful execution, `403 Forbidden` for blocked input), it indicates how the server processes the input.  
