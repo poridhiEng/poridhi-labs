@@ -1,4 +1,4 @@
-# **Bypassing HTML Encoding with Burp Suite**
+# **Bypassing HTML Encoding**
 
 In Reflected XSS, a user's input is included in the response of a web application without proper sanitization. When an application is vulnerable to Reflected XSS, an attacker can exploit the application by injecting a malicious script in the input field. In this lab, we will simulate **Reflected XSS** in a vulnerable web application and systematically **test all possible HTML tags** using **Burp Suite** to find an effective payload. By doing so, we will learn how attackers exploit such vulnerabilities and understand the importance of strong security measures.
 
