@@ -1,4 +1,4 @@
-# **Stored XSS Attack**
+# **Stored XSS Attack in AWS**
 
 Web security vulnerabilities can expose users and applications to severe risks, such as data theft, unauthorized access, or service disruption. Among these vulnerabilities, **Cross-Site Scripting (XSS)** is one of the most common and dangerous attacks. We will also perform a `Stored XSS` attack on an application hosted in `AWS` to understand how it works. We also will learn how to prevent `Stored XSS` attacks.
 ## **Objective**
@@ -16,7 +16,7 @@ The objective of this project is to:
 
 ## **Types of XSS**
 
-![](./images/3.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2002/images/3.svg)
 
 ### **1. Reflected XSS**  
 The malicious script is included in the request URL or form data and is immediately returned by the server without being stored. This type of XSS is often used in phishing attacks.
@@ -32,7 +32,7 @@ The malicious script manipulates the Document Object Model (DOM) on the client s
 
 ### **How Stored XSS Works**
 
-![](./images/1.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2002/images/1.svg)
 #### **1.Inject Malicious Script**  
 An attacker inserts a harmful script (e.g., `<script>alert('XSS Attack');</script>`) through an input field like a comment box. The application doesn’t validate or clean the input, so it accepts and saves the script.
 
@@ -65,13 +65,13 @@ To Deploy the `Application` in `AWS` first we need to create the infrastructure.
 
 ## **Create the Infrastructure with `Terraform`**
 
-![](./images/awslogo.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2002/images/awslogo.svg)
 
 ### **Step 1: Configure aws credentials**
 
 To get `AWS` Credententals open the lab landing page in right bottom corner in `Poridhi`, Click on Generate Credentails for `AWS`.
 
-![](./images/awsconfig.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2002/images/awsconfig.png)
 
 It will provide necessary credentials to access `AWS` services.
 
@@ -82,7 +82,7 @@ To Configure the `AWS` try the following command:
 ```bash
 aws configure
 ```
-![](./images/awsconfig2.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2002/images/awsconfig2.png)
 
 Use the `Access Key ID` and `Secret Access Key` that was copied to configure the `AWS` credentials. For `region` type `ap-southeast-1` and format as `json`.
 
@@ -263,7 +263,7 @@ Get the public IP of the EC2 instance from the output of the `terraform output` 
 ```bash
 terraform output
 ```
-![](./images/aws7.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2002/images/aws7.png)
 
 copy the `Public IP` of the `ec2 instance`.
 
@@ -276,7 +276,7 @@ If you ssh for first time, it will ask for `yes` to continue.
 
 Now you are successfully ssh into the `ec2-instance`.
 
-![](./images/aws8.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2002/images/aws8.png)
 
 ### **Step 6: Install Docker on the EC2 Instance**
 
@@ -347,29 +347,29 @@ By using the following command you can check the status of the container
 ```bash
 docker ps
 ```
-![](./images/aws9.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2002/images/aws9.png)
 
 ### **Step 4: Access the Application**
 
 Now you can access the application by going to the `http://<public-ip>:8000` in the browser.
 
-![](./images/aws1.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2002/images/aws1.png)
 
 
 ## **Exploring the Application**
 
 If you first time open the application, you need to create a new user in `Sign up` page.
 
-![](./images/aws2.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2002/images/aws2.png)
 
 
 After creating a new user, you can login to the application. After login, you will see the `Home` page.
 
-![](./images/aws3.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2002/images/aws3.png)
 
 This is a simple application where you can add a comment to the blog. Try with `your comment` in `Comment` field. The comment will be stored in the database and will be displayed on the page.
 
-![](./images/aws4.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2002/images/aws4.png)
 
 Now, if you enter a comment with malicious script, like 
 
@@ -377,11 +377,11 @@ Now, if you enter a comment with malicious script, like
 <script>alert('XSS Attack!')</script>
 ```
 
-![](./images/aws5.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2002/images/aws5.png)
 
 The script will be executed in the browser and will show an alert box.
 
-![](./images/aws6.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2002/images/aws6.png)
 
 The interesting part is that, now if open another tab on the browser and open the application with the `<PublicIP>:8000` you will see the alert box. Every time you open the application, the alert box will be shown. This is because the script is stored in the database and is executed whenever the page is loaded.
 
@@ -399,7 +399,7 @@ The interesting part is that, now if open another tab on the browser and open th
 
 To prevent stored XSS attacks, implement the following security measures:
 
-![](./images/2.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2002/images/2.svg)
 
 #### **1. User Input**
 The process starts when a user submits data, such as a comment or form input, through the web application interface. This input could potentially contain harmful scripts.

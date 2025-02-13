@@ -11,10 +11,10 @@ The objective of this project is to:
 ## **What is XSS?**
 **Cross-Site Scripting (XSS)** is a web security vulnerability that allows attackers to inject malicious scripts into web pages viewed by other users. When a vulnerable web page fails to properly handle untrusted user input, attackers can execute scripts in the browsers of other users, leading to various security risks.
 
-
 ## **Types of XSS**
 
-![](./images/3.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2001/images/3.svg)
+
 
 ### **1. Reflected XSS**  
 The malicious script is included in the request URL or form data and is immediately returned by the server without being stored. This type of XSS is often used in phishing attacks.
@@ -30,7 +30,7 @@ The malicious script manipulates the Document Object Model (DOM) on the client s
 
 ### **How Stored XSS Works**
 
-![](./images/1.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2001/images/1.svg)
 #### **1.Inject Malicious Script**  
 An attacker inserts a harmful script (e.g., `<script>alert('XSS Attack');</script>`) through an input field like a comment box. The application doesn’t validate or clean the input, so it accepts and saves the script.
 
@@ -77,26 +77,26 @@ To find the `eth0` ip address, run the following command.
 ```bash
 ifconfig
 ```
-![](./images/10.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2001/images/10.png)
 
 With `Loadbalancer` `URL` you can open the application from any browser.
 
-![](./images/5.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2001/images/5.png)
 
 ### **Step 4: Exploring the Application**
 
 If you first time open the application, you need to create a new user in `Sign up` page.
 
-![](./images/4.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2001/images/4.png)
 
 
 After creating a new user, you can login to the application. After login, you will see the `Home` page.
 
-![](./images/6.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2001/images/6.png)
 
 This is a simple application where you can add a comment to the blog. Try with `your comment` in `Comment` field. The comment will be stored in the database and will be displayed on the page.
 
-![](./images/7.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2001/images/7.png)
 
 Now, if you enter a comment with malicious script, like 
 
@@ -104,11 +104,11 @@ Now, if you enter a comment with malicious script, like
 <script>alert('XSS Attack!')</script>
 ```
 
-![](./images/8.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2001/images/8.png)
 
 The script will be executed in the browser and will show an alert box.
 
-![](./images/9.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2001/images/9.png)
 
 The interesting part is that, now if open another tab on the browser and open the application with the `loadbalancer URL` you will see the alert box. Every time you open the application, the alert box will be shown. This is because the script is stored in the database and is executed whenever the page is loaded.
 
@@ -126,7 +126,7 @@ The interesting part is that, now if open another tab on the browser and open th
 
 To prevent stored XSS attacks, implement the following security measures:
 
-![](./images/2.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Stored%20XSS%20Labs/Lab%2001/images/2.svg)
 
 #### **1. User Input**
 The process starts when a user submits data, such as a comment or form input, through the web application interface. This input could potentially contain harmful scripts.

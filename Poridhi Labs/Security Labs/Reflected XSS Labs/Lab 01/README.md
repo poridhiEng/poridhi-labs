@@ -13,7 +13,7 @@ Cross-Site Scripting (XSS) is a critical security vulnerability in web applicati
 
 XSS is a **web security vulnerability** where attackers inject **malicious scripts** into web pages. These scripts can manipulate the DOM, steal sensitive data, and impersonate users. XSS attacks usually exploit vulnerabilities in input handling and output rendering in web applications.
 
-![](./images/1.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Reflected%20XSS%20Labs/Lab%2001/images/1.svg)
 
 ## **How Does XSS Work?**
 
@@ -63,7 +63,7 @@ Once executed, the script can perform harmful actions such as:
 
 ## **Types of XSS Attacks**
 
-![](./images/3.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Reflected%20XSS%20Labs/Lab%2001/images/3.svg)
 
 ### **1. Stored XSS (Persistent XSS)**  
 In **Stored XSS**, the malicious input is saved on the server, such as in a database. It gets embedded in a web page and automatically executed whenever a user accesses that page. For example, an attacker could post a comment containing a script, which runs whenever someone views the comment.
@@ -81,7 +81,7 @@ Reflected XSS, also known as **non-persistent XSS**, occurs when the web applica
 
 ### **How Reflected XSS Works**
 
-![](./images/2.svg)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Reflected%20XSS%20Labs/Lab%2001/images/2.svg)
 
 1. **Attacker Crafts Malicious URL**  
    The hacker creates a URL containing a malicious script and tricks the user into clicking it.
@@ -119,17 +119,17 @@ Reflected XSS, also known as **non-persistent XSS**, occurs when the web applica
 
    Find the `eth0` IP address with `ifconfig` command.
 
-   ![](./images/3.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Reflected%20XSS%20Labs/Lab%2001/images/3.png)
 
    Create a Load Balancer with the `eth0 IP` address and the port `8000`
 
-   ![](./images/4.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Reflected%20XSS%20Labs/Lab%2001/images/4.png)
 
 4. **Access the Web Application**
 
    Access the web application with the the provided `URL` by `loadbalancer`
 
-   ![](./images/5.png)
+   ![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Reflected%20XSS%20Labs/Lab%2001/images/5.png)
 
 
 ### **Exploring the Application**
@@ -138,7 +138,7 @@ This web app designed to demonstrate Reflected XSS attacks. It allows users to i
 
 In `Home` page, if we enter any value in the `name` field, it will be reflected in the `results` field and greet the user with the value entered in the `field`.
 
-![](./images/6.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Reflected%20XSS%20Labs/Lab%2001/images/6.png)
 
 Now, if we enter the following value in the `name` field:
 
@@ -148,23 +148,23 @@ Now, if we enter the following value in the `name` field:
 
 The value will be reflected in the `results` field and the script will be executed.
 
-![](./images/7.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Reflected%20XSS%20Labs/Lab%2001/images/7.png)
 
 Now if open the `inspect` tool ( By pressing `Ctrl + Shift + I` in the browser) and check the `elements` tab, we can see that the value entered in the `name` field is reflected in the `results` field and the script is executed.
 
-![](./images/8.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Reflected%20XSS%20Labs/Lab%2001/images/8.png)
 
 In the Application, you will find a `Button` named `Special Greeting`.
 
-![](./images/9.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Reflected%20XSS%20Labs/Lab%2001/images/9.png)
 
 If we click on the the Button, it will redirect you to `/whatWasHappen` page with a modal indicating that the information is being `hacked`. It basically send the browser to `/whatWasHappen` route within the application.
 
-![](./images/10.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Reflected%20XSS%20Labs/Lab%2001/images/10.png)
 
 Now as your information is being `hacked`, you can see the `hacked` information by clicking on `View Stolen Data` Button.
 
-![](./images/12.png)
+![](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/a43b4c94a5b3db97ab2e931b9fea39c3a74de332/Poridhi%20Labs/Security%20Labs/Reflected%20XSS%20Labs/Lab%2001/images/12.png)
 
 
 ## **How to Prevent Reflected XSS**
