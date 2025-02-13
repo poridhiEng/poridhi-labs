@@ -40,12 +40,14 @@ In this hands-on lab, you will learn how to build and deploy a fully serverless 
     - **Minimum capacity**: **1**  
     - **Maximum capacity**: **5**  
     - **Target utilization**: **20%**  
+    
+![image](https://s3.brilliant.com.bd/blog-bucket/thumbnail/1d0863a3-f900-484a-bdaa-120ad9035dbc.png)
 
 ### **6. Configure Encryption**  
 - Under **Encryption at rest settings**, select **AWS managed key** (default).  
 
 
-![image](https://s3.brilliant.com.bd/blog-bucket/thumbnail/1d0863a3-f900-484a-bdaa-120ad9035dbc.png)
+
 
 ### **7. Create the Table**  
 - Scroll to the bottom and click **Create table**.  
