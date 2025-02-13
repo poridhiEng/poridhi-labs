@@ -3,7 +3,7 @@
 In this hands-on lab, you will learn how to build and deploy a fully serverless application using key AWS services. The lab will guide you through setting up an architecture that integrates **Amazon API Gateway**, **AWS Lambda**, and **Amazon DynamoDB** to create a scalable and cost-effective solution. By the end of the session, you will have hands-on experience in deploying a cloud-based application without managing any servers.
 
 
-
+![image](./images/dynamo.drawio%20.png)
  
 
 ---
