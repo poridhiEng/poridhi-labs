@@ -6,7 +6,9 @@ This guide explains how to deploy an EC2 instance with MongoDB using AWS Lambda 
 
 Automating EC2 instance deployment with MongoDB using AWS Lambda and API Gateway simplifies infrastructure management. This serverless approach enables dynamic provisioning, efficient database operations, and secure API access. It’s ideal for applications requiring on-demand database instances, scalable cloud environments, and automated infrastructure setups.
 
-![](./images/1.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2008/images/1.svg)
+
+
 
 ## **1. Setting Up the Network Environment**  
 
@@ -22,7 +24,7 @@ Before deploying the EC2 instance, you need to create a VPC with the necessary n
 
 - Go to your VPC and see the resource map as follows: 
 
-    ![alt text](./images/image.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2008/images/image.png)
 
 
 ## 2. Set Up Required IAM Roles
@@ -54,7 +56,7 @@ Before deploying the EC2 instance, you need to create a VPC with the necessary n
    - **Custom policy**: `EC2PassRolePolicy`
 5. Name the role `LambdaMongoDBDeploymentRole` and create it.
 
-    ![alt text](./images/image-2.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2008/images/image-2.png)
 
 ### B. Create EC2 Role
 1. Go to IAM Console → Roles → Create Role
@@ -64,7 +66,7 @@ Before deploying the EC2 instance, you need to create a VPC with the necessary n
    - `AmazonEC2FullAccess`
 4. Name it `EC2SSMRole` and create the role.
 
-    ![alt text](./images/image-24.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2008/images/image-24.png)
 
 
 ## 3. Create Security Group
@@ -186,7 +188,7 @@ Replace the `ImageId`, `SecurityGroupIds`, `SubnetId` in `instance_params` with 
 
     - You will see a EC2 creation was successful and MongoDB was setup successfully.
 
-        ![alt text](./images/image-3.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2008/images/image-3.png)
 
 
 
@@ -336,7 +338,7 @@ Replace the `MONGO_HOST` value with your EC2 instance public IP.
    - Upload the `pymongo_layer.zip` file.
    - Choose compatible runtimes (e.g., Python 3.9).
 
-        ![alt text](./images/image-4.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2008/images/image-4.png)
 
    - Click **Create**.
 
@@ -347,7 +349,7 @@ Replace the `MONGO_HOST` value with your EC2 instance public IP.
    - Select **Custom layers** and choose `pymongo_layer`.
    - Select available version.
 
-        ![alt text](./images/image-7.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2008/images/image-7.png)
 
    - Click **Add**.
 
@@ -365,7 +367,7 @@ Replace the `MONGO_HOST` value with your EC2 instance public IP.
 
     - You will see a post has been created successfully.
 
-        ![alt text](./images/image-8.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2008/images/image-8.png)
 
 
 2. Test the `fetch_posts` lambda function
@@ -380,7 +382,7 @@ Replace the `MONGO_HOST` value with your EC2 instance public IP.
 
     - You will see demo post fetched successfully.
 
-        ![alt text](./images/image-9.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2008/images/image-9.png)
 
 
 
@@ -391,9 +393,9 @@ Replace the `MONGO_HOST` value with your EC2 instance public IP.
 2. Name it `My-REST-API`.
 3. Create resources `/deploy`, and `/posts`.
 
-    ![alt text](./images/image-16.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2008/images/image-16.png)
 
-    ![alt text](./images/image-10.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2008/images/image-10.png)
 
 
 
@@ -401,19 +403,19 @@ Replace the `MONGO_HOST` value with your EC2 instance public IP.
 
      - **POST** for `/deploy` → Integration type: **Lambda Function** → Select `deploy_mongodb`.
 
-        ![alt text](./images/image-15.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2008/images/image-15.png)
 
-        ![alt text](./images/image-17.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2008/images/image-17.png)
 
    - **POST** for `/posts` → Integration type: **Lambda Function** → Select `create_post`.
 
-        ![alt text](./images/image-11.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2008/images/image-11.png)
     
    - **GET** for `/posts` → Integration type: **Lambda Function** → Select `fetch_posts`.
 
-        ![alt text](./images/image-12.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2008/images/image-12.png)
 
-        ![alt text](./images/image-18.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2008/images/image-18.png)
 
 5. Deploy API → Create a new stage `prod`.
 
@@ -424,7 +426,7 @@ Replace the `MONGO_HOST` value with your EC2 instance public IP.
 
      You can get the invoke url from the **Stages** of your REST API. 
 
-     ![alt text](./images/image-14.png)
+     ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2008/images/image-14.png)
 
 
 
@@ -438,14 +440,14 @@ Replace the `MONGO_HOST` value with your EC2 instance public IP.
 
    Expected output:
 
-    ![alt text](./images/image-19.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2008/images/image-19.png)
 
 
 Before using the following command, change the EC2 IP address in your `create_post` and `fetch_posts` lambda functions and deploy again.
 
-![alt text](./images/image-20.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2008/images/image-20.png)
 
-![alt text](./images/image-21.png)
+![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2008/images/image-21.png)
 
 3. **Test POST Request**:
   
@@ -459,7 +461,7 @@ Before using the following command, change the EC2 IP address in your `create_po
 
    Expected output:
 
-    ![alt text](./images/image-22.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2008/images/image-22.png)
 
 4. **Test GET Request**:
 
@@ -471,7 +473,7 @@ Before using the following command, change the EC2 IP address in your `create_po
 
    Expected output:
 
-    ![alt text](./images/image-23.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2008/images/image-23.png)
 
 
 

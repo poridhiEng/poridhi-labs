@@ -2,7 +2,8 @@
 
 AWS Lambda is a powerful serverless compute service that enables you to run code without the complexity of provisioning or managing servers. It automatically scales your applications by running code in response to events, making it an efficient choice for building microservices, event-driven applications, and backend services. AWS Lambda supports various programming languages, including NodeJS, which will be used in this lab.
 
-![](./images/1.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2001/images/1.svg)
+
 
 In this hands-on lab, you will create a Lambda function using the NodeJS within the AWS Management Console. 
 
@@ -62,7 +63,7 @@ By following these steps, you will develop foundational knowledge that will help
    - **Runtime**: Select the latest version of **NodeJS**.
    - **Execution role**: Expand **Change default execution role** and verify that **Create a new role with basic Lambda permissions** is selected.
         
-    ![alt text](./images/image.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2001/images/image.png)
 
 5. Click **Create function**.
 
@@ -83,14 +84,14 @@ Once the function is created, scroll down to the **Code** tab.
     };
     ```
 
-    ![alt text](./images/image-1.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2001/images/image-1.png)
 3. Click **Deploy**.
 
 ### Step 4: Create a Test Event and Execute the Lambda Function
 1. Click **Test**, then select **Configure test event**.
 2. Enter `myTest` in the **Event name** field.
 
-    ![alt text](./images/image-2.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2001/images/image-2.png)
 
 3. Replace the sample event JSON with the following:
 
@@ -104,7 +105,7 @@ Once the function is created, scroll down to the **Code** tab.
 6. Click **Test** to execute the function.
 7. Review the execution results displayed on the screen.
 
-    ![alt text](./images/image-3.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2001/images/image-3.png)
 
 
 

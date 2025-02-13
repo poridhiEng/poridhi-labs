@@ -3,7 +3,8 @@
 
 AWS Lambda is a serverless compute service that allows running code without provisioning or managing servers. In this hands-on lab, we will write a Lambda function in Python using the Boto3 library to create an EC2 instance. We will also set up an IAM role with a custom execution policy for our Lambda function. Once the instance is created, we will connect to it via SSH.
 
-![](./images/1.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2003/images/1.svg)
+
 
 ### **Use Cases**
 - Automating EC2 instance provisioning for on-demand workloads.
@@ -31,7 +32,7 @@ We will:
 4. Enter a key pair name (e.g., `LambdaEC2keypair`).
 5. Click **Create** and download the private key file (`.pem`).
     
-    ![alt text](./images/image.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2003/images/image.png)
 
 6. Store the file securely, as it will be needed for SSH access.
 
@@ -43,7 +44,7 @@ We will:
    - **Runtime**: `Python 3.x`
    - **Role**: `Create a new role with basic Lambda permissions`
 
-        ![alt text](./images/image-1.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2003/images/image-1.png)
 
 4. Expand **Choose or create an execution role**.
 5. Copy the execution role name and save it for later use.
@@ -55,7 +56,7 @@ We will:
 2. Click **Roles** and search for the role created (in our case: `CreateEC2-role-6d4vz5u0`) for Lambda.
 3. Select the role and click the attached policy.
 
-    ![alt text](./images/image-2.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2003/images/image-2.png)
 
 4. Click **Edit policy > JSON** and replace the existing policy with:
 

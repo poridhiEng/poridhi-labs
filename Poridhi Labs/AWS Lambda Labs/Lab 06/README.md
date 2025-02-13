@@ -5,7 +5,7 @@ This guide explains how to deploy an EC2 instance with MySQL using AWS Lambda an
 
 Automating EC2 instance deployment with MySQL using AWS Lambda and API Gateway simplifies infrastructure management. This serverless approach enables dynamic provisioning, efficient database operations, and secure API access. It’s ideal for applications requiring on-demand database instances, scalable cloud environments, and automated infrastructure setups.
 
-![](./images/1.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/1.svg)
 
 ## **1. Setting Up the Network Environment**  
 
@@ -21,7 +21,7 @@ Before deploying the EC2 instance, you need to create a VPC with the necessary n
 
 - Go to your VPC and see the resource map as follows: 
 
-    ![alt text](./images/image-18.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/image-18.png)
 
 
 ## 2. Set Up Required IAM Roles
@@ -54,7 +54,7 @@ Before deploying the EC2 instance, you need to create a VPC with the necessary n
    
 5. Name it `LambdaEC2DeploymentRole` and create the role.
 
-    ![alt text](./images/image-19.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/image-19.png)
 
 ### B. Create EC2 Role
 1. Go to IAM Console → Roles → Create Role
@@ -64,7 +64,7 @@ Before deploying the EC2 instance, you need to create a VPC with the necessary n
    - `AmazonEC2FullAccess`
 4. Name it `EC2SSMRole` and create the role.
 
-    ![alt text](./images/image-20.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/image-20.png)
 
 
 
@@ -75,7 +75,7 @@ Before deploying the EC2 instance, you need to create a VPC with the necessary n
    - **Type:** MySQL/Aurora (Port 3306) → **Source:** Anywhere-IPv4
    - **Type:** SSH (Port 22) → **Source:** Anywhere-IPv4
 
-    ![alt text](./images/image-21.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/image-21.png)
 
 4. Click **Create security group**.
 
@@ -86,7 +86,7 @@ Before deploying the EC2 instance, you need to create a VPC with the necessary n
 4. Click **Create key pair**.
 4. Then download the key.
 
-    ![alt text](./images/image-22.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/image-22.png)
 
 
 ## 5. Create Lambda Function for EC2 Deployment
@@ -233,7 +233,7 @@ Replace the `ImageId`, `SecurityGroupIds`, `SubnetId` in `instance_params` with 
 
     - You will see a EC2 creation was successful and MySQL was installed successfully.
 
-        ![alt text](./images/image.png)         
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/image.png)         
 
 ## 6. Create Lambda Functions for MySQL Operations
 
@@ -361,7 +361,7 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
    - Upload the `pymysql_layer.zip` file.
    - Choose compatible runtimes (e.g., Python 3.9).
 
-        ![alt text](./images/image-16.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/image-16.png)
 
    - Click **Create**.
 
@@ -371,7 +371,7 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
    - Select **Custom layers** and choose `pymysql_layer`.
    - Select available version.
 
-        ![alt text](./images/image-17.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/image-17.png)
 
    - Click **Add**.
 
@@ -389,7 +389,7 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
 
     - You will see a new user and user table has been created successfully.
 
-        ![alt text](./images/image-1.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/image-1.png)
 
 
 2. Test the `fetch_user` lambda function
@@ -404,7 +404,7 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
 
     - You will see demo users from the user table.
 
-        ![alt text](./images/image-2.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/image-2.png)
 
 
 ## 9. Create API Gateway
@@ -412,30 +412,30 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
 2. Name it `My-REST-API`.
 3. Create resources `/deploy`, `/create-user`, and `/fetch-user`.
 
-    ![alt text](./images/image-3.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/image-3.png)
 
-    ![alt text](./images/image-4.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/image-4.png)
 
-    ![alt text](./images/image-5.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/image-5.png)
 
-    ![alt text](./images/image-6.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/image-6.png)
 
 4. Add methods:
    - **POST** for `/deploy` → Integration type: **Lambda Function** → Select `EC2MySQLDeployment`
    - **POST** for `/create-user` → Integration type: **Lambda Function** → Select `create_user`
    - **GET** for `/fetch-user` → Integration type: **Lambda Function** → Select `fetch_user`
 
-        ![alt text](./images/image-7.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/image-7.png)
 
 5. Deploy API → Create a new stage `prod`
 
-    ![alt text](./images/image-8.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/image-8.png)
 
 6. Test the endpoints:
 
      You can get the invoke url from the **Stages** of your REST API. 
 
-    ![alt text](./images/image-9.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/image-9.png)
 
     - Deploy EC2 instance:
         
@@ -447,15 +447,15 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
 
         Expected output:
 
-        ![alt text](./images/image-10.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/image-10.png)
 
         Copy the IP address of your EC2 instance.
 
     Before using the following command, change the EC2 IP address in your `create_user` and `fetch_user` lambda functions and deploy again.
 
-    ![alt text](./images/image-11.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/image-11.png)
 
-    ![alt text](./images/image-12.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/image-12.png)
 
     - Create a user:
 
@@ -466,7 +466,7 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
 
         Expected output:
 
-        ![alt text](./images/image-13.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/image-13.png)
 
     - Fetch users:
 
@@ -477,7 +477,7 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
 
         Expected output:
 
-        ![alt text](./images/image-14.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/image-14.png)
 
 
 
@@ -486,7 +486,7 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
 ### Verify EC2 Instance
 1. Go to EC2 Console → Check for running instances
 
-    ![alt text](./images/image-15.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2006/images/image-15.png)
 
 2. Get **Public IP** and connect:
    ```bash

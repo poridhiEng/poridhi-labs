@@ -3,7 +3,9 @@
  
 In this guide, we will build a serverless data retrieval system using AWS services. The system will store data in an Amazon S3 bucket, process and fetch the data using an AWS Lambda function, and expose it through an API Gateway for easy access via a browser. By following a step-by-step approach, we will configure each AWS component, integrate them seamlessly, and deploy a fully functional serverless architecture. This setup ensures scalability, cost-efficiency, and minimal infrastructure management while providing a solid foundation for further enhancements such as authentication and database integration.
 
-![](./images/1.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2004/images/1.svg)
+
+
 
 
 ## **Task Description**
@@ -23,7 +25,7 @@ We aim to build a system that:
 3. Provide a unique bucket name (e.g., `my-data-bucket`).
 4. Disable **Block all public access** (since Lambda will access it internally).
 
-    ![alt text](./images/image-3.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2004/images/image-3.png)
 
 5. Click **Create bucket**.
 
@@ -44,11 +46,11 @@ We aim to build a system that:
 2. Click **Roles** → **Create Role**.
 3. Choose **AWS Service** → Select **Lambda**.
 
-    ![alt text](./images/image-5.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2004/images/image-5.png)
 
 4. Attach the **AmazonS3ReadOnlyAccess** policy.
 
-    ![alt text](./images/image-4.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2004/images/image-4.png)
 
 5. Name the role **LambdaS3AccessRole**.
 6. Click **Create Role**.
@@ -63,7 +65,7 @@ We aim to build a system that:
 5. Select **Python 3.x** as the runtime.
 6. Choose the existing IAM role: **LambdaS3AccessRole**.
 
-    ![alt text](./images/image-6.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2004/images/image-6.png)
 
 7. Click **Create function**.
 8. Replace the default code with the following:
@@ -86,7 +88,7 @@ We aim to build a system that:
     ```
     Replace `your-bucket-name` and `your-json-file.json` with appropriate values.
 
-    ![alt text](./images/image-7.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2004/images/image-7.png)
 
 9. Click **Deploy**.
 
@@ -100,14 +102,14 @@ We aim to build a system that:
     {}
     ```
 
-    ![alt text](./images/image.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2004/images/image.png)
 
 4. Click **Format JSON** to validate the JSON.
 5. Click **Save**.
 6. Click **Test** to execute the function.
 7. Review the execution results displayed on the screen.
 
-    ![alt text](./images/image-1.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2004/images/image-1.png)
 
 
 
@@ -116,7 +118,7 @@ We aim to build a system that:
 2. Click **Create API** → Choose **REST API**.
 3. Name it **my-api-gateway**.
 
-    ![alt text](./images/image-2.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2004/images/image-2.png)
 
 4. Click **Create**.
 
@@ -127,15 +129,15 @@ We aim to build a system that:
 
 9. Select the **s3-data-fetcher** function.
 
-    ![alt text](./images/image-8.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2004/images/image-8.png)
 
 10. Deploy the API to a **new stage** called `prod`.
 
-    ![alt text](./images/image-9.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2004/images/image-9.png)
 
 8. Click **Create** and copy the **Invoke URL** (e.g., `https://xyz.execute-api.region.amazonaws.com`). Add the `/get-data` route with the invoke URL. 
 
-    ![alt text](./images/image-10.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2004/images/image-10.png)
 
 
 

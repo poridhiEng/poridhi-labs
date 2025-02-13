@@ -6,7 +6,8 @@ This guide explains how to deploy an EC2 instance with PostgreSQL using AWS Lamb
 
 Automating EC2 instance deployment with PostgreSQL using AWS Lambda and API Gateway simplifies infrastructure management. This serverless approach enables dynamic provisioning, efficient database operations, and secure API access. It’s ideal for applications requiring on-demand database instances, scalable cloud environments, and automated infrastructure setups.
 
-![](./images/1.svg)
+![](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2009/images/1.svg)
+
 
 ## **1. Setting Up the Network Environment**  
 
@@ -22,7 +23,7 @@ Before deploying the EC2 instance, you need to create a VPC with the necessary n
 
 - Go to your VPC and see the resource map as follows: 
 
-    ![alt text](./images/image.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2009/images/image.png)
 
 
 ## 2. Set Up Required IAM Roles
@@ -54,7 +55,7 @@ Before deploying the EC2 instance, you need to create a VPC with the necessary n
    - **Custom policy**: `EC2PassRolePolicy`
 5. Name the role `LambdaEC2DeploymentRole` and create it.
 
-    ![alt text](./images/image-2.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2009/images/image-2.png)
 
 ### B. Create EC2 Role
 1. Go to IAM Console → Roles → Create Role
@@ -64,7 +65,7 @@ Before deploying the EC2 instance, you need to create a VPC with the necessary n
    - `AmazonEC2FullAccess`
 4. Name it `EC2SSMRole` and create the role.
 
-    ![alt text](./images/image-24.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2009/images/image-24.png)
 
 
 ## 3. Create Security Group
@@ -75,7 +76,7 @@ Before deploying the EC2 instance, you need to create a VPC with the necessary n
    - **Type:** PostgreSQL (Port 5432) → **Source:** Anywhere-IPv4 (0.0.0.0/0)
    - **Type:** SSH (Port 22) → **Source:** Anywhere-IPv4 (0.0.0.0/0)
 
-    ![alt text](./images/image-1.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2009/images/image-1.png)
 
 ## 4. Create Key Pair
 
@@ -97,7 +98,7 @@ Before deploying the EC2 instance, you need to create a VPC with the necessary n
    - **Permissions:** Use existing role → `LambdaEC2DeploymentRole`
 4. Set timeout to **5 minutes** in Configuration → General Configuration
 
-    ![alt text](./images/image-3.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2009/images/image-3.png)
 
 5. Replace the code in the Lambda function with:
 
@@ -202,7 +203,7 @@ Replace the `ImageId`, `SecurityGroupIds`, `SubnetId` in `instance_params` with 
 
     - You will see a EC2 creation was successful and PostgreSQL was setup successfully.
 
-       ![alt text](./images/image-4.png)
+       ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2009/images/image-4.png)
 
 
 
@@ -222,7 +223,7 @@ Replace the `ImageId`, `SecurityGroupIds`, `SubnetId` in `instance_params` with 
 
 4. Set timeout to **5 minutes** in Configuration → General Configuration   
 
-    ![alt text](./images/image-6.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2009/images/image-6.png)
 
 5. Replace the code with:
 
@@ -290,7 +291,7 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
 
 4. Set timeout to **5 minutes** in Configuration → General Configuration   
 
-    ![alt text](./images/image-5.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2009/images/image-5.png)
 
 5. Replace the code with:
 
@@ -374,7 +375,7 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
    - Upload the `psycopg2_layer.zip` file.
    - Choose compatible runtimes (e.g., Python 3.9).
 
-        ![alt text](./images/image-7.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2009/images/image-7.png)
 
    - Click **Create**.
 
@@ -385,7 +386,7 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
    - Select **Custom layers** and choose `psycopg2_layer`.
    - Select available version.
 
-        ![alt text](./images/image-8.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2009/images/image-8.png)
 
    - Click **Add**.
 
@@ -406,7 +407,7 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
 
     - You will see a user has been created successfully.
 
-        ![alt text](./images/image-9.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2009/images/image-9.png)
 
 
 2. Test the `fetch_user` lambda function
@@ -421,7 +422,7 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
 
     - You will see demo user fetched successfully.
 
-        ![alt text](./images/image-10.png)
+        ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2009/images/image-10.png)
 
 
 
@@ -433,7 +434,7 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
 
 3. Create resources `/deploy`, `/create-user`, and `/fetch-user`.
 
-    ![alt text](./images/image-11.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2009/images/image-11.png)
 
 
 
@@ -445,7 +446,7 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
 
    - **GET** for `/fetch-user` → Integration type: **Lambda Function** → Select `fetch_user`
 
-   ![alt text](./images/image-12.png)
+   ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2009/images/image-12.png)
 
 5. Deploy API → Create a new stage `prod`.
 
@@ -456,7 +457,7 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
 
      You can get the invoke url from the **Stages** of your REST API. 
 
-    ![alt text](./images/image-13.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2009/images/image-13.png)
 
 
 
@@ -470,7 +471,7 @@ Replace the `DB_HOST` value with your EC2 instance public IP.
 
    Expected output:
 
-    ![alt text](./images/image-14.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2009/images/image-14.png)
 
 
 Before using the following command, change the EC2 IP address in `DB_HOST` variable in your `create_user` and `fetch_user` lambda functions and deploy again.
@@ -485,7 +486,7 @@ Before using the following command, change the EC2 IP address in `DB_HOST` varia
 
    Expected output:
 
-    ![alt text](./images/image-15.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2009/images/image-15.png)
 
 4. **Test fetching user**:
 
@@ -497,7 +498,7 @@ Before using the following command, change the EC2 IP address in `DB_HOST` varia
 
    Expected output:
 
-    ![alt text](./images/image-16.png)
+    ![alt text](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20Lambda%20Labs/Lab%2009/images/image-16.png)
 
 
 
