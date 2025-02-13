@@ -1,4 +1,4 @@
-# Exploring Offensive Security with Gobuster
+# Exploring Offensive Security
 
 Offensive security is a critical field in cybersecurity that focuses on identifying vulnerabilities in systems and applications. One of the most common tools used by ethical hackers and penetration testers is Gobuster, a robust directory and file brute-forcing tool. This lab will introduce you to Gobuster and demonstrate its capabilities by simulating a simple attack on a payment status application.
 
