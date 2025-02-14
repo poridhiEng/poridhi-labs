@@ -1,24 +1,28 @@
 # Database Replication using PostgreSQL
 
-
 Database replication is the process of copying and synchronizing data across multiple database servers. This ensures that all copies of the database remain consistent, available, and up to date. Replication is widely used to improve data availability, disaster recovery, load balancing, and performance in distributed database systems.
 
-In this lab, we will configure a PostgreSQL database cluster with one master and two replicas. The master will be configured to send data to the replicas, and the replicas will be configured to receive data from the master. The lab will cover the following topics:
+In this lab, we will create a master-slave database replication setup using PostgreSQL on AWS. Here's an overview of the architecture:
 
-- Configure the master server
-- Configure the replica servers
-- Verify the replication setup
-- Troubleshoot common issues
-
-Here is the system architecture:
 
 ## AWS Infrastructure
 
-In this setup, we will design and deploy AWS Infrastructure to support PostgreSQL Database Cluster. The cluster will
+In this setup, we will design and deploy AWS Infrastructure to support Database Cluster. The cluster will
 
-- Consist of three public instances, divided into two categories: Master and Replicas.
-- To enable connectivity and internet access to the nodes, we will create a public route table and attach an internet gateway to it. This will allow the nodes to communicate with each other and access external resources and services.
-- Finally, we will utilize Pulumi python to create and manage this AWS infrastructure.
+Consist of three public instances: 
+
+- `master-0`
+- `replica-0`
+- `replica-1`
+
+
+To enable connectivity and access we will create necessary route tables, internet gateway, subnets, security groups and configure the rules.
+
+We will use **Pulumi python** to create and manage this AWS infrastructure.
+
+## Setting up the AWS CLI and Pulumi
+
+The AWS CLI is a command-line tool that allows you to interact with AWS services programmatically. It simplifies provisioning resources, such as EC2 instances and load balancers, which are required to host our database cluster and application server.
 
 ### Configure AWS CLI
 
@@ -26,28 +30,49 @@ In this setup, we will design and deploy AWS Infrastructure to support PostgreSQ
 aws configure
 ```
 
-### Provision AWS Infrastructure
+- `AWS Access Key ID:` Your access key to authenticate AWS API requests.
+- `AWS Secret Access Key:` A secret key associated with your access key.
+- `Default region:` The AWS region in which you want to provision your resources (ap-southeast-1).
+- `Default output format:` You can choose the output format (JSON, text, table).
 
-1. Create a new directory for this lab and navigate into it:
+> Get your access key and secret access key from Poridhi's lab account by generating AWS credentials.
+
+
+## Provisioning Compute Resources
+
+In this step, we will provision the necessary AWS resources that will host our database cluster and application server.
+
+**1. Create a Directory for Your Infrastructure**
+
+Before starting, it’s best to create a dedicated directory for the infrastructure files:
 
 ```bash
-mkdir lab-02 && cd lab-02
+mkdir db-cluster-aws
+cd db-cluster-aws
 ```
 
-2. Install python venv
+**2. Install Python venv**
+
+Set up a Python virtual environment (venv) to manage dependencies for Pulumi or other Python-based tools:
 
 ```bash
 sudo apt update
 sudo apt install python3.8-venv -y
 ```
 
-3. Create a new pulumi project
+This will set up a Python virtual environment which will be useful later when working with Pulumi.
+
+**3. Initialize a New Pulumi Project**
+
+Pulumi is an Infrastructure-as-Code (IaC) tool used to manage cloud infrastructure. In this tutorial, you'll use Pulumi python to provision the AWS resources required for Database Cluster.
+
+Run the following command to initialize a new Pulumi project:
 
 ```bash
 pulumi new aws-python
 ```
 
-4. Update the Pulumi program (__main__.py) to create the infrastructure   
+**4. Update the Pulumi program (__main__.py) to create the infrastructure  ** 
 
 ```python
 import pulumi
@@ -198,44 +223,86 @@ all_ips = [master.public_ip for master in master_instances] + [replica.public_ip
 pulumi.Output.all(*all_ips).apply(create_config_file)
 ```
 
-### Generate SSH Key      
+
+**5. Create an AWS Key Pair**
+
+Database Cluster nodes need to communicate securely. This key pair will be used to authenticate when accessing EC2 instances.
+
+**Generate the Key Pair**
+
+Use the following AWS CLI command to create a new SSH key pair named kubernetes:
 
 ```bash
+cd ~/.ssh/
 aws ec2 create-key-pair --key-name db-cluster --output text --query 'KeyMaterial' > db-cluster.id_rsa
-chmod 400 db-cluster.id_rsa 
+chmod 400 db-cluster.id_rsa
 ```
 
-### Provision the Infrastructure
+This will save the private key as db-cluster.id_rsa in the `~/.ssh/` directory and restrict its permissions.
+
+**6. Provision the Infrastructure**
+
+Run the following command to provision the infrastructure:
 
 ```bash
-pulumi up
+pulumi up --yes
 ```
+
+This will create the necessary resources and output the public and private IPs of the instances. This will also create a config file in `~/.ssh/config` file with the IPs of the instances.
+
+
+## SSH into the Database Cluster
+
+First, connect to the master DB and replicas. As we have created the config file in `~/.ssh/config` file, we can connect to the instances by running the following command:
+
+```bash
+ssh master-0
+```
+
+You will be connected to the master DB. You may change the hostname to `master-0` by running the following command:
 
 ```bash
 sudo hostnamectl set-hostname master-0
 ```
 
-```bash
-sudo hostnamectl set-hostname replica-0
-```
+In the same way, you can connect to the replicas by running the following command:
+
+Connect to the first replica:
 
 ```bash
+ssh replica-0
+```
+
+Connect to the second replica:
+
+```bash
+ssh replica-1
+```
+
+You may change the hostname to `replica-0` and `replica-1` by running the following command in each of the instances:
+
+```bash
+sudo hostnamectl set-hostname replica-0
 sudo hostnamectl set-hostname replica-1
 ```
 
+## Configure the Database Cluster
+
+We will configure the database cluster on the master DB and replicas. This will include configuring the `postgresql.conf` file and `pg_hba.conf` file. 
+
+### 1. Master Server Configuration (master-0)
+
+**1.1 Configure postgresql.conf**
+
+Edit the `postgresql.conf` file:
+
 ```bash
-sudo hostnamectl set-hostname app-server
+sudo vim /etc/postgresql/16/main/postgresql.conf
 ```
 
+Add/modify these settings:
 
-## 1. Master Server Configuration (master-0)
-
-### 1.1 Configure postgresql.conf
 ```bash
-# Edit postgresql.conf
-sudo vim /etc/postgresql/16/main/postgresql.conf
-
-# Add/modify these settings
 listen_addresses = '*'
 wal_level = replica
 max_wal_senders = 10
@@ -243,21 +310,31 @@ max_replication_slots = 10
 wal_keep_size = 1GB
 ```
 
-### 1.2 Configure pg_hba.conf
-```bash
-# Edit pg_hba.conf
-sudo vim /etc/postgresql/16/main/pg_hba.conf
+**1.2 Configure pg_hba.conf**
 
-# Add these lines at the end (using private IPs)
+Edit the `pg_hba.conf` file:
+
+```bash
+sudo vim /etc/postgresql/16/main/pg_hba.conf
+```
+
+Add these lines at the end (using private IPs):
+
+```bash
 host    replication     replicator      10.0.2.20/32        md5
 host    replication     replicator      10.0.2.21/32        md5
 host    all            replicator      10.0.2.20/32        md5
 host    all            replicator      10.0.2.21/32        md5
+host    all             app_user       10.0.1.30/32      md5
 ```
 
-### 1.3 Create Replication User
-```sql
-# Connect to PostgreSQL
+These lines allow the master DB to connect to the replicas and the application server to connect to the master DB.
+
+**1.3 Create Replication User**
+
+Connect to the master DB and create a replication user.
+
+```bash
 sudo -u postgres psql
 
 -- Drop user if exists (if needed)
@@ -273,69 +350,121 @@ CREATE USER replicator WITH LOGIN REPLICATION PASSWORD 'db-cluster';
 \q
 ```
 
-### 1.4 Restart PostgreSQL on Master
+> Note: We are using the password `db-cluster` for the replication user. You can change it to any other password.
+
+**1.4 Restart PostgreSQL on Master**
+
+As we have modified the `postgresql.conf` file and `pg_hba.conf` file, we need to restart the PostgreSQL service.
+
 ```bash
 sudo systemctl restart postgresql
 
 # Verify PostgreSQL is running
 sudo systemctl status postgresql
-
-# Test network connectivity
-nc -zv 10.0.1.10 5432
 ```
 
 ## 2. Replica Servers Configuration
 
-### 2.1 Stop PostgreSQL on Replicas
+Now, we will configure the replicas. Run the following commands on both replicas. First check the network connectivity to the master DB.
+
 ```bash
-# On both replica-0 and replica-1
+nc -zv 10.0.1.10 5432
+```
+
+If the connection is successful, you can proceed with the following steps.
+
+**2.1 Stop PostgreSQL on Replicas**
+
+Stop the PostgreSQL service on both replicas.
+
+```bash
 sudo systemctl stop postgresql
 sudo systemctl status postgresql  # Verify it's stopped
 ```
 
-### 2.2 Prepare Data Directory on Replicas
+**2.2 Prepare Data Directory on Replicas**
+
+Remove the entire directory and recreate it.
+
 ```bash
-# On both replicas
-# Remove the entire directory and recreate it
 sudo rm -rf /var/lib/postgresql/16/main
 sudo mkdir /var/lib/postgresql/16/main
 sudo chown postgres:postgres /var/lib/postgresql/16/main
 sudo chmod 700 /var/lib/postgresql/16/main
+```
 
-# Verify directory is empty and has correct permissions
+Verify directory is empty and has correct permissions.
+
+```bash
 sudo ls -la /var/lib/postgresql/16/main
 ```
 
-![alt text](image-3.png)
+**2.3 Configure postgresql.conf**
 
+Edit the `postgresql.conf` file:
 
-### 2.3 Create Base Backup on Replicas
 ```bash
-# On replica-0
-sudo -u postgres pg_basebackup -h 10.0.1.10 -D /var/lib/postgresql/16/main \
-    -U replicator -P -v -R -X stream -C -S replica0
-
-# On replica-1
-sudo -u postgres pg_basebackup -h 10.0.1.10 -D /var/lib/postgresql/16/main \
-    -U replicator -P -v -R -X stream -C -S replica1
-
-# When prompted for password, enter: db-cluster
+sudo vim /etc/postgresql/16/main/postgresql.conf
 ```
 
-### 2.4 Start PostgreSQL on Replicas
+Add/modify these settings:
+
 ```bash
-# On both replicas
+listen_addresses = '*'
+port = 5432
+```
+
+**2.4 Configure pg_hba.conf**
+
+Edit the `pg_hba.conf` file:
+
+```bash
+sudo vim /etc/postgresql/16/main/pg_hba.conf
+```
+
+Add these lines:
+
+```bash
+host    all             app_user         10.0.1.0/24         md5
+host    all             app_user         10.0.2.0/24         md5
+```
+
+**2.5 Create Base Backup on Replicas**
+
+Create a base backup on both replicas.
+
+On replica-0:
+
+```bash
+sudo -u postgres pg_basebackup -h 10.0.1.10 -D /var/lib/postgresql/16/main \
+    -U replicator -P -v -R -X stream -C -S replica0
+```
+
+On replica-1:
+
+```bash
+sudo -u postgres pg_basebackup -h 10.0.1.10 -D /var/lib/postgresql/16/main \
+    -U replicator -P -v -R -X stream -C -S replica1
+```
+
+> When prompted for password, enter: your password or the password `db-cluster` if you have not changed it.
+
+**2.6 Start PostgreSQL on Replicas**
+
+Start the PostgreSQL service on both replicas.
+
+```bash
 sudo systemctl start postgresql
 sudo systemctl status postgresql
 ```
 
-![alt text](image-4.png)
-
 ## 3. Verify Replication Setup
 
 ### 3.1 Check Replica Status
-```sql
-# On both replicas
+
+Connect to the replicas and check the status of the replicas.
+
+```bash
 sudo -u postgres psql
 
 -- Verify replica mode
@@ -347,11 +476,11 @@ SELECT now() - pg_last_xact_replay_timestamp() AS replication_lag;
 \q
 ```
 
-![alt text](image-5.png)
-
 ### 3.2 Check Master Status
-```sql
-# On master
+
+Connect to the master and check the status of the master.
+
+```bash
 sudo -u postgres psql
 
 -- Check replication connections
@@ -364,12 +493,11 @@ SELECT slot_name, active FROM pg_replication_slots;
 \q
 ```
 
-![alt text](image-6.png)
+### Test Replication
 
-### 3.3 Test Replication
+**1. Connect to the master and create a test database and table.**
 
-```sql
-# On master
+```bash
 sudo -u postgres psql
 
 -- Create test database and table
@@ -378,65 +506,21 @@ CREATE DATABASE test_db;
 CREATE TABLE replication_test (id serial primary key, data text);
 INSERT INTO replication_test (data) VALUES ('test data');
 ```
-![alt text](image-8.png)
 
-### 3.4 On both replicas
-```sql
+This will create a test database and table on the master.
+
+
+**2. Connect to the replicas and check the status of the replicas.**
+
+```bash
+sudo -u postgres psql
+
 \c test_db
 SELECT * FROM replication_test;
 ```
 
-![alt text](image-9.png)
 
-## 4. Troubleshooting Tips
-
-### 4.1 Connection Issues
-```bash
-# Test network connectivity
-nc -zv 10.0.1.10 5432
-
-# Check PostgreSQL logs
-sudo tail -f /var/log/postgresql/postgresql-17-main.log
-```
-
-### 4.2 Authentication Issues
-```sql
--- On master, verify replication user
-\du replicator
-
--- Check pg_hba.conf entries
-sudo grep replicator /etc/postgresql/17/main/pg_hba.conf
-```
-
-### 4.3 Replication Slot Issues
-```sql
--- On master, check slot status
-SELECT slot_name, active FROM pg_replication_slots;
-
--- If needed, drop and recreate slots
-SELECT pg_drop_replication_slot('replica0');
-SELECT pg_drop_replication_slot('replica1');
-```
-
-## 5. Maintenance Considerations
-
-### 5.1 Monitor Replication Lag
-```sql
--- On master
-SELECT client_addr, 
-       pg_size_pretty(pg_wal_lsn_diff(pg_current_wal_lsn(), replay_lsn)) as lag_size
-FROM pg_stat_replication;
-```
-
-### 5.2 Regular Health Checks
-```sql
--- On replicas
-SELECT pg_is_in_recovery(), pg_last_wal_receive_lsn(), pg_last_wal_replay_lsn();
-```
-
-```bash
-rsync -avz -e "ssh -i ~/.ssh/db-cluster.id_rsa" db-cluster-app ubuntu@app-server:/home/ubuntu/
-```
+Here we can see that the data is replicated to the replicas.
 
 
 

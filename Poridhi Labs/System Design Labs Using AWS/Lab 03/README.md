@@ -89,9 +89,6 @@ vpc = aws.ec2.Vpc(
     tags={'Name': 'db-cluster-vpc'}
 )
 
-# Get available AZs in the region
-azs = aws.get_availability_zones(state="available")
-
 # Create two subnets in different AZs
 subnet1 = aws.ec2.Subnet(
     'db-cluster-subnet-1',
@@ -290,6 +287,19 @@ sudo chown ubuntu:ubuntu /opt/db-cluster-app
 sudo npm install -g pm2
 """
 
+
+db_user_data = """#!/bin/bash
+# Update system packages
+sudo apt update
+
+# Install PostgreSQL
+sudo apt install -y postgresql postgresql-contrib
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
+"""
+
+
+
 # Create EC2 Instance for Application Server
 app_server = aws.ec2.Instance(
     'app-server',
@@ -318,31 +328,57 @@ master = aws.ec2.Instance(
     vpc_security_group_ids=[db_security_group.id],
     associate_public_ip_address=True,
     private_ip='10.0.1.10',
+    user_data=db_user_data,
     tags={
         'Name': 'master-0',
-        'Environment': 'production'
+        'Environment': 'production',
+        'AZ': 'ap-southeast-1a'
     }
 )
 master_instances.append(master)
 
-# Create EC2 Instances for Replicas in the second AZ
-replica_instances = []
-for i in range(2):
+# Create EC2 Instances for Replicas in the first AZ
+replica_instances_1 = []
+for i in range(1):
     replica = aws.ec2.Instance(
-        f'replica-{i}',
+        f'replica-az-a-{i}',
         instance_type='t2.small',
         ami='ami-01811d4912b4ccb26',
-        subnet_id=subnet2.id,
+        subnet_id=subnet1.id, # same subnet as master
+        key_name="db-cluster",
+        vpc_security_group_ids=[db_security_group.id],
+        associate_public_ip_address=True,
+        private_ip=f'10.0.1.2{i}',
+        user_data=db_user_data,
+        tags={
+            'Name': f'replica-az-a-{i}',
+            'Environment': 'production',
+            'AZ': 'ap-southeast-1a'
+
+        }
+    )
+    replica_instances_1.append(replica)
+
+# Create EC2 Instances for Replicas in the second AZ
+replica_instances_2 = []
+for i in range(1):
+    replica = aws.ec2.Instance(
+        f'replica-az-b-{i}',
+        instance_type='t2.small',
+        ami='ami-01811d4912b4ccb26',
+        subnet_id=subnet2.id, # different subnet as master
         key_name="db-cluster",
         vpc_security_group_ids=[db_security_group.id],
         associate_public_ip_address=True,
         private_ip=f'10.0.2.2{i}',
+        user_data=db_user_data,
         tags={
-            'Name': f'replica-{i}',
-            'Environment': 'production'
+            'Name': f'replica-az-b-{i}',
+            'Environment': 'production',
+            'AZ': 'ap-southeast-1b'
         }
     )
-    replica_instances.append(replica)
+    replica_instances_2.append(replica)
 
 # Create Network Load Balancer
 nlb = aws.lb.LoadBalancer(
@@ -385,7 +421,22 @@ def create_attachment(name, target_id):
     )
 
 # Attach replicas to target group using private IPs
-for i, replica in enumerate(replica_instances):
+for i, replica in enumerate(replica_instances_1):
+    # Use private IP instead of instance ID
+    target_id = replica.private_ip
+    attachment_name = replica.tags["Name"].apply(
+        lambda tag_name: f'replica-{tag_name}-tg-attachment-{i}'
+    )
+    
+    # Create attachment using resolved values
+    attachment = pulumi.Output.all(target_id, attachment_name).apply(
+        lambda vals: create_attachment(vals[1], vals[0])
+    )
+    # Debug output
+    pulumi.log.info(f'Creating TargetGroupAttachment with name: {attachment_name}')
+
+# Attach replicas to target group using private IPs
+for i, replica in enumerate(replica_instances_2):
     # Use private IP instead of instance ID
     target_id = replica.private_ip
     attachment_name = replica.tags["Name"].apply(
@@ -414,8 +465,8 @@ listener = aws.lb.Listener(
 # Export Public and Private IPs
 master_public_ips = [master.public_ip for master in master_instances]
 master_private_ips = [master.private_ip for master in master_instances]
-replica_public_ips = [replica.public_ip for replica in replica_instances]
-replica_private_ips = [replica.private_ip for replica in replica_instances]
+replica_public_ips = [replica.public_ip for replica in replica_instances_1] + [replica.public_ip for replica in replica_instances_2]
+replica_private_ips = [replica.private_ip for replica in replica_instances_1] + [replica.private_ip for replica in replica_instances_2]
 app_server_public_ip = app_server.public_ip
 app_server_private_ip = app_server.private_ip
 load_balancer_dns = nlb.dns_name
@@ -435,12 +486,10 @@ pulumi.export('nlb_security_group_id', nlb_security_group.id)
 pulumi.export('db_security_group_id', db_security_group.id)
 
 # Create SSH config file
-def create_config_file(ip_list):
-    hostnames = ['master-0', 'replica-0', 'replica-1', 'app-server']
-    
+def create_config_file(ip_list, hostname_list):
     config_content = "# PostgreSQL Cluster SSH Configuration\n\n"
     
-    for hostname, ip in zip(hostnames, ip_list):
+    for hostname, ip in zip(hostname_list, ip_list):
         config_content += f"Host {hostname}\n"
         config_content += f"    HostName {ip}\n"
         config_content += f"    User ubuntu\n"
@@ -451,13 +500,19 @@ def create_config_file(ip_list):
     with open(config_path, "w") as config_file:
         config_file.write(config_content)
 
-# Collect all IPs including app server
+# Collect all IPs and hostnames including app server
 all_ips = [master.public_ip for master in master_instances] + \
-          [replica.public_ip for replica in replica_instances] + \
+          [replica.public_ip for replica in replica_instances_1] + \
+          [replica.public_ip for replica in replica_instances_2] + \
           [app_server.public_ip]
 
+all_hostnames = [master.tags["Name"] for master in master_instances] + \
+                [replica.tags["Name"] for replica in replica_instances_1] + \
+                [replica.tags["Name"] for replica in replica_instances_2] + \
+                [app_server.tags["Name"]]
+
 # Create the config file with the IPs
-pulumi.Output.all(*all_ips).apply(create_config_file)
+pulumi.Output.all(*all_ips, *all_hostnames).apply(create_config_file)
 ```
 
 **5. Create an AWS Key Pair**
