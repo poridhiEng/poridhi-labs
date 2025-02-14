@@ -342,6 +342,21 @@ def create_attachment(name, target_id):
         port=5432
     )
 
+
+# Attach master to target group using private IP
+target_id = master.private_ip
+attachment_name = master.tags["Name"].apply(
+    lambda tag_name: f'master-tg-attachment'
+)
+
+# Create attachment using resolved values
+attachment = pulumi.Output.all(target_id, attachment_name).apply(
+    lambda vals: create_attachment(vals[1], vals[0])
+)
+# Debug output
+attachment_name.apply(lambda name: pulumi.log.info(f'Creating TargetGroupAttachment with name: {name}'))
+
+
 # Attach replicas to target group using private IPs
 for i, replica in enumerate(replica_instances_1):
     # Use private IP instead of instance ID
@@ -355,7 +370,7 @@ for i, replica in enumerate(replica_instances_1):
         lambda vals: create_attachment(vals[1], vals[0])
     )
     # Debug output
-    pulumi.log.info(f'Creating TargetGroupAttachment with name: {attachment_name}')
+    attachment_name.apply(lambda name: pulumi.log.info(f'Creating TargetGroupAttachment with name: {name}'))
 
 # Attach replicas to target group using private IPs
 for i, replica in enumerate(replica_instances_2):
@@ -370,7 +385,7 @@ for i, replica in enumerate(replica_instances_2):
         lambda vals: create_attachment(vals[1], vals[0])
     )
     # Debug output
-    pulumi.log.info(f'Creating TargetGroupAttachment with name: {attachment_name}')
+    attachment_name.apply(lambda name: pulumi.log.info(f'Creating TargetGroupAttachment with name: {name}'))
 
 # Create listener for read requests
 listener = aws.lb.Listener(
@@ -407,8 +422,12 @@ pulumi.export('load_balancer_dns', load_balancer_dns)
 pulumi.export('nlb_security_group_id', nlb_security_group.id)
 pulumi.export('db_security_group_id', db_security_group.id)
 
-# Create SSH config file
-def create_config_file(ip_list, hostname_list):
+# Updated create_config_file function
+def create_config_file(args):
+    # Split the flattened list into IPs and hostnames
+    ip_list = args[:len(args)//2]
+    hostname_list = args[len(args)//2:]
+    
     config_content = "# PostgreSQL Cluster SSH Configuration\n\n"
     
     for hostname, ip in zip(hostname_list, ip_list):
@@ -433,5 +452,8 @@ all_hostnames = [master.tags["Name"] for master in master_instances] + \
                 [replica.tags["Name"] for replica in replica_instances_2] + \
                 [app_server.tags["Name"]]
 
+# Combine all_ips and all_hostnames into a single list of Outputs
+combined_outputs = all_ips + all_hostnames
+
 # Create the config file with the IPs
-pulumi.Output.all(*all_ips, *all_hostnames).apply(create_config_file)
+pulumi.Output.all(*combined_outputs).apply(create_config_file)

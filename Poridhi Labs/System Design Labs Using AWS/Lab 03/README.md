@@ -4,6 +4,8 @@ Database replication is the process of copying and synchronizing data across mul
 
 In this lab, we will create a master-slave database replication setup using PostgreSQL on AWS. Here's an overview of the architecture:
 
+![](./images/systemDesign-lab3-2.drawio.svg)
+
 
 ## AWS Infrastructure
 
@@ -35,7 +37,7 @@ aws configure
 
 > Get your access key and secret access key from Poridhi's lab account by generating AWS credentials.
 
-![alt text](image.png)
+![alt text](./images/image.png)
 
 ## Provisioning Compute Resources
 
@@ -420,6 +422,21 @@ def create_attachment(name, target_id):
         port=5432
     )
 
+
+# Attach master to target group using private IP
+target_id = master.private_ip
+attachment_name = master.tags["Name"].apply(
+    lambda tag_name: f'master-tg-attachment'
+)
+
+# Create attachment using resolved values
+attachment = pulumi.Output.all(target_id, attachment_name).apply(
+    lambda vals: create_attachment(vals[1], vals[0])
+)
+# Debug output
+attachment_name.apply(lambda name: pulumi.log.info(f'Creating TargetGroupAttachment with name: {name}'))
+
+
 # Attach replicas to target group using private IPs
 for i, replica in enumerate(replica_instances_1):
     # Use private IP instead of instance ID
@@ -433,7 +450,7 @@ for i, replica in enumerate(replica_instances_1):
         lambda vals: create_attachment(vals[1], vals[0])
     )
     # Debug output
-    pulumi.log.info(f'Creating TargetGroupAttachment with name: {attachment_name}')
+    attachment_name.apply(lambda name: pulumi.log.info(f'Creating TargetGroupAttachment with name: {name}'))
 
 # Attach replicas to target group using private IPs
 for i, replica in enumerate(replica_instances_2):
@@ -448,7 +465,7 @@ for i, replica in enumerate(replica_instances_2):
         lambda vals: create_attachment(vals[1], vals[0])
     )
     # Debug output
-    pulumi.log.info(f'Creating TargetGroupAttachment with name: {attachment_name}')
+    attachment_name.apply(lambda name: pulumi.log.info(f'Creating TargetGroupAttachment with name: {name}'))
 
 # Create listener for read requests
 listener = aws.lb.Listener(
@@ -485,8 +502,12 @@ pulumi.export('load_balancer_dns', load_balancer_dns)
 pulumi.export('nlb_security_group_id', nlb_security_group.id)
 pulumi.export('db_security_group_id', db_security_group.id)
 
-# Create SSH config file
-def create_config_file(ip_list, hostname_list):
+# Updated create_config_file function
+def create_config_file(args):
+    # Split the flattened list into IPs and hostnames
+    ip_list = args[:len(args)//2]
+    hostname_list = args[len(args)//2:]
+    
     config_content = "# PostgreSQL Cluster SSH Configuration\n\n"
     
     for hostname, ip in zip(hostname_list, ip_list):
@@ -511,8 +532,11 @@ all_hostnames = [master.tags["Name"] for master in master_instances] + \
                 [replica.tags["Name"] for replica in replica_instances_2] + \
                 [app_server.tags["Name"]]
 
+# Combine all_ips and all_hostnames into a single list of Outputs
+combined_outputs = all_ips + all_hostnames
+
 # Create the config file with the IPs
-pulumi.Output.all(*all_ips, *all_hostnames).apply(create_config_file)
+pulumi.Output.all(*combined_outputs).apply(create_config_file)
 ```
 
 **5. Create an AWS Key Pair**
@@ -539,9 +563,11 @@ Run the following command to provision the infrastructure:
 pulumi up --yes
 ```
 
-![alt text](image-4.png)
+![alt text](./images/image-9.png)
 
 This will create the necessary resources and output the public and private IPs of the instances. This will also create a config file in `~/.ssh/config` file with the IPs of the instances.
+
+![alt text](./images/image-10.png)
 
 
 ## SSH into the Database Cluster
@@ -558,25 +584,27 @@ You will be connected to the master DB. You may change the hostname to `master-0
 sudo hostnamectl set-hostname master-0
 ```
 
+![alt text](./images/image-11.png)
+
 In the same way, you can connect to the replicas by running the following command:
 
 Connect to the first replica:
 
 ```bash
-ssh replica-0
+ssh replica-az-a-0
 ```
 
 Connect to the second replica:
 
 ```bash
-ssh replica-1
+ssh replica-az-b-0
 ```
 
-You may change the hostname to `replica-0` and `replica-1` by running the following command in each of the instances:
+You may change the hostname to `replica-az-a-0` and `replica-az-b-0` by running the following command in each of the instances:
 
 ```bash
-sudo hostnamectl set-hostname replica-0
-sudo hostnamectl set-hostname replica-1
+sudo hostnamectl set-hostname replica-az-a-0
+sudo hostnamectl set-hostname replica-az-b-0
 ```
 
 ## Configure the Database Cluster
@@ -585,6 +613,14 @@ We will configure the database cluster on the master DB and replicas. This will 
 
 ### 1. Master Server Configuration (master-0)
 
+First we need to check the psql version on the master DB.
+
+```bash
+psql --version
+```
+
+![alt text](./images/image-12.png)
+
 **1.1 Configure postgresql.conf**
 
 Edit the `postgresql.conf` file:
@@ -592,6 +628,8 @@ Edit the `postgresql.conf` file:
 ```bash
 sudo vim /etc/postgresql/16/main/postgresql.conf
 ```
+
+> Note: If you are using a different version of PostgreSQL, you need to change the version in the path. As we are using PostgreSQL 16, the path is `/etc/postgresql/16/main/postgresql.conf`.
 
 Add/modify these settings:
 
@@ -602,6 +640,8 @@ max_wal_senders = 10
 max_replication_slots = 10
 wal_keep_size = 1GB
 ```
+
+![alt text](./images/image-13.png)
 
 **1.2 Configure pg_hba.conf**
 
@@ -614,11 +654,13 @@ sudo vim /etc/postgresql/16/main/pg_hba.conf
 Add these lines at the end (using private IPs):
 
 ```bash
-host    replication     replicator      10.0.2.20/32        md5
-host    replication     replicator      10.0.2.21/32        md5
-host    all            replicator      10.0.2.20/32        md5
-host    all            replicator      10.0.2.21/32        md5
-host    all             app_user       10.0.1.30/32      md5
+host    replication     replicator      10.0.1.20/32         md5
+host    replication     replicator      10.0.2.20/32         md5
+host    all             replicator      10.0.1.20/32         md5
+host    all             replicator      10.0.2.20/32         md5
+host    all             app_user        10.0.1.30/32         md5
+host    all             app_user         10.0.1.0/24         md5     # Subnet 1 for NLB
+host    all             app_user         10.0.2.0/24         md5     # Subnet 2 for NLB
 ```
 
 These lines allow the master DB to connect to the replicas and the application server to connect to the master DB.
@@ -645,6 +687,8 @@ CREATE USER replicator WITH LOGIN REPLICATION PASSWORD 'db-cluster';
 
 > Note: We are using the password `db-cluster` for the replication user. You can change it to any other password.
 
+![alt text](./images/image-14.png)
+
 **1.4 Restart PostgreSQL on Master**
 
 As we have modified the `postgresql.conf` file and `pg_hba.conf` file, we need to restart the PostgreSQL service.
@@ -656,6 +700,8 @@ sudo systemctl restart postgresql
 sudo systemctl status postgresql
 ```
 
+![alt text](./images/image-15.png)
+
 ## 2. Replica Servers Configuration
 
 Now, we will configure the replicas. Run the following commands on both replicas. First check the network connectivity to the master DB.
@@ -663,6 +709,8 @@ Now, we will configure the replicas. Run the following commands on both replicas
 ```bash
 nc -zv 10.0.1.10 5432
 ```
+
+![alt text](./images/image-16.png)
 
 If the connection is successful, you can proceed with the following steps.
 
@@ -674,6 +722,8 @@ Stop the PostgreSQL service on both replicas.
 sudo systemctl stop postgresql
 sudo systemctl status postgresql  # Verify it's stopped
 ```
+
+![alt text](./images/image-17.png)
 
 **2.2 Prepare Data Directory on Replicas**
 
@@ -691,6 +741,10 @@ Verify directory is empty and has correct permissions.
 ```bash
 sudo ls -la /var/lib/postgresql/16/main
 ```
+
+![alt text](./images/image-18.png)
+
+> Make sure to run the above commands on both replicas.
 
 **2.3 Configure postgresql.conf**
 
@@ -718,9 +772,28 @@ sudo vim /etc/postgresql/16/main/pg_hba.conf
 Add these lines:
 
 ```bash
-host    all             app_user         10.0.1.0/24         md5
-host    all             app_user         10.0.2.0/24         md5
+# On both replicas, add to pg_hba.conf:
+
+# Allow app server
+host    all             app_user         10.0.1.30/32         md5    # App server
+
+# Allow entire VPC subnets for NLB
+host    all             app_user         10.0.1.0/24         md5     # Subnet 1
+host    all             app_user         10.0.2.0/24         md5     # Subnet 2
+
+# Allow master for replication verification
+host    all             replicator       10.0.1.10/32         md5    # Master DB
 ```
+
+![alt text](./images/image-19.png)
+
+This configuration:
+
+- Allows the app server (10.0.1.30) to connect directly
+- Allows NLB to forward connections from both subnets
+- Allows the master to verify replication status
+
+The reason we include both subnet CIDRs (10.0.1.0/24 and 10.0.2.0/24) is because the NLB endpoints exist in both AZs, and connections could come from either subnet.
 
 **2.5 Create Base Backup on Replicas**
 
@@ -730,17 +803,19 @@ On replica-0:
 
 ```bash
 sudo -u postgres pg_basebackup -h 10.0.1.10 -D /var/lib/postgresql/16/main \
-    -U replicator -P -v -R -X stream -C -S replica0
+    -U replicator -P -v -R -X stream -C -S replica_az_a_0
 ```
 
 On replica-1:
 
 ```bash
 sudo -u postgres pg_basebackup -h 10.0.1.10 -D /var/lib/postgresql/16/main \
-    -U replicator -P -v -R -X stream -C -S replica1
+    -U replicator -P -v -R -X stream -C -S replica_az_b_0
 ```
 
 > When prompted for password, enter: your password or the password `db-cluster` if you have not changed it.
+
+![alt text](./images/image-20.png)
 
 **2.6 Start PostgreSQL on Replicas**
 
@@ -750,6 +825,8 @@ Start the PostgreSQL service on both replicas.
 sudo systemctl start postgresql
 sudo systemctl status postgresql
 ```
+
+![alt text](./images/image-21.png)
 
 ## 3. Verify Replication Setup
 
@@ -769,6 +846,8 @@ SELECT now() - pg_last_xact_replay_timestamp() AS replication_lag;
 \q
 ```
 
+![alt text](./images/image-22.png)
+
 ### 3.2 Check Master Status
 
 Connect to the master and check the status of the master.
@@ -786,6 +865,8 @@ SELECT slot_name, active FROM pg_replication_slots;
 \q
 ```
 
+![alt text](./images/image-23.png)
+
 ### Test Replication
 
 **1. Connect to the master and create a test database and table.**
@@ -800,6 +881,8 @@ CREATE TABLE replication_test (id serial primary key, data text);
 INSERT INTO replication_test (data) VALUES ('test data');
 ```
 
+![alt text](./images/image-24.png)
+
 This will create a test database and table on the master.
 
 
@@ -812,6 +895,7 @@ sudo -u postgres psql
 SELECT * FROM replication_test;
 ```
 
+![alt text](./images/image-25.png)
 
 Here we can see that the data is replicated to the replicas.
 
@@ -826,7 +910,7 @@ We will use a simple `Node.js` application to test the replication. This applica
 4. Perform WRITE operation to the master DB.
 5. Perform READ operation from the replicas.
 
-First clone the repository into the application server and install the dependencies.
+First clone the repository into the `application server` and install the dependencies.
 
 ```bash
 git clone https://github.com/Konami33/db-cluster-app.git
@@ -853,205 +937,11 @@ db-cluster-app/
 │── README.md
 ```
 
-### Run the Application
+### Create Database and Table
 
-1. **Start the application in development mode**  
-   ```sh
-   npm run dev
-   ```
-2. **Start in production mode**  
-   ```sh
-   npm start
-   ```
-
-## Test the Application
-
-We can test the application using **Postman** or **thunder client**. Here are the endpoints to test:
-
-### **1️⃣ Create Data (POST /)**
-- **URL:**  
-  ```
-  http://<application-server-public-ip>:3000/data/
-  ```
-- **Method:** `POST`
-
-- **Body (raw, JSON format in Postman):**
-  ```json
-  {
-    "data": "Sample data"
-  }
-  ```
-- **Expected Response:**
-  ```json
-  {
-    "id": 1,
-    "data": "Sample data",
-    "created_at": "2024-02-13T12:00:00Z"
-  }
-  ```
-
-## **2️⃣ Read All Data (GET /)**
-- **URL:**  
-  ```
-  http://<application-server-public-ip>:3000/data/
-  ```
-- **Method:** `GET`
-- **Expected Response:**
-  ```json
-  [
-    {
-      "id": 1,
-      "data": "Sample data",
-      "created_at": "2024-02-13T12:00:00Z"
-    }
-  ]
-  ```
-
-## **3️⃣ Get Specific Record (GET /:id)**
-- **URL:**  
-  ```
-  http://<application-server-public-ip>:3000/data/1
-  ```
-- **Method:** `GET`
-- **Expected Response:**
-
-    ![alt text](image-5.png)
-
-
----
-
-## **4️⃣ Update Data (PUT /:id)**
-- **URL:**  
-  ```
-  http://<application-server-public-ip>:3000/data/1
-  ```
-- **Method:** `PUT`
-- **Headers:**
-  ```json
-  {
-    "Content-Type": "application/json"
-  }
-  ```
-- **Body (raw, JSON format in Postman):**
-  ```json
-  {
-    "data": "Updated data"
-  }
-  ```
-- **Expected Response:**
-
-    ![alt text](image-6.png)
-
----
-
-## **5️⃣ Delete Data (DELETE /:id)**
-- **URL:**  
-  ```
-  http://<application-server-public-ip>:3000/data/1
-  ```
-- **Method:** `DELETE`
-- **Expected Response:**
-    
-    ![alt text](image-7.png)
-
-
-## **6️⃣ Check Health Status (GET /health)**
-- **URL:**  
-  ```
-  http://<application-server-public-ip>:3000/health
-  ```
-- **Method:** `GET`
-- **Expected Response:**
-
-    ![alt text](image-8.png)
-
-
-## **7️⃣ Get Replication Metrics (GET /health/metrics)**
-- **URL:**  
-  ```
-  http://52.77.213.30:3000/health/metrics
-  ```
-- **Method:** `GET`
-
-
-## Verify the Replication
-
-We can verify the replication by checking the data in the replicas.
+Connect to the master DB and create a database and user.
 
 ```bash
-sudo -u postgres psql
-
-\c test_db
-SELECT * FROM replication_test;
-```
-
-Here we can see that the data is replicated to the replicas.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-This error occurs because we need to update the `pg_hba.conf` file on both master and replica PostgreSQL servers to allow connections from the application server (10.0.1.30).
-
-Let's fix this by adding the necessary entries to pg_hba.conf on all database servers:
-
-1. On master-0 (10.0.1.10), update pg_hba.conf:
-```bash
-# Connect to master-0
-sudo vim /etc/postgresql/16/main/pg_hba.conf
-
-# Add these lines at the end
-host    all             app_user         10.0.1.30/32         md5
-host    replication     replicator       10.0.1.20/32         md5
-host    replication     replicator       10.0.1.21/32         md5
-host    all            replicator       10.0.1.20/32         md5
-host    all            replicator       10.0.1.21/32         md5
-
-# Save and reload PostgreSQL
-sudo systemctl reload postgresql
-```
-
-2. On both replica-0 and replica-1, update pg_hba.conf:
-```bash
-# Connect to each replica
-sudo vim /etc/postgresql/16/main/pg_hba.conf
-
-# Add this line at the end
-host    all             app_user         10.0.1.30/32         md5
-
-# Save and reload PostgreSQL
-sudo systemctl reload postgresql
-```
-
-3. Also, make sure the app_user exists on all servers. On master-0:
-```sql
 -- Connect to PostgreSQL
 sudo -u postgres psql
 
@@ -1074,85 +964,174 @@ CREATE TABLE IF NOT EXISTS test_table (
 -- Grant permissions
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO app_user;
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO app_user;
-```
 
-![alt text](image-2.png)
-
-4. Verify the connection from the application server:
-```bash
-# On app-server (10.0.1.30)
-psql -h 10.0.1.10 -U app_user -d app_db -W
-# Enter password when prompted: app_password
-```
-
-![alt text](image-3.png)
-
-5. Also verify the load balancer connection:
-```bash
-# On app-server
-psql -h app-nlb-b41b706-7432a13b31c11647.elb.ap-southeast-1.amazonaws.com -U app_user -d app_db -W
-# Enter password when prompted: app_password
-```
-
-After making these changes, try the health check endpoint again:
-```bash
-curl http://localhost:3000/health
+\q
 ```
 
 
+### Configure the Environment Variables
 
-4. Verify PostgreSQL is listening on all interfaces on replicas:
-```bash
-# On both replicas, check postgresql.conf
-sudo vim /etc/postgresql/16/main/postgresql.conf
+Create a `.env` file in the root directory and configure the environment variables.
 
-# Ensure these settings are correct
-listen_addresses = '*'
-port = 5432
-
-# Restart PostgreSQL after changes
-sudo systemctl restart postgresql
+```env
+NODE_ENV=production
+PORT=3000 
+MASTER_DB_HOST=10.0.1.10
+READ_REPLICA_HOST=<your-nlb-dns-name>
+DB_USER=app_user 
+DB_PASSWORD=app_password 
+DB_NAME=app_db
+DB_PORT=5432
+MAX_POOL_SIZE=20
+IDLE_TIMEOUT=30000
 ```
 
-5. Verify pg_hba.conf on replicas allows connections from the NLB:
-```bash
-# On both replicas
-sudo vim /etc/postgresql/16/main/pg_hba.conf
+> NOTE: You can change the environment variables to your own values.
 
-# Add these lines
-host    all             app_user         10.0.0.0/16          md5
-host    all             postgres         10.0.0.0/16          md5
+### Run the Application
 
-# Reload PostgreSQL
-sudo systemctl reload postgresql
+1. **Start the application in development mode**  
+   ```sh
+   npm run dev
+   ```
+2. **Start in production mode**  
+   ```sh
+   npm start
+   ```
+
+   ![alt text](./images/image-26.png)
+
+## Test the Application
+
+We can test the application using **Postman** or **thunder client**. Here are the endpoints to test:
+
+### **1. Check `Health` Status (GET /health)**
+- **URL:**  
+  ```
+  http://<application-server-public-ip>:3000/health
+  ```
+- **Method:** `GET`
+- **Expected Response:**
+
+    ![alt text](./images/image-27.png)
+
+
+### **2. Get Replication Metrics (GET /health/metrics)**
+- **URL:**  
+  ```
+  http://<application-server-public-ip>:3000/health/metrics
+  ```
+- **Method:** `GET`
+
+
+### **3. Create Data (POST /)**
+- **URL:**  
+  ```
+  http://<application-server-public-ip>:3000/data/
+  ```
+- **Method:** `POST`
+
+- **Body (raw, JSON format in Postman):**
+  ```json
+  {
+    "data": "Sample data"
+  }
+  ```
+- **Expected Response:**
+
+    ![alt text](./images/image-28.png)
+
+### **4. Read All Data (GET /)**
+- **URL:**  
+  ```
+  http://<application-server-public-ip>:3000/data/
+  ```
+- **Method:** `GET`
+
+- **Expected Response:**
+
+    ![alt text](./images/image-29.png)
+
+### **5. Get Specific Record (GET /:id)**
+- **URL:**  
+  ```
+  http://<application-server-public-ip>:3000/data/1
+  ```
+- **Method:** `GET`
+
+---
+
+### **6. Update Data (PUT /:id)**
+- **URL:**  
+  ```
+  http://<application-server-public-ip>:3000/data/1
+  ```
+- **Method:** `PUT`
+- **Headers:**
+  ```json
+  {
+    "Content-Type": "application/json"
+  }
+  ```
+- **Body (raw, JSON format in Postman):**
+  ```json
+  {
+    "data": "Updated data"
+  }
+  ```
+- **Expected Response:**
+
+    ![alt text](./images/image-30.png)
+
+---
+
+### **7. Delete Data (DELETE /:id)**
+- **URL:**  
+  ```
+  http://<application-server-public-ip>:3000/data/1
+  ```
+- **Method:** `DELETE`
+- **Expected Response:**
+    
+    ![alt text](./images/image-31.png)
+
+## Verify the Replication
+
+We can verify the replication by checking the data in the replicas.
+
+**First Create Data (POST /)**
+
+- **URL:**  
+  ```
+  http://<application-server-public-ip>:3000/data/
+  ```
+- **Method:** `POST`
+
+- **Body (raw, JSON format in Postman):**
+  ```json
+  {
+    "data": "Sample data 2"
+  }
+  ```
+
+### Test in the ReplicaDB
+
+Connect to the replicas and check the data in the replicas.
+
+```sql
+sudo -u postgres psql
+
+\c app_db
+SELECT * FROM test_table;
 ```
 
-6. Test connectivity directly to replicas first:
-```bash
-# From app server, test connection to each replica directly
-psql -h 10.0.2.20 -U app_user -d app_db -W
-psql -h 10.0.2.21 -U app_user -d app_db -W
-```
+![alt text](./images/image-32.png)
 
-7. Check NLB DNS resolution:
-```bash
-# On app server
-nslookup postgres-nlb-97cedff20f641438.elb.ap-southeast-1.amazonaws.com
-```
+Here we can see that the data is replicated to the replicas.
 
-8. Test TCP connectivity:
-```bash
-# On app server
-nc -zv postgres-nlb-97cedff20f641438.elb.ap-southeast-1.amazonaws.com 5432
-```
 
-After making these changes, try connecting through the NLB again:
-```bash
-psql -h postgres-nlb-97cedff20f641438.elb.ap-southeast-1.amazonaws.com -d app_db -W
-```
+## Conclusion
 
-psql -h postgres-nlb-97cedff20f641438.elb.ap-southeast-1.amazonaws.com -U app_user -d app_db -W
+In this lab, we have created a master-slave database replication setup using PostgreSQL on AWS. We have configured the master DB and replicas, created a simple Node.js application to test the replication, and verified the replication by checking the data in the replicas. We have also tested the application by performing write and read operations to the master DB and replicas. This is a basic setup and can be improved by adding more features and security measures. 
 
-app_password
 
-Let me know what output you get after making these changes, and we can further troubleshoot if needed!
