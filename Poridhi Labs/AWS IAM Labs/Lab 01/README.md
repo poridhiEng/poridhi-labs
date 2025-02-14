@@ -6,9 +6,9 @@ In this lab, we discover how security policies affect IAM users and groups, and 
 
 By the end of this lab, you will understand IAM policies and roles, and how assuming roles can assist in restricting users to specific AWS resources.
 
----
 
-![images](./images/iam.drawio%20(1).png)
+
+![images](https://raw.githubusercontent.com/poridhiEng/poridhi-labs/38a354915bebd098a809c55189fb952ae1360a71/Poridhi%20Labs/AWS%20IAM%20Labs/Lab%2001/images/1.svg)
 
 ## **Create 4 S3 Buckets**
 
@@ -21,13 +21,13 @@ Navigate to the S3 dashboard and click **Create Bucket**. Create the following b
 
 ![image](https://s3.brilliant.com.bd/blog-bucket/thumbnail/1f82c79e-9920-460f-b7ff-9f4d23c6fb6b.png)
 
----
+
 
 ## **Create IAM Users with Email Tag**
 
 This Section instruct you  to create two IAM users in AWS without assigning any AWS managed policies. Each user will be tagged with an email tag (`Email:poridhistudent@gmail.com`).
 
----
+
 
 ### **Steps to Create IAM Users**
 
@@ -66,7 +66,7 @@ This Section instruct you  to create two IAM users in AWS without assigning any 
 7. **Repeat for the Second User**  
    - Follow the same steps to create the second user (e.g., `User2`).
 
----
+
 
 #### **Method 2: Using AWS CLI**
 
@@ -109,13 +109,13 @@ This Section instruct you  to create two IAM users in AWS without assigning any 
    aws iam get-user --user-name User2
    ```
 
----
+
 
 ## **Create and Attach the S3RestrictedPolicy IAM Policy**
 
 This guide provides instructions to create an IAM policy named `S3RestrictedPolicy` that restricts access to specific S3 buckets (`poridhiprod1` and `poridhiprod2`). The policy will then be attached to an IAM user (`User1`).
 
----
+
 
 ### **Steps to Create and Attach the S3RestrictedPolicy**
 
@@ -169,13 +169,13 @@ This guide provides instructions to create an IAM policy named `S3RestrictedPoli
    - Select the checkbox next to `User1`.
    - Click **Attach policy**.
 
----
+
 
 ## **Create the IAM Role and Allow `User2` to Assume It**
 
 This guide provides instructions to create an IAM role named `S3RestrictedRole`, attach the `S3RestrictedPolicy` to it, and configure the role's trust relationship to allow `User2` to assume it.
 
----
+
 
 ### **Steps to Create the IAM Role**
 
@@ -204,7 +204,7 @@ This guide provides instructions to create an IAM role named `S3RestrictedRole`,
    - Review the trusted entity (your account number) to confirm that any entity in this account can assume this role.
    - Click **Create role**.
 
----
+
 
 ### **Steps to Allow `User2` to Assume the Role**
 
@@ -223,7 +223,7 @@ This guide provides instructions to create an IAM role named `S3RestrictedRole`,
 
 ![image](https://s3.brilliant.com.bd/blog-bucket/thumbnail/0f8a5386-a9e3-4a91-8c8f-396da6bf6b5f.png)
 
----
+
 
 ## **Test IAM Policy and Role Configuration**
 
@@ -231,7 +231,7 @@ This guide provides instructions to test the IAM policy and role configuration f
 - `User1` has access only to the `poridhiprod1` and `poridhiprod2` buckets.
 - `User2` can assume the `S3RestrictedRole` and access the `poridhiprod1` and `poridhiprod2` buckets.
 
----
+
 
 ### **Steps to Test `User1` Configuration**
 
@@ -244,7 +244,7 @@ This guide provides instructions to test the IAM policy and role configuration f
    - Attempt to access `poridhistageconfig3` or `poridhistageconfig4`. You should see an **Access Denied** message.
    - Access `poridhiprod1` and `poridhiprod2`. You should have full access.
 
----
+
 
 ### **Steps to Test `User2` Configuration**
 
@@ -267,7 +267,7 @@ This guide provides instructions to test the IAM policy and role configuration f
    - In the **S3** console, confirm that you can now see the `poridhiprod1` and `poridhiprod2` buckets.
    - Attempt to access `poridhistageconfig3` or `poridhistageconfig4`. You should see an **Access Denied** message.
 
----
+
 
 ## **Notes**
 - Ensure the bucket names and ARNs are correctly specified in the policies and roles.
