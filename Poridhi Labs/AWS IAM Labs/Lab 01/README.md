@@ -8,7 +8,7 @@ By the end of this lab, you will understand IAM policies and roles, and how assu
 
 
 
-![images](./images/1.svg)
+![images](https://github.com/poridhiEng/poridhi-labs/raw/main/Poridhi%20Labs/AWS%20IAM%20Labs/Lab%201/images/1.svg)
 
 ## **Create 4 S3 Buckets**
 
